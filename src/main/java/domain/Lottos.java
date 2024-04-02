@@ -24,9 +24,9 @@ public final class Lottos {
         return bunch;
     }
 
-    public long scratch(WinningLotto winningLotto) {
+    public List<Rank> scratch(WinningLotto winningLotto) {
         return bunch.stream()
-                .mapToLong(e -> Rank.of(e, winningLotto).prize())
-                .sum();
+                .map(e -> Rank.of(e, winningLotto))
+                .collect(Collectors.toList());
     }
 }

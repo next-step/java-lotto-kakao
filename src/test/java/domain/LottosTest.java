@@ -24,7 +24,7 @@ public class LottosTest {
     @Test
     void Lottos의_복권_당첨에_따라_수령금을_반환() {
         Lottos lottos = Lottos.of(1, () -> List.of(1, 2, 3, 4, 5, 6));
-        long prize = lottos.scratch(WinningLotto.of(List.of(1, 2, 3, 4, 5, 6), 7));
-        assertThat(prize).isEqualTo(Rank.FIRST.prize());
+        List<Rank> ranks = lottos.scratch(WinningLotto.of(List.of(1, 2, 3, 4, 5, 6), 7));
+        assertThat(ranks.stream().mapToInt(Rank::prize).sum()).isEqualTo(Rank.FIRST.prize());
     }
 }

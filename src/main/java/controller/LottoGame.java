@@ -3,32 +3,40 @@ package controller;
 import domain.LottoMachine;
 import domain.Lottos;
 import domain.WinningLotto;
+import enumeration.Rank;
 import strategy.LottoNumberStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class LottoGame {
     private final int cash;
     private final Lottos lottos;
-    private final WinningLotto winningLotto;
-    private long prize;
+    private List<Rank> ranks;
 
-    public static LottoGame of(int cash, List<Integer> numbers, int bonus, LottoNumberStrategy lottoNumberStrategy) {
-        return new LottoGame(cash, numbers, bonus, lottoNumberStrategy);
+    public static LottoGame of(int cash, LottoNumberStrategy lottoNumberStrategy) {
+        return new LottoGame(cash, lottoNumberStrategy);
     }
 
-    private LottoGame(int cash, List<Integer> numbers, int bonus, LottoNumberStrategy lottoNumberStrategy) {
+    private LottoGame(int cash, LottoNumberStrategy lottoNumberStrategy) {
         int bunchSize = LottoMachine.bunchSize(cash);
         this.cash = bunchSize * 1000;
         this.lottos = LottoMachine.issue(bunchSize, lottoNumberStrategy);
-        this.winningLotto = WinningLotto.of(numbers, bonus);
     }
 
-    public void start() {
-        this.prize = this.lottos.scratch(winningLotto);
+    public void start(List<Integer> numbers, int bonus) {
+        this.ranks = this.lottos.scratch(WinningLotto.of(numbers, bonus));
     }
 
-    public double profitRate() {
-        return (double) prize / (double) cash;
+    public int cash() {
+        return cash;
+    }
+
+    public Lottos lottos() {
+        return lottos;
+    }
+
+    public List<Rank> ranks() {
+        return new ArrayList<>(ranks);
     }
 }

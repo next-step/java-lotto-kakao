@@ -6,7 +6,7 @@ public enum LottoCondition {
 
     PRICE(1000),
 
-    FULL_MATCHED(6),
+    LENGTH(6),
     SUBTLE_CRITERIA(2);
 
     private final int value;
