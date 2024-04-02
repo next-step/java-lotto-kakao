@@ -11,10 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("LottoMachine 관련 테스트")
 public class LottoMachineTest {
     @Test
-    void LottoMachine은_로또_수를_입력받아_초기화_및_로또를_발급() {
-        LottoMachine lottoMachine = LottoMachine.issue(14, AutoLottoNumberStrategy.of(6));
-        assertThat(lottoMachine).isNotNull();
-        assertThat(lottoMachine.bunchSize()).isEqualTo(14);
+    void LottoMachine은_로또_수를_통해_로또를_발급() {
+        Lottos lottos = LottoMachine.issue(14, AutoLottoNumberStrategy.of(6));
+        assertThat(lottos).isNotNull();
+        assertThat(lottos.bunch().size()).isEqualTo(14);
     }
 
     @ParameterizedTest

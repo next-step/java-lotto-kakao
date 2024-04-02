@@ -1,8 +1,11 @@
 package domain;
 
+import enumeration.Rank;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import strategy.AutoLottoNumberStrategy;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,5 +19,12 @@ public class LottosTest {
         assertThat(lottos).isNotNull();
         assertThat(lottos.bunch().size()).isEqualTo(bunchSize);
         lottos.bunch().forEach(e -> assertThat(e.numbers().size()).isEqualTo(numberLength));
+    }
+
+    @Test
+    void Lottos의_복권_당첨에_따라_수령금을_반환() {
+        Lottos lottos = Lottos.of(1, () -> List.of(1, 2, 3, 4, 5, 6));
+        long prize = lottos.scratch(WinningLotto.of(List.of(1, 2, 3, 4, 5, 6), 7));
+        assertThat(prize).isEqualTo(Rank.FIRST.prize());
     }
 }

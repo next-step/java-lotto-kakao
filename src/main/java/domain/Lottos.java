@@ -1,5 +1,6 @@
 package domain;
 
+import enumeration.Rank;
 import strategy.LottoNumberStrategy;
 
 import java.util.List;
@@ -18,8 +19,14 @@ public final class Lottos {
                 .mapToObj(e -> Lotto.of(strategy.perform()))
                 .collect(Collectors.toUnmodifiableList());
     }
-    
+
     public List<Lotto> bunch() {
         return bunch;
+    }
+
+    public long scratch(WinningLotto winningLotto) {
+        return bunch.stream()
+                .mapToLong(e -> Rank.of(e, winningLotto).prize())
+                .sum();
     }
 }

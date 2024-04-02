@@ -26,7 +26,7 @@
 - [x] Lotto 1 & n장의 당첨 결과를 확인한다.
     - [x] 당첨 순위를 매기는 Rank를 구현한다.
     - [x] Rank를 도출할 수 있도록 Lotto 객체에서 matchCount와 matchBonus를 구현한다.
-- [ ] Lotto 결과에 따라 수익률을 계산한다.
+- [x] Lotto 결과에 따라 수익률을 계산한다.
 
 ### 입출력
 
