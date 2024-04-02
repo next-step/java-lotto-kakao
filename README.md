@@ -16,12 +16,14 @@
 ### 도메인
 
 - [x] 난수를 생성하는 전략을 작성한다.
-- [ ] 랜덤한 수로 구성된 1장의 Lotto를 발행한다.
-- [ ] 랜덤한 수로 구성된 여러 장의 Lotto를 발행한다.
+- [x] 랜덤한 수로 구성된 1 & n장의 Lotto를 발행한다.
+    - [x] 단순 정수 값을 Wrapping한 LottoNumber를 구현한다.
+    - [x] List<LottoNumber>를 Wrapping한 Lotto를 구현한다.
+    - [x] Lotto와 LottoNumber를 Wrapping한 WinningLotto를 구현한다.
+    - [x] Lotto를 Wrapping한 Lottos를 구현한다.
 - [ ] 구입 금액을 통해 몇 장의 Lotto를 살지 결정한다.
 - [ ] 6자리의 당첨 번호와 보너스 번호를 결정한다.
-- [ ] Lotto 1장의 당첨 결과를 확인한다.
-- [ ] Lotto 여러 장의 당첨 결과를 확인한다.
+- [ ] Lotto 1 & n장의 당첨 결과를 확인한다.
 - [ ] Lotto 결과에 따라 수익률을 계산한다.
 
 ### 입출력
