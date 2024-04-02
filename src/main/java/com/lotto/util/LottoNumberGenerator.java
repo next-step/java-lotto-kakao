@@ -11,6 +11,7 @@ public class LottoNumberGenerator implements LottoGenerateStrategy {
     private static final int LOTTO_NUMBER_END = 45;
     private static final int LOTTO_NUMBER_COUNT = 6;
 
+    @Override
     public List<Integer> generate() {
         List<Integer> numbers = IntStream.rangeClosed(LOTTO_NUMBER_START, LOTTO_NUMBER_END)
                 .boxed()
