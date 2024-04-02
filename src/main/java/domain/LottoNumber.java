@@ -28,8 +28,8 @@ public final class LottoNumber implements Comparable<LottoNumber> {
         return value;
     }
 
-    public boolean isMatched(int value) {
-        return this.value == value;
+    public boolean isMatched(LottoNumber lottoNumber) {
+        return equals(lottoNumber);
     }
 
     @Override

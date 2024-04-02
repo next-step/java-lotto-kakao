@@ -19,8 +19,8 @@ public class WinningLottoTest {
                 42
         );
         assertThat(winning).isNotNull();
-        assertThat(winning.numbers()).isNotNull();
-        assertThat(winning.numbers()).isEqualTo(Lotto.of(List.of(1, 2, 3, 4, 5, 6)));
+        assertThat(winning.lotto()).isNotNull();
+        assertThat(winning.lotto()).isEqualTo(Lotto.of(List.of(1, 2, 3, 4, 5, 6)));
         assertThat(winning.bonus()).isEqualTo(LottoNumber.of(42));
     }
 

@@ -2,6 +2,8 @@ package domain;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class Lotto {
@@ -31,5 +33,17 @@ public final class Lotto {
     @Override
     public int hashCode() {
         return Objects.hash(numbers);
+    }
+
+    public int matchCount(WinningLotto winningLotto) {
+        Set<Integer> elements = winningLotto.lotto().numbers().stream()
+                .map(LottoNumber::value)
+                .collect(Collectors.<Integer>toSet());
+        return numbers.stream().filter(e -> elements.contains(e.value())).mapToInt(e -> 1).sum();
+    }
+
+    public boolean matchBonus(WinningLotto winningLotto) {
+        Optional<LottoNumber> number = numbers.stream().filter(e -> e.isMatched(winningLotto.bonus())).findFirst();
+        return number.isPresent();
     }
 }

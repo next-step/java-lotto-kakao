@@ -3,8 +3,11 @@ package enumeration;
 public enum LottoCondition {
     BEGIN(1),
     END(45),
+
     PRICE(1000),
-    ;
+
+    FULL_MATCHED(6),
+    SUBTLE_CRITERIA(2);
 
     private final int value;
 

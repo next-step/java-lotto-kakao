@@ -21,7 +21,7 @@ class LottoNumberTest {
     @CsvSource(value = {"1", "2", "3", "4", "5"})
     void isMatched는_입력_값과_일치_여부를_확인(int value) {
         LottoNumber number = LottoNumber.of(value);
-        assertThat(number.isMatched(value)).isTrue();
+        assertThat(number.isMatched(LottoNumber.of(value))).isTrue();
     }
 
     @Test

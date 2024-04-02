@@ -22,7 +22,7 @@ public final class WinningLotto {
         Objects.requireNonNull(bonus);
     }
 
-    public Lotto numbers() {
+    public Lotto lotto() {
         return lotto;
     }
 
