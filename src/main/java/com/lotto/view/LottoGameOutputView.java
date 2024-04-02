@@ -15,8 +15,7 @@ public class LottoGameOutputView {
         System.out.println("당첨 통계");
         System.out.println("---------");
         List<LottoResult> reversedLottoResults = getReversedLottoResults(lottoResults);
-        reversedLottoResults
-                .stream()
+        reversedLottoResults.stream()
                 .filter(result -> !result.isFailed())
                 .forEach(System.out::println);
     }
@@ -27,9 +26,7 @@ public class LottoGameOutputView {
 
     public void printLottoList(LottoGame lottoGame) {
         LottoTickets lottoTickets = lottoGame.getLottoTickets();
-        lottoTickets.getLottoTickets().forEach(lotto -> {
-            System.out.println(lotto.toString());
-        });
+        lottoTickets.getLottoTickets().forEach(System.out::println);
     }
 
     public void printProfitRate(LottoGame lottoGame) {
@@ -41,5 +38,4 @@ public class LottoGameOutputView {
         Collections.reverse(lottoResult);
         return lottoResult;
     }
-
 }

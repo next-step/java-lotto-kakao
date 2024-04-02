@@ -22,7 +22,7 @@ public class LottoGameController {
         lottoGameOutputView.printLottoCount(lottoGame.getLottoTickets().size());
         lottoGameOutputView.printLottoList(lottoGame);
 
-        TargetLotto targetLotto = lottoGameInputView.inputTargetNumbers();
+        TargetLotto targetLotto = lottoGameInputView.inputTargetLotto();
         LottoResults lottoResults = lottoGame.play(targetLotto);
 
         lottoGameOutputView.printResult(lottoResults);

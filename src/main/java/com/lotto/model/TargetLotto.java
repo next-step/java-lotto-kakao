@@ -20,8 +20,11 @@ public class TargetLotto {
     }
 
     public LottoRank match(LottoTicket lottoTicket) {
-        int matchCount = (int) numbers.stream().filter(lottoTicket.getLottoNumbers()::contains).count();
-        boolean isBonusMatch = lottoTicket.getLottoNumbers().contains(bonusNumber);
-        return LottoRank.of(matchCount, isBonusMatch);
+        List<Integer> lottoNumbers = lottoTicket.getLottoNumbers();
+        int matchCount = (int) numbers.stream()
+                .filter(lottoNumbers::contains)
+                .count();
+        boolean bonusMatched = lottoNumbers.contains(bonusNumber);
+        return LottoRank.of(matchCount, bonusMatched);
     }
 }
