@@ -7,21 +7,21 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class LottoResult {
 
-    private final List<Lotto> lotto;
+    private final List<Lotto> lottos;
     private final Map<Prize, Integer> prizes;
     private final int lottoPrice;
 
-    public LottoResult(List<Lotto> lotto, WinningLotto winning, int lottoPrice) {
-        this.lotto = lotto;
-        this.prizes = calculatePrizes(lotto, winning);
+    public LottoResult(List<Lotto> lottos, WinningLotto winning, int lottoPrice) {
+        this.lottos = lottos;
+        this.prizes = calculatePrizes(lottos, winning);
         this.lottoPrice = lottoPrice;
     }
 
-    private EnumMap<Prize, Integer> calculatePrizes(List<Lotto> lotto, WinningLotto winning) {
+    private EnumMap<Prize, Integer> calculatePrizes(List<Lotto> lottos, WinningLotto winning) {
         EnumMap<Prize, Integer> prizes = new EnumMap<>(Prize.class);
 
-        lotto.forEach(element -> {
-            Prize prize = winning.match(element);
+        lottos.forEach(lotto -> {
+            Prize prize = winning.match(lotto);
             Integer count = prizes.getOrDefault(prize, 0);
             prizes.put(prize, count + 1);
         });
@@ -38,6 +38,6 @@ public class LottoResult {
         prizes.forEach((prize, count) -> {
             totalReward.addAndGet((long)prize.getReward() * count);
         });
-        return (double)totalReward.getPlain() / (lotto.size() * lottoPrice);
+        return (double)totalReward.getPlain() / (lottos.size() * lottoPrice);
     }
 }

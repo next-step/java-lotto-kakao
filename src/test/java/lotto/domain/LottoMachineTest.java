@@ -12,18 +12,18 @@ public class LottoMachineTest {
     void 로또_한장은_천원으로_여러_장을_구매할_수_있다() {
         LottoMachine machine = new LottoMachine(1000);
 
-        List<Lotto> lotto = machine.issue(5000);
+        List<Lotto> lottos = machine.issue(5000);
 
-        assertThat(lotto).hasSize(5);
+        assertThat(lottos).hasSize(5);
     }
 
     @Test
     void 잔금은_무시한다() {
         LottoMachine machine = new LottoMachine(1000);
 
-        List<Lotto> lotto = machine.issue(5500);
+        List<Lotto> lottos = machine.issue(5500);
 
-        assertThat(lotto).hasSize(5);
+        assertThat(lottos).hasSize(5);
     }
 
     @Test
