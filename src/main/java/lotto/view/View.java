@@ -62,7 +62,7 @@ public class View {
     public void printPrizeInfo(Prize prize, int prizeCount) {
         System.out.printf("%d개 일치", prize.getMatchCount());
         if (prize.isBonusMatched()) {
-            System.out.print(", 보너스 볼 일");
+            System.out.print(", 보너스 볼 일치");
         }
         System.out.printf(" (%d원) - %d개\n", prize.getReward(), prizeCount);
     }
