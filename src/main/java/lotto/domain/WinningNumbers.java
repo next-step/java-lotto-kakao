@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class WinningNumbers extends Numbers {
+public class WinningNumbers extends Numbers{
     private final LottoNumber bonusLottoNumber;
 
     public WinningNumbers(List<LottoNumber> regularLottoNumbers, LottoNumber bonusLottoNumber) {
@@ -17,25 +17,25 @@ public class WinningNumbers extends Numbers {
         validateWinningNumber(regularLottoNumbers, bonusLottoNumber);
     }
 
-    public Prize checkWinning(TicketNumbers ticketNumbers) {
-        int matchCount = ticketNumbers.compare(this);
+    public Prize checkWinning(LottoTicket lottoTicket) {
+        int matchCount = lottoTicket.compare(this);
         if (matchCount <= 2) {
             return Prize.NOTHING;
         }
-        return getPrize(ticketNumbers, matchCount);
+        return getPrize(lottoTicket, matchCount);
     }
 
-    private Prize getPrize(TicketNumbers ticketNumbers, int matchCount) {
+    private Prize getPrize(LottoTicket lottoTicket, int matchCount) {
         if (matchCount == 3) {
             return Prize.FIFTH;
         }
         if (matchCount == 4) {
             return Prize.FOURTH;
         }
-        if (matchCount == 5 && !ticketNumbers.contains(bonusLottoNumber)) {
+        if (matchCount == 5 && !lottoTicket.contains(bonusLottoNumber)) {
             return Prize.THIRD;
         }
-        if (matchCount == 5 && ticketNumbers.contains(bonusLottoNumber)) {
+        if (matchCount == 5 && lottoTicket.contains(bonusLottoNumber)) {
             return Prize.SECOND;
         }
         return Prize.FIRST;

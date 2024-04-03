@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class LottoMachine {
 
-    private final List<TicketNumbers> tickets = new ArrayList<>();
+    private final List<LottoTicket> tickets = new ArrayList<>();
 
     private final List<LottoNumber> lottoNumberPool;
 
@@ -25,11 +25,11 @@ public class LottoMachine {
 
         for (int i = 0; i < ticketQuantity; i++) {
             Collections.shuffle(lottoNumberPool);
-            tickets.add(new TicketNumbers(lottoNumberPool.subList(0, 6)));
+            tickets.add(new LottoTicket(lottoNumberPool.subList(0, 6)));
         }
 
         return tickets.stream()
-            .map(TicketNumbers::toDto)
+            .map(LottoTicket::toDto)
             .collect(Collectors.toList());
     }
 
@@ -39,7 +39,7 @@ public class LottoMachine {
             result.put(prize, 0);
         }
 
-        for (TicketNumbers ticket : tickets) {
+        for (LottoTicket ticket : tickets) {
             Prize prize = winningNumbers.checkWinning(ticket);
             result.compute(prize, (key, oldValue) -> oldValue == null ? 0 : oldValue + 1);
         }

@@ -43,7 +43,7 @@ public class WinningNumbersTest {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = new LottoNumber(bonusNumber);
 
-        TicketNumbers ticket = new TicketNumbers(ticketBalls);
+        LottoTicket ticket = new LottoTicket(ticketBalls);
         WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
 
         Prize prize = winningNumbers.checkWinning(ticket);
@@ -61,7 +61,7 @@ public class WinningNumbersTest {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = new LottoNumber(bonusNumber);
 
-        TicketNumbers ticket = new TicketNumbers(ticketBalls);
+        LottoTicket ticket = new LottoTicket(ticketBalls);
         WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
 
         Prize prize = winningNumbers.checkWinning(ticket);
@@ -77,7 +77,7 @@ public class WinningNumbersTest {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = new LottoNumber(bonusNumber);
 
-        TicketNumbers ticket = new TicketNumbers(ticketBalls);
+        LottoTicket ticket = new LottoTicket(ticketBalls);
         WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
 
         Prize prize = winningNumbers.checkWinning(ticket);
@@ -93,7 +93,7 @@ public class WinningNumbersTest {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = new LottoNumber(bonusNumber);
 
-        TicketNumbers ticket = new TicketNumbers(ticketBalls);
+        LottoTicket ticket = new LottoTicket(ticketBalls);
         WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
 
         Prize prize = winningNumbers.checkWinning(ticket);
@@ -109,7 +109,7 @@ public class WinningNumbersTest {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = new LottoNumber(bonusNumber);
 
-        TicketNumbers ticket = new TicketNumbers(ticketBalls);
+        LottoTicket ticket = new LottoTicket(ticketBalls);
         WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
 
         Prize prize = winningNumbers.checkWinning(ticket);
@@ -125,7 +125,7 @@ public class WinningNumbersTest {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = new LottoNumber(bonusNumber);
 
-        TicketNumbers ticket = new TicketNumbers(ticketBalls);
+        LottoTicket ticket = new LottoTicket(ticketBalls);
         WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
 
         Prize prize = winningNumbers.checkWinning(ticket);
@@ -134,10 +134,9 @@ public class WinningNumbersTest {
     }
 
     private static List<LottoNumber> parseNumbers(String numbers) {
-        List<LottoNumber> lottoNumberList = Arrays.stream(numbers.split(","))
+        return Arrays.stream(numbers.split(","))
             .map(Integer::parseInt)
             .map(LottoNumber::new)
             .collect(Collectors.toList());
-        return lottoNumberList;
     }
 }
