@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import lotto.domain.Budget;
 import lotto.domain.LottoMachine;
-import lotto.domain.LottoResultDto;
+import lotto.domain.dto.LottoResultDto;
 import lotto.domain.Number;
-import lotto.domain.TicketDto;
+import lotto.domain.dto.TicketDto;
 import lotto.domain.WinningNumbers;
 import lotto.view.LottoView;
 

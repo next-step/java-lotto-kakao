@@ -1,5 +1,7 @@
 package lotto.domain;
 
+import lotto.domain.dto.TicketDto;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
