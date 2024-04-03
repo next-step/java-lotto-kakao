@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class LottoTicket {
 
+    private static final int LOTTO_NUMBERS_COUNT = 6;
     private final Set<LottoNumber> lottoNumbers;
 
     public LottoTicket(Set<LottoNumber> lottoNumbers) {
@@ -37,8 +38,8 @@ public class LottoTicket {
     }
 
     private static void validateLottoTicket(Set<LottoNumber> lottoNumbers) {
-        if (lottoNumbers.size() != 6) {
-            throw new RuntimeException("로또 번호는 중복되지 않는 6개의 수로 구성되어야 합니다.");
+        if (lottoNumbers.size() != LOTTO_NUMBERS_COUNT) {
+            throw new RuntimeException("로또 번호는 중복되지 않는 " + LOTTO_NUMBERS_COUNT + "개의 수로 구성되어야 합니다.");
         }
     }
 }

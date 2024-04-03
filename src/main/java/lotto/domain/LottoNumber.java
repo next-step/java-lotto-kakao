@@ -4,18 +4,21 @@ import java.util.Objects;
 
 public class LottoNumber {
     private final int number;
+    private static final int MIN_LOTTO_NUMBER = 1;
+    private static final int MAX_LOTTO_NUMBER = 45;
+
     public LottoNumber(int number) {
         validateBall(number);
         this.number = number;
     }
 
     private void validateBall(int number) {
-        if (number < 1) {
-            throw new RuntimeException("공은 1이상의 정수여야 합니다.");
+        if (number < MIN_LOTTO_NUMBER) {
+            throw new RuntimeException("공은 " + MIN_LOTTO_NUMBER + "이상의 정수여야 합니다.");
         }
 
-        if (number > 45) {
-            throw new RuntimeException("공은 45이하의 정수여야 합니다.");
+        if (number > MAX_LOTTO_NUMBER) {
+            throw new RuntimeException("공은 " + MAX_LOTTO_NUMBER + "이하의 정수여야 합니다.");
         }
     }
 
