@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import lotto.domain.Budget;
 import lotto.domain.LottoMachine;
 import lotto.domain.dto.LottoResultDto;
-import lotto.domain.Number;
+import lotto.domain.LottoNumber;
 import lotto.domain.dto.TicketDto;
 import lotto.domain.WinningNumbers;
 import lotto.view.LottoView;
@@ -15,12 +15,12 @@ import lotto.view.LottoView;
 public class LottoController {
     private final LottoMachine lottoMachine;
     private final LottoView view;
-    private List<Number> numberPool;
+    private List<LottoNumber> lottoNumberPool;
     private boolean holdFlag;
 
     public LottoController() {
         initNumberPool();
-        this.lottoMachine = new LottoMachine(numberPool);
+        this.lottoMachine = new LottoMachine(lottoNumberPool);
         this.view = new LottoView();
         this.holdFlag = true;
     }
@@ -54,9 +54,9 @@ public class LottoController {
 
     private LottoResultDto getResult() {
         try {
-            List<Number> numbers = view.getNumbers().stream().map(Number::new).collect(Collectors.toList());
-            Number bonusNumber = new Number(view.getBonusNumber());
-            LottoResultDto lottoResultDto = lottoMachine.getResult(new WinningNumbers(numbers, bonusNumber));
+            List<LottoNumber> lottoNumbers = view.getNumbers().stream().map(LottoNumber::new).collect(Collectors.toList());
+            LottoNumber bonusLottoNumber = new LottoNumber(view.getBonusNumber());
+            LottoResultDto lottoResultDto = lottoMachine.getResult(new WinningNumbers(lottoNumbers, bonusLottoNumber));
             this.holdFlag = false;
             return lottoResultDto;
         } catch (RuntimeException e) {
@@ -66,9 +66,9 @@ public class LottoController {
     }
 
     private void initNumberPool() {
-        this.numberPool = new ArrayList<>();
+        this.lottoNumberPool = new ArrayList<>();
         for (int i = 1; i <= 45; i++) {
-            numberPool.add(new Number(i));
+            lottoNumberPool.add(new LottoNumber(i));
         }
     }
 }

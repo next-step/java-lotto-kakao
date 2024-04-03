@@ -4,19 +4,19 @@ import java.util.Set;
 
 public class Numbers {
 
-    protected final Set<Number> numbers;
+    protected final Set<LottoNumber> lottoNumbers;
 
-    public Numbers(Set<Number> numbers) {
-        this.numbers = numbers;
+    public Numbers(Set<LottoNumber> lottoNumbers) {
+        this.lottoNumbers = lottoNumbers;
     }
 
     protected int compare (Numbers otherNumbers) {
-        return (int)numbers.stream()
+        return (int) lottoNumbers.stream()
             .filter(otherNumbers::contains)
             .count();
     }
 
-    protected boolean contains(Number number) {
-        return numbers.contains(number);
+    protected boolean contains(LottoNumber lottoNumber) {
+        return lottoNumbers.contains(lottoNumber);
     }
 }
