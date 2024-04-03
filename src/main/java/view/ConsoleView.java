@@ -6,9 +6,13 @@ import domain.Lottos;
 import enumeration.Rank;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static enumeration.LottoCondition.*;
 
 public final class ConsoleView {
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -67,18 +71,32 @@ public final class ConsoleView {
 
     public static void printStatistics(LottoGame game) {
         printWinningPrompt();
-        List<Rank> ranks = game.ranks();
-        System.out.println("3개 일치 (5000원)- " + filterRanksCount(ranks, 5) + "개");
-        System.out.println("4개 일치 (50000원)- " + filterRanksCount(ranks, 4) + "개");
-        System.out.println("5개 일치 (1500000원)- " + filterRanksCount(ranks, 3) + "개");
-        System.out.println("5개 일치, 보너 볼 일치 (30000000원)- " + filterRanksCount(ranks, 2) + "개");
-        System.out.println("6개 일치 (2000000000원)- " + filterRanksCount(ranks, 1) + "개");
+        IntStream.rangeClosed(WINNING_FIRST.value(), WINNING_LAST.value()).boxed().collect(Collectors.toList())
+                .stream()
+                .sorted(Collections.reverseOrder())
+                .map(e -> getWinningDetailPrompt(game.ranks(), e))
+                .forEach(System.out::println);
         printProfitRate(getPrize(game.ranks()), game.cash());
     }
 
     private static void printWinningPrompt() {
+        System.out.println();
         System.out.println("당첨 통계");
         System.out.println("---------");
+    }
+
+    private static String getWinningDetailPrompt(List<Rank> ranks, int rank) {
+        return getWinningDetailHead(rank) + "(" + Rank.of(rank).prize() + ")- " + filterRanksCount(ranks, rank) + "개";
+    }
+
+    private static String getWinningDetailHead(int rank) {
+        if (rank == 1) {
+            return LENGTH.value() + "개 일치 ";
+        }
+        if (rank == 2) {
+            return (LENGTH.value() - 1) + "개 일치, 보너스 볼 일치 ";
+        }
+        return (LENGTH.value() - (rank - SUBTLE_CRITERIA.value()) - 1) + "개 일치";
     }
 
     private static int filterRanksCount(List<Rank> ranks, int rank) {

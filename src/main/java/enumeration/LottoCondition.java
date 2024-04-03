@@ -7,7 +7,10 @@ public enum LottoCondition {
     PRICE(1000),
 
     LENGTH(6),
-    SUBTLE_CRITERIA(2);
+    SUBTLE_CRITERIA(2),
+
+    WINNING_FIRST(1),
+    WINNING_LAST(5);
 
     private final int value;
 
