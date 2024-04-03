@@ -13,7 +13,7 @@ public class LottoResults {
                 .collect(Collectors.toList());
     }
 
-    public void addLottoCount(LottoRank lottoRank) {
+    public void addLottoRankCount(LottoRank lottoRank) {
         lottoResults.stream()
                 .filter(result -> result.checkLottoRank(lottoRank))
                 .findFirst()

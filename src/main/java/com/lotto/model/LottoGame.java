@@ -24,7 +24,7 @@ public class LottoGame {
     public LottoResults play(TargetLotto targetLotto) {
         lottoTickets.getLottoTickets().forEach(lottoTicket -> {
             LottoRank lottoRank = targetLotto.match(lottoTicket);
-            lottoResults.addLottoCount(lottoRank);
+            lottoResults.addLottoRankCount(lottoRank);
         });
         return lottoResults;
     }
