@@ -76,7 +76,7 @@ public final class ConsoleView {
                 .sorted(Collections.reverseOrder())
                 .map(e -> getWinningDetailPrompt(game.ranks(), e))
                 .forEach(System.out::println);
-        printProfitRate(getPrize(game.ranks()), game.cash());
+        printProfitRate(getPrize(game.ranks()), game.lottos().bunch().size() * PRICE.value());
     }
 
     private static void printWinningPrompt() {
@@ -110,6 +110,6 @@ public final class ConsoleView {
     }
 
     private static void printProfitRate(double prize, double cash) {
-        System.out.println("총 수익률은 " + prize / cash + "입니다.");
+        System.out.printf("총 수익률은 %.2f 입니다.\n", prize / cash);
     }
 }
