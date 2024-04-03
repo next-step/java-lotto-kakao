@@ -6,32 +6,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Prize {
-    FIRST(2000000000, 6, false),
-    SECOND(30000000, 5, true),
-    THIRD(1500000, 5, false),
-    FOURTH(50000, 4, false),
-    FIFTH(5000, 3, false),
-    NONE(0, 0, false);
+    FIRST(2000000000, 6, (matchCount, bonusMatched) -> matchCount == 6),
+    SECOND(30000000, 5, (matchCount, bonusMatched) -> matchCount == 5 && bonusMatched),
+    THIRD(1500000, 5, (matchCount, bonusMatched) -> matchCount == 5 && !bonusMatched),
+    FOURTH(50000, 4, (matchCount, bonusMatched) -> matchCount == 4),
+    FIFTH(5000, 3, (matchCount, bonusMatched) -> matchCount == 3),
+    NONE(0, 0, (matchCount, bonusMatched) -> matchCount < 3);
 
     private final int reward;
     private final int matchCount;
-    private final boolean bonusMatched;
+    private final Condition condition;
 
-    Prize(int reward, int matchCount, boolean bonusMatched) {
+    Prize(int reward, int matchCount, Condition condition) {
         this.reward = reward;
         this.matchCount = matchCount;
-        this.bonusMatched = bonusMatched;
+        this.condition = condition;
     }
 
     public static Prize of(int matchCount, boolean bonusMatched) {
         return Arrays.stream(values())
-            .filter(prize -> filterPrize(prize, matchCount, bonusMatched))
+            .filter(prize -> prize.condition.meet(matchCount, bonusMatched))
             .findFirst()
             .orElse(Prize.NONE);
-    }
-
-    private static boolean filterPrize(Prize prize, int matchCount, boolean bonusMatched) {
-        return matchCount >= prize.matchCount && ((bonusMatched == prize.bonusMatched) || !prize.bonusMatched);
     }
 
     public int getReward() {
@@ -39,7 +35,7 @@ public enum Prize {
     }
 
     public boolean isBonusMatched() {
-        return bonusMatched;
+        return this == Prize.SECOND;
     }
 
     public int getMatchCount() {
@@ -56,5 +52,9 @@ public enum Prize {
 
     private boolean isNotNone() {
         return this != NONE;
+    }
+
+    interface Condition {
+        boolean meet(int matchCount, boolean bonusMatched);
     }
 }
