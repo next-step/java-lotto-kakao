@@ -55,7 +55,7 @@ public enum Rank {
         return rank;
     }
 
-    public int prize() {
+    public long prize() {
         return prize;
     }
 }
