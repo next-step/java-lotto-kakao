@@ -11,23 +11,24 @@ import java.util.stream.Stream;
 
 public class LottoMachine {
 
-    public static final int LOTTO_PRICE = 1000;
     private final Random random;
+    private final int lottoPrice;
 
-    public LottoMachine() {
+    public LottoMachine(int lottoPrice) {
         this.random = new Random();
+        this.lottoPrice = lottoPrice;
     }
 
     public List<Lotto> issue(int money) {
         validateMoney(money);
 
         return Stream.generate(this::issue)
-            .limit(money / LOTTO_PRICE)
+            .limit(money / lottoPrice)
             .collect(Collectors.toList());
     }
 
     private void validateMoney(int money) {
-        if (money < LOTTO_PRICE) {
+        if (money < lottoPrice) {
             throw new IllegalArgumentException("로또를 한장도 구매할 수 없습니다");
         }
     }
@@ -48,5 +49,9 @@ public class LottoMachine {
             return poolSize;
         }
         return number;
+    }
+
+    public int getLottoPrice() {
+        return lottoPrice;
     }
 }

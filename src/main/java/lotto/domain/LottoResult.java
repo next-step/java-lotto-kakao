@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Buyer {
+public class LottoResult {
 
     private final List<Lotto> lotto;
-    private final WinningLotto winning;
     private final Map<Prize, Integer> prizes;
+    private final int lottoPrice;
 
-    public Buyer(List<Lotto> lotto, WinningLotto winning) {
+    public LottoResult(List<Lotto> lotto, WinningLotto winning, int lottoPrice) {
         this.lotto = lotto;
-        this.winning = winning;
         this.prizes = calculatePrizes(lotto, winning);
+        this.lottoPrice = lottoPrice;
     }
 
     private EnumMap<Prize, Integer> calculatePrizes(List<Lotto> lotto, WinningLotto winning) {
@@ -38,6 +38,6 @@ public class Buyer {
         prizes.forEach((prize, count) -> {
             totalReward.addAndGet((long)prize.getReward() * count);
         });
-        return (double)totalReward.getPlain() / (lotto.size() * LottoMachine.LOTTO_PRICE);
+        return (double)totalReward.getPlain() / (lotto.size() * lottoPrice);
     }
 }

@@ -2,7 +2,7 @@ package lotto.controller;
 
 import java.util.List;
 
-import lotto.domain.Buyer;
+import lotto.domain.LottoResult;
 import lotto.domain.Lotto;
 import lotto.domain.LottoMachine;
 import lotto.domain.Prize;
@@ -15,16 +15,16 @@ public class Controller {
 
     public Controller(View view) {
         this.view = view;
-        this.lottoMachine = new LottoMachine();
+        this.lottoMachine = new LottoMachine(1000);
     }
 
     public void run() {
         List<Lotto> lotto = buyLotto();
         WinningLotto winningLotto = issueWinningLotto();
 
-        Buyer buyer = new Buyer(lotto, winningLotto);
+        LottoResult lottoResult = new LottoResult(lotto, winningLotto, lottoMachine.getLottoPrice());
 
-        printReward(buyer);
+        printReward(lottoResult);
     }
 
     private List<Lotto> buyLotto() {
@@ -40,14 +40,14 @@ public class Controller {
         return new WinningLotto(numbers, bonus);
     }
 
-    private void printReward(Buyer buyer) {
+    private void printReward(LottoResult lottoResult) {
         view.printPrizeHeader();
-        Prize.reversedValuesForReward().forEach(prize -> printPrize(prize, buyer));
-        view.printRewardRate(buyer.getRewardRate());
+        Prize.reversedValuesForReward().forEach(prize -> printPrize(prize, lottoResult));
+        view.printRewardRate(lottoResult.getRewardRate());
     }
 
-    private void printPrize(Prize prize, Buyer buyer) {
-        int prizeCount = buyer.getPrizeCount(prize);
+    private void printPrize(Prize prize, LottoResult lottoResult) {
+        int prizeCount = lottoResult.getPrizeCount(prize);
         view.printPrizeInfo(prize, prizeCount);
     }
 }

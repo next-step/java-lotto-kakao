@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class BuyerTest {
+public class LottoResultTest {
 
     @Test
     void 구매자는_로또들의_순위_목록을_구할_수_있다() {
@@ -18,15 +18,15 @@ public class BuyerTest {
             new Lotto(List.of(1, 2, 3, 4, 7, 8))
         );
         WinningLotto winning = new WinningLotto(List.of(1, 2, 3, 4, 5, 6), 7);
-        Buyer buyer = new Buyer(lotto, winning);
+        LottoResult lottoResult = new LottoResult(lotto, winning, 1000);
 
         assertAll(
-            () -> assertThat(buyer.getPrizeCount(Prize.FIRST)).isOne(),
-            () -> assertThat(buyer.getPrizeCount(Prize.SECOND)).isEqualTo(2),
-            () -> assertThat(buyer.getPrizeCount(Prize.THIRD)).isZero(),
-            () -> assertThat(buyer.getPrizeCount(Prize.FOURTH)).isOne(),
-            () -> assertThat(buyer.getPrizeCount(Prize.FIFTH)).isZero(),
-            () -> assertThat(buyer.getPrizeCount(Prize.NONE)).isZero()
+            () -> assertThat(lottoResult.getPrizeCount(Prize.FIRST)).isOne(),
+            () -> assertThat(lottoResult.getPrizeCount(Prize.SECOND)).isEqualTo(2),
+            () -> assertThat(lottoResult.getPrizeCount(Prize.THIRD)).isZero(),
+            () -> assertThat(lottoResult.getPrizeCount(Prize.FOURTH)).isOne(),
+            () -> assertThat(lottoResult.getPrizeCount(Prize.FIFTH)).isZero(),
+            () -> assertThat(lottoResult.getPrizeCount(Prize.NONE)).isZero()
         );
     }
 
@@ -39,8 +39,8 @@ public class BuyerTest {
             new Lotto(List.of(1, 2, 3, 4, 7, 8))
         );
         WinningLotto winning = new WinningLotto(List.of(1, 2, 3, 4, 5, 6), 7);
-        Buyer buyer = new Buyer(lotto, winning);
+        LottoResult lottoResult = new LottoResult(lotto, winning, 1000);
 
-        assertThat(buyer.getRewardRate()).isEqualTo(515012.5, within(0.1D));
+        assertThat(lottoResult.getRewardRate()).isEqualTo(515012.5, within(0.1D));
     }
 }
