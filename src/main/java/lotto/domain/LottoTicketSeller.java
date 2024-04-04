@@ -6,7 +6,7 @@ import java.util.List;
 
 public class LottoTicketSeller {
 
-    public List<LottoTicket> generateTickets(Budget budget) {
+    public List<LottoTicket> generateTickets(LottoPurchaseBudget budget) {
         int ticketQuantity = budget.getTicketQuantity();
 
         List<LottoTicket> tickets = new ArrayList<>();

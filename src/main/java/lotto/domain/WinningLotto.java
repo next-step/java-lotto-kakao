@@ -21,23 +21,10 @@ public class WinningLotto {
         this.bonusNumber = bonusNumber;
     }
 
-    public LottoResultDto getResult(List<LottoTicket> tickets) {
-        Map<Prize, Integer> result = new HashMap<>();
-        for (Prize prize : Prize.values()) {
-            result.put(prize, 0);
-        }
-
-        for (LottoTicket ticket : tickets) {
-            int matchCount = winningTicket.compare(ticket);
-            boolean isBonusNumberMatched = ticket.contains(bonusNumber);
-            Prize prize = Prize.evaluate(matchCount, isBonusNumberMatched);
-
-            result.compute(prize, (key, oldValue) -> oldValue == null ? 0 : oldValue + 1);
-        }
-
-        double resultRate = PrizeCalculator.calculate(result);
-
-        return new LottoResultDto(result, resultRate);
+    public Prize calculatePrize(LottoTicket ticket) {
+        int matchCount = winningTicket.compare(ticket);
+        boolean isBonusNumberMatched = ticket.contains(bonusNumber);
+        return Prize.evaluate(matchCount, isBonusNumberMatched);
     }
 
     private void validateWinningNumber(LottoTicket winningTicket, LottoNumber bonusLottoNumber) {

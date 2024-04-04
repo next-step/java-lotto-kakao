@@ -1,10 +1,13 @@
 package lotto.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lotto.domain.*;
 import lotto.domain.dto.LottoResultDto;
+import lotto.domain.dto.TicketDto;
 import lotto.view.LottoView;
 
 public class LottoController {
@@ -17,37 +20,47 @@ public class LottoController {
     }
 
     public void start() {
-        List<LottoTicket> tickets = createTickets();
-        view.printTickets(tickets.stream().map(LottoTicket::toDto).collect(Collectors.toList()));
+        LottoPurchaseBudget budget = getBudget();
+        List<LottoTicket> tickets = seller.generateTickets(budget);
 
-        LottoResultDto result = getResult(tickets);
-        view.printLottoResult(result);
+        // TODO
+        List<TicketDto> ticketDtos = tickets.stream()
+                .map(LottoTicket::toDto)
+                .collect(Collectors.toList());
+
+        view.printTickets(ticketDtos);
+
+        WinningLotto winningLotto = getWinningLotto();
+
+        LottoResult lottoResult = new LottoResult(winningLotto, tickets);
+
+        // TODO
+        LottoResultDto resultDto = new LottoResultDto(lottoResult.getResult(), lottoResult.getProfitRate(budget));
+        view.printLottoResult(resultDto);
     }
 
-    private List<LottoTicket> createTickets() {
+    private LottoPurchaseBudget getBudget() {
         try {
-            Budget budget = new Budget(view.getBudget());
-            return seller.generateTickets(budget);
+            return new LottoPurchaseBudget(view.getBudget());
         } catch (RuntimeException e) {
             view.printError(e);
-            return createTickets();
+            return getBudget();
         }
     }
 
-    private LottoResultDto getResult(List<LottoTicket> tickets) {
+    private WinningLotto getWinningLotto() {
         try {
             List<Integer> inputNumbers = view.getNumbers();
+            int bonusNumber = view.getBonusNumber();
 
             List<LottoNumber> lottoNumbers = inputNumbers.stream()
                     .map(LottoNumber::valueOf)
                     .collect(Collectors.toList());
-            LottoNumber bonusLottoNumber = LottoNumber.valueOf(view.getBonusNumber());
 
-            WinningLotto winningLotto = new WinningLotto(lottoNumbers, bonusLottoNumber);
-            return winningLotto.getResult(tickets);
+            return new WinningLotto(lottoNumbers, LottoNumber.valueOf(bonusNumber));
         } catch (RuntimeException e) {
             view.printError(e);
-            return getResult(tickets);
+            return getWinningLotto();
         }
     }
 }

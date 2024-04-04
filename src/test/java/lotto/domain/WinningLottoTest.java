@@ -113,24 +113,6 @@ public class WinningLottoTest {
         Assertions.assertThat(prize).isEqualTo(Prize.FIRST);
     }
 
-    @Test
-    public void 시스템은_당첨번호를_받아_결과를_반환한다() {
-        List<LottoNumber> lottoNumbers = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
-            lottoNumbers.add(LottoNumber.valueOf(i));
-        }
-
-        LottoTicketSeller machine = new LottoTicketSeller();
-        List<LottoTicket> tickets = machine.generateTickets(new LottoPurchaseBudget(1000));
-
-        WinningLotto winningLotto = new WinningLotto(lottoNumbers, LottoNumber.valueOf(7));
-
-        LottoResultDto resultDto = winningLotto.getResult(tickets);
-
-        int firstPrizeCount = resultDto.getLottoResult().get(Prize.FIRST);
-        Assertions.assertThat(firstPrizeCount).isEqualTo(1);
-    }
-
     private static List<LottoNumber> parseNumbers(String numbers) {
         return Arrays.stream(numbers.split(","))
                 .map(Integer::parseInt)

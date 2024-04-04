@@ -24,6 +24,10 @@ public enum Prize {
         return this.order;
     }
 
+    public Long totalReward(Long count) {
+        return this.reward * count;
+    }
+
     public static Prize evaluate(int matchCount, boolean isBonusNumberMatched) {
         if (matchCount <= 2) {
             return NOTHING;
