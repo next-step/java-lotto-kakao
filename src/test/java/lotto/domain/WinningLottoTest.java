@@ -35,21 +35,18 @@ public class WinningLottoTest {
         Assertions.assertThatThrownBy(() -> new WinningLotto(regularBalls, bonusBall))
             .isInstanceOf(RuntimeException.class);
     }
+
     @ParameterizedTest
     @CsvSource(value = {
-        "1,2,3,4,5,6;1,2,45,44,43,42;11",
-        "1,2,3,4,5,6;1,45,44,43,42,41;11",
-        "1,2,3,4,5,6;45,44,43,42,41,40;11"
+            "1,2,3,4,5,6;1,2,45,44,43,42;11",
+            "1,2,3,4,5,6;1,45,44,43,42,41;11",
+            "1,2,3,4,5,6;45,44,43,42,41,40;11"
     }, delimiter = ';')
-    public void 로또_번호와_당첨_번호가_2개_이하로_매치될_경우_등외(String ticketNumbers, String regularNumbers, int bonusNumber){
-        List<LottoNumber> ticketBalls = parseNumbers(ticketNumbers);
-        List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
-        LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
+    public void 로또_번호와_당첨_번호가_2개_이하로_매치될_경우_등외(String ticketNumbers, String winningNumbers, int bonusNumber){
+        LottoTicket ticket = new LottoTicket(parseNumbers(ticketNumbers));
+        WinningLotto winningLotto = new WinningLotto(parseNumbers(winningNumbers), LottoNumber.valueOf(bonusNumber));
 
-        LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
-
-        Prize prize = winningLotto.checkWinning(ticket);
+        Prize prize = winningLotto.calculatePrize(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.NOTHING);
     }
@@ -57,81 +54,61 @@ public class WinningLottoTest {
 
     @ParameterizedTest
     @CsvSource(value = {
-        "1,2,3,4,5,6;1,2,3,7,8,9;10"
+            "1,2,3,4,5,6;1,2,3,7,8,9;10"
     }, delimiter = ';')
-    public void 로또_번호와_당첨_번호가_3개_매치될_경우_5등(String ticketNumbers, String regularNumbers, int bonusNumber){
-        List<LottoNumber> ticketBalls = parseNumbers(ticketNumbers);
-        List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
-        LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
+    public void 로또_번호와_당첨_번호가_3개_매치될_경우_5등(String ticketNumbers, String winningNumbers, int bonusNumber){
+        LottoTicket ticket = new LottoTicket(parseNumbers(ticketNumbers));
+        WinningLotto winningLotto = new WinningLotto(parseNumbers(winningNumbers), LottoNumber.valueOf(bonusNumber));
 
-        LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
-
-        Prize prize = winningLotto.checkWinning(ticket);
+        Prize prize = winningLotto.calculatePrize(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.FIFTH);
     }
     @ParameterizedTest
     @CsvSource(value = {
-        "1,2,3,4,5,6;1,2,3,4,8,9;10"
+            "1,2,3,4,5,6;1,2,3,4,8,9;10"
     }, delimiter = ';')
-    public void 로또_번호와_당첨_번호가_4개_매치될_경우_4등(String ticketNumbers, String regularNumbers, int bonusNumber){
-        List<LottoNumber> ticketBalls = parseNumbers(ticketNumbers);
-        List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
-        LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
+    public void 로또_번호와_당첨_번호가_4개_매치될_경우_4등(String ticketNumbers, String winningNumbers, int bonusNumber){
+        LottoTicket ticket = new LottoTicket(parseNumbers(ticketNumbers));
+        WinningLotto winningLotto = new WinningLotto(parseNumbers(winningNumbers), LottoNumber.valueOf(bonusNumber));
 
-        LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
-
-        Prize prize = winningLotto.checkWinning(ticket);
+        Prize prize = winningLotto.calculatePrize(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.FOURTH);
     }
     @ParameterizedTest
     @CsvSource(value = {
-        "1,2,3,4,5,6;1,2,3,4,5,9;10"
+            "1,2,3,4,5,6;1,2,3,4,5,9;10"
     }, delimiter = ';')
-    public void 로또_번호와_당첨_번호가_5개_매치되고_보너스_번호는_매치되지_않는_경우_3등(String ticketNumbers, String regularNumbers, int bonusNumber){
-        List<LottoNumber> ticketBalls = parseNumbers(ticketNumbers);
-        List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
-        LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
+    public void 로또_번호와_당첨_번호가_5개_매치되고_보너스_번호는_매치되지_않는_경우_3등(String ticketNumbers, String winningNumbers, int bonusNumber){
+        LottoTicket ticket = new LottoTicket(parseNumbers(ticketNumbers));
+        WinningLotto winningLotto = new WinningLotto(parseNumbers(winningNumbers), LottoNumber.valueOf(bonusNumber));
 
-        LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
-
-        Prize prize = winningLotto.checkWinning(ticket);
+        Prize prize = winningLotto.calculatePrize(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.THIRD);
     }
     @ParameterizedTest
     @CsvSource(value = {
-        "1,2,3,4,5,6;1,2,3,4,5,9;6"
+            "1,2,3,4,5,6;1,2,3,4,5,9;6"
     }, delimiter = ';')
-    public void 로또_번호와_당첨_번호가_5개_매치되고_보너스_번호도_매치되는_경우_2등(String ticketNumbers, String regularNumbers, int bonusNumber){
-        List<LottoNumber> ticketBalls = parseNumbers(ticketNumbers);
-        List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
-        LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
+    public void 로또_번호와_당첨_번호가_5개_매치되고_보너스_번호도_매치되는_경우_2등(String ticketNumbers, String winningNumbers, int bonusNumber){
+        LottoTicket ticket = new LottoTicket(parseNumbers(ticketNumbers));
+        WinningLotto winningLotto = new WinningLotto(parseNumbers(winningNumbers), LottoNumber.valueOf(bonusNumber));
 
-        LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
-
-        Prize prize = winningLotto.checkWinning(ticket);
+        Prize prize = winningLotto.calculatePrize(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.SECOND);
     }
     @ParameterizedTest
     @CsvSource(value = {
-        "1,2,3,4,5,6;1,2,3,4,5,6;10"
+            "1,2,3,4,5,6;1,2,3,4,5,6;10"
     }, delimiter = ';')
-    public void 로또_번호와_당첨_번호가_6개_매치될_경우_1등(String ticketNumbers, String regularNumbers, int bonusNumber){
-        List<LottoNumber> ticketBalls = parseNumbers(ticketNumbers);
-        List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
-        LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
+    public void 로또_번호와_당첨_번호가_6개_매치될_경우_1등(String ticketNumbers, String winningNumbers, int bonusNumber){
+        LottoTicket ticket = new LottoTicket(parseNumbers(ticketNumbers));
+        WinningLotto winningLotto = new WinningLotto(parseNumbers(winningNumbers), LottoNumber.valueOf(bonusNumber));
 
-        LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
-
-        Prize prize = winningLotto.checkWinning(ticket);
+        Prize prize = winningLotto.calculatePrize(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.FIRST);
     }
@@ -144,7 +121,7 @@ public class WinningLottoTest {
         }
 
         LottoTicketSeller machine = new LottoTicketSeller();
-        List<LottoTicket> tickets = machine.generateTickets(new Budget(1000));
+        List<LottoTicket> tickets = machine.generateTickets(new LottoPurchaseBudget(1000));
 
         WinningLotto winningLotto = new WinningLotto(lottoNumbers, LottoNumber.valueOf(7));
 
@@ -156,10 +133,8 @@ public class WinningLottoTest {
 
     private static List<LottoNumber> parseNumbers(String numbers) {
         return Arrays.stream(numbers.split(","))
-            .map(Integer::parseInt)
-            .map(LottoNumber::valueOf)
-            .collect(Collectors.toList());
+                .map(Integer::parseInt)
+                .map(LottoNumber::valueOf)
+                .collect(Collectors.toList());
     }
-
-
 }

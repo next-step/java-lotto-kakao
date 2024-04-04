@@ -28,37 +28,16 @@ public class WinningLotto {
         }
 
         for (LottoTicket ticket : tickets) {
-            Prize prize = checkWinning(ticket);
+            int matchCount = winningTicket.compare(ticket);
+            boolean isBonusNumberMatched = ticket.contains(bonusNumber);
+            Prize prize = Prize.evaluate(matchCount, isBonusNumberMatched);
+
             result.compute(prize, (key, oldValue) -> oldValue == null ? 0 : oldValue + 1);
         }
 
         double resultRate = PrizeCalculator.calculate(result);
 
         return new LottoResultDto(result, resultRate);
-    }
-
-    public Prize checkWinning(LottoTicket lottoTicket) {
-        int matchCount = winningTicket.compare(lottoTicket);
-        if (matchCount <= 2) {
-            return Prize.NOTHING;
-        }
-        return getPrize(lottoTicket, matchCount);
-    }
-
-    private Prize getPrize(LottoTicket lottoTicket, int matchCount) {
-        if (matchCount == 3) {
-            return Prize.FIFTH;
-        }
-        if (matchCount == 4) {
-            return Prize.FOURTH;
-        }
-        if (matchCount == 5 && !lottoTicket.contains(bonusNumber)) {
-            return Prize.THIRD;
-        }
-        if (matchCount == 5 && lottoTicket.contains(bonusNumber)) {
-            return Prize.SECOND;
-        }
-        return Prize.FIRST;
     }
 
     private void validateWinningNumber(LottoTicket winningTicket, LottoNumber bonusLottoNumber) {

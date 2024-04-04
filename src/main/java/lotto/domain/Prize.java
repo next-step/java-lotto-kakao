@@ -23,4 +23,28 @@ public enum Prize {
     public int getOrder() {
         return this.order;
     }
+
+    public static Prize evaluate(int matchCount, boolean isBonusNumberMatched) {
+        if (matchCount <= 2) {
+            return NOTHING;
+        }
+        if (matchCount == 3) {
+            return FIFTH;
+        }
+        if (matchCount == 4) {
+            return FOURTH;
+        }
+        if (matchCount == 5) {
+            return evaluate(isBonusNumberMatched);
+        }
+        return FIRST;
+    }
+
+    private static Prize evaluate(boolean isBonusNumberMatched) {
+        if (isBonusNumberMatched) {
+            return SECOND;
+        }
+        return THIRD;
+    }
+
 }
