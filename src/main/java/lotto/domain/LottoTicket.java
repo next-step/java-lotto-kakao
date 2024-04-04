@@ -33,7 +33,7 @@ public class LottoTicket {
 
     private static void validateLottoTicket(Set<LottoNumber> lottoNumbers) {
         if (lottoNumbers.size() != LOTTO_NUMBERS_COUNT) {
-            throw new RuntimeException("로또 번호는 중복되지 않는 " + LOTTO_NUMBERS_COUNT + "개의 수로 구성되어야 합니다.");
+            throw new IllegalArgumentException("로또 번호는 중복되지 않는 " + LOTTO_NUMBERS_COUNT + "개의 수로 구성되어야 합니다.");
         }
     }
 }

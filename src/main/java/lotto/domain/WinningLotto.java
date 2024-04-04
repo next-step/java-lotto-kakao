@@ -25,7 +25,7 @@ public class WinningLotto {
 
     private void validateWinningNumber(LottoTicket winningTicket, LottoNumber bonusLottoNumber) {
         if (winningTicket.contains(bonusLottoNumber)) {
-            throw new RuntimeException("보너스볼은 당첨 번호와 중복되지 않아야 합니다.");
+            throw new IllegalArgumentException("보너스볼은 당첨 번호와 중복되지 않아야 합니다.");
         }
     }
 }

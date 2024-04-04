@@ -40,11 +40,11 @@ public class LottoNumber {
 
     private void validateBall(int number) {
         if (number < MIN_LOTTO_NUMBER) {
-            throw new RuntimeException("공은 " + MIN_LOTTO_NUMBER + "이상의 정수여야 합니다.");
+            throw new IllegalArgumentException("공은 " + MIN_LOTTO_NUMBER + "이상의 정수여야 합니다.");
         }
 
         if (number > MAX_LOTTO_NUMBER) {
-            throw new RuntimeException("공은 " + MAX_LOTTO_NUMBER + "이하의 정수여야 합니다.");
+            throw new IllegalArgumentException("공은 " + MAX_LOTTO_NUMBER + "이하의 정수여야 합니다.");
         }
     }
 

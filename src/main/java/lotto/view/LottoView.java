@@ -42,6 +42,13 @@ public class LottoView {
         });
     }
 
+    public void printLottoResult(LottoResultDto result) {
+        System.out.println("당첨 통계");
+        System.out.println("---------");
+        result.getLottoResult().forEach((key, value) -> System.out.println(key + " - " + value + "개"));
+        System.out.printf("총 수익률은 %.2f 입니다.", result.getResultRate());
+    }
+
     public void printError(Exception exception) {
         System.out.println("[Error] "+ exception.getMessage());
     }
@@ -50,14 +57,7 @@ public class LottoView {
         try {
             return Integer.parseInt(input);
         } catch (Exception e) {
-            throw new RuntimeException("유효한 정수값을 입력해주세요.");
+            throw new IllegalArgumentException("유효한 정수값을 입력해주세요.");
         }
-    }
-
-    public void printLottoResult(LottoResultDto result) {
-        System.out.println("당첨 통계");
-        System.out.println("---------");
-        result.getLottoResult().forEach((key, value) -> System.out.println(key + " - " + value + "개"));
-        System.out.printf("총 수익률은 %.2f 입니다.", result.getResultRate());
     }
 }
