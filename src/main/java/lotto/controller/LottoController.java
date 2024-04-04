@@ -3,42 +3,38 @@ package lotto.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lotto.domain.Budget;
-import lotto.domain.LottoMachine;
+import lotto.domain.*;
 import lotto.domain.dto.LottoResultDto;
-import lotto.domain.LottoNumber;
-import lotto.domain.dto.TicketDto;
-import lotto.domain.WinningLotto;
 import lotto.view.LottoView;
 
 public class LottoController {
-    private final LottoMachine lottoMachine;
+    private final LottoTicketSeller seller;
     private final LottoView view;
 
     public LottoController() {
-        this.lottoMachine = new LottoMachine();
+        this.seller = new LottoTicketSeller();
         this.view = new LottoView();
     }
 
     public void start() {
-        List<TicketDto> tickets = createTickets();
-        view.printTickets(tickets);
+        List<LottoTicket> tickets = createTickets();
+        view.printTickets(tickets.stream().map(LottoTicket::toDto).collect(Collectors.toList()));
 
-        LottoResultDto result = getResult();
+        LottoResultDto result = getResult(tickets);
         view.printLottoResult(result);
     }
 
-    private List<TicketDto> createTickets() {
+    private List<LottoTicket> createTickets() {
         try {
             Budget budget = new Budget(view.getBudget());
-            return lottoMachine.generateTickets(budget);
+            return seller.generateTickets(budget);
         } catch (RuntimeException e) {
             view.printError(e);
             return createTickets();
         }
     }
 
-    private LottoResultDto getResult() {
+    private LottoResultDto getResult(List<LottoTicket> tickets) {
         try {
             List<Integer> inputNumbers = view.getNumbers();
 
@@ -47,10 +43,11 @@ public class LottoController {
                     .collect(Collectors.toList());
             LottoNumber bonusLottoNumber = LottoNumber.valueOf(view.getBonusNumber());
 
-            return lottoMachine.getResult(new WinningLotto(lottoNumbers, bonusLottoNumber));
+            WinningLotto winningLotto = new WinningLotto(lottoNumbers, bonusLottoNumber);
+            return winningLotto.getResult(tickets);
         } catch (RuntimeException e) {
             view.printError(e);
-            return getResult();
+            return getResult(tickets);
         }
     }
 }

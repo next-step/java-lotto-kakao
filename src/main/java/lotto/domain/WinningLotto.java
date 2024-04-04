@@ -1,6 +1,10 @@
 package lotto.domain;
 
+import lotto.domain.dto.LottoResultDto;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WinningLotto {
 
@@ -15,6 +19,22 @@ public class WinningLotto {
         validateWinningNumber(winningTicket, bonusNumber);
         this.winningTicket = winningTicket;
         this.bonusNumber = bonusNumber;
+    }
+
+    public LottoResultDto getResult(List<LottoTicket> tickets) {
+        Map<Prize, Integer> result = new HashMap<>();
+        for (Prize prize : Prize.values()) {
+            result.put(prize, 0);
+        }
+
+        for (LottoTicket ticket : tickets) {
+            Prize prize = checkWinning(ticket);
+            result.compute(prize, (key, oldValue) -> oldValue == null ? 0 : oldValue + 1);
+        }
+
+        double resultRate = PrizeCalculator.calculate(result);
+
+        return new LottoResultDto(result, resultRate);
     }
 
     public Prize checkWinning(LottoTicket lottoTicket) {
