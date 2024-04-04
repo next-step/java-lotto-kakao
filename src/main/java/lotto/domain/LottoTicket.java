@@ -1,10 +1,6 @@
 package lotto.domain;
 
-import lotto.domain.dto.TicketDto;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LottoTicket {
@@ -31,10 +27,8 @@ public class LottoTicket {
         return lottoNumbers.contains(lottoNumber);
     }
 
-    public TicketDto toDto() {
-        return new TicketDto(lottoNumbers.stream()
-                .map(LottoNumber::getValue)
-                .collect(Collectors.toList()));
+    public List<LottoNumber> toList() {
+        return List.copyOf(lottoNumbers);
     }
 
     private static void validateLottoTicket(Set<LottoNumber> lottoNumbers) {

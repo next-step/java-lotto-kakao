@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import lotto.domain.dto.LottoResultDto;
-import lotto.domain.Prize;
-import lotto.domain.dto.TicketDto;
+import lotto.dto.LottoResultDto;
+import lotto.dto.TicketDto;
 
 public class LottoView {
 
@@ -58,29 +57,7 @@ public class LottoView {
     public void printLottoResult(LottoResultDto result) {
         System.out.println("당첨 통계");
         System.out.println("---------");
-        result.getLottoResult().entrySet().stream()
-            .filter((entry) -> entry.getKey() != Prize.NOTHING)
-            .sorted((a, b) -> b.getKey().getOrder() - a.getKey().getOrder())
-            .forEach((entry)-> System.out.println(generatePrizeString(entry.getKey()) + entry.getValue() + "개"));
+        result.getLottoResult().forEach((key, value) -> System.out.println(key + " - " + value + "개"));
         System.out.printf("총 수익률은 %.2f 입니다.", result.getResultRate());
-    }
-
-    private String generatePrizeString(Prize prize) {
-        if (prize == Prize.FIFTH) {
-            return "3개 일치 (" + prize.getReward() + "원)- ";
-        }
-        if (prize == Prize.FOURTH) {
-            return "4개 일치 (" + prize.getReward() + "원)- ";
-        }
-        if (prize == Prize.THIRD) {
-            return "5개 일치 (" + prize.getReward() + "원)- ";
-        }
-        if (prize == Prize.SECOND) {
-            return "5개 일치, 보너스 볼 일치(" + prize.getReward() + "원)- ";
-        }
-        if (prize == Prize.FIRST) {
-            return "6개 일치 (" + prize.getReward() + "원)- ";
-        }
-        return "";
     }
 }

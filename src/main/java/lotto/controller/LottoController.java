@@ -1,13 +1,11 @@
 package lotto.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import lotto.domain.*;
-import lotto.domain.dto.LottoResultDto;
-import lotto.domain.dto.TicketDto;
+import lotto.dto.LottoResultDto;
+import lotto.dto.TicketDto;
 import lotto.view.LottoView;
 
 public class LottoController {
@@ -23,20 +21,12 @@ public class LottoController {
         LottoPurchaseBudget budget = getBudget();
         List<LottoTicket> tickets = seller.generateTickets(budget);
 
-        // TODO
-        List<TicketDto> ticketDtos = tickets.stream()
-                .map(LottoTicket::toDto)
-                .collect(Collectors.toList());
-
-        view.printTickets(ticketDtos);
+        view.printTickets(mapToTicketDto(tickets));
 
         WinningLotto winningLotto = getWinningLotto();
-
         LottoResult lottoResult = new LottoResult(winningLotto, tickets);
 
-        // TODO
-        LottoResultDto resultDto = new LottoResultDto(lottoResult.getResult(), lottoResult.getProfitRate(budget));
-        view.printLottoResult(resultDto);
+        view.printLottoResult(mapToResultDto(lottoResult, budget));
     }
 
     private LottoPurchaseBudget getBudget() {
@@ -62,5 +52,29 @@ public class LottoController {
             view.printError(e);
             return getWinningLotto();
         }
+    }
+
+    private List<TicketDto> mapToTicketDto(List<LottoTicket> tickets) {
+        List<TicketDto> ticketDtos = new ArrayList<>();
+        for (LottoTicket ticket : tickets) {
+            List<Integer> numbers = ticket.toList().stream()
+                    .map(LottoNumber::getValue)
+                    .collect(Collectors.toList());
+
+            ticketDtos.add(new TicketDto(numbers));
+        }
+        return ticketDtos;
+    }
+
+    private LottoResultDto mapToResultDto(LottoResult lottoResult, LottoPurchaseBudget budget) {
+        Map<Prize, Long> result = lottoResult.getResult();
+
+        Map<String, Long> totalResult = new LinkedHashMap<>();
+        Arrays.stream(Prize.values())
+                .filter(prize -> prize != Prize.NOTHING)
+                .sorted((a, b) -> b.getOrder() - a.getOrder())
+                .forEach(prize -> totalResult.put(prize.toString(), result.getOrDefault(prize, 0L)));
+
+        return new LottoResultDto(totalResult, lottoResult.getProfitRate(budget));
     }
 }

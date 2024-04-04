@@ -1,10 +1,6 @@
 package lotto.domain;
 
-import lotto.domain.dto.LottoResultDto;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WinningLotto {
 

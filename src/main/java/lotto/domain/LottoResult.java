@@ -27,7 +27,7 @@ public class LottoResult {
     }
 
     public Map<Prize, Long> getResult() {
-        return result;
+        return Map.copyOf(result);
     }
 
     private static Map<Prize, Long> aggregateResult(WinningLotto winningLotto, List<LottoTicket> tickets) {
