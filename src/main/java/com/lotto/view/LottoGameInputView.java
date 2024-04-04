@@ -1,7 +1,5 @@
 package com.lotto.view;
 
-import com.lotto.model.TargetLotto;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -15,18 +13,12 @@ public class LottoGameInputView {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public TargetLotto inputTargetLotto() {
-        List<Integer> numbers = inputNumbers();
-        int bonusNumber = inputBonusNumber();
-        return new TargetLotto(numbers, bonusNumber);
-    }
-
-    private int inputBonusNumber() {
+    public int inputBonusNumber() {
         System.out.println("보너스 볼을 입력해 주세요.");
         return Integer.parseInt(scanner.nextLine());
     }
 
-    private List<Integer> inputNumbers() {
+    public List<Integer> inputWinningNumbers() {
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
         return Arrays.stream(scanner.nextLine().split(","))
                 .map(String::trim)
