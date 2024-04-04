@@ -26,9 +26,9 @@ public final class ConsoleView {
         System.out.println("구입금액을 입력해 주세요.");
     }
 
-    public static void printBoughtLottosPrompt(Lottos lottos) {
-        printBunchSizePrompt(lottos.bunch().size());
-        printLottosNumbersPrompt(lottos);
+    public static void printBoughtLottosPrompt(LottoGame game) {
+        printBunchSizePrompt(game.lottos().bunch().size());
+        printLottosNumbersPrompt(game.lottos());
     }
 
     private static void printBunchSizePrompt(int bunchSize) {
