@@ -12,8 +12,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static enumeration.LottoCondition.*;
-
 public final class ConsoleView {
     private static final Scanner SCANNER = new Scanner(System.in);
 
@@ -71,12 +69,12 @@ public final class ConsoleView {
 
     public static void printStatistics(LottoGame game) {
         printWinningPrompt();
-        IntStream.rangeClosed(WINNING_FIRST.value(), WINNING_LAST.value()).boxed().collect(Collectors.toList())
+        IntStream.rangeClosed(Lotto.RANK_BEGIN, Lotto.RANK_END).boxed().collect(Collectors.toList())
                 .stream()
                 .sorted(Collections.reverseOrder())
                 .map(e -> getWinningDetailPrompt(game.ranks(), e))
                 .forEach(System.out::println);
-        printProfitRate(getPrize(game.ranks()), game.lottos().bunch().size() * PRICE.value());
+        printProfitRate(getPrize(game.ranks()), game.lottos().bunch().size() * Lotto.PRICE);
     }
 
     private static void printWinningPrompt() {
@@ -90,13 +88,13 @@ public final class ConsoleView {
     }
 
     private static String getWinningDetailHead(int rank) {
-        if (rank == 1) {
-            return LENGTH.value() + "개 일치 ";
+        if (rank == Lotto.RANK_BEGIN) {
+            return Lotto.LENGTH + "개 일치 ";
         }
-        if (rank == 2) {
-            return (LENGTH.value() - 1) + "개 일치, 보너스 볼 일치 ";
+        if (rank == Lotto.RANK_USING_BONUS) {
+            return (Lotto.LENGTH - 1) + "개 일치, 보너스 볼 일치 ";
         }
-        return (LENGTH.value() - (rank - SUBTLE_CRITERIA.value()) - 1) + "개 일치";
+        return (Lotto.LENGTH - (rank - Lotto.RANK_USING_BONUS) - 1) + "개 일치";
     }
 
     private static int filterRanksCount(List<Rank> ranks, int rank) {

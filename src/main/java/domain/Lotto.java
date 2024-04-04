@@ -2,20 +2,26 @@ package domain;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class Lotto {
-    private final List<LottoNumber> numbers;
+    public static final int LENGTH = 6;
+    public static final int PRICE = 1000;
+    public static final int BEGIN = 1;
+    public static final int END = 45;
+    public static final int RANK_BEGIN = 1;
+    public static final int RANK_END = 5;
+    public static final int RANK_USING_BONUS = 2;
 
-    public static Lotto of(List<Integer> values) {
-        return new Lotto(values);
-    }
+    private final List<LottoNumber> numbers;
 
     private Lotto(List<Integer> values) {
         Objects.requireNonNull(values);
         this.numbers = values.stream().map(LottoNumber::of).sorted().collect(Collectors.toUnmodifiableList());
+    }
+
+    public static Lotto of(List<Integer> values) {
+        return new Lotto(values);
     }
 
     public List<LottoNumber> numbers() {
@@ -33,17 +39,5 @@ public final class Lotto {
     @Override
     public int hashCode() {
         return Objects.hash(numbers);
-    }
-
-    public int matchCount(WinningLotto winningLotto) {
-        Set<Integer> elements = winningLotto.lotto().numbers().stream()
-                .map(LottoNumber::value)
-                .collect(Collectors.<Integer>toSet());
-        return numbers.stream().filter(e -> elements.contains(e.value())).mapToInt(e -> 1).sum();
-    }
-
-    public boolean matchBonus(WinningLotto winningLotto) {
-        Optional<LottoNumber> number = numbers.stream().filter(e -> e.isMatched(winningLotto.bonus())).findFirst();
-        return number.isPresent();
     }
 }

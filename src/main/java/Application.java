@@ -1,6 +1,6 @@
 import controller.LottoGame;
+import domain.Lotto;
 import domain.LottoMachine;
-import enumeration.LottoCondition;
 import strategy.AutoLottoNumberStrategy;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public final class Application {
         return LottoGame.of(
                 LottoMachine.issue(
                         LottoMachine.bunchSize(getCash()),
-                        AutoLottoNumberStrategy.of(LottoCondition.LENGTH.value())
+                        AutoLottoNumberStrategy.of(Lotto.LENGTH)
                 )
         );
     }

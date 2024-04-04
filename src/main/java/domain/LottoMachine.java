@@ -1,6 +1,5 @@
 package domain;
 
-import enumeration.LottoCondition;
 import strategy.LottoNumberStrategy;
 
 import java.util.List;
@@ -19,6 +18,6 @@ public final class LottoMachine {
     }
 
     public static int bunchSize(int cash) {
-        return cash / LottoCondition.PRICE.value();
+        return cash / Lotto.PRICE;
     }
 }

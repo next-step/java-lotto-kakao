@@ -4,19 +4,18 @@ import domain.Lottos;
 import domain.WinningLotto;
 import enumeration.Rank;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class LottoGame {
     private final Lottos lottos;
     private List<Rank> ranks;
 
-    public static LottoGame of(Lottos lottos) {
-        return new LottoGame(lottos);
-    }
-
     private LottoGame(Lottos lottos) {
         this.lottos = lottos;
+    }
+
+    public static LottoGame of(Lottos lottos) {
+        return new LottoGame(lottos);
     }
 
     public void start(List<Integer> numbers, int bonus) {
@@ -28,6 +27,6 @@ public final class LottoGame {
     }
 
     public List<Rank> ranks() {
-        return new ArrayList<>(ranks);
+        return ranks;
     }
 }

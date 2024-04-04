@@ -5,9 +5,6 @@ import domain.WinningLotto;
 
 import java.util.Arrays;
 
-import static enumeration.LottoCondition.LENGTH;
-import static enumeration.LottoCondition.SUBTLE_CRITERIA;
-
 public enum Rank {
     FIRST(1, 2_000_000_000),
     SECOND(2, 30_000_000),
@@ -26,8 +23,8 @@ public enum Rank {
     }
 
     public static Rank of(Lotto lotto, WinningLotto winningLotto) {
-        int matchCount = lotto.matchCount(winningLotto);
-        boolean matchBonus = lotto.matchBonus(winningLotto);
+        int matchCount = winningLotto.matchCount(lotto);
+        boolean matchBonus = winningLotto.matchBonus(lotto);
         return Rank.of(Rank.getRank(matchCount, matchBonus));
     }
 
@@ -39,14 +36,14 @@ public enum Rank {
     }
 
     private static int getRank(final int matchCount, final boolean matchBonus) {
-        if (matchCount == LENGTH.value()) {
+        if (matchCount == Lotto.LENGTH) {
             return 1;
         }
-        if (matchCount == LENGTH.value() - 1 && matchBonus) {
+        if (matchCount == Lotto.LENGTH - 1 && matchBonus) {
             return 2;
         }
-        if (matchCount >= LENGTH.value() - 3) {
-            return LENGTH.value() - matchCount + SUBTLE_CRITERIA.value();
+        if (matchCount >= Lotto.LENGTH - 3) {
+            return Lotto.LENGTH - matchCount + Lotto.RANK_USING_BONUS;
         }
         return 0;
     }

@@ -17,13 +17,6 @@ class LottoNumberTest {
         assertThat(number.value()).isEqualTo(1);
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {"1", "2", "3", "4", "5"})
-    void isMatched는_입력_값과_일치_여부를_확인(int value) {
-        LottoNumber number = LottoNumber.of(value);
-        assertThat(number.isMatched(LottoNumber.of(value))).isTrue();
-    }
-
     @Test
     void LottoNumber는_대소비교가_가능() {
         LottoNumber n1 = LottoNumber.of(1);
@@ -31,10 +24,11 @@ class LottoNumberTest {
         assertThat(n1).isLessThan(n2);
     }
 
-    @Test
-    void LottoNumber는_동치를_파악_가능() {
-        LottoNumber n1 = LottoNumber.of(1);
-        LottoNumber n2 = LottoNumber.of(1);
+    @ParameterizedTest
+    @CsvSource(value = {"1", "2", "3", "4", "5"})
+    void LottoNumber는_동치를_파악_가능(int value) {
+        LottoNumber n1 = LottoNumber.of(value);
+        LottoNumber n2 = LottoNumber.of(value);
         assertThat(n1).isEqualTo(n2);
     }
 
