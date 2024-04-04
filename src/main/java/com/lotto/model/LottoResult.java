@@ -13,6 +13,10 @@ public class LottoResult {
         return lottoRank.getPrize() * count;
     }
 
+    public LottoRank getLottoRank() {
+        return lottoRank;
+    }
+
     public void addCount() {
         count++;
     }
@@ -25,8 +29,7 @@ public class LottoResult {
         return lottoRank == LottoRank.FAIL;
     }
 
-    @Override
-    public String toString() {
-        return lottoRank.toString() + count + "개";
+    public int getCount() {
+        return count;
     }
 }

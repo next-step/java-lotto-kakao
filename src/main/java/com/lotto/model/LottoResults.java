@@ -29,4 +29,8 @@ public class LottoResults {
     public List<LottoResult> getLottoResults() {
         return lottoResults;
     }
+
+    public void applyLottoRanks(List<LottoRank> lottoRanks) {
+        lottoRanks.forEach(this::addLottoRankCount);
+    }
 }

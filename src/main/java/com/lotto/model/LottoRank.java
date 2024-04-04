@@ -30,12 +30,11 @@ public enum LottoRank {
         return prize;
     }
 
-    @Override
-    public String toString() {
-        String prefix = matchCount + "개 일치";
-        if (bonus) {
-            prefix += ", 보너스 볼 일치";
-        }
-        return prefix + " (" + prize + "원)- ";
+    public int getMatchCount() {
+        return matchCount;
+    }
+
+    public boolean isBonus() {
+        return bonus;
     }
 }
