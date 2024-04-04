@@ -1,5 +1,6 @@
 package controller;
 
+import domain.Lotto;
 import domain.Lottos;
 import domain.WinningLotto;
 import enumeration.Rank;
@@ -14,8 +15,8 @@ public final class LottoGame {
         this.lottos = lottos;
     }
 
-    public static LottoGame of(Lottos lottos) {
-        return new LottoGame(lottos);
+    public static LottoGame of(List<Lotto> auto) {
+        return new LottoGame(Lottos.of(auto));
     }
 
     public void start(List<Integer> numbers, int bonus) {

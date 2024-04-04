@@ -1,7 +1,5 @@
 import controller.LottoGame;
-import domain.Lotto;
 import domain.LottoMachine;
-import strategy.AutoLottoNumberStrategy;
 
 import java.util.List;
 
@@ -16,12 +14,7 @@ public final class Application {
     }
 
     private static LottoGame lottoGame() {
-        return LottoGame.of(
-                LottoMachine.issue(
-                        LottoMachine.bunchSize(getCash()),
-                        AutoLottoNumberStrategy.of(Lotto.LENGTH)
-                )
-        );
+        return LottoGame.of(LottoMachine.autoIssue(getCash()));
     }
 
     private static List<Integer> winningNumbers() {
