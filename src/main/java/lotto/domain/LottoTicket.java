@@ -33,7 +33,7 @@ public class LottoTicket {
 
     public TicketDto toDto() {
         return new TicketDto(lottoNumbers.stream()
-                .map(LottoNumber::toInteger)
+                .map(LottoNumber::getValue)
                 .collect(Collectors.toList()));
     }
 

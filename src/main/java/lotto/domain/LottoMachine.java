@@ -14,18 +14,13 @@ public class LottoMachine {
 
     private final List<LottoTicket> tickets = new ArrayList<>();
 
-    private final List<LottoNumber> lottoNumberPool;
-
-    public LottoMachine(List<LottoNumber> lottoNumberPool) {
-        this.lottoNumberPool = lottoNumberPool;
-    }
-
     public List<TicketDto> generateTickets(Budget budget) {
         int ticketQuantity = budget.getTicketQuantity();
 
+        List<LottoNumber> lottoNumbers = LottoNumber.getValues();
         for (int i = 0; i < ticketQuantity; i++) {
-            Collections.shuffle(lottoNumberPool);
-            tickets.add(new LottoTicket(lottoNumberPool.subList(0, 6)));
+            Collections.shuffle(lottoNumbers);
+            tickets.add(new LottoTicket(lottoNumbers.subList(0, 6)));
         }
 
         return tickets.stream()

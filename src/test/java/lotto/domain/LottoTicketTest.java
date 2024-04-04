@@ -18,10 +18,10 @@ public class LottoTicketTest {
     public void compare는_중복되는_Number의_개수를_반환한다() {
         // given
         LottoTicket numbers = new LottoTicket(Stream.of(1, 2, 3, 4, 5, 6)
-                .map(LottoNumber::new)
+                .map(LottoNumber::valueOf)
                 .collect(Collectors.toSet()));
         LottoTicket otherNumbers = new LottoTicket(Stream.of(1, 2, 3, 7, 8, 9)
-                .map(LottoNumber::new)
+                .map(LottoNumber::valueOf)
                 .collect(Collectors.toSet()));
 
         // when
@@ -35,9 +35,9 @@ public class LottoTicketTest {
     public void contains는_해당Number의_포함여부를_반환한다() {
         // given
         LottoTicket numbers = new LottoTicket(Stream.of(1, 2, 3, 4, 5, 6)
-                .map(LottoNumber::new)
+                .map(LottoNumber::valueOf)
                 .collect(Collectors.toSet()));
-        LottoNumber lottoNumber = new LottoNumber(1);
+        LottoNumber lottoNumber = LottoNumber.valueOf(1);
 
         // when
         boolean isContaining = numbers.contains(lottoNumber);
@@ -71,7 +71,7 @@ public class LottoTicketTest {
     private static List<LottoNumber> parseNumbers(String numbers) {
         return Arrays.stream(numbers.split(","))
             .map(Integer::parseInt)
-            .map(LottoNumber::new)
+            .map(LottoNumber::valueOf)
             .collect(Collectors.toList());
     }
 

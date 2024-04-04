@@ -1,15 +1,41 @@
 package lotto.domain;
 
-import java.util.Objects;
+import java.util.*;
 
 public class LottoNumber {
-    private final int number;
     private static final int MIN_LOTTO_NUMBER = 1;
     private static final int MAX_LOTTO_NUMBER = 45;
+    private static final Map<Integer, LottoNumber> CACHE = new HashMap<>();
 
-    public LottoNumber(int number) {
+    static {
+        for (int i = MIN_LOTTO_NUMBER; i <= MAX_LOTTO_NUMBER ; i++) {
+            CACHE.put(i, new LottoNumber(i));
+        }
+    }
+
+    private final int number;
+
+    private LottoNumber(int number) {
         validateBall(number);
         this.number = number;
+    }
+
+    public static LottoNumber valueOf(final int number) {
+        LottoNumber lottoNumber = CACHE.get(number);
+
+        if (Objects.isNull(lottoNumber)) {
+            lottoNumber = new LottoNumber(number);
+        }
+
+        return lottoNumber;
+    }
+
+    public static List<LottoNumber> getValues() {
+        return new ArrayList<>(CACHE.values());
+    }
+
+    public Integer getValue() {
+        return number;
     }
 
     private void validateBall(int number) {
@@ -20,10 +46,6 @@ public class LottoNumber {
         if (number > MAX_LOTTO_NUMBER) {
             throw new RuntimeException("공은 " + MAX_LOTTO_NUMBER + "이하의 정수여야 합니다.");
         }
-    }
-
-    public Integer toInteger() {
-        return number;
     }
 
     @Override
@@ -39,10 +61,5 @@ public class LottoNumber {
     @Override
     public int hashCode() {
         return Objects.hash(number);
-    }
-
-    @Override
-    public String toString() {
-        return Integer.toString(number);
     }
 }

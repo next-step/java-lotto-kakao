@@ -12,17 +12,9 @@ import org.junit.jupiter.api.Test;
 
 public class LottoMachineTest {
 
-    List<LottoNumber> lottoNumberPool = new ArrayList<>();
-    @BeforeEach
-    void setUp() {
-        for (int i = 1; i <= 45; i++) {
-            lottoNumberPool.add(new LottoNumber(i));
-        }
-    }
-
     @Test
     public void 시스템은_구매_금액에_상응하는_개수의_로또_번호를_만들어준다() {
-        LottoMachine lottoMachine = new LottoMachine(lottoNumberPool);
+        LottoMachine lottoMachine = new LottoMachine();
         int price = 15000;
 
         List<TicketDto> generatedTickets = lottoMachine.generateTickets(new Budget(price));
@@ -31,15 +23,15 @@ public class LottoMachineTest {
 
     @Test
     public void 시스템은_당첨번호를_받아_결과를_반환한다() {
-        List<LottoNumber> fixedLottoNumberPool = new ArrayList<>();
+        List<LottoNumber> lottoNumbers = new ArrayList<>();
         for (int i = 1; i <= 6; i++) {
-            fixedLottoNumberPool.add(new LottoNumber(i));
+            lottoNumbers.add(LottoNumber.valueOf(i));
         }
 
-        LottoMachine machine = new LottoMachine(fixedLottoNumberPool);
+        LottoMachine machine = new LottoMachine();
         machine.generateTickets(new Budget(1000));
 
-        WinningNumbers winningNumbers = new WinningNumbers(fixedLottoNumberPool, new LottoNumber(7));
+        WinningNumbers winningNumbers = new WinningNumbers(lottoNumbers, LottoNumber.valueOf(7));
 
         LottoResultDto resultDto = machine.getResult(winningNumbers);
 
