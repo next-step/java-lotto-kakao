@@ -2,16 +2,16 @@ package lotto.domain;
 
 import java.util.List;
 
-public class WinningNumbers {
+public class WinningLotto {
 
     private final LottoTicket winningTicket;
     private final LottoNumber bonusNumber;
 
-    public WinningNumbers(List<LottoNumber> winningNumbers, LottoNumber bonusNumber) {
+    public WinningLotto(List<LottoNumber> winningNumbers, LottoNumber bonusNumber) {
         this(new LottoTicket(winningNumbers), bonusNumber);
     }
 
-    public WinningNumbers(LottoTicket winningTicket, LottoNumber bonusNumber) {
+    public WinningLotto(LottoTicket winningTicket, LottoNumber bonusNumber) {
         validateWinningNumber(winningTicket, bonusNumber);
         this.winningTicket = winningTicket;
         this.bonusNumber = bonusNumber;

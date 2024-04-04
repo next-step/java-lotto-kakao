@@ -28,14 +28,14 @@ public class LottoMachine {
             .collect(Collectors.toList());
     }
 
-    public LottoResultDto getResult(WinningNumbers winningNumbers) {
+    public LottoResultDto getResult(WinningLotto winningLotto) {
         Map<Prize, Integer> result = new HashMap<>();
         for (Prize prize : Prize.values()) {
             result.put(prize, 0);
         }
 
         for (LottoTicket ticket : tickets) {
-            Prize prize = winningNumbers.checkWinning(ticket);
+            Prize prize = winningLotto.checkWinning(ticket);
             result.compute(prize, (key, oldValue) -> oldValue == null ? 0 : oldValue + 1);
         }
 

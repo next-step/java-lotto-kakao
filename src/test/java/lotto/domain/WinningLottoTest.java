@@ -9,15 +9,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 
-public class WinningNumbersTest {
+public class WinningLottoTest {
 
     @ParameterizedTest
     @CsvSource(value = {"1,2,3,4,5,6;7"}, delimiter = ';')
     public void 당첨번호는_1이상_45이하의_중복되지_않는_수_6개와_보너스볼_1개로_이루어져_있다(String regularNumbers, int bonusNumber) {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
-        Assertions.assertThat(winningNumbers).isInstanceOf(WinningNumbers.class);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
+        Assertions.assertThat(winningLotto).isInstanceOf(WinningLotto.class);
     }
 
     @ParameterizedTest
@@ -29,7 +29,7 @@ public class WinningNumbersTest {
     public void 당첨번호는_1이상_45이하의_중복되지_않는_수_6개와_보너스볼_1개로_이루어져_있지_않으면_예외를_던진다(String regularNumbers, int bonusNumber) {
         List<LottoNumber> regularBalls = parseNumbers(regularNumbers);
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
-        Assertions.assertThatThrownBy(() -> new WinningNumbers(regularBalls, bonusBall))
+        Assertions.assertThatThrownBy(() -> new WinningLotto(regularBalls, bonusBall))
             .isInstanceOf(RuntimeException.class);
     }
     @ParameterizedTest
@@ -44,9 +44,9 @@ public class WinningNumbersTest {
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
 
         LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
 
-        Prize prize = winningNumbers.checkWinning(ticket);
+        Prize prize = winningLotto.checkWinning(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.NOTHING);
     }
@@ -62,9 +62,9 @@ public class WinningNumbersTest {
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
 
         LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
 
-        Prize prize = winningNumbers.checkWinning(ticket);
+        Prize prize = winningLotto.checkWinning(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.FIFTH);
     }
@@ -78,9 +78,9 @@ public class WinningNumbersTest {
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
 
         LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
 
-        Prize prize = winningNumbers.checkWinning(ticket);
+        Prize prize = winningLotto.checkWinning(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.FOURTH);
     }
@@ -94,9 +94,9 @@ public class WinningNumbersTest {
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
 
         LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
 
-        Prize prize = winningNumbers.checkWinning(ticket);
+        Prize prize = winningLotto.checkWinning(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.THIRD);
     }
@@ -110,9 +110,9 @@ public class WinningNumbersTest {
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
 
         LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
 
-        Prize prize = winningNumbers.checkWinning(ticket);
+        Prize prize = winningLotto.checkWinning(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.SECOND);
     }
@@ -126,9 +126,9 @@ public class WinningNumbersTest {
         LottoNumber bonusBall = LottoNumber.valueOf(bonusNumber);
 
         LottoTicket ticket = new LottoTicket(ticketBalls);
-        WinningNumbers winningNumbers = new WinningNumbers(regularBalls, bonusBall);
+        WinningLotto winningLotto = new WinningLotto(regularBalls, bonusBall);
 
-        Prize prize = winningNumbers.checkWinning(ticket);
+        Prize prize = winningLotto.checkWinning(ticket);
 
         Assertions.assertThat(prize).isEqualTo(Prize.FIRST);
     }

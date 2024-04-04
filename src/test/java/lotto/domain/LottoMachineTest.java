@@ -6,7 +6,6 @@ import java.util.List;
 import lotto.domain.dto.LottoResultDto;
 import lotto.domain.dto.TicketDto;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -31,9 +30,9 @@ public class LottoMachineTest {
         LottoMachine machine = new LottoMachine();
         machine.generateTickets(new Budget(1000));
 
-        WinningNumbers winningNumbers = new WinningNumbers(lottoNumbers, LottoNumber.valueOf(7));
+        WinningLotto winningLotto = new WinningLotto(lottoNumbers, LottoNumber.valueOf(7));
 
-        LottoResultDto resultDto = machine.getResult(winningNumbers);
+        LottoResultDto resultDto = machine.getResult(winningLotto);
 
         int firstPrizeCount = resultDto.getLottoResult().get(Prize.FIRST);
         Assertions.assertThat(firstPrizeCount).isEqualTo(1);

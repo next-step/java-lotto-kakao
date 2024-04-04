@@ -1,6 +1,5 @@
 package lotto.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +8,7 @@ import lotto.domain.LottoMachine;
 import lotto.domain.dto.LottoResultDto;
 import lotto.domain.LottoNumber;
 import lotto.domain.dto.TicketDto;
-import lotto.domain.WinningNumbers;
+import lotto.domain.WinningLotto;
 import lotto.view.LottoView;
 
 public class LottoController {
@@ -48,7 +47,7 @@ public class LottoController {
                     .collect(Collectors.toList());
             LottoNumber bonusLottoNumber = LottoNumber.valueOf(view.getBonusNumber());
 
-            return lottoMachine.getResult(new WinningNumbers(lottoNumbers, bonusLottoNumber));
+            return lottoMachine.getResult(new WinningLotto(lottoNumbers, bonusLottoNumber));
         } catch (RuntimeException e) {
             view.printError(e);
             return getResult();
