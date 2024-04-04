@@ -14,42 +14,58 @@ public enum Rank {
     NONE(0, 0),
     ;
 
-    private final int rank;
+    private final int place;
     private final int prize;
 
-    Rank(int rank, int prize) {
-        this.rank = rank;
+    Rank(int place, int prize) {
+        this.place = place;
         this.prize = prize;
     }
 
     public static Rank of(Lotto lotto, WinningLotto winningLotto) {
         int matchCount = winningLotto.matchCount(lotto);
         boolean matchBonus = winningLotto.matchBonus(lotto);
-        return Rank.of(Rank.getRank(matchCount, matchBonus));
+        return Rank.of(Rank.place(matchCount, matchBonus));
     }
 
-    public static Rank of(int rank) {
+    public static Rank of(int place) {
         return Arrays.stream(Rank.values())
-                .filter(e -> e.rank == rank)
+                .filter(e -> e.place == place)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("당첨을 판별할 수 없는 순위입니다."));
     }
 
-    private static int getRank(final int matchCount, final boolean matchBonus) {
-        if (matchCount == Lotto.LENGTH) {
+    private static int place(final int matchCount, final boolean matchBonus) {
+        if (isFirstPlace(matchCount)) {
             return 1;
         }
-        if (matchCount == Lotto.LENGTH - 1 && matchBonus) {
+        if (isSecondPlace(matchCount, matchBonus)) {
             return 2;
         }
-        if (matchCount >= Lotto.LENGTH - 3) {
-            return Lotto.LENGTH - matchCount + Lotto.RANK_USING_BONUS;
+        if (isOtherPlace(matchCount)) {
+            return otherPlace(matchCount);
         }
         return 0;
     }
 
+    private static boolean isFirstPlace(int matchCount) {
+        return matchCount == Lotto.LENGTH;
+    }
+
+    private static boolean isSecondPlace(int matchCount, boolean matchBonus) {
+        return matchCount == Lotto.LENGTH - 1 && matchBonus;
+    }
+
+    private static boolean isOtherPlace(int matchCount) {
+        return matchCount >= Lotto.LENGTH - Lotto.RANK_USING_BONUS - 1;
+    }
+
+    private static int otherPlace(int matchCount) {
+        return Lotto.LENGTH - matchCount + Lotto.RANK_USING_BONUS;
+    }
+
     public int rank() {
-        return rank;
+        return place;
     }
 
     public long prize() {
