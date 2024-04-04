@@ -3,28 +3,24 @@ package com.lotto.model;
 import java.util.List;
 
 public class TargetLotto {
-    private final List<Integer> numbers;
-    private final int bonusNumber;
+    private final LottoNumbers lottoNumbers;
+    private final LottoNumber bonusNumber;
 
     public TargetLotto(List<Integer> numbers, int bonusNumber) {
-        this.numbers = numbers;
-        this.bonusNumber = bonusNumber;
+        validateDuplication(numbers, bonusNumber);
+        this.lottoNumbers = LottoNumbers.valueOf(numbers);
+        this.bonusNumber = LottoNumber.valueOf(bonusNumber);
     }
 
-    public List<Integer> getNumbers() {
-        return numbers;
-    }
-
-    public int getBonusNumber() {
-        return bonusNumber;
-    }
-
-    public LottoRank match(LottoTicket lottoTicket) {
-        List<Integer> lottoNumbers = lottoTicket.getLottoNumbers();
-        int matchCount = (int) numbers.stream()
-                .filter(lottoNumbers::contains)
-                .count();
+    public LottoRank match(LottoNumbers lottoNumbers) {
+        int matchCount = lottoNumbers.getMatchCount(this.lottoNumbers);
         boolean bonusMatched = lottoNumbers.contains(bonusNumber);
         return LottoRank.of(matchCount, bonusMatched);
+    }
+
+    private void validateDuplication(List<Integer> numbers, int bonusNumber) {
+        if (numbers.contains(bonusNumber)) {
+            throw new IllegalArgumentException("보너스 번호는 로또 번호와 같을 수 없습니다.");
+        }
     }
 }
