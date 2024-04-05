@@ -1,6 +1,10 @@
 package lotto.view;
 
-import java.util.Scanner;
+import lotto.model.LottoNumber;
+import lotto.model.LottoTicket;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Input {
 
@@ -19,9 +23,25 @@ public class Input {
         return Long.parseLong(SCANNER.nextLine());
     }
 
-    public static String getWinningNumbers() {
+    public static List<LottoTicket> getManualLottoTickets(Long count) {
+        System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+        List<LottoTicket> manualLottoTickets = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            manualLottoTickets.add(parseLottoTicket(SCANNER.nextLine()));
+        }
+        return manualLottoTickets;
+    }
+
+    public static LottoTicket getWinningTicket() {
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-        return SCANNER.nextLine();
+        return parseLottoTicket(SCANNER.nextLine());
+    }
+
+    private static LottoTicket parseLottoTicket(String lottoTicket) {
+        return Arrays.stream(lottoTicket.split(", "))
+                .map(Integer::parseInt)
+                .map(LottoNumber::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), LottoTicket::new));
     }
 
     public static int getBonusNumber() {

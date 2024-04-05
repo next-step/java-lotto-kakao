@@ -15,24 +15,19 @@ public class LottoController {
     public static void play() {
         PurchaseAmount purchaseAmount = new PurchaseAmount(Input.getPurchaseAmount());
         Long manualPurchaseCount = Input.getManualPurchaseCount();
-        LottoTickets lottoTickets = new LottoTickets(buyLottoTickets(purchaseAmount));
+        LottoTickets manualLottoTickets = new LottoTickets(Input.getManualLottoTickets(manualPurchaseCount));
+        LottoTickets autoLottoTickets = new LottoTickets(buyLottoTickets(purchaseAmount));
+        LottoTickets lottoTickets = autoLottoTickets;
 
         Output.printPurchaseCount(lottoTickets.getSize());
         Output.printLottoTickets(parseDto(lottoTickets));
 
-        LottoTicket winningTicket = parseWinningNumbers(Input.getWinningNumbers());
+        LottoTicket winningTicket = Input.getWinningTicket();
         LottoNumber bonusNumber = new LottoNumber(Input.getBonusNumber());
         WinningLottoTicket winningLottoTicket = new WinningLottoTicket(winningTicket, bonusNumber);
 
         LottoResult lottoResult = lottoTickets.makeWinningResult(winningLottoTicket);
         Output.printResult(new LottoResultDto(lottoResult.calculateReturnRate(purchaseAmount), lottoResult.makeLottoResultMap()));
-    }
-
-    private static LottoTicket parseWinningNumbers(String winningNumbers) {
-        return Arrays.stream(winningNumbers.split(", "))
-                .map(Integer::parseInt)
-                .map(LottoNumber::new)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), LottoTicket::new));
     }
 
     private static List<LottoTicketDto> parseDto(LottoTickets lottoTickets) {
