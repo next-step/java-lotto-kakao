@@ -38,8 +38,18 @@ public class LottoController {
     public static LottoTickets buyLottoTickets(PurchaseAmount purchaseAmount, int manualCount) {
         int count = (int) purchaseAmount.getPurchaseAmount() / LottoTicket.PRICE;
         int autoCount = count - manualCount;
+        validatePurchaseCount(count, manualCount);
         LottoTickets lottoTickets = new LottoTickets(Input.getManualLottoTickets(manualCount));
         lottoTickets.add(LottoTicketGenerator.generate(autoCount));
         return lottoTickets;
+    }
+
+    private static void validatePurchaseCount(int count, int manualCount) {
+        if (count < 1) {
+            throw new IllegalArgumentException("구매 금액은 최소 1,000원 이상이어야 합니다.");
+        }
+        if (count < manualCount) {
+            throw new IllegalArgumentException("수동으로 구매할 로또 수가 구매 금액보다 많습니다.");
+        }
     }
 }
