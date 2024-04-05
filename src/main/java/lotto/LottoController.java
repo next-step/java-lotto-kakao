@@ -14,6 +14,7 @@ public class LottoController {
 
     public static void play() {
         PurchaseAmount purchaseAmount = new PurchaseAmount(Input.getPurchaseAmount());
+        Long manualPurchaseCount = Input.getManualPurchaseCount();
         LottoTickets lottoTickets = new LottoTickets(buyLottoTickets(purchaseAmount));
 
         Output.printPurchaseCount(lottoTickets.getSize());
