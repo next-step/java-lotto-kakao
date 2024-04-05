@@ -3,7 +3,9 @@ package lotto;
 import lotto.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,22 +15,8 @@ public class LottoTicketsTest {
     void 로또_티켓을_담는다() {
 
         List<LottoTicket> lottoTicketList = List.of(
-                new LottoTicket(List.of(
-                        new LottoNumber(1),
-                        new LottoNumber(2),
-                        new LottoNumber(3),
-                        new LottoNumber(4),
-                        new LottoNumber(5),
-                        new LottoNumber(6)
-                )),
-                new LottoTicket(List.of(
-                        new LottoNumber(7),
-                        new LottoNumber(8),
-                        new LottoNumber(9),
-                        new LottoNumber(10),
-                        new LottoNumber(11),
-                        new LottoNumber(12)
-                ))
+                createLottoTicket(1, 2, 3, 4, 5, 6),
+                createLottoTicket(1, 2, 3, 4, 5, 7)
         );
         LottoTickets lottoTickets = new LottoTickets(lottoTicketList);
 
@@ -37,36 +25,40 @@ public class LottoTicketsTest {
 
     @Test
     void 로또_당첨_결과를_반환한다() {
-        WinningLottoTicket winningLottoTicket = new WinningLottoTicket(List.of(
-                new LottoNumber(1),
-                new LottoNumber(2),
-                new LottoNumber(3),
-                new LottoNumber(4),
-                new LottoNumber(5),
-                new LottoNumber(6)
-        ), new LottoNumber(7));
-
+        WinningLottoTicket winningLottoTicket = new WinningLottoTicket(
+                createLottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoNumber(7)
+        );
         LottoTickets lottoTickets = new LottoTickets(List.of(
-                new LottoTicket(List.of(
-                        new LottoNumber(1),
-                        new LottoNumber(2),
-                        new LottoNumber(3),
-                        new LottoNumber(4),
-                        new LottoNumber(5),
-                        new LottoNumber(6)
-                )),
-                new LottoTicket(List.of(
-                        new LottoNumber(1),
-                        new LottoNumber(2),
-                        new LottoNumber(3),
-                        new LottoNumber(4),
-                        new LottoNumber(5),
-                        new LottoNumber(7)
-                ))
+                createLottoTicket(1, 2, 3, 4, 5, 6),
+                createLottoTicket(1, 2, 3, 4, 5, 7)
         ));
-
         LottoResult lottoResult = lottoTickets.makeWinningResult(winningLottoTicket);
 
         assertThat(lottoResult.getLottoRanks()).containsExactly(LottoRank.FIRST, LottoRank.SECOND);
+    }
+
+    @Test
+    void add는_기존_로또티켓들에_새로운_로또티켓을_더한다() {
+        LottoTickets lottoTickets = new LottoTickets(List.of(
+                createLottoTicket(1, 2, 3, 4, 5, 6),
+                createLottoTicket(1, 2, 3, 4, 5, 7)
+        ));
+        List<LottoTicket> additionalLottoTickets = List.of(
+                createLottoTicket(1, 2, 3, 4, 5, 8),
+                createLottoTicket(1, 2, 3, 4, 5, 9)
+        );
+
+        int totalCount = lottoTickets.getSize() + additionalLottoTickets.size();
+        lottoTickets.add(additionalLottoTickets);
+
+        assertThat(lottoTickets.getSize()).isEqualTo(totalCount);
+        assertThat(lottoTickets.getLottoTickets()).containsAll(additionalLottoTickets);
+    }
+
+    private LottoTicket createLottoTicket(int... numbers) {
+        return Arrays.stream(numbers)
+                .mapToObj(LottoNumber::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), LottoTicket::new));
     }
 }
