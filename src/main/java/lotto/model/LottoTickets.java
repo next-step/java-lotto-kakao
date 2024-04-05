@@ -12,12 +12,12 @@ public class LottoTickets {
         this.lottoTickets = lottoTickets;
     }
 
-    public LottoResult getWinningResult(WinningLottoTicket winningTicket) {
+    public LottoResult makeWinningResult(WinningLottoTicket winningTicket) {
         List<LottoRank> lottoRanks = lottoTickets.stream()
                 .map(winningTicket::match)
                 .collect(Collectors.toList());
 
-        return new LottoResult(lottoRanks, new PurchaseAmount(lottoTickets.size() * LottoTicket.PRICE));
+        return new LottoResult(lottoRanks);
     }
 
     public int getSize() {

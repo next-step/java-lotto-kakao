@@ -1,8 +1,6 @@
 package lotto.model;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WinningLottoTicket {
 
@@ -17,18 +15,6 @@ public class WinningLottoTicket {
 
     public WinningLottoTicket(List<LottoNumber> lottoNumbers, LottoNumber bonusNumber) {
         this(new LottoTicket(lottoNumbers), bonusNumber);
-    }
-
-    public WinningLottoTicket(List<Integer> lottoNumbers, int bonusNumber) {
-        this(lottoNumbers.stream()
-                .map(LottoNumber::new)
-                .collect(Collectors.toList()), new LottoNumber(bonusNumber));
-    }
-
-    public WinningLottoTicket(String lottoNumbers, int bonusNumber) {
-        this(Arrays.stream(lottoNumbers.split(", "))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList()), bonusNumber);
     }
 
     private static void validate(LottoTicket lottoTicket, LottoNumber bonusNumber) {

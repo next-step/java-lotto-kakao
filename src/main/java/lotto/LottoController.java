@@ -6,7 +6,7 @@ import lotto.model.dto.LottoTicketDto;
 import lotto.view.Input;
 import lotto.view.Output;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,29 +14,36 @@ public class LottoController {
 
     public static void play() {
         PurchaseAmount purchaseAmount = new PurchaseAmount(Input.getPurchaseAmount());
-        LottoTickets lottoTickets = LottoController.buyLottoTickets(purchaseAmount);
+        LottoTickets lottoTickets = new LottoTickets(buyLottoTickets(purchaseAmount));
 
         Output.printPurchaseCount(lottoTickets.getSize());
-        Output.printLottoTickets(lottoTickets.getLottoTickets()
-                .stream()
-                .map(LottoTicketDto::new)
-                .collect(Collectors.toList()));
+        Output.printLottoTickets(parseDto(lottoTickets));
 
-        String winningNumbers = Input.getWinningNumbers();
-        int bonusNumber = Input.getBonusNumber();
-        WinningLottoTicket winningLottoTicket = new WinningLottoTicket(winningNumbers, bonusNumber);
+        LottoTicket winningTicket = parseWinningNumbers(Input.getWinningNumbers());
+        LottoNumber bonusNumber = new LottoNumber(Input.getBonusNumber());
+        WinningLottoTicket winningLottoTicket = new WinningLottoTicket(winningTicket, bonusNumber);
 
-        LottoResult lottoResult = lottoTickets.getWinningResult(winningLottoTicket);
-        Output.printResult(new LottoResultDto(lottoResult.calculateReturnRate(), lottoResult.makeLottoResultMap()));
+        LottoResult lottoResult = lottoTickets.makeWinningResult(winningLottoTicket);
+        Output.printResult(new LottoResultDto(lottoResult.calculateReturnRate(purchaseAmount), lottoResult.makeLottoResultMap()));
     }
 
-    public static LottoTickets buyLottoTickets(PurchaseAmount purchaseAmount) {
+    private static LottoTicket parseWinningNumbers(String winningNumbers) {
+        return Arrays.stream(winningNumbers.split(", "))
+                .map(Integer::parseInt)
+                .map(LottoNumber::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), LottoTicket::new));
+    }
+
+    private static List<LottoTicketDto> parseDto(LottoTickets lottoTickets) {
+        return lottoTickets.getLottoTickets()
+                .stream()
+                .map(LottoTicketDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public static List<LottoTicket> buyLottoTickets(PurchaseAmount purchaseAmount) {
         int count = (int) purchaseAmount.getPurchaseAmount() / 1000;
 
-        List<LottoTicket> lottoTicketList = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            lottoTicketList.add(LottoTicketGenerator.generate());
-        }
-        return new LottoTickets(lottoTicketList);
+        return LottoTicketGenerator.generate(count);
     }
 }

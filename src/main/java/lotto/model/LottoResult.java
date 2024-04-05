@@ -7,20 +7,18 @@ import java.util.Map;
 public class LottoResult {
 
     private final List<LottoRank> lottoRanks;
-    private final PurchaseAmount totalPurchaseAmount;
 
-    public LottoResult(List<LottoRank> lottoRanks, PurchaseAmount totalPurchaseAmount) {
+    public LottoResult(List<LottoRank> lottoRanks) {
         this.lottoRanks = lottoRanks;
-        this.totalPurchaseAmount = totalPurchaseAmount;
     }
 
-    public long calculateTotalPrize() {
+    private long calculateTotalPrize() {
         return lottoRanks.stream()
                 .mapToLong(LottoRank::getPrize)
                 .sum();
     }
 
-    public float calculateReturnRate() {
+    public float calculateReturnRate(PurchaseAmount totalPurchaseAmount) {
         return (float) calculateTotalPrize() / totalPurchaseAmount.getPurchaseAmount();
     }
 
@@ -38,9 +36,5 @@ public class LottoResult {
 
     public List<LottoRank> getLottoRanks() {
         return lottoRanks;
-    }
-
-    public PurchaseAmount getPurchaseAmount() {
-        return totalPurchaseAmount;
     }
 }

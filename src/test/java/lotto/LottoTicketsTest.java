@@ -65,9 +65,8 @@ public class LottoTicketsTest {
                 ))
         ));
 
-        LottoResult lottoResult = lottoTickets.getWinningResult(winningLottoTicket);
+        LottoResult lottoResult = lottoTickets.makeWinningResult(winningLottoTicket);
 
         assertThat(lottoResult.getLottoRanks()).containsExactly(LottoRank.FIRST, LottoRank.SECOND);
-        assertThat(lottoResult.getPurchaseAmount()).isEqualTo(new PurchaseAmount(2 * LottoTicket.PRICE));
     }
 }
