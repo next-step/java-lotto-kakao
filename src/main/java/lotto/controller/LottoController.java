@@ -19,6 +19,8 @@ public class LottoController {
 
     public void start() {
         LottoPurchaseBudget budget = getBudget();
+        int manualLottoCount = getManualLottoCount(budget);
+
         List<LottoTicket> tickets = seller.generateTickets(budget);
 
         view.printTickets(mapToTicketDto(tickets));
@@ -35,6 +37,17 @@ public class LottoController {
         } catch (RuntimeException e) {
             view.printError(e);
             return getBudget();
+        }
+    }
+
+    private int getManualLottoCount(LottoPurchaseBudget budget) {
+        try {
+            int manualLottoCount = view.getManualLottoCount();
+            budget.validatePurchasable(manualLottoCount);
+            return manualLottoCount;
+        } catch (RuntimeException e) {
+            view.printError(e);
+            return getManualLottoCount(budget);
         }
     }
 

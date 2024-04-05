@@ -43,7 +43,31 @@ public class LottoPurchaseBudgetTest {
 
         //then
         Assertions.assertThat(profitRate).isEqualTo(0.50);
+    }
 
+    @Test
+    void 로또를_구매시_구입비용만큼_예산이_감소한다() {
+        //given
+        LottoPurchaseBudget budget = new LottoPurchaseBudget(5000);
+
+        //when
+        budget.purchaseLotto(3);
+
+        //then
+        Assertions.assertThat(budget.getTicketQuantity()).isEqualTo(2);
+    }
+    @Test
+    void 구입하려는_로또_개수가_예산을_넘어가면_예산을_차감하지_않고_예외를_던진다() {
+        LottoPurchaseBudget budget = new LottoPurchaseBudget(5000);
+        Assertions.assertThatThrownBy(() -> budget.purchaseLotto(6))
+                .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void 구입하려는_로또_개수가_예산을_넘어가면_예외를_던진다() {
+        LottoPurchaseBudget budget = new LottoPurchaseBudget(5000);
+        Assertions.assertThatThrownBy(() -> budget.validatePurchasable(6))
+                .isInstanceOf(RuntimeException.class);
     }
 
 }
