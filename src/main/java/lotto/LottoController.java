@@ -14,11 +14,10 @@ public class LottoController {
 
     public static void play() {
         PurchaseAmount purchaseAmount = new PurchaseAmount(Input.getPurchaseAmount());
-        Long manualPurchaseCount = Input.getManualPurchaseCount();
-        LottoTickets lottoTickets = new LottoTickets(Input.getManualLottoTickets(manualPurchaseCount));
-        lottoTickets.add(buyLottoTickets(purchaseAmount));
+        int manualPurchaseCount = Input.getManualPurchaseCount();
+        LottoTickets lottoTickets = buyLottoTickets(purchaseAmount, manualPurchaseCount);
 
-        Output.printPurchaseCount(lottoTickets.getSize());
+        Output.printPurchaseCount(manualPurchaseCount, lottoTickets.getSize() - manualPurchaseCount);
         Output.printLottoTickets(parseDto(lottoTickets));
 
         LottoTicket winningTicket = Input.getWinningTicket();
@@ -36,9 +35,11 @@ public class LottoController {
                 .collect(Collectors.toList());
     }
 
-    public static List<LottoTicket> buyLottoTickets(PurchaseAmount purchaseAmount) {
-        int count = (int) purchaseAmount.getPurchaseAmount() / 1000;
-
-        return LottoTicketGenerator.generate(count);
+    public static LottoTickets buyLottoTickets(PurchaseAmount purchaseAmount, int manualCount) {
+        int count = (int) purchaseAmount.getPurchaseAmount() / LottoTicket.PRICE;
+        int autoCount = count - manualCount;
+        LottoTickets lottoTickets = new LottoTickets(Input.getManualLottoTickets(manualCount));
+        lottoTickets.add(LottoTicketGenerator.generate(autoCount));
+        return lottoTickets;
     }
 }

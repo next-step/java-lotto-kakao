@@ -18,12 +18,16 @@ public class Input {
         return Long.parseLong(SCANNER.nextLine());
     }
 
-    public static Long getManualPurchaseCount() {
+    public static int getManualPurchaseCount() {
         System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
-        return Long.parseLong(SCANNER.nextLine());
+        return Integer.parseInt(SCANNER.nextLine());
     }
 
-    public static List<LottoTicket> getManualLottoTickets(Long count) {
+    public static List<LottoTicket> getManualLottoTickets(int count) {
+        if (count == 0) {
+            return Collections.emptyList();
+        }
+
         System.out.println("수동으로 구매할 번호를 입력해 주세요.");
         List<LottoTicket> manualLottoTickets = new ArrayList<>();
         for (int i = 0; i < count; i++) {

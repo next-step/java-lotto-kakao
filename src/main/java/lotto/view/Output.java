@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public class Output {
 
-    public static void printPurchaseCount(int purchaseCount) {
-        System.out.println(purchaseCount + "개를 구매했습니다.");
+    public static void printPurchaseCount(int manualPurchaseCount, int autoPurchaseCount) {
+        System.out.println("수동으로 " + manualPurchaseCount + "장, 자동으로 " + + autoPurchaseCount + " 장을 구매했습니다.");
     }
 
     private Output() {
