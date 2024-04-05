@@ -3,10 +3,11 @@ package lotto.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LottoTicketSeller {
 
-    public List<LottoTicket> generateTickets(LottoPurchaseBudget budget) {
+    public List<LottoTicket> purchaseAutoLotto(LottoPurchaseBudget budget) {
         int ticketQuantity = budget.getTicketQuantity();
 
         List<LottoTicket> tickets = new ArrayList<>();
@@ -17,5 +18,14 @@ public class LottoTicketSeller {
         }
 
         return tickets;
+    }
+
+    public List<LottoTicket> purchaseManualLotto(List<List<Integer>> manualLottoNumbers, LottoPurchaseBudget budget) {
+        List<LottoTicket> manualTickets = manualLottoNumbers.stream()
+                .map(LottoTicket::of)
+                .collect(Collectors.toList());
+
+        budget.purchaseLotto(manualTickets.size());
+        return manualTickets;
     }
 }

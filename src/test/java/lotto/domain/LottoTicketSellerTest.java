@@ -13,7 +13,7 @@ public class LottoTicketSellerTest {
         LottoTicketSeller seller = new LottoTicketSeller();
         LottoPurchaseBudget budget = new LottoPurchaseBudget(15000);
 
-        List<LottoTicket> generatedTickets = seller.generateTickets(budget);
+        List<LottoTicket> generatedTickets = seller.purchaseAutoLotto(budget);
         Assertions.assertThat(generatedTickets.size()).isEqualTo(15);
     }
 

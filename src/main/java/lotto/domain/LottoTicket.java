@@ -17,6 +17,14 @@ public class LottoTicket {
         this(new HashSet<>(lottoNumbers));
     }
 
+    public static LottoTicket of(List<Integer> lottoNumbers) {
+        List<LottoNumber> ticketNumbers = lottoNumbers.stream()
+                .map(LottoNumber::valueOf)
+                .collect(Collectors.toList());
+
+        return new LottoTicket(ticketNumbers);
+    }
+
     public int compare (LottoTicket otherNumbers) {
         return (int) lottoNumbers.stream()
             .filter(otherNumbers::contains)
