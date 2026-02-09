@@ -1,9 +1,11 @@
 package lotto;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LottoTest {
     private WinLotto win;
@@ -11,6 +13,13 @@ public class LottoTest {
     @BeforeEach
     void setUp() {
         win = new WinLotto(7, 1, 2, 3, 4, 5, 6);
+    }
+
+    @Test
+    @DisplayName("로또 번호는 반드시 6개여야 한다")
+    void validateLottoNumberCount() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Lotto(1, 2, 3, 4, 5, 6, 7));
     }
 
     @Test
