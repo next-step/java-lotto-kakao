@@ -18,4 +18,10 @@ public class NumberTest {
         calculator.Number number = new calculator.Number(text);
         assertThat(number.getValue()).isEqualTo(0);
     }
+
+    @Test
+    void StringReturnNumber() {
+        String text = "123";
+        calculator.Number number = new calculator.Number(text);
+    }
 }

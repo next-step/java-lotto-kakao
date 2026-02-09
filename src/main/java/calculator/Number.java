@@ -4,13 +4,12 @@ public class Number {
 
     private static int value;
     public Number(String text) {
-        if (text == null) {
+        if (text == null || text.isEmpty()) {
             value = 0;
             return;
         }
-        if (text.isEmpty()) {
-            value = 0;
-        }
+        value = Integer.parseInt(text);
+
     }
 
     public int getValue() {
