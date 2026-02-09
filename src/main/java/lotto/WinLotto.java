@@ -1,16 +1,14 @@
 package lotto;
 
-import java.util.Set;
-
 public class WinLotto {
-    private final int bonus;
+    private final LottoNumber bonus;
     private final Lotto win;
 
     public WinLotto(int bonus, Integer... lottoNumbers) {
-        this(bonus, (new Lotto(Set.of(lottoNumbers))));
+        this(new LottoNumber(bonus), (new Lotto(lottoNumbers)));
     }
 
-    public WinLotto(int bonus, Lotto win) {
+    public WinLotto(LottoNumber bonus, Lotto win) {
         this.bonus = bonus;
         this.win = win;
     }
