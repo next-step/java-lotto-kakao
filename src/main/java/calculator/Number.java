@@ -8,8 +8,17 @@ public class Number {
             value = 0;
             return;
         }
-        value = Integer.parseInt(text);
+        parseInt(text);
+        if (value < 0) throw new IllegalArgumentException();
 
+    }
+
+    private static void parseInt(String text) {
+        try {
+            value = Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public int getValue() {

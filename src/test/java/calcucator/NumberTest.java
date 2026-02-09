@@ -3,6 +3,7 @@ package calcucator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class NumberTest {
     @Test
@@ -23,5 +24,17 @@ public class NumberTest {
     void StringReturnNumber() {
         String text = "123";
         calculator.Number number = new calculator.Number(text);
+    }
+
+    @Test
+    void notNumberException() {
+        String text = "abc";
+        assertThatIllegalArgumentException().isThrownBy(() -> new calculator.Number(text));
+    }
+
+    @Test
+    void minusNumberException() {
+        String text = "-2";
+        assertThatIllegalArgumentException().isThrownBy(() -> new calculator.Number(text));
     }
 }
