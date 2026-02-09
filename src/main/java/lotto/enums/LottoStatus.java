@@ -1,0 +1,25 @@
+package lotto.enums;
+
+public enum LottoStatus {
+    ZERO(0, 0),
+    ONE(1, 0),
+    TWO(2, 0),
+    THREE(3, 5000),
+    FOUR(4, 50000),
+    FIVE(5, 1500000),
+    SIX_BONUS(6, 30000000),
+    SIZ(6, 2000000000);
+
+    private int count;
+    private long money;
+
+    LottoStatus(int count, long money) {
+        this.count = count;
+        this.money = money;
+    }
+
+    public int getCount() {
+        return count;
+    }
+    public long getMoney() {return money;}
+}
