@@ -28,6 +28,7 @@ public class ParserTest {
         String[] actual = parser.split(input);
         assertThat(actual).isEqualTo(expected);
     }
+
     @Test
     void splitTest3() {
         String input = "1:2,3";
@@ -36,5 +37,11 @@ public class ParserTest {
         assertThat(actual).isEqualTo(expected);
     }
 
-
+    @Test
+    void splitTestWithCustomDelimiter() {
+        String input = "//;\\n1;2,3";
+        String[] expected = {"1", "2", "3"};
+        String[] actual = parser.split(input);
+        assertThat(actual).isEqualTo(expected);
+    }
 }
