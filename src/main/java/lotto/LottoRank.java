@@ -1,5 +1,5 @@
 package lotto;
 
 public enum LottoRank {
-    LOSE
+    FIFTH, FOURTH, THIRD, SECOND, FIRST, LOSE
 }
