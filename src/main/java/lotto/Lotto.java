@@ -6,6 +6,7 @@ import java.util.Set;
 public class Lotto {
     private final Set<Integer> lottoNumberSet;
 
+
     public Lotto(Integer... lottoNumbers) {
         this(Set.of(lottoNumbers));
     }
