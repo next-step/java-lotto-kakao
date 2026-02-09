@@ -27,11 +27,11 @@ public class InputParserTest {
     @DisplayName("구입금액은 반드시 숫자여야 한다.")
     void validateMoneyInputFormat() {
         assertThrows(IllegalArgumentException.class,
-                () -> InputParser.parseMoney("f"));
+                () -> InputParser.parseBonusNumberFormat("f"));
         assertThrows(IllegalArgumentException.class,
-                () -> InputParser.parseMoney("."));
+                () -> InputParser.parseBonusNumberFormat("."));
         assertThrows(IllegalArgumentException.class,
-                () -> InputParser.parseMoney("42fdsf2344"));
+                () -> InputParser.parseBonusNumberFormat("42fdsf2344"));
     }
 
     @Test
