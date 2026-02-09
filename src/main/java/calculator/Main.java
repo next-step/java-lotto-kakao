@@ -12,14 +12,18 @@ public class Main {
 
         String input = view.readLine();
 
+        List<Number> numbers = getNumbers(parser, input);
+        int result  = calculator.sum(numbers);
+        view.printLine(result);
+    }
+
+    private static List<Number> getNumbers(Parser parser, String input) {
         String[] list = parser.split(input);
         List<Number> numbers = new ArrayList<>();
 
-        for(int i = 0; i < list.length; i++){
-            numbers.add(new Number(list[i]));
+        for (String s : list) {
+            numbers.add(new Number(s));
         }
-        int result  = calculator.sum(numbers);
-
-        view.printLine(result);
+        return numbers;
     }
 }
