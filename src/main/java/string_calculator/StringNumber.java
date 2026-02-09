@@ -8,4 +8,8 @@ public class StringNumber {
 	StringNumber(String string) {
 		this.value = new BigInteger(string);
 	}
+
+	public BigInteger getValue() {
+		return this.value;
+	}
 }
