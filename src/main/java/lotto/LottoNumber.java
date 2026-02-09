@@ -1,7 +1,6 @@
 package lotto;
 
 public record LottoNumber(int value) {
-
     private static final int MIN = 1;
     private static final int MAX = 45;
 
