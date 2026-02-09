@@ -1,8 +1,7 @@
 package calculator;
 
 public class Number {
-
-    private static int value;
+    private int value = 0;
     public Number(String text) {
         if (text == null || text.isEmpty()) {
             value = 0;
@@ -13,9 +12,9 @@ public class Number {
 
     }
 
-    private static void parseInt(String text) {
+    private void parseInt(String text) {
         try {
-            value = Integer.parseInt(text);
+            this.value = Integer.parseInt(text);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException();
         }
