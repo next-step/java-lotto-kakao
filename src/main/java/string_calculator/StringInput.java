@@ -14,9 +14,13 @@ public class StringInput {
 	StringInput() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("문자열을 입력하세요");
+
 		String firstLine = scanner.nextLine();
-		String secondLine = scanner.nextLine();
-		this.input = firstLine + "\n" + secondLine;
+		this.input = firstLine;
+
+		if (firstLine.startsWith("//")) {
+			this.input += "\n" + scanner.nextLine();
+		}
 	}
 
 	String extractCustomSplitter() {
