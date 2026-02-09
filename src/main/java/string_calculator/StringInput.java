@@ -13,7 +13,10 @@ public class StringInput {
 
 	StringInput() {
 		Scanner scanner = new Scanner(System.in);
-		this.input = scanner.nextLine();
+		System.out.println("문자열을 입력하세요");
+		String firstLine = scanner.nextLine();
+		String secondLine = scanner.nextLine();
+		this.input = firstLine + "\n" + secondLine;
 	}
 
 	String extractCustomSplitter() {
@@ -26,7 +29,7 @@ public class StringInput {
 
 	String processStringInput() {
 		String processedString = this.input;
-		return processedString.replaceFirst("//(.)\n", "");
+		return processedString.replaceFirst("//(.)\\n", "");
 	}
 
 }
