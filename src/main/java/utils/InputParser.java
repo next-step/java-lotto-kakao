@@ -3,7 +3,15 @@ package utils;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LottoInputParser {
+public class InputParser {
+    public static Integer parseMoney(String rawInput) {
+        try {
+            return parseInt(rawInput);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("구입금액은 반드시 숫자여야 합니다.");
+        }
+    }
+
     public static Set<Integer> parseLottoFormat(String rawInput) {
         try {
             return parseTokens(rawInput);
