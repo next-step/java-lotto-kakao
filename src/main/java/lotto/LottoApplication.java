@@ -13,8 +13,6 @@ import static lotto.domain.LottoStatus.*;
 
 public class LottoApplication {
 
-    private LottoPlayer lottoPlayer;
-    private WinningLotto winningLotto;
     private final RandomPickStrategy randomNumberGenerator;
     private final InputView inputView;
     private final OutputView outputView;
@@ -29,27 +27,23 @@ public class LottoApplication {
         this.outputView = outputView;
     }
 
-    public LottoPlayer getUser() {
-        return lottoPlayer;
+    public void play() {
+        LottoPlayer player = makeUserInfo();
+        WinningLotto winningLotto = makeWinningLotto();
+
+        Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
+        long profit = LottoStatus.totalPrize(statuses);
+        double profitRate = (double) profit / player.getPrice();
+
+        printResult(statuses, profit, profitRate);
     }
 
-    public WinningLotto getWinningLotto() {
-        return winningLotto;
-    }
-
-    public LottoResult play() {
-        makeUserInfo();
-        makeWinningLotto();
-        LottoResultCalculator calculator = new LottoResultCalculator(lottoPlayer, winningLotto);
-        LottoResult result = calculator.calculate();
-        printResult(result);
-
-        return result;
-    }
-
-    private void printResult(LottoResult result) {
+    private void printResult(
+            Map<LottoStatus, Integer> statuses,
+            long profit,
+            double profitRate
+    ) {
         outputView.printMessage("당첨 통계");
-        Map<LottoStatus, Integer> statuses = result.getStatuses();
         outputView.printMessage("---------");
         outputView.printMessage("3개 일치 (" + THREE_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(THREE_CORRECT, 0) + "개");
         outputView.printMessage("4개 일치 (" + FOUR_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(FOUR_CORRECT, 0) + "개");
@@ -57,10 +51,10 @@ public class LottoApplication {
         outputView.printMessage("5개 일치, 보너스 볼 일치 (" + FIVE_CORRECT_BONUS.getPrice() + "원) - " + statuses.getOrDefault(FIVE_CORRECT_BONUS, 0) + "개");
         outputView.printMessage("6개 일치 (" + SIX_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(SIX_CORRECT, 0) + "개");
 
-        outputView.printMessage("총 수익률은 " + String.format("%.2f", result.getProfitRate()) + "입니다.");
+        outputView.printMessage("총 수익률은 " + String.format("%.2f입니다.", profitRate));
     }
 
-    private void makeWinningLotto() {
+    private WinningLotto makeWinningLotto() {
         String[] winningLottoArray = makeWinningLottoNumbers();
 
         List<Integer> winningLottoList = Arrays.stream(winningLottoArray)
@@ -68,7 +62,7 @@ public class LottoApplication {
                 .toList();
 
         int bonusNumber = makeBonusNumber();
-        winningLotto = new WinningLotto(new Lottos(winningLottoList), bonusNumber);
+        return new WinningLotto(new Lotto(winningLottoList), bonusNumber);
     }
 
     private int makeBonusNumber() {
@@ -82,25 +76,26 @@ public class LottoApplication {
         return winningLottoStr.split(",");
     }
 
-    private void makeUserInfo() {
+    private LottoPlayer makeUserInfo() {
         outputView.printMessage("구입금액을 입력해 주세요.");
         int price = Integer.parseInt(inputView.input());
         int lottoCount = price / 1000;
         outputView.printMessage(lottoCount + "개를 구매했습니다.");
 
-        makeUserLottoInfo(lottoCount, price);
+        return makeUserLottoInfo(lottoCount, price);
     }
 
-    private void makeUserLottoInfo(int lottoCount, int price) {
-        List<Lottos> lottos = new ArrayList<>();
+    private LottoPlayer makeUserLottoInfo(int lottoCount, int price) {
+        List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < lottoCount; i++) {
-            lottos.add(new Lottos(randomNumberGenerator.generate()));
+            lottos.add(new Lotto(randomNumberGenerator.generate()));
         }
 
-        this.lottoPlayer = new LottoPlayer(price, lottoCount, lottos);
-        for (Lottos lotto : lottoPlayer.getLottos()) {
+        LottoPlayer player = new LottoPlayer(price, lottoCount, lottos);
+        for (Lotto lotto : player.getLottos()) {
             outputView.printLog(lotto.getNumbers());
         }
+        return player;
     }
 
 }

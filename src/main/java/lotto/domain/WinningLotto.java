@@ -1,19 +1,23 @@
 package lotto.domain;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
 public class WinningLotto {
 
-    private final Lottos lottos;
+    private final Lotto lotto;
     private final int bonusNumber;
 
-    public WinningLotto(Lottos lottos, int bonusNumber) {
-        validate(lottos, bonusNumber);
-        this.lottos = lottos;
+    public WinningLotto(Lotto lotto, int bonusNumber) {
+        validate(lotto, bonusNumber);
+        this.lotto = lotto;
         this.bonusNumber = bonusNumber;
     }
 
-    private void validate(Lottos lottos, int bonusNumber) {
+    private void validate(Lotto lotto, int bonusNumber) {
         validateRange(bonusNumber);
-        validateDuplicate(lottos, bonusNumber);
+        validateDuplicate(lotto, bonusNumber);
     }
 
     private void validateRange(int bonusNumber) {
@@ -22,20 +26,29 @@ public class WinningLotto {
         }
     }
 
-    private void validateDuplicate(Lottos lottos, int bonusNumber) {
-        if (lottos.getNumbers().contains(bonusNumber)) {
+    private void validateDuplicate(Lotto lotto, int bonusNumber) {
+        if (lotto.getNumbers().contains(bonusNumber)) {
             throw new IllegalArgumentException("당첨번호와 중복된 숫자를 보너스 번호로 등록할 수 없습니다.");
         }
     }
 
-    public LottoStatus judge(Lottos playerLottos) {
-        int matchCount = lottos.matchCount(playerLottos);
-        boolean hasBonus = playerLottos.getNumbers().contains(bonusNumber);
+    public LottoStatus judge(Lotto playerLotto) {
+        int matchCount = lotto.matchCount(playerLotto);
+        boolean hasBonus = playerLotto.getNumbers().contains(bonusNumber);
         return LottoStatus.judgeGameStatus(matchCount, hasBonus);
     }
 
-    public Lottos getLotto() {
-        return lottos;
+    public Map<LottoStatus, Integer> countByStatus(List<Lotto> playerLottos) {
+        Map<LottoStatus, Integer> counts = new EnumMap<>(LottoStatus.class);
+        for (Lotto playerLotto: playerLottos) {
+            LottoStatus status = judge(playerLotto);
+            counts.put(status, counts.getOrDefault(status, 0) + 1);
+        }
+        return counts;
+    }
+
+    public Lotto getLotto() {
+        return lotto;
     }
 
     public int getBonusNumber() {

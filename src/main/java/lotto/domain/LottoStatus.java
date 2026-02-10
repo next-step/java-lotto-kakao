@@ -1,6 +1,7 @@
 package lotto.domain;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public enum LottoStatus {
 
@@ -33,10 +34,20 @@ public enum LottoStatus {
                 .orElse(FAIL);
     }
 
+    public static long totalPrize(Map<LottoStatus, Integer> counts) {
+        long sum = 0;
+        for (var e: counts.entrySet()) {
+            sum += (long) e.getKey().getPrice() * e.getValue();
+        }
+        return sum;
+    }
+
     public boolean match(int matchCount, boolean hasBonus) {
         if (this.count != matchCount) return false;
         if (this.count == 5) return this.hasBonus == hasBonus;
         return true;
     }
+
+
 
 }

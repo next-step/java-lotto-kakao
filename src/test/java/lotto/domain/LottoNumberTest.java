@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class LottosNumberTest {
+public class LottoNumberTest {
 
     @Test
     @DisplayName("[성공] 정상적인 로또 넘버를 넘겨준 경우")

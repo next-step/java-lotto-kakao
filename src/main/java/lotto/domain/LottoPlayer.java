@@ -6,9 +6,9 @@ public class LottoPlayer {
 
     private int price;
     private int lottoCount;
-    private List<Lottos> lottos;
+    private List<Lotto> lottos;
 
-    public LottoPlayer(int price, int lottoCount, List<Lottos> lottos) {
+    public LottoPlayer(int price, int lottoCount, List<Lotto> lottos) {
         validatePrice(price);
         this.price = price;
         this.lottoCount = lottoCount;
@@ -29,7 +29,7 @@ public class LottoPlayer {
         return lottoCount;
     }
 
-    public List<Lottos> getLottos() {
+    public List<Lotto> getLottos() {
         return lottos;
     }
 }

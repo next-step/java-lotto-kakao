@@ -7,14 +7,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class WinningLottosTest {
+public class WinningLottoTest {
 
     @Test
     @DisplayName("성공케이스")
     void success() {
-        Lottos lottos = new Lottos(List.of(1, 2, 3, 4, 5, 6));
+        Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
         int bonusNumber = 7;
-        WinningLotto winningLotto = new WinningLotto(lottos, bonusNumber);
+        WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
 
         assertThat(winningLotto.getLotto().getNumbers()).containsExactly(1,2,3,4,5,6);
         assertThat(winningLotto.getBonusNumber()).isEqualTo(7);
@@ -25,9 +25,9 @@ public class WinningLottosTest {
     void fail_bonusNumberRange() {
 
         assertThatThrownBy(() -> {
-            Lottos lottos = new Lottos(List.of(1, 2, 3, 4, 5, 6));
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
             int bonusNumber = 46;
-            WinningLotto winningLotto = new WinningLotto(lottos, bonusNumber);
+            WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("1 ~ 45 범위를 벗어나는 숫자가 입력되었습니다.");
 
@@ -38,9 +38,9 @@ public class WinningLottosTest {
     void fail_bonusNumberDuplicate() {
 
         assertThatThrownBy(() -> {
-            Lottos lottos = new Lottos(List.of(1, 2, 3, 4, 5, 6));
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
             int bonusNumber = 1;
-            WinningLotto winningLotto = new WinningLotto(lottos, bonusNumber);
+            WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("당첨번호와 중복된 숫자를 보너스 번호로 등록할 수 없습니다.");
 

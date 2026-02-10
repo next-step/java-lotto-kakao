@@ -2,11 +2,11 @@ package lotto.domain;
 
 import java.util.*;
 
-public class Lottos {
+public class Lotto {
 
     private final List<LottoNumber> numbers;
 
-    public Lottos(List<Integer> values) {
+    public Lotto(List<Integer> values) {
         validate(values);
         numbers = new ArrayList<>();
         for (int number: values) {
@@ -41,9 +41,10 @@ public class Lottos {
         return Collections.unmodifiableList(result);
     }
 
-    public int matchCount(Lottos other) {
+    public int matchCount(Lotto other) {
         HashSet<Integer> otherNumbers = new HashSet<>(other.getNumbers());
         otherNumbers.retainAll(this.getNumbers());
         return otherNumbers.size();
     }
+
 }
