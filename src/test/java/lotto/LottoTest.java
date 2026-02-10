@@ -10,14 +10,14 @@ public class LottoTest {
 
 	@Test
 	void createLottoTest() {
-		Lotto lotto = new Lotto();
+		Lotto lotto = Lotto.createRandomLotto();
 		List<Integer> lottoNumbers = lotto.getNumbers();
 		assertThat(lottoNumbers.size()).isEqualTo(6);
 	}
 
 	@Test
 	void isAscending() {
-		Lotto lotto = new Lotto();
+		Lotto lotto = Lotto.createRandomLotto();
 		List<Integer> lottoNumbers = lotto.getNumbers();
 		int size = lottoNumbers.size();
 		for (int i = 0; i < size - 1; i++) {
