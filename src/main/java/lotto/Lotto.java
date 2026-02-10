@@ -5,7 +5,6 @@ import java.util.Set;
 
 public class Lotto {
     private static final int LENGTH = 6;
-
     private final Set<LottoNumber> lottoNumberSet;
 
     public Lotto(Integer... numbers) {
@@ -33,9 +32,9 @@ public class Lotto {
         }
     }
 
-    public int matchCount(Lotto buy) {
+    public int matchCount(Lotto win) {
         Set<LottoNumber> intersection = new HashSet<>(lottoNumberSet);
-        intersection.retainAll(buy.lottoNumberSet);
+        intersection.retainAll(win.lottoNumberSet);
 
         return intersection.size();
     }
