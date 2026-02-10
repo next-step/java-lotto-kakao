@@ -2,9 +2,7 @@ package lotto;
 
 import lotto.enums.LottoStatus;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Lotto {
     private static List<Integer> allNumbers = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
@@ -21,6 +19,18 @@ public class Lotto {
         }
         status = LottoStatus.ZERO;
         bonus = new Ball(0);
+    }
+
+    public Lotto(List<Ball> balls, Ball  bonus) {
+        Set<Ball> set = new HashSet<Ball>(balls);
+
+        if(set.size() != 6) {
+            throw new IllegalArgumentException();
+        }
+
+        this.balls = balls;
+        this.status = LottoStatus.ANSWER;
+        this.bonus = bonus;
     }
 
     public List<Ball> getBalls() {

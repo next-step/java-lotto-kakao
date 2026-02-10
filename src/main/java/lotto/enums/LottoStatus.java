@@ -8,7 +8,8 @@ public enum LottoStatus {
     FOUR(4, 50000),
     FIVE(5, 1500000),
     SIX_BONUS(6, 30000000),
-    SIZ(6, 2000000000);
+    SIX(6, 2000000000),
+    ANSWER(6, 0);
 
     private int count;
     private long money;
