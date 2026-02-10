@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LottoTest {
@@ -22,6 +24,21 @@ public class LottoTest {
                 () -> new Lotto(1, 2, 3, 4, 5, 6, 7));
         assertThrows(IllegalArgumentException.class,
                 () -> new Lotto(1, 2));
+    }
+
+    @Test
+    @DisplayName("랜덤 로또는 중복없이 6개의 유효한 숫자가 있어야 한다.")
+    void createRandomLotto() {
+        for (int i = 0; i < 10; i++) {
+            Lotto lotto = Lotto.random();
+            List<LottoNumber> numbers = lotto.numbers();
+
+            System.out.println(numbers);
+
+            assertThat(numbers).hasSize(6);
+            assertThat(numbers)
+                    .allSatisfy(n -> assertThat(n.value()).isBetween(1, 45));
+        }
     }
 
     @Test
