@@ -1,8 +1,11 @@
 package lotto;
 
+import money.Money;
+
 import java.util.*;
 
 public class Lotto {
+    private static final long PRICE = 1000L;
     private static final int LENGTH = 6;
     private final Set<LottoNumber> lottoNumberSet;
 
@@ -34,6 +37,13 @@ public class Lotto {
         }
         Collections.shuffle(pool);
         return new Lotto(pool.subList(0, LENGTH));
+    }
+
+    public static long calculatePurchasableCount(Money money) {
+        if (!money.isMultipleOf(PRICE)) {
+            throw new IllegalArgumentException(String.format("구매금액은 로또 가격의 배수여야 합니다. 로또 가격 : %d", PRICE));
+        }
+        return money.calculatePurchasableCount(PRICE);
     }
 
     private void validate(Set<LottoNumber> lottoNumberSet) {

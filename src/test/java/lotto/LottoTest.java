@@ -1,5 +1,6 @@
 package lotto;
 
+import money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,12 @@ public class LottoTest {
             assertThat(numbers)
                     .allSatisfy(n -> assertThat(n.value()).isBetween(1, 45));
         }
+    }
+
+    @Test
+    void failsForInvalidMoney() {
+        assertThrows(IllegalArgumentException.class,
+                () -> Lotto.calculatePurchasableCount(new Money(1400)));
     }
 
     @Test
