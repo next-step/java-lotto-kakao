@@ -8,7 +8,6 @@ public class WinningLotto {
 	private final int bonus;
 
 	WinningLotto(List<Integer> numbers, int bonus) {
-		// Todo: validate 메소드 생성
 		this.numbers = numbers;
 		this.bonus = bonus;
 	}
