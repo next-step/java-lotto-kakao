@@ -1,11 +1,16 @@
 package lotto;
 
-public record LottoNumber(int value) {
+public record LottoNumber(int value) implements Comparable<LottoNumber> {
     private static final int MIN = 1;
     private static final int MAX = 45;
 
     public LottoNumber {
         validate(value);
+    }
+
+    @Override
+    public int compareTo(LottoNumber other) {
+        return Integer.compare(this.value, other.value);
     }
 
     private void validate(int value) {
