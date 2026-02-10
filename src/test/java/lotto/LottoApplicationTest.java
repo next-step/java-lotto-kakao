@@ -1,5 +1,9 @@
 package lotto;
 
+import lotto.domain.Lotto;
+import lotto.domain.LottoPlayer;
+import lotto.domain.LottoResult;
+import lotto.domain.RandomPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;

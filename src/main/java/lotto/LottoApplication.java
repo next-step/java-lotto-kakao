@@ -1,5 +1,6 @@
 package lotto;
 
+import lotto.domain.*;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static lotto.LottoStatus.*;
+import static lotto.domain.LottoStatus.*;
 
 public class LottoApplication {
 
