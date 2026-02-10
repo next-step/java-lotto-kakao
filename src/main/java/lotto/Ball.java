@@ -5,6 +5,9 @@ import java.util.Objects;
 public class Ball {
     private int value;
 
+    public Ball() {
+        this.value = 0;
+    }
     public Ball(int value) {
         if(value < 1 || value > 45)
             throw new IllegalArgumentException("1부터 45 사이의 숫자만 입력 가능합니다.");

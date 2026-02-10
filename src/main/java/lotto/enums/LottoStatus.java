@@ -7,8 +7,8 @@ public enum LottoStatus {
     THREE(3, 5000),
     FOUR(4, 50000),
     FIVE(5, 1500000),
-    SIX_BONUS(6, 30000000),
     SIX(6, 2000000000),
+    SIX_BONUS(6, 30000000),
     ANSWER(6, 0);
 
     private int count;
@@ -23,4 +23,11 @@ public enum LottoStatus {
         return count;
     }
     public long getMoney() {return money;}
+
+    public static LottoStatus update(LottoStatus status) {
+        int nextIndex = status.ordinal() + 1;
+        LottoStatus[] values = LottoStatus.values();
+
+        return values[nextIndex];
+    }
 }

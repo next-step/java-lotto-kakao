@@ -19,7 +19,7 @@ public class LottoTest {
         Set<Ball> set = new HashSet<Ball>(lotto.getBalls());
         assertThat(set.size()).isEqualTo(6);
         assertThat(lotto.getStatus()).isEqualTo(LottoStatus.ZERO);
-        assertThat(lotto.getBonus()).isEqualTo(new Ball(0));
+        assertThat(lotto.getBonus()).isEqualTo(new Ball());
     }
 
     @Test
@@ -57,5 +57,41 @@ public class LottoTest {
                 new Ball(4), new Ball(5), new Ball(6)));
         Ball bonus = new Ball(1);
         assertThatIllegalArgumentException().isThrownBy(() -> new Lotto(answer,bonus));
+    }
+
+    @Test
+    void 로또를_3개_맞췄을떄_정답의_비교결과가_일치하는지() {
+        List<Ball> answer = new ArrayList<Ball>(List.of(new Ball(1), new Ball(2), new Ball(3),
+                new Ball(4), new Ball(5), new Ball(6)));
+        Ball bonus = new Ball(7);
+        Lotto answerLotto = new Lotto(answer,bonus);
+
+        List<Ball> userBalls = new ArrayList<Ball>(List.of(new Ball(1), new Ball(2), new Ball(3),
+                new Ball(7), new Ball(8), new Ball(9)));
+        Ball userBonus = new Ball();
+        Lotto userLotto = new Lotto(userBalls,userBonus);
+        userLotto.setStatus(LottoStatus.ZERO);
+
+        userLotto.check(answerLotto);
+        assertThat(userLotto.getStatus()).isEqualTo(LottoStatus.THREE);
+
+    }
+
+    @Test
+    void 로또를_5개_맞췄을때_보너스여부르_확인() {
+        List<Ball> answer = new ArrayList<Ball>(List.of(new Ball(1), new Ball(2), new Ball(3),
+                new Ball(4), new Ball(5), new Ball(6)));
+        Ball bonus = new Ball(7);
+        Lotto answerLotto = new Lotto(answer,bonus);
+
+        List<Ball> userBalls = new ArrayList<Ball>(List.of(new Ball(1), new Ball(2), new Ball(3),
+                new Ball(4), new Ball(5), new Ball(7)));
+        Ball userBonus = new Ball();
+        Lotto userLotto = new Lotto(userBalls,userBonus);
+        userLotto.setStatus(LottoStatus.ZERO);
+
+        userLotto.check(answerLotto);
+        assertThat(userLotto.getStatus()).isEqualTo(LottoStatus.SIX_BONUS);
+
     }
 }
