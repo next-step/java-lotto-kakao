@@ -21,7 +21,7 @@ public class LottoBundleTest {
         assertThrows(IllegalArgumentException.class,
                 () -> new LottoBundle(null));
         assertThrows(IllegalArgumentException.class,
-                () -> new LottoBundle(new Lotto(8, 21, 23, 41, 42, 43), null));
+                () -> new LottoBundle(new Lotto(8, 21, 23, 41, 42, 43), (Lotto[]) null));
     }
 
     @Test
