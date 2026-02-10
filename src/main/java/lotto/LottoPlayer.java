@@ -2,13 +2,13 @@ package lotto;
 
 import java.util.List;
 
-public class User {
+public class LottoPlayer {
 
     private int price;
     private int lottoCount;
     private List<Lotto> lottos;
 
-    public User(int price, int lottoCount, List<Lotto> lottos) {
+    public LottoPlayer(int price, int lottoCount, List<Lotto> lottos) {
         validatePrice(price);
         this.price = price;
         this.lottoCount = lottoCount;

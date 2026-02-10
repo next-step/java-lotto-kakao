@@ -1,27 +1,25 @@
 package lotto;
 
-import lotto.view.CommandInputView;
-import lotto.view.CommandOutputView;
-import lotto.view.InputView;
-import lotto.view.OutputView;
+import lotto.view.input.InputView;
+import lotto.view.output.OutputView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static lotto.GameStatus.*;
+import static lotto.LottoStatus.*;
 
-public class GameController {
+public class LottoApplication {
 
-    private User user;
+    private LottoPlayer lottoPlayer;
     private WinningLotto winningLotto;
-    private final Random randomNumberGenerator;
+    private final RandomPickStrategy randomNumberGenerator;
     private final InputView inputView;
     private final OutputView outputView;
 
-    public GameController(
-            Random randomNumberGenerator,
+    public LottoApplication(
+            RandomPickStrategy randomNumberGenerator,
             InputView inputView,
             OutputView outputView
     ) {
@@ -30,27 +28,27 @@ public class GameController {
         this.outputView = outputView;
     }
 
-    public User getUser() {
-        return user;
+    public LottoPlayer getUser() {
+        return lottoPlayer;
     }
 
     public WinningLotto getWinningLotto() {
         return winningLotto;
     }
 
-    public GameResult play() {
+    public LottoResult play() {
         makeUserInfo();
         makeWinningLotto();
-        LottoResultCalculator calculator = new LottoResultCalculator(user, winningLotto);
-        GameResult result = calculator.calculate();
+        LottoResultCalculator calculator = new LottoResultCalculator(lottoPlayer, winningLotto);
+        LottoResult result = calculator.calculate();
         printResult(result);
 
         return result;
     }
 
-    private void printResult(GameResult result) {
+    private void printResult(LottoResult result) {
         outputView.printMessage("당첨 통계");
-        Map<GameStatus, Integer> statuses = result.getStatuses();
+        Map<LottoStatus, Integer> statuses = result.getStatuses();
         outputView.printMessage("---------");
         outputView.printMessage("3개 일치 (" + THREE_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(THREE_CORRECT, 0) + "개");
         outputView.printMessage("4개 일치 (" + FOUR_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(FOUR_CORRECT, 0) + "개");
@@ -98,8 +96,8 @@ public class GameController {
             lottos.add(new Lotto(randomNumberGenerator.generate()));
         }
 
-        this.user = new User(price, lottoCount, lottos);
-        for (Lotto lotto : user.getLottos()) {
+        this.lottoPlayer = new LottoPlayer(price, lottoCount, lottos);
+        for (Lotto lotto : lottoPlayer.getLottos()) {
             outputView.printLog(lotto.getNumbers());
         }
     }

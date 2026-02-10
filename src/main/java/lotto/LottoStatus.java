@@ -1,9 +1,8 @@
 package lotto;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public enum GameStatus {
+public enum LottoStatus {
 
     SIX_CORRECT(2000000000L, 6, false),
     FIVE_CORRECT_BONUS(30000000L, 5, true),
@@ -13,11 +12,11 @@ public enum GameStatus {
     FAIL(0L, -1, false)
     ;
 
-    private long price;
-    private int count;
-    private boolean hasBonus;
+    private final long price;
+    private final int count;
+    private final boolean hasBonus;
 
-    GameStatus(long price, int count, boolean hasBonus) {
+    LottoStatus(long price, int count, boolean hasBonus) {
         this.price = price;
         this.count = count;
         this.hasBonus = hasBonus;
@@ -27,11 +26,7 @@ public enum GameStatus {
         return price;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public static GameStatus judgeGameStatus(int matchCount, boolean hasBonus) {
+    public static LottoStatus judgeGameStatus(int matchCount, boolean hasBonus) {
         return Arrays.stream(values())
                 .filter(status -> status.match(matchCount, hasBonus))
                 .findFirst()

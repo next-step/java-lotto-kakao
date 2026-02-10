@@ -1,7 +1,5 @@
 package lotto;
 
-import lotto.view.CommandInputView;
-import lotto.view.CommandOutputView;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 import org.assertj.core.api.Assertions;
@@ -26,8 +24,8 @@ public class GameControllerTest {
 
         Lotto winningLottoNumber = new Lotto(List.of(1, 2, 3, 4, 5, 6));
 
-        User user = new User(3000, 3, lottos);
-        Random numberGenerator = new FixedNumberGenerator();
+        LottoPlayer lottoPlayer = new LottoPlayer(3000, 3, lottos);
+        RandomPickStrategy numberGenerator = new FixedNumberGenerator();
         MockInputView inputView = new MockInputView(List.of(
                 "3000",
                 "1,2,3,4,5,6",
@@ -63,7 +61,7 @@ public class GameControllerTest {
         );
     }
 
-    static class FixedNumberGenerator implements Random {
+    static class FixedNumberGenerator implements RandomPickStrategy {
 
         @Override
         public List<Integer> generate() {
