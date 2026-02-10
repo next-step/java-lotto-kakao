@@ -17,6 +17,7 @@ public class Lotto {
         for (int i = 0; i < 6; i++) {
             balls.add(new Ball(allNumbers.get(i)));
         }
+        Collections.sort(balls);
         status = LottoStatus.ZERO;
         bonus = new Ball();
     }
@@ -27,7 +28,7 @@ public class Lotto {
         if(set.size() != 7) {
             throw new IllegalArgumentException();
         }
-
+        Collections.sort(balls);
         this.balls = balls;
         this.status = LottoStatus.ANSWER;
         this.bonus = bonus;
@@ -56,5 +57,10 @@ public class Lotto {
     public Ball getBonus() {return bonus;}
     public void setStatus(LottoStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return balls.toString();
     }
 }

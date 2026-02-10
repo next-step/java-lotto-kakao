@@ -2,7 +2,7 @@ package lotto;
 
 import java.util.Objects;
 
-public class Ball {
+public class Ball implements Comparable<Ball>{
     private int value;
 
     public Ball() {
@@ -24,6 +24,10 @@ public class Ball {
         new Ball(num);
     }
 
+    public int getValue() {
+        return value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -34,5 +38,16 @@ public class Ball {
     @Override
     public int hashCode() {
         return Objects.hashCode(value);
+    }
+
+
+    @Override
+    public int compareTo(Ball o) {
+        return this.value - o.getValue();
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 }
