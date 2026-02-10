@@ -1,14 +1,22 @@
 package model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class StatsService {
+public class StatsBoard {
 
-	private GameInfo gameInfo;
-
-
-	public void setGameInfo(GameInfo info) {
-		gameInfo = info;
+	private final GameInfo gameInfo;
+	private final Map<WinLevel, Integer> matchedWinLevelCount;
+	private final Integer ticketCount;
+	StatsBoard(GameInfo gameInfo, List<Ticket> tickets) {
+		this.gameInfo = gameInfo;
+		ticketCount = tickets.size();
+		matchedWinLevelCount = new HashMap<>();
+		for(Ticket ticket: tickets) {
+			WinLevel level = validateTicket(ticket);
+			matchedWinLevelCount.put(level, matchedWinLevelCount.getOrDefault(level, 0) + 1);
+		}
 	}
 
 	WinLevel validateTicket(Ticket ticket) {
@@ -33,11 +41,11 @@ public class StatsService {
 		return WinLevel.LOSER;
 	}
 
-	public Double getProfitRatio(List<Ticket> tickets) {
+	public Double getProfitRatio() {
 		long ticketRevenue = 0L;
-		long cost = 1000L * tickets.size();
-		for(Ticket ticket: tickets)
-			ticketRevenue += this.validateTicket(ticket).getPrice();
+		long cost = 1000L * ticketCount;
+		for(var zip: matchedWinLevelCount.entrySet())
+			ticketRevenue += zip.getKey().getPrice() * zip.getValue();
 		return (double)ticketRevenue / cost;
 	}
 }

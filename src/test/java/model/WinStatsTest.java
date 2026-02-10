@@ -13,17 +13,14 @@ public class WinStatsTest {
 	void HelloStats() {
 		Ticket ticket = new Ticket(1,2,3,4,5,6);
 		Integer bonusBall = 7;
-		StatsService statsService = new StatsService();
-		statsService.setGameInfo(gameInfo);
-		Ticket[] tickets = {
+		List<Ticket> tickets =  Arrays.asList(
 			new Ticket(1,2,3,4,5,6),
 			new Ticket(1,2,3,4,5,7),
 			new Ticket(1,2,3,4,5,8),
 			new Ticket(1,2,3,4,9,8),
 			new Ticket(1,2,3,10,9,8),
-			new Ticket(7,8,9,10,11,12),
-		};
-
+			new Ticket(7,8,9,10,11,12)
+		);
 		WinLevel[] winLevels = {
 			WinLevel.FIRST,
 			WinLevel.SECOND,
@@ -32,25 +29,25 @@ public class WinStatsTest {
 			WinLevel.FIFTH,
 			WinLevel.LOSER,
 		};
+		StatsBoard statsBoard = new StatsBoard(gameInfo,tickets);
+
 
 		for(int i = 0; i< 6; i++) {
-			WinLevel winLevel = statsService.validateTicket(tickets[i]);
+			WinLevel winLevel = statsBoard.validateTicket(tickets.get(i));
 			assertThat(winLevel).isEqualTo(winLevels[i]);
 		}
 	}
 	@Test
 	void profitRatioMaker() {
-		StatsService statsService = new StatsService();
-		statsService.setGameInfo(gameInfo);
-		List<Ticket> tickets = Arrays.asList(
+		StatsBoard statsBoard = new StatsBoard(gameInfo,  Arrays.asList(
 			new Ticket(1,2,3,4,5,6),
 			new Ticket(1,2,3,4,5,7),
 			new Ticket(1,2,3,4,5,8),
 			new Ticket(1,2,3,4,9,8),
 			new Ticket(1,2,3,10,9,8),
 			new Ticket(7,8,9,10,11,12)
-		);
-		Double profitRatio = statsService.getProfitRatio(tickets);
+		));
+		Double profitRatio = statsBoard.getProfitRatio();
 		assertThat(profitRatio).isEqualTo(338592.5);
 	}
 }
