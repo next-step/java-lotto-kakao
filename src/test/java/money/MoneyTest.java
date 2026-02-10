@@ -8,6 +8,6 @@ public class MoneyTest {
     @Test
     void createFailBelowRange() {
         assertThrows(IllegalArgumentException.class,
-                () -> Money.won(-10));
+                () -> new Money(0));
     }
 }
