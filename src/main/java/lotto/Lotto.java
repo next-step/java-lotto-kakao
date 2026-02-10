@@ -23,8 +23,8 @@ public class Lotto {
 
     public Lotto(List<Ball> balls, Ball  bonus) {
         Set<Ball> set = new HashSet<Ball>(balls);
-
-        if(set.size() != 6) {
+        set.add(bonus);
+        if(set.size() != 7) {
             throw new IllegalArgumentException();
         }
 
