@@ -5,27 +5,25 @@ import java.util.Objects;
 
 public class Ticket {
 	private final List<Integer> numbers;
+	private final Long key;
 	Ticket(Integer... numbers) {
-		// numbers.length
-		List<Integer> result = new ArrayList<>(Arrays.asList(numbers));
-		result.sort(((o1, o2) -> o1 - o2));
-		this.numbers = result;
+		this(new ArrayList<>(Arrays.asList(numbers)));
+	}
+
+	Ticket(List<Integer> numbers) {
+		numbers.sort(((o1, o2) -> o1 - o2));
+		long key = 0L;
+		for(Integer number: numbers) {
+			key |= (1L << number);
+		}
+		this.numbers = numbers;
+		this.key = key;
 	}
 
 	public List<Integer> get() {
 		return numbers;
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Ticket ticket = (Ticket)o;
-		return Objects.equals(numbers, ticket.numbers);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(numbers);
+	public Long getKey() {
+		return key;
 	}
 }
