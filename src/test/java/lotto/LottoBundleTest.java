@@ -1,6 +1,5 @@
 package lotto;
 
-import money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ public class LottoBundleTest {
         assertThrows(IllegalArgumentException.class,
                 () -> new LottoBundle(null));
         assertThrows(IllegalArgumentException.class,
-                () -> new LottoBundle(new Lotto(8, 21, 23, 41, 42, 43), (Lotto[]) null));
+                () -> new LottoBundle(new Lotto(8, 21, 23, 41, 42, 43), null));
     }
 
     @Test
@@ -52,26 +51,5 @@ public class LottoBundleTest {
         assertThat(lottoBundleResult.getRankCount(LottoRank.THIRD)).isEqualTo(0);
         assertThat(lottoBundleResult.getRankCount(LottoRank.SECOND)).isEqualTo(0);
         assertThat(lottoBundleResult.getRankCount(LottoRank.FIRST)).isEqualTo(0);
-    }
-
-    @Test
-    void buyLottoBundle() {
-        Money money = Money.won(14000);
-        LottoBundle lottoBundle = LottoBundle.buy(money);
-        assertThat(lottoBundle.size()).isEqualTo(14);
-    }
-
-    @Test
-    void buyFailLottoBundle() {
-        Money money = Money.won(900);
-        assertThrows(IllegalArgumentException.class,
-                () -> LottoBundle.buy(money));
-    }
-
-    @Test
-    void buyFailForZeroMoney() {
-        Money money = Money.won(0);
-        assertThrows(IllegalArgumentException.class,
-                () -> LottoBundle.buy(money));
     }
 }
