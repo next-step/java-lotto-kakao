@@ -1,20 +1,23 @@
 package lotto;
 
-public enum LottoRank {
-    FIRST(6, false),
-    SECOND(5, true),
-    THIRD(5, false),
-    FOURTH(4, false),
-    FIFTH(3, false),
-    LOSE(0, false);
+import money.Money;
 
-    private final int matchCount;
+public enum LottoRank {
+    FIRST(6, false, Money.won(2000000000)),
+    SECOND(5, true, Money.won(30000000)),
+    THIRD(5, false, Money.won(1500000)),
+    FOURTH(4, false, Money.won(50000)),
+    FIFTH(3, false, Money.won(5000)),
+    LOSE(0, false, Money.won(0));
+
+    public final Money prize;
+    public final int matchCount;
     private final Boolean hasBonus;
 
-
-    LottoRank(int matchCount, Boolean hasBonus) {
+    LottoRank(int matchCount, Boolean hasBonus, Money prize) {
         this.matchCount = matchCount;
         this.hasBonus = hasBonus;
+        this.prize = prize;
     }
 
     public static LottoRank searchRank(int count, boolean bonus) {

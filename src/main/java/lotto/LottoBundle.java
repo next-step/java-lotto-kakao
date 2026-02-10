@@ -1,5 +1,7 @@
 package lotto;
 
+import money.Money;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,15 @@ public class LottoBundle {
         return list;
     }
 
+    public static LottoBundle buy(Money money) {
+        long count = Lotto.calculatePurchasableCount(money);
+        List<Lotto> lottos = new ArrayList<>();
+        for (long c = 0; c < count; c++) {
+            lottos.add(Lotto.random());
+        }
+        return new LottoBundle(lottos);
+    }
+
     private void validate(List<Lotto> lottos) {
         if (lottos == null || lottos.contains(null)) {
             throw new IllegalArgumentException("로또 묶음에 null이 포함될 수 없습니다.");
@@ -37,7 +48,16 @@ public class LottoBundle {
         for (Lotto lotto : lottos) {
             LottoRank rank = win.lottery(lotto);
             lottoBundleResultBuilder.count(rank);
+            lottoBundleResultBuilder.addFee(Money.won(Lotto.PRICE));
         }
         return lottoBundleResultBuilder.build();
+    }
+
+    public int size() {
+        return lottos.size();
+    }
+
+    public List<Lotto> asList() {
+        return List.copyOf(lottos);
     }
 }
