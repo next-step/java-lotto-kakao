@@ -48,11 +48,16 @@ public class LottoBundle {
         for (Lotto lotto : lottos) {
             LottoRank rank = win.lottery(lotto);
             lottoBundleResultBuilder.count(rank);
+            lottoBundleResultBuilder.addFee(Money.won(Lotto.PRICE));
         }
         return lottoBundleResultBuilder.build();
     }
 
     public int size() {
         return lottos.size();
+    }
+
+    public List<Lotto> asList() {
+        return List.copyOf(lottos);
     }
 }

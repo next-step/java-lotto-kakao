@@ -20,4 +20,9 @@ public record LottoNumber(int value) implements Comparable<LottoNumber> {
             );
         }
     }
+
+    @Override
+    public String toString() {
+        return "" + value;
+    }
 }

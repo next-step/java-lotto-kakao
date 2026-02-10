@@ -67,4 +67,9 @@ public final class Money {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    @Override
+    public String toString() {
+        return value + "원";
+    }
 }

@@ -52,7 +52,7 @@ public class Lotto {
     private void validate(Set<LottoNumber> lottoNumberSet) {
         if (lottoNumberSet.size() != LENGTH) {
             throw new IllegalArgumentException(
-                    String.format("로또 숫자는 %d개여야 합니다", LENGTH)
+                    String.format("로또 숫자는 중복없이 %d개여야 합니다", LENGTH)
             );
         }
     }
@@ -72,5 +72,14 @@ public class Lotto {
         List<LottoNumber> list = new ArrayList<>(lottoNumberSet);
         Collections.sort(list);
         return list;
+    }
+
+    @Override
+    public String toString() {
+        return this.numbers().toString();
+    }
+
+    public boolean contains(LottoNumber number) {
+        return lottoNumberSet.contains(number);
     }
 }
