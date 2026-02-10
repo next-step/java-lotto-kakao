@@ -5,7 +5,7 @@ import money.Money;
 import java.util.*;
 
 public class Lotto {
-    private static final long PRICE = 1000L;
+    public static final long PRICE = 1000L;
     private static final int LENGTH = 6;
     private final Set<LottoNumber> lottoNumberSet;
 
@@ -40,6 +40,9 @@ public class Lotto {
     }
 
     public static long calculatePurchasableCount(Money money) {
+        if (money.isZero()) {
+            throw new IllegalArgumentException("구매금액은 0이면 안됩니다.");
+        }
         if (!money.isMultipleOf(PRICE)) {
             throw new IllegalArgumentException(String.format("구매금액은 로또 가격의 배수여야 합니다. 로또 가격 : %d", PRICE));
         }

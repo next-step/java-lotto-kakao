@@ -45,7 +45,13 @@ public class LottoTest {
     @Test
     void failsForInvalidMoney() {
         assertThrows(IllegalArgumentException.class,
-                () -> Lotto.calculatePurchasableCount(new Money(1400)));
+                () -> Lotto.calculatePurchasableCount(Money.won(1400)));
+    }
+
+    @Test
+    void failsForZeroMoney() {
+        assertThrows(IllegalArgumentException.class,
+                () -> Lotto.calculatePurchasableCount(Money.won(0)));
     }
 
     @Test
