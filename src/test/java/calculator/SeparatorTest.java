@@ -1,4 +1,4 @@
-package calculatorTest;
+package calculator;
 
 class SeparatorTest {
 
