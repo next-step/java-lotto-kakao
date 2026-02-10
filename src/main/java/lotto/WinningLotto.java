@@ -4,10 +4,11 @@ import java.util.List;
 
 public class WinningLotto {
 
-	private List<Integer> numbers;
-	private int bonus;
+	private final List<Integer> numbers;
+	private final int bonus;
 
 	WinningLotto(List<Integer> numbers, int bonus) {
+		// Todo: validate 메소드 생성
 		this.numbers = numbers;
 		this.bonus = bonus;
 	}
@@ -16,13 +17,13 @@ public class WinningLotto {
 		return this.numbers;
 	}
 
-	int checkNumbers(List<Integer> lottoNumbers) {
-		return (int) lottoNumbers.stream()
+	int checkNumbers(Lotto lotto) {
+		return (int) lotto.getNumbers().stream()
 			.filter(numbers::contains)
 			.count();
 	}
 
-	boolean isContainBonus(List<Integer> lottoNumbers) {
-		return lottoNumbers.contains(bonus);
+	boolean isContainBonus(Lotto lotto) {
+		return lotto.getNumbers().contains(bonus);
 	}
 }
