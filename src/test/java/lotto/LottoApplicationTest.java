@@ -1,8 +1,7 @@
 package lotto;
 
-import lotto.view.InputView;
-import lotto.view.OutputView;
-import org.assertj.core.api.Assertions;
+import lotto.view.input.InputView;
+import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-public class GameControllerTest {
+import static org.assertj.core.api.Assertions.*;
+
+public class LottoApplicationTest {
 
     @Test
     @DisplayName("통합 테스트")
@@ -33,16 +34,16 @@ public class GameControllerTest {
         ));
         MockOutputView outputView = new MockOutputView();
 
-        GameController controller = new GameController(
+        LottoApplication controller = new LottoApplication(
                 numberGenerator,
                 inputView,
                 outputView
         );
 
-        GameResult gameResult = controller.play();
+        LottoResult lottoResult = controller.play();
 
-        Assertions.assertThat(gameResult).isNotNull();
-        Assertions.assertThat(outputView.getOutput()).containsExactly(
+        assertThat(lottoResult).isNotNull();
+        assertThat(outputView.getOutput()).containsExactly(
                 "구입금액을 입력해 주세요.",
                 "3개를 구매했습니다.",
                 "[1, 2, 3, 4, 5, 6]",

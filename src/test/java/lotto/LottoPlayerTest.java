@@ -1,6 +1,5 @@
 package lotto;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class UserTest {
+public class LottoPlayerTest {
 
     @Test
     @DisplayName("정상 입력 케이스")
@@ -24,11 +23,11 @@ public class UserTest {
                 )
         );
 
-        User user = new User(price, lottoCount, lottos);
+        LottoPlayer lottoPlayer = new LottoPlayer(price, lottoCount, lottos);
 
-        assertThat(user.getPrice()).isEqualTo(3000);
-        assertThat(user.getLottoCount()).isEqualTo(3);
-        assertThat(user.getLottos()).hasSize(3);
+        assertThat(lottoPlayer.getPrice()).isEqualTo(3000);
+        assertThat(lottoPlayer.getLottoCount()).isEqualTo(3);
+        assertThat(lottoPlayer.getLottos()).hasSize(3);
     }
 
     @Test
@@ -37,7 +36,7 @@ public class UserTest {
         assertThatThrownBy(() -> {
             int price = 900;
             int lottoCount = 0;
-            User user = new User(price, lottoCount, new ArrayList<>());
+            LottoPlayer lottoPlayer = new LottoPlayer(price, lottoCount, new ArrayList<>());
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("1000원 미만의 구매 금액이 입력되었습니다.");
     }

@@ -10,7 +10,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class LottoResultCalculatorTest {
 
-    private User user;
+    private LottoPlayer lottoPlayer;
 
     @BeforeEach
     void beforeEach() {
@@ -19,20 +19,20 @@ public class LottoResultCalculatorTest {
         Lotto lotto3 = new Lotto(List.of(13, 14, 15, 16, 17, 18));
         List<Lotto> lottos = List.of(lotto1, lotto2, lotto3);
 
-        this.user = new User(3000, 3, lottos);
+        this.lottoPlayer = new LottoPlayer(3000, 3, lottos);
     }
 
     @Test
     @DisplayName("성공케이스")
     void success() {
         WinningLotto winningLottoNumber = new WinningLotto(new Lotto(List.of(1, 2, 3, 4, 5, 6)), 7);
-        LottoResultCalculator calculator = new LottoResultCalculator(user, winningLottoNumber);
+        LottoResultCalculator calculator = new LottoResultCalculator(lottoPlayer, winningLottoNumber);
 
-        GameResult result = calculator.calculate();
+        LottoResult result = calculator.calculate();
         long profit = result.getProfit();
         double profitRate = result.getProfitRate();
 
-        assertThat(result.getStatuses().get(GameStatus.SIX_CORRECT)).isEqualTo(1);
+        assertThat(result.getStatuses().get(LottoStatus.SIX_CORRECT)).isEqualTo(1);
         assertThat(profit).isEqualTo(2000000000);
         assertThat(profitRate).isEqualTo(666666.6666666666);
     }
