@@ -4,17 +4,17 @@ import java.util.*;
 
 public class Lotto {
 
-    private List<Integer> numbers;
+    private final List<LottoNumber> numbers;
 
-    public Lotto(List<Integer> numbers) {
-        validate(numbers);
-        this.numbers = numbers;
+    public Lotto(List<Integer> values) {
+        validate(values);
+        numbers = new ArrayList<>();
+        for (int number: values) {
+            numbers.add(new LottoNumber(number));
+        }
     }
 
     private void validate(List<Integer> numbers) {
-        for (int number : numbers) {
-            ValidateRange(number);
-        }
         validateDuplicate(numbers);
         validateNumberCount(numbers);
     }
@@ -32,13 +32,12 @@ public class Lotto {
         }
     }
 
-    private void ValidateRange(int number) {
-        if (number < 1 || number > 45) {
-            throw new IllegalArgumentException("1 ~ 45 범위를 벗어나는 숫자가 입력되었습니다.");
-        }
-    }
 
     public List<Integer> getNumbers() {
-        return Collections.unmodifiableList(numbers);
+        List<Integer> result = new ArrayList<>();
+        for (LottoNumber number: numbers) {
+            result.add(number.getValue());
+        }
+        return Collections.unmodifiableList(result);
     }
 }
