@@ -5,17 +5,42 @@ import java.util.Objects;
 public final class Money {
     private final long value;
 
-    public Money(long value) {
+    private Money(long value) {
         validate(value);
         this.value = value;
     }
 
+    public static Money won(long value) {
+        return new Money(value);
+    }
+
     private void validate(long value) {
-        if (value <= 0L) {
+        if (value < 0L) {
             throw new IllegalArgumentException(
-                    String.format("구입금액은 양수여야 합니다.: %d", value)
+                    String.format("돈은 0 또는 양수여야 합니다.: %d", value)
             );
         }
+    }
+
+    public Money times(int multiplier) {
+        if (multiplier < 0) {
+            throw new IllegalArgumentException("곱하는 값은 0 또는 양수여야 합니다.: " + multiplier);
+        }
+        return Money.won(Math.multiplyExact(this.value, multiplier));
+    }
+
+    public double calculateMoneyRate(Money divisor) {
+        if (divisor.value <= 0L) {
+            throw new IllegalArgumentException("비교 금액은 0일 수 없습니다.");
+        }
+        return (double) this.value / divisor.value;
+    }
+
+    public Money plus(Money other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Money는 null일 수 없습니다.");
+        }
+        return Money.won(Math.addExact(this.value, other.value));
     }
 
     public long calculatePurchasableCount(long price) {
@@ -23,7 +48,11 @@ public final class Money {
     }
 
     public boolean isMultipleOf(long price) {
-        return value % price == 0;
+        return value % price == 0L;
+    }
+
+    public boolean isZero() {
+        return value == 0L;
     }
 
     @Override

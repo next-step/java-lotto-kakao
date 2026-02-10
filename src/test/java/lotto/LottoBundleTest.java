@@ -56,14 +56,14 @@ public class LottoBundleTest {
 
     @Test
     void buyLottoBundle() {
-        Money money = new Money(14000);
+        Money money = Money.won(14000);
         LottoBundle lottoBundle = LottoBundle.buy(money);
         assertThat(Lotto.calculatePurchasableCount(money)).isEqualTo(lottoBundle.size());
     }
 
     @Test
     void buyFailLottoBundle() {
-        Money money = new Money(1400);
+        Money money = Money.won(1400);
         assertThrows(IllegalArgumentException.class,
                 () -> LottoBundle.buy(money));
     }

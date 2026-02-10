@@ -1,5 +1,6 @@
 package lotto;
 
+import money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ public class LottoBundleResultTest {
     @Test
     @DisplayName("존재하지 않는 등수 조회 시 0을 반환한다.")
     void returnsZeroWhenRankAbsent() {
-        LottoBundleResult result = new LottoBundleResult(Map.of());
+        LottoBundleResult result = new LottoBundleResult(Map.of(), Money.won(0));
         assertThat(result.getRankCount(LottoRank.FIFTH)).isZero();
     }
 
@@ -21,9 +22,22 @@ public class LottoBundleResultTest {
         LottoBundleResult result = new LottoBundleResult(Map.of(
                 LottoRank.FIFTH, 1,
                 LottoRank.FOURTH, 2
-        ));
+        ), Money.won(Lotto.PRICE * 3));
 
         assertThat(result.getRankCount(LottoRank.FIFTH)).isEqualTo(1);
         assertThat(result.getRankCount(LottoRank.FOURTH)).isEqualTo(2);
+        assertThat(result.getRankCount(LottoRank.THIRD)).isZero();
+    }
+
+    @Test
+    void calculateProfitRate() {
+        LottoBundleResult result = new LottoBundleResult(Map.of(
+                LottoRank.FIFTH, 1,
+                LottoRank.FOURTH, 2,
+                LottoRank.LOSE, 5
+        ), Money.won(Lotto.PRICE * 8));
+
+        double rate = result.calculateProfitRate();
+        assertThat(13.125).isEqualTo(rate);
     }
 }
