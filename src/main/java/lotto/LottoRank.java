@@ -11,7 +11,7 @@ public enum LottoRank {
     LOSE(0, false, Money.won(0));
 
     public final Money prize;
-    private final int matchCount;
+    public final int matchCount;
     private final Boolean hasBonus;
 
     LottoRank(int matchCount, Boolean hasBonus, Money prize) {
