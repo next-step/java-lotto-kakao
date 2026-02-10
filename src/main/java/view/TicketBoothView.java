@@ -18,15 +18,6 @@ public class TicketBoothView {
 		}
 	}
 
-
-	public void showInputWinNumberMessage() {
-		System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-	}
-
-	public void showInputBonusBall() {
-		System.out.println("보너스 볼을 입력해 주세요.");
-	}
-
 	public Integer inputTicketPrice() {
 		String input = scanner.nextLine();
 		try {
@@ -35,6 +26,7 @@ public class TicketBoothView {
 			throw new IllegalArgumentException("잘 못 된 입력");
 		}
 	}
+
 
 	public void showErrorMessage(IllegalArgumentException e) {
 		System.out.println(e.getMessage());

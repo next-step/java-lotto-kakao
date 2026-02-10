@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum WinLevel {
 	FIRST, SECOND, THIRD, FOURTH, FIFTH, LOSER;
 
@@ -11,5 +14,13 @@ public enum WinLevel {
 		if(this == WinLevel.FIFTH) return 5_000L;
 		return 0L;
 	}
-
+	public static List<WinLevel> getAll() {
+		return List.of(
+			WinLevel.FIFTH,
+			WinLevel.FOURTH,
+			WinLevel.THIRD,
+			WinLevel.SECOND,
+			WinLevel.FOURTH
+		);
+	}
 }

@@ -9,16 +9,23 @@ public class StatsBoard {
 	private final GameInfo gameInfo;
 	private final Map<WinLevel, Integer> matchedWinLevelCount;
 	private final Integer ticketCount;
-	StatsBoard(GameInfo gameInfo, List<Ticket> tickets) {
+	public StatsBoard(GameInfo gameInfo, List<Ticket> tickets) {
 		this.gameInfo = gameInfo;
 		ticketCount = tickets.size();
 		matchedWinLevelCount = new HashMap<>();
+		for(WinLevel winLevel: WinLevel.getAll()) {
+			matchedWinLevelCount.put(winLevel, 0);
+		}
 		for(Ticket ticket: tickets) {
 			WinLevel level = validateTicket(ticket);
 			matchedWinLevelCount.put(level, matchedWinLevelCount.getOrDefault(level, 0) + 1);
 		}
+
 	}
 
+	public Integer getLevelCount(WinLevel winLevel) {
+		return matchedWinLevelCount.get(winLevel);
+	}
 	WinLevel validateTicket(Ticket ticket) {
 		if(gameInfo == null) {
 			throw new IllegalArgumentException("게임 정보가 없습니다!");

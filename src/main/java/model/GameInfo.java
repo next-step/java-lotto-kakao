@@ -7,7 +7,7 @@ public class GameInfo {
 	final Integer bonusNumber;
 	final List<Integer> winNumbers;
 
-	GameInfo(int bonusNumber, List<Integer> winNumbers) {
+	public GameInfo(int bonusNumber, List<Integer> winNumbers) {
 		winNumbers.sort(((o1,o2) -> o1 - o2));
 		this.bonusNumber = bonusNumber;
 		this.winNumbers = winNumbers;
