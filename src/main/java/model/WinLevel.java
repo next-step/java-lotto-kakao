@@ -1,3 +1,5 @@
+package model;
+
 enum WinLevel {
 	FIRST, SECOND, THIRD, FOURTH, FIFTH, LOSER;
 

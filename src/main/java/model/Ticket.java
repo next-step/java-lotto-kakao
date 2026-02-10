@@ -1,7 +1,8 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Ticket {
 	private final List<Integer> numbers;
@@ -25,5 +26,18 @@ public class Ticket {
 	}
 	public Long getKey() {
 		return key;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("[");
+		for (Integer number : numbers) {
+			stringBuilder.append(number).append(", ");
+		}
+		stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+		stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+		stringBuilder.append("]");
+		return stringBuilder.toString();
 	}
 }

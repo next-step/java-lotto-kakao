@@ -1,6 +1,7 @@
+package model;
+
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

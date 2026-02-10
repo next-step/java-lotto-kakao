@@ -1,9 +1,9 @@
+package model;
+
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 
 public class LottoMakerTest {
