@@ -8,16 +8,16 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class LottoResultCalculatorTest {
+public class LottosResultCalculatorTest {
 
     private LottoPlayer lottoPlayer;
 
     @BeforeEach
     void beforeEach() {
-        Lotto lotto1 = new Lotto(List.of(1, 2, 3, 4, 5, 6));
-        Lotto lotto2 = new Lotto(List.of(7, 8, 9, 10, 11, 12));
-        Lotto lotto3 = new Lotto(List.of(13, 14, 15, 16, 17, 18));
-        List<Lotto> lottos = List.of(lotto1, lotto2, lotto3);
+        Lottos lottos1 = new Lottos(List.of(1, 2, 3, 4, 5, 6));
+        Lottos lottos2 = new Lottos(List.of(7, 8, 9, 10, 11, 12));
+        Lottos lottos3 = new Lottos(List.of(13, 14, 15, 16, 17, 18));
+        List<Lottos> lottos = List.of(lottos1, lottos2, lottos3);
 
         this.lottoPlayer = new LottoPlayer(3000, 3, lottos);
     }
@@ -25,7 +25,7 @@ public class LottoResultCalculatorTest {
     @Test
     @DisplayName("성공케이스")
     void success() {
-        WinningLotto winningLottoNumber = new WinningLotto(new Lotto(List.of(1, 2, 3, 4, 5, 6)), 7);
+        WinningLotto winningLottoNumber = new WinningLotto(new Lottos(List.of(1, 2, 3, 4, 5, 6)), 7);
         LottoResultCalculator calculator = new LottoResultCalculator(lottoPlayer, winningLottoNumber);
 
         LottoResult result = calculator.calculate();

@@ -1,6 +1,6 @@
 package lotto;
 
-import lotto.domain.Lotto;
+import lotto.domain.Lottos;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoResult;
 import lotto.domain.RandomPickStrategy;
@@ -17,17 +17,17 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class LottoApplicationTest {
+public class LottosApplicationTest {
 
     @Test
     @DisplayName("통합 테스트")
     public void success_1() {
-        Lotto lotto1 = new Lotto(List.of(1, 2, 3, 4, 5, 6));
-        Lotto lotto2 = new Lotto(List.of(7, 8, 9, 10, 11, 12));
-        Lotto lotto3 = new Lotto(List.of(13, 14, 15, 16, 17, 18));
-        List<Lotto> lottos = List.of(lotto1, lotto2, lotto3);
+        Lottos lottos1 = new Lottos(List.of(1, 2, 3, 4, 5, 6));
+        Lottos lottos2 = new Lottos(List.of(7, 8, 9, 10, 11, 12));
+        Lottos lottos3 = new Lottos(List.of(13, 14, 15, 16, 17, 18));
+        List<Lottos> lottos = List.of(lottos1, lottos2, lottos3);
 
-        Lotto winningLottoNumber = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lottos winningLottosNumber = new Lottos(List.of(1, 2, 3, 4, 5, 6));
 
         LottoPlayer lottoPlayer = new LottoPlayer(3000, 3, lottos);
         RandomPickStrategy numberGenerator = new FixedNumberGenerator();

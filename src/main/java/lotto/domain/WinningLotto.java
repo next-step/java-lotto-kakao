@@ -2,18 +2,18 @@ package lotto.domain;
 
 public class WinningLotto {
 
-    private final Lotto lotto;
+    private final Lottos lottos;
     private final int bonusNumber;
 
-    public WinningLotto(Lotto lotto, int bonusNumber) {
-        validate(lotto, bonusNumber);
-        this.lotto = lotto;
+    public WinningLotto(Lottos lottos, int bonusNumber) {
+        validate(lottos, bonusNumber);
+        this.lottos = lottos;
         this.bonusNumber = bonusNumber;
     }
 
-    private void validate(Lotto lotto, int bonusNumber) {
+    private void validate(Lottos lottos, int bonusNumber) {
         validateRange(bonusNumber);
-        validateDuplicate(lotto, bonusNumber);
+        validateDuplicate(lottos, bonusNumber);
     }
 
     private void validateRange(int bonusNumber) {
@@ -22,14 +22,20 @@ public class WinningLotto {
         }
     }
 
-    private void validateDuplicate(Lotto lotto, int bonusNumber) {
-        if (lotto.getNumbers().contains(bonusNumber)) {
+    private void validateDuplicate(Lottos lottos, int bonusNumber) {
+        if (lottos.getNumbers().contains(bonusNumber)) {
             throw new IllegalArgumentException("당첨번호와 중복된 숫자를 보너스 번호로 등록할 수 없습니다.");
         }
     }
 
-    public Lotto getLotto() {
-        return lotto;
+    public LottoStatus judge(Lottos playerLottos) {
+        int matchCount = lottos.matchCount(playerLottos);
+        boolean hasBonus = playerLottos.getNumbers().contains(bonusNumber);
+        return LottoStatus.judgeGameStatus(matchCount, hasBonus);
+    }
+
+    public Lottos getLotto() {
+        return lottos;
     }
 
     public int getBonusNumber() {

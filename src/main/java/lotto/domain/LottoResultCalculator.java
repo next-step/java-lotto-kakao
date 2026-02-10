@@ -25,11 +25,11 @@ public class LottoResultCalculator {
     private HashMap<LottoStatus, Integer> getGameStatusIntegerHashMap() {
         HashMap<LottoStatus, Integer> gameResultMap = new HashMap<>();
 
-        for (Lotto userLotto : lottoPlayer.getLottos()) {
-            Set<Integer> userSet = new HashSet<>(userLotto.getNumbers());
+        for (Lottos userLottos : lottoPlayer.getLottos()) {
+            Set<Integer> userSet = new HashSet<>(userLottos.getNumbers());
             userSet.retainAll(winningLottoSet);
             int count = userSet.size();
-            boolean hasBonus = checkBonusNumber(userLotto);
+            boolean hasBonus = checkBonusNumber(userLottos);
             LottoStatus lottoStatus = LottoStatus.judgeGameStatus(count, hasBonus);
 
             gameResultMap.put(lottoStatus, gameResultMap.getOrDefault(lottoStatus, 0) + 1);
@@ -50,8 +50,8 @@ public class LottoResultCalculator {
         return profit;
     }
 
-    private boolean checkBonusNumber(Lotto userLotto) {
-        Set<Integer> userLottoSet = new HashSet<>(userLotto.getNumbers());
+    private boolean checkBonusNumber(Lottos userLottos) {
+        Set<Integer> userLottoSet = new HashSet<>(userLottos.getNumbers());
         return userLottoSet.contains(winningLotto.getBonusNumber());
     }
 }

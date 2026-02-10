@@ -68,7 +68,7 @@ public class LottoApplication {
                 .toList();
 
         int bonusNumber = makeBonusNumber();
-        winningLotto = new WinningLotto(new Lotto(winningLottoList), bonusNumber);
+        winningLotto = new WinningLotto(new Lottos(winningLottoList), bonusNumber);
     }
 
     private int makeBonusNumber() {
@@ -92,13 +92,13 @@ public class LottoApplication {
     }
 
     private void makeUserLottoInfo(int lottoCount, int price) {
-        List<Lotto> lottos = new ArrayList<>();
+        List<Lottos> lottos = new ArrayList<>();
         for (int i = 0; i < lottoCount; i++) {
-            lottos.add(new Lotto(randomNumberGenerator.generate()));
+            lottos.add(new Lottos(randomNumberGenerator.generate()));
         }
 
         this.lottoPlayer = new LottoPlayer(price, lottoCount, lottos);
-        for (Lotto lotto : lottoPlayer.getLottos()) {
+        for (Lottos lotto : lottoPlayer.getLottos()) {
             outputView.printLog(lotto.getNumbers());
         }
     }

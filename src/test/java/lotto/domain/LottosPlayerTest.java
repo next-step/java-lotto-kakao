@@ -8,18 +8,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class LottoPlayerTest {
+public class LottosPlayerTest {
 
     @Test
     @DisplayName("정상 입력 케이스")
     void successTest() {
         int price = 3000;
         int lottoCount = 3;
-        List<Lotto> lottos = new ArrayList<>(
+        List<Lottos> lottos = new ArrayList<>(
                 List.of(
-                        new Lotto(List.of(1,2,3,4,5,6)),
-                        new Lotto(List.of(1,2,3,4,5,6)),
-                        new Lotto(List.of(1,2,3,4,5,6))
+                        new Lottos(List.of(1,2,3,4,5,6)),
+                        new Lottos(List.of(1,2,3,4,5,6)),
+                        new Lottos(List.of(1,2,3,4,5,6))
                 )
         );
 
