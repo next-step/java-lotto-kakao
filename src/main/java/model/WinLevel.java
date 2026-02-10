@@ -1,6 +1,6 @@
 package model;
 
-enum WinLevel {
+public enum WinLevel {
 	FIRST, SECOND, THIRD, FOURTH, FIFTH, LOSER;
 
 	public Long getPrice() {
@@ -11,4 +11,5 @@ enum WinLevel {
 		if(this == WinLevel.FIFTH) return 5_000L;
 		return 0L;
 	}
+
 }
