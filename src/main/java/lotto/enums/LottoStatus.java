@@ -11,8 +11,8 @@ public enum LottoStatus {
     SIX_BONUS(6, 30000000),
     ANSWER(6, 0);
 
-    private int count;
-    private long money;
+    private final int count;
+    private final long money;
 
     LottoStatus(int count, long money) {
         this.count = count;

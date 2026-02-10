@@ -3,25 +3,33 @@ package lotto;
 import java.util.Objects;
 
 public class Ball implements Comparable<Ball>{
-    private int value;
+    private final int value;
 
     public Ball() {
         this.value = 0;
     }
+
     public Ball(int value) {
-        if(value < 1 || value > 45)
-            throw new IllegalArgumentException("1부터 45 사이의 숫자만 입력 가능합니다.");
+        validateRange(value);
         this.value = value;
     }
+
     public Ball(String value) {
-        int num;
+        this(parseAndValidate(value));
+    }
+
+    private static int parseAndValidate(String value) {
         try {
-            num = Integer.parseInt(value);
-        } catch (NumberFormatException e)
-        {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException("로또 번호는 숫자만 입력 가능합니다.");
         }
-        new Ball(num);
+    }
+
+    private void validateRange(int value) {
+        if (value < 1 || value > 45) {
+            throw new IllegalArgumentException("1부터 45 사이의 숫자만 입력 가능합니다.");
+        }
     }
 
     public int getValue() {
@@ -39,7 +47,6 @@ public class Ball implements Comparable<Ball>{
     public int hashCode() {
         return Objects.hashCode(value);
     }
-
 
     @Override
     public int compareTo(Ball o) {
