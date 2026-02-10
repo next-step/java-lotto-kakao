@@ -21,6 +21,18 @@ public class LotteryChecker {
 		return counts.get(matchCount);
 	}
 
+	public int calculateTotalPrize() {
+		int sum = 0;
+		for (MatchCount match : MatchCount.values()) {
+			sum += counts.get(match) * match.getPrice();
+		}
+		return sum;
+	}
+
+	public Map<MatchCount, Integer> getCounts() {
+		return this.counts;
+	}
+
 	public static double calculateReturnRate(int totalPrize, int totalPurchaseCost) {
 		double rate = (double) totalPrize / totalPurchaseCost;
 		return Math.round(rate * 100) / 100.0;
