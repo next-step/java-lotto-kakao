@@ -42,7 +42,7 @@ public class Application {
 
 	private static WinningLotto readWinningLotto(Scanner scanner) {
 		List<Integer> numbers = readWinningNumbers(scanner);
-		int bonus = readBonus(scanner);
+		int bonus = readBonus(scanner, numbers);
 		return new WinningLotto(numbers, bonus);
 	}
 
@@ -74,7 +74,7 @@ public class Application {
 		}
 	}
 
-	private static int readBonus(Scanner scanner) {
+	private static int readBonus(Scanner scanner, List<Integer> winningNumbers) {
 		System.out.println("보너스 볼을 입력해 주세요.");
 		int bonus = Integer.parseInt(scanner.nextLine());
 
@@ -82,8 +82,13 @@ public class Application {
 			throw new IllegalArgumentException("보너스 볼은 1~45 사이의 숫자여야 합니다.");
 		}
 
+		if (winningNumbers.contains(bonus)) {
+			throw new IllegalArgumentException("보너스 볼은 당첨 번호와 중복될 수 없습니다.");
+		}
+
 		return bonus;
 	}
+
 
 	private static LotteryChecker countMatches(List<Lotto> tickets, WinningLotto winningLotto) {
 		LotteryChecker checker = new LotteryChecker();
