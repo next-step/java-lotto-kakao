@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class WinStatsTest {
+public class WinStatTest {
 	GameScore gameScore = new GameScore(7, Arrays.asList(1,2,3,4,5,6));
 	@Test
 	void ticketLevel() {
@@ -29,7 +29,7 @@ public class WinStatsTest {
 			WinLevel.FIFTH,
 			WinLevel.LOSER,
 		};
-		StatsBoard statsBoard = new StatsBoard(gameScore,tickets);
+		StatBoard statBoard = new StatBoard(gameScore,tickets);
 
 
 		for(int i = 0; i< 6; i++) {
@@ -39,7 +39,7 @@ public class WinStatsTest {
 
 	@Test
 	void profitRatioMaker() {
-		StatsBoard statsBoard = new StatsBoard(gameScore,  Arrays.asList(
+		StatBoard statBoard = new StatBoard(gameScore,  Arrays.asList(
 			new Ticket(1,2,3,4,5,6),
 			new Ticket(1,2,3,4,5,7),
 			new Ticket(1,2,3,4,5,8),
@@ -47,7 +47,7 @@ public class WinStatsTest {
 			new Ticket(1,2,3,10,9,8),
 			new Ticket(7,8,9,10,11,12)
 		));
-		Double profitRatio = statsBoard.getProfitRatio();
+		Double profitRatio = statBoard.getProfitRatio();
 		assertThat(profitRatio).isEqualTo(338592.5);
 	}
 }

@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StatsBoard {
+public class StatBoard {
 
 	private final Map<WinLevel, Integer> matchedWinLevelCount;
 	private final Integer ticketCount;
 
-	public StatsBoard(GameScore gameScore, List<Ticket> tickets) {
+	public StatBoard(GameScore gameScore, List<Ticket> tickets) {
 		ticketCount = tickets.size();
 		matchedWinLevelCount = new HashMap<>();
 

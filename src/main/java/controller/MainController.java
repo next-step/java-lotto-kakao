@@ -3,7 +3,7 @@ package controller;
 import java.util.List;
 
 import model.GameScore;
-import model.StatsBoard;
+import model.StatBoard;
 import model.Ticket;
 import model.TicketBooth;
 import model.WinLevel;
@@ -51,12 +51,12 @@ public class MainController {
 	}
 
 	private void statBoardRender(GameScore score, List<Ticket> tickets) {
-		StatsBoard statsBoard = new StatsBoard(score, tickets);
+		StatBoard statBoard = new StatBoard(score, tickets);
 		statBoardView.showStatResult();
 		List<WinLevel> winLevels = List.of(WinLevel.FIFTH, WinLevel.FOURTH, WinLevel.THIRD, WinLevel.SECOND, WinLevel.FIRST);
 		for(WinLevel winLevel: winLevels) {
-			statBoardView.showWinCountMessage(winLevel, statsBoard.getLevelCount(winLevel));
+			statBoardView.showWinCountMessage(winLevel, statBoard.getLevelCount(winLevel));
 		}
-		statBoardView.showProfitMessage(statsBoard.getProfitRatio());
+		statBoardView.showProfitMessage(statBoard.getProfitRatio());
 	}
 }
