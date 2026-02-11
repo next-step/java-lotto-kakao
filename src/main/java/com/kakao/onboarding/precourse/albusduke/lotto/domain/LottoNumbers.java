@@ -18,7 +18,7 @@ public class LottoNumbers {
 		validateSize(numbers);
 		validateUnique(numbers);
 
-		lottoNumbers = numbers.stream().map(LottoNumber::new).toList();
+		lottoNumbers = numbers.stream().map(LottoNumber::from).toList();
 	}
 
 	private static void validateUnique(List<Integer> numbers) {

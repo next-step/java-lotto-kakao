@@ -53,6 +53,6 @@ public class InputView {
 		System.out.println(BONUS_NUMBER_REQUEST);
 		int bonusNumber = Integer.parseInt(input.readNext());
 
-		return new WinningNumbers(new LottoNumbers(winningNumbers), new LottoNumber(bonusNumber));
+		return new WinningNumbers(new LottoNumbers(winningNumbers), LottoNumber.from(bonusNumber));
 	}
 }
