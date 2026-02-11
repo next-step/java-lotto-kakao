@@ -10,13 +10,13 @@ class LottoNumberTest {
 
     @Test
     @DisplayName("올바른 번호(1-45)일 때")
-    public void validateMoney(){
+    public void validateNumber(){
         assertThatCode(() -> new LottoNumber(5));
     }
 
     @Test
     @DisplayName("올바르지 않은 번호일 때")
-    public void negativeMoney(){
+    public void invalidateNumber(){
         assertThatThrownBy(() -> new LottoNumber(64))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("로또 번호는 1-45 사이 값이어야 합니다");
