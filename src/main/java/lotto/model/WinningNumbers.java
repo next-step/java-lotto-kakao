@@ -1,6 +1,8 @@
 package lotto.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WinningNumbers {
     private final LottoNumbers numbers;
@@ -40,5 +42,14 @@ public class WinningNumbers {
         if (matchCount == 4) return LottoResult.RANK_FOURTH;
         if (matchCount == 3) return LottoResult.RANK_FIFTH;
         return LottoResult.RANK_NONE;
+    }
+
+    public Map<LottoResult, Integer> countByRank(List<LottoNumbers> purchasedNumbers) {
+        Map<LottoResult, Integer> rank = new HashMap<>();
+        for (LottoNumbers numbers : purchasedNumbers) {
+            final LottoResult result = compare(numbers);
+            rank.merge(result, 1, Integer::sum);
+        }
+        return rank;
     }
 }

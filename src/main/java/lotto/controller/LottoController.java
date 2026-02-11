@@ -45,7 +45,7 @@ public class LottoController {
         final WinningNumbers winningNumber = doInputWinningNumbers();
 
         // 통계 계산 및 출력
-        Map<LottoResult, Integer> rank = countByRank(winningNumber, purchaseResult.purchasedNumbers());
+        Map<LottoResult, Integer> rank = winningNumber.countByRank(purchaseResult.purchasedNumbers());
         double profitRate = (double)calculateTotalPrize(rank) / price;
         outputView.printStatistics(rank, profitRate);
     }
@@ -69,15 +69,6 @@ public class LottoController {
         List<Integer> numbers = inputHistoryView.inputWinningNumbers();
         int bonusNumber = inputHistoryView.inputBonusNumber(numbers);
         return new WinningNumbers(numbers, bonusNumber);
-    }
-
-    private Map<LottoResult, Integer> countByRank(WinningNumbers winningNumber, List<LottoNumbers> purchasedNumbers) {
-        Map<LottoResult, Integer> rank = new HashMap<>();
-        for (LottoNumbers numbers : purchasedNumbers) {
-            final LottoResult result = winningNumber.compare(numbers);
-            rank.merge(result, 1, Integer::sum);
-        }
-        return rank;
     }
 
     private long calculateTotalPrize(Map<LottoResult, Integer> rank) {
