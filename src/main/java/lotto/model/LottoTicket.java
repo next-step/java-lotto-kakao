@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 public class LottoTicket {
 
-    private final Set<LottoNumber> lottoNumbers;
     public static final int TICKET_SIZE = 6;
+    private final Set<LottoNumber> lottoNumbers;
 
     public LottoTicket(Integer... numbers) {
         this(toLottoNumberSet(numbers));

@@ -6,8 +6,8 @@ import java.util.List;
 
 public class AutoMachine {
 
-    private final List<LottoNumber> numberList;
     public static final Money LOTTO_PRICE = new Money(-1000);
+    private final List<LottoNumber> numberList;
 
     public AutoMachine() {
         numberList = new ArrayList<>();
