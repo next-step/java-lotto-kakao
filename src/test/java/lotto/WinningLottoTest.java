@@ -7,6 +7,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import lotto.model.Lotto;
+import lotto.model.LottoNumber;
+import lotto.model.WinningLotto;
+
 public class WinningLottoTest {
 
 	List<LottoNumber> numbers = Arrays.asList(

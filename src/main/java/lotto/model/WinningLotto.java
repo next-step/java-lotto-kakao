@@ -1,11 +1,11 @@
-package lotto;
+package lotto.model;
 
 public class WinningLotto {
 
 	private final Lotto winningNumbers;
 	private final LottoNumber bonus;
 
-	WinningLotto(Lotto winningNumbers, LottoNumber bonus) {
+	public WinningLotto(Lotto winningNumbers, LottoNumber bonus) {
 		this.winningNumbers = winningNumbers;
 		this.bonus = bonus;
 	}

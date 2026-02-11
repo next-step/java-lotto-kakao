@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import lotto.model.Lotto;
+import lotto.model.LottoNumber;
+
 public class LottoTest {
 
 	@Test

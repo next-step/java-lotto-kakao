@@ -1,4 +1,4 @@
-package lotto;
+package lotto.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class LottoNumber implements Comparable<LottoNumber>{
 
 	private final int number;
 
-	LottoNumber(int number) {
+	public LottoNumber(int number) {
 		this.number = number;
 	}
 

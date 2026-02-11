@@ -4,6 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 import org.junit.jupiter.api.Test;
 
+import lotto.model.LotteryChecker;
+import lotto.model.MatchCount;
+
 public class LotteryCheckerTest {
 
 	@Test

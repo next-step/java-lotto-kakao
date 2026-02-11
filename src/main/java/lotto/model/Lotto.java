@@ -1,4 +1,4 @@
-package lotto;
+package lotto.model;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +9,7 @@ public class Lotto {
 	private static final int LOTTO_SIZE = 6;
 	private final List<LottoNumber> numbers;
 
-	Lotto(List<LottoNumber> numbers) {
+	public Lotto(List<LottoNumber> numbers) {
 		validate(numbers);
 		this.numbers = List.copyOf(numbers);
 	}
@@ -46,7 +46,7 @@ public class Lotto {
 		return new Lotto(picked);
 	}
 
-	List<LottoNumber> getNumbers() {
+	public List<LottoNumber> getNumbers() {
 		return this.numbers;
 	}
 

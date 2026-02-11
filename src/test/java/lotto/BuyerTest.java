@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import lotto.model.Buyer;
+import lotto.model.Lotto;
+
 public class BuyerTest {
 
 	@Test
