@@ -4,14 +4,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-    private static String delimiter = ",|:";
+    private static final String DEFAULT_DELIMITER = ",|:";
+    private static final Pattern CUSTOM_PATTERN = Pattern.compile("//(.)\n(.*)");
 
     public String[] split(String input) {
-        Matcher m = Pattern.compile("//(.)\n(.*)").matcher(input);
+        Matcher m = CUSTOM_PATTERN.matcher(input);
+
         if (m.find()) {
             String customDelimiter = m.group(1);
-            delimiter += customDelimiter;
+            String finalDelimiter = DEFAULT_DELIMITER + "|" + Pattern.quote(customDelimiter);
+            String targetInput = m.group(2);
+            return targetInput.split(finalDelimiter);
         }
-        return input.split(delimiter);
+
+        return input.split(DEFAULT_DELIMITER);
     }
 }
