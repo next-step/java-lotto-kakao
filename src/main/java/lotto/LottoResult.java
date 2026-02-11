@@ -2,29 +2,29 @@ package lotto;
 import java.util.*;
 
 public class LottoResult {
-    private final Map<Rank, Integer> result;
+    private final Map<Rank, WinningCount> result;
 
     public LottoResult(List<Rank> ranks) {
         this.result = summarize(ranks);
     }
 
-    private Map<Rank, Integer> summarize(List<Rank> ranks) {
-        Map<Rank, Integer> summary = new EnumMap<>(Rank.class);
-        Arrays.stream(Rank.values()).forEach(rank -> summary.put(rank, 0));
+    private Map<Rank, WinningCount> summarize(List<Rank> ranks) {
+        Map<Rank, WinningCount> summary = new EnumMap<>(Rank.class);
+        Arrays.stream(Rank.values()).forEach(rank -> summary.put(rank, new WinningCount(0)));
 
         for (Rank rank : ranks) {
-            summary.put(rank, summary.get(rank) + 1);
+            summary.get(rank).addCount();
         }
         return summary;
     }
 
     public int getCount(Rank rank) {
-        return result.getOrDefault(rank, 0);
+        return result.get(rank).getCount();
     }
 
     public double calculateYield(Money purchaseMoney) {
         long totalPrize = Arrays.stream(Rank.values())
-                .mapToLong(rank -> (long) rank.getWinningMoney() * result.get(rank))
+                .mapToLong(rank -> (long) rank.getWinningMoney() * result.get(rank).getCount())
                 .sum();
 
         return YieldCalculator.calculate(totalPrize, purchaseMoney.getMoney());
