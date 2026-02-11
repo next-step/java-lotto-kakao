@@ -27,7 +27,7 @@ public class WinningLotto {
 
     public LottoStatus judge(Lotto playerLotto) {
         int matchCount = lotto.matchCount(playerLotto);
-        boolean hasBonus = playerLotto.getNumbers().contains(bonusNumber);
+        boolean hasBonus = playerLotto.contains(bonusNumber);
         return LottoStatus.judgeGameStatus(matchCount, hasBonus);
     }
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -25,15 +26,15 @@ public class LottoResultCalculatorTest {
     @Test
     @DisplayName("성공케이스")
     void success() {
-        WinningLotto winningLottoNumber = new WinningLotto(new Lotto(List.of(1, 2, 3, 4, 5, 6)), 7);
-        LottoResultCalculator calculator = new LottoResultCalculator(lottoPlayer, winningLottoNumber);
+        WinningLotto winningLotto = new WinningLotto(new Lotto(List.of(1, 2, 3, 4, 5, 6)), 7);
 
-        LottoResult result = calculator.calculate();
-        long profit = result.getProfit();
-        double profitRate = result.getProfitRate();
+        Map<LottoStatus, Integer> status = winningLotto.countByStatus(lottoPlayer.getLottos());
+        long profit = LottoStatus.totalPrize(status);
+        double profitRate = (double) profit / lottoPlayer.getPrice();
 
-        assertThat(result.getStatuses().get(LottoStatus.SIX_CORRECT)).isEqualTo(1);
-        assertThat(profit).isEqualTo(2000000000);
-        assertThat(profitRate).isEqualTo(666666.6666666666);
+
+        assertThat(status.get(LottoStatus.SIX_CORRECT)).isEqualTo(1);
+        assertThat(profit).isEqualTo(2_000_000_000L);
+        assertThat(profitRate).isEqualTo(666_666.6666666666);
     }
 }

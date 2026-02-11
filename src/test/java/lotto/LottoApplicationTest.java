@@ -38,13 +38,13 @@ public class LottoApplicationTest {
         ));
         MockOutputView outputView = new MockOutputView();
 
-        LottoApplication controller = new LottoApplication(
+        LottoApplication application = new LottoApplication(
                 numberGenerator,
                 inputView,
                 outputView
         );
 
-        controller.play();
+        application.play();
 
         assertThat(outputView.getOutput()).containsExactly(
                 "구입금액을 입력해 주세요.",

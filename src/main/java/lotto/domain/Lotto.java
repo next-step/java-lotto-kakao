@@ -47,4 +47,8 @@ public class Lotto {
         return otherNumbers.size();
     }
 
+    public boolean contains(LottoNumber number) {
+        return numbers.contains(number.getValue());
+    }
+
 }
