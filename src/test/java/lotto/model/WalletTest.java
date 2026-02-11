@@ -10,14 +10,14 @@ class WalletTest {
     @Test
     @DisplayName("지갑 선언")
     public void createWallet(){
-        assertThatCode(()-> new Wallet(new Money(10000)));
+        assertThatCode(()-> new Wallet(new Money(10000))).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("금액 소비")
     public void useBalance(){
         Wallet wallet = new Wallet(10000);
-        assertThatCode(()->wallet.change(new Money(-3000)));
+        assertThatCode(()->wallet.change(new Money(-3000))).doesNotThrowAnyException();
     }
 
     @Test

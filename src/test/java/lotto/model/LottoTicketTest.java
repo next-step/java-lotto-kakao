@@ -10,7 +10,7 @@ class LottoTicketTest {
     @Test
     @DisplayName("정상적인 로또 생성")
     public void createTicket(){
-        assertThatCode(()->new LottoTicket(1,2,3,4,5,6));
+        assertThatCode(()->new LottoTicket(1,2,3,4,5,6)).doesNotThrowAnyException();
     }
 
     @Test

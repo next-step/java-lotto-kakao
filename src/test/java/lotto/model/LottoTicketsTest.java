@@ -21,13 +21,13 @@ class LottoTicketsTest {
                 new LottoTicket(1,2,3,4,5,6),
                 new LottoTicket(1,2,3,4,5,6),
                 new LottoTicket(1,2,3,4,5,6)
-        )));
+        ))).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("null값이어도 정상 초기화 되는지 검사")
     public void lottoTicketsIsNull() {
-        assertThatCode(() -> new LottoTickets(null));
+        assertThatCode(() -> new LottoTickets(null)).doesNotThrowAnyException();
     }
 
 

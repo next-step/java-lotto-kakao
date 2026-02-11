@@ -11,8 +11,7 @@ class MoneyTest {
     @Test
     @DisplayName("올바른 금액일 떄")
     public void validateMoney(){
-        assertThatCode(() -> new Money(1000));
-
+        assertThatCode(() -> new Money(1000)).doesNotThrowAnyException();
     }
 
     @Test
