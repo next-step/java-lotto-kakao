@@ -8,27 +8,38 @@ import java.util.stream.IntStream;
 
 public class Lotto {
 
-	private final List<Integer> numbers;
+	private static final int LOTTO_SIZE = 6;
+	private final List<LottoNumber> numbers;
 
-	Lotto(List<Integer> numbers) {
+	Lotto(List<LottoNumber> numbers) {
+		validate(numbers);
 		this.numbers = List.copyOf(numbers);
 	}
 
-	public static Lotto createRandomLotto() {
-		// ToDo: LottoNumber 클래스에서 min, max 값 설정 후 매직 넘버 수정
-		List<Integer> pool = IntStream.rangeClosed(1, 45)
-			.boxed()
-			.collect(Collectors.toList());
+	private void validate(List<LottoNumber> numbers) {
+		if (numbers.size() != LOTTO_SIZE) {
+			throw new IllegalArgumentException("로또 번호는 6개여야 합니다.");
+		}
+		long distinctCount = numbers.stream().distinct().count();
+		if (distinctCount != LOTTO_SIZE) {
+			throw new IllegalArgumentException("로또 번호는 중복될 수 없습니다.");
+		}
+	}
 
+	public static Lotto createRandomLotto() {
+		List<LottoNumber> pool = LottoNumber.getCache();
 		Collections.shuffle(pool);
-		// ToDo: Application 클래스 리팩토링 시 Lotto 길이 검증 로직 추가 후 매직 넘버 수정
-		List<Integer> picked = new ArrayList<>(pool.subList(0, 6));
-		Collections.sort(picked);
+
+		List<LottoNumber> picked = pool.subList(0, LOTTO_SIZE)
+			.stream()
+			.sorted()
+			.collect(Collectors.toList());
 
 		return new Lotto(picked);
 	}
 
-	List<Integer> getNumbers() {
+	List<LottoNumber> getNumbers() {
 		return this.numbers;
 	}
+
 }

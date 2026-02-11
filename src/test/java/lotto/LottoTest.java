@@ -11,17 +11,20 @@ public class LottoTest {
 	@Test
 	void createLottoTest() {
 		Lotto lotto = Lotto.createRandomLotto();
-		List<Integer> lottoNumbers = lotto.getNumbers();
+		List<LottoNumber> lottoNumbers = lotto.getNumbers();
 		assertThat(lottoNumbers.size()).isEqualTo(6);
 	}
 
 	@Test
 	void isAscending() {
 		Lotto lotto = Lotto.createRandomLotto();
-		List<Integer> lottoNumbers = lotto.getNumbers();
+		List<LottoNumber> lottoNumbers = lotto.getNumbers();
+
 		int size = lottoNumbers.size();
 		for (int i = 0; i < size - 1; i++) {
-			assertThat(lottoNumbers.get(i) < lottoNumbers.get(i + 1)).isEqualTo(true);
+			assertThat(lottoNumbers.get(i).getNumber())
+				.isLessThan(lottoNumbers.get(i + 1).getNumber());
 		}
 	}
+
 }
