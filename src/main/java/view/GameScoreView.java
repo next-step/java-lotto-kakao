@@ -21,7 +21,7 @@ public class GameScoreView {
         for (String rawNumber : rawNumbers.split(",")) {
             int number = Integer.parseInt(rawNumber.trim());
             if (number < minBallNumber || number > maxBallNumber) {
-                throw new IllegalArgumentException("1부터 45까지를 입력하세요");
+                throw new IllegalArgumentException("1부터 45까지의 숫자들만 입력하세요.");
             }
             result.add(number);
         }
@@ -42,7 +42,7 @@ public class GameScoreView {
         }
         int result = Integer.parseInt(rawNumber);
         if (result < minBallNumber || result > maxBallNumber) {
-            throw new IllegalArgumentException("1부터 45까지를 입력하세요");
+            throw new IllegalArgumentException("1부터 45까지의 숫자를 입력하세요.");
         }
         return result;
     }

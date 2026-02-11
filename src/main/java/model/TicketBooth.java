@@ -32,13 +32,13 @@ public class TicketBooth {
 
     private void issueTicketsValidation(int price) {
         if (price < 0) {
-            throw new IllegalArgumentException("빚내서 도박은 안돼!");
+            throw new IllegalArgumentException("음수로는 구매할 수 없습니다.");
         }
         if (price == 0) {
-            throw new IllegalArgumentException("공짜 좋아하면 대머리!");
+            throw new IllegalArgumentException("0원으로는 구매할 수 없습니다.");
         }
         if (price % 1000 != 0) {
-            throw new IllegalArgumentException("1000원 단위의 입력이 아니다!");
+            throw new IllegalArgumentException("1000원 단위로 입력해주세요.");
         }
     }
 }
