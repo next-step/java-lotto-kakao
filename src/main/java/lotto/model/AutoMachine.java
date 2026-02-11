@@ -22,13 +22,13 @@ public class AutoMachine {
         return new LottoTicket(numberList.subList(0,LottoTicket.TICKET_SIZE));
     }
 
-    public LottoTicketList allIn(Wallet wallet) {
+    public LottoTickets allIn(Wallet wallet) {
 
-        LottoTicketList lottoTicketList = new LottoTicketList(new ArrayList<>());
+        LottoTickets lottoTickets = new LottoTickets(new ArrayList<>());
         while (wallet.canAfford(LOTTO_PRICE)) {
-            lottoTicketList.insertTicket(this.issue(wallet));
+            lottoTickets.insertTicket(this.issue(wallet));
         }
-        return lottoTicketList;
+        return lottoTickets;
     }
 
 }

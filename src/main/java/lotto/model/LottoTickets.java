@@ -3,14 +3,14 @@ package lotto.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LottoTicketList {
+public class LottoTickets {
     private final List<LottoTicket> lottoTickets;
 
-    public LottoTicketList(){
+    public LottoTickets(){
         this(new ArrayList<>());
     }
 
-    public LottoTicketList(List<LottoTicket> lottoTickets) {
+    public LottoTickets(List<LottoTicket> lottoTickets) {
         if(lottoTickets == null) {
             lottoTickets = new ArrayList<>();
         }

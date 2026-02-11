@@ -24,7 +24,7 @@ class AutoMachineTest {
         Wallet wallet = new Wallet(new Money(14500));
         AutoMachine autoMachine = new AutoMachine();
         assertThat(autoMachine.allIn(wallet))
-                .isInstanceOf(LottoTicketList.class);
+                .isInstanceOf(LottoTickets.class);
     }
 
 

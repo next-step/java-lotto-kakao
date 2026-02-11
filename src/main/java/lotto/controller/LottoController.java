@@ -19,16 +19,16 @@ public class LottoController {
         Wallet wallet = new Wallet(purchaseAmount);
 
         AutoMachine autoMachine = new AutoMachine();
-        LottoTicketList ticketList = autoMachine.allIn(wallet);
+        LottoTickets tickets = autoMachine.allIn(wallet);
 
-        outputView.printPurchaseCount(ticketList.size());
-        outputView.printTickets(ticketList);
+        outputView.printPurchaseCount(tickets.size());
+        outputView.printTickets(tickets);
 
         LottoTicket winningNumbers = inputView.inputWinningNumbers();
         LottoNumber bonusNumber = inputView.inputBonusNumber();
         WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
 
-        WinningInfo winningInfo = ticketList.result(winningLotto);
+        WinningInfo winningInfo = tickets.result(winningLotto);
         outputView.printStatistics(winningInfo);
 
         Money totalPrize = winningInfo.getTotalPrice();
