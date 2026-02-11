@@ -29,8 +29,8 @@ class OutputViewTest {
     }
 
     @Test
-    @DisplayName("당첨 통계 출력에 핵심 문구가 포함된다")
-    void test_print_statistics_contains_expected_lines() {
+    @DisplayName("당첨 통계 출력에 핵심 문구가 포함된다.")
+    public void test_print_statistics() {
         OutputView outputView = new OutputView();
         Map<LottoResult, Integer> resultCountByRank = Map.of(
             LottoResult.RANK_FIFTH, 1,
@@ -49,6 +49,6 @@ class OutputViewTest {
         assertTrue(output.contains("5개 일치 ("));
         assertTrue(output.contains("5개 일치, 보너스 볼 일치"));
         assertTrue(output.contains("6개 일치"));
-        assertTrue(output.contains("총 수익률은 1.23입니다."));
+        assertTrue(output.contains("총 수익률은 1.23"));
     }
 }

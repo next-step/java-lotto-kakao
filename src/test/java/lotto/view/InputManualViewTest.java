@@ -26,9 +26,13 @@ class InputManualViewTest {
         System.setIn(originalIn);
     }
 
+    private void setInput(String data) {
+        System.setIn(new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)));
+    }
+
     @Test
-    @DisplayName("수동 구매 개수는 유효할 때까지 재시도")
-    void test_input_manual_count_retries_on_invalid_input() {
+    @DisplayName("수동 구매 개수가 유효할 때까지 다시 입력 받는다.")
+    public void test_input_manual_count_retry() {
         setInput("abc\n3\n");
 
         InputManualView inputView = new InputManualView();
@@ -38,8 +42,8 @@ class InputManualViewTest {
     }
 
     @Test
-    @DisplayName("수동 구매 개수는 최대 구매 수를 넘을 수 없다")
-    void test_input_manual_count_maximum() {
+    @DisplayName("수동 구매 개수는 최대 구매 개수를 넘을 수 없다.")
+    public void test_input_manual_maximum() {
         setInput("6\n5\n");
 
         InputManualView inputView = new InputManualView();
@@ -49,27 +53,23 @@ class InputManualViewTest {
     }
 
     @Test
-    @DisplayName("수동 구매 개수가 0이면 빈 목록 반환")
-    void test_input_manual_lottos_zero() {
+    @DisplayName("수동 구매 개수가 0이면 빈 목록을 반환한다.")
+    public void test_input_manual_empty() {
         InputManualView inputView = new InputManualView();
-        List<LottoNumbers> manualLottos = inputView.inputManualLottos(0);
+        List<LottoNumbers> list = inputView.inputManualLottos(0);
 
-        assertEquals(0, manualLottos.size());
+        assertEquals(0, list.size());
     }
 
     @Test
-    @DisplayName("수동 로또 번호는 유효할 때까지 재시도")
-    void test_input_manual_lottos_retries_on_invalid_input() {
+    @DisplayName("수동 로또 번호는 유효할 때까지 다시 입력 받는다.")
+    public void test_input_manual_lotto_retry() {
         setInput("1,2,3,4,5\n1,2,3,4,5,6\n");
 
         InputManualView inputView = new InputManualView();
-        List<LottoNumbers> manualLottos = inputView.inputManualLottos(1);
+        List<LottoNumbers> list = inputView.inputManualLottos(1);
 
-        assertEquals(1, manualLottos.size());
-        assertEquals(List.of(1, 2, 3, 4, 5, 6), manualLottos.get(0).getNumbers());
-    }
-
-    private void setInput(String data) {
-        System.setIn(new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)));
+        assertEquals(1, list.size());
+        assertEquals(List.of(1, 2, 3, 4, 5, 6), list.getFirst().getNumbers());
     }
 }
