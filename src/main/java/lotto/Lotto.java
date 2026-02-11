@@ -19,7 +19,7 @@ public class Lotto {
 
     public Lotto(Set<LottoNumber> lottoNumberSet) {
         validate(lottoNumberSet);
-        this.lottoNumberSet = lottoNumberSet;
+        this.lottoNumberSet = Set.copyOf(lottoNumberSet);
     }
 
     private static Set<LottoNumber> convert(List<Integer> numbers) {
