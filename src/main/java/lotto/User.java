@@ -8,21 +8,15 @@ import java.util.Map;
 import lotto.enums.LottoStatus;
 
 public class User {
-	private static final long TICKET_COST = 1000;
-	private final long price;
+	private final Money money;
+	private final Map<LottoStatus, Integer> result = new HashMap<>();
 	private List<Lotto> lottos;
 	private long award;
-	;
-	private Map<LottoStatus, Integer> result = new HashMap<>();
 
 	public User(String input) {
-		long inputPrice = Long.parseLong(input);
-		if (inputPrice <= 0 || inputPrice % TICKET_COST != 0) {
-			throw new IllegalArgumentException("잘못된 구입 금액입니다.");
-		}
-		this.price = inputPrice;
+		this.money = new Money(Long.parseLong(input));
 		lottos = new ArrayList<>();
-		for (int i = 0; i < price / TICKET_COST; i++) {
+		for (int i = 0; i < this.money.getTicketCount(); i++) {
 			lottos.add(new Lotto());
 		}
 	}
@@ -40,7 +34,7 @@ public class User {
 	}
 
 	public long getPrice() {
-		return price;
+		return this.money.getPrice();
 	}
 
 	public List<Lotto> getLottos() {
