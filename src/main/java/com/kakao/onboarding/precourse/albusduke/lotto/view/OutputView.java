@@ -52,7 +52,8 @@ public class OutputView {
 
 		WinningPrizes winningPrizes = statistics.winningPrizes();
 
-		sb.append(STATISTICS_PREFIX + "\n")
+		sb.append(STATISTICS_PREFIX).append("\n")
+			.append(SEPARATE_LINE).append("\n")
 			.append(createOutput(Prize.FIFTH, winningPrizes.getCounts().getOrDefault(Prize.FIFTH, 0))).append("\n")
 			.append(createOutput(Prize.THIRD, winningPrizes.getCounts().getOrDefault(Prize.THIRD, 0))).append("\n")
 			.append(createOutput(Prize.SECOND, winningPrizes.getCounts().getOrDefault(Prize.SECOND, 0))).append("\n")
