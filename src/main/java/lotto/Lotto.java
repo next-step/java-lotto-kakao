@@ -9,18 +9,25 @@ import java.util.Set;
 import lotto.enums.LottoStatus;
 
 public class Lotto {
-	private List<Integer> allNumbers = new ArrayList<>(
-		List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-			26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45));
+	private static final int LOTTO_SIZE = 6;
+	private static final int MIN_NUMBER = 1;
+	private static final int MAX_NUMBER = 45;
+
+	private static final List<Integer> ALL_NUMBERS =
+		java.util.stream.IntStream.rangeClosed(MIN_NUMBER, MAX_NUMBER)
+			.boxed()
+			.toList();
 	private List<Ball> balls;
 	private LottoStatus status;
 	private Ball bonus;
 
 	public Lotto() {
-		Collections.shuffle(allNumbers);
+		List<Integer> numbers = new ArrayList<>(ALL_NUMBERS);
+		Collections.shuffle(numbers);
+
 		balls = new ArrayList<>();
-		for (int i = 0; i < 6; i++) {
-			balls.add(new Ball(allNumbers.get(i)));
+		for (int i = 0; i < LOTTO_SIZE; i++) {
+			balls.add(new Ball(numbers.get(i)));
 		}
 		Collections.sort(balls);
 		status = LottoStatus.ZERO;
@@ -30,7 +37,7 @@ public class Lotto {
 	public Lotto(List<Ball> balls, Ball bonus) {
 		Set<Ball> set = new HashSet<Ball>(balls);
 		set.add(bonus);
-		if (set.size() != 7) {
+		if (set.size() != LOTTO_SIZE + 1) {
 			throw new IllegalArgumentException("중복된 숫자 입력은 불가합니다.");
 		}
 		Collections.sort(balls);
