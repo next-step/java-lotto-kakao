@@ -27,7 +27,6 @@ class InputHistoryViewTest {
 
     private void setInput(String data) {
         System.setIn(new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)));
-        System.out.print(data);
     }
 
     @Test
