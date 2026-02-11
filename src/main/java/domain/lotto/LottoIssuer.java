@@ -22,7 +22,7 @@ public class LottoIssuer {
 
     public int getCount(int price) {
         if (price <= 0) {
-            throw new IllegalArgumentException("로또 발행 수는 1개 이상이어야 합니다.");
+            throw new IllegalArgumentException("로또 발행 금액은 양수여야 합니다.");
         }
         if (price % Lotto.PRICE != 0) {
             throw new IllegalArgumentException("로또 발행 금액은 1000원 단위여야 합니다.");
