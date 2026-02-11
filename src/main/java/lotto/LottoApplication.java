@@ -35,12 +35,11 @@ public class LottoApplication {
         long profit = LottoStatus.totalPrize(statuses);
         double profitRate = (double) profit / player.getPrice();
 
-        printResult(statuses, profit, profitRate);
+        printResult(statuses, profitRate);
     }
 
     private void printResult(
             Map<LottoStatus, Integer> statuses,
-            long profit,
             double profitRate
     ) {
         outputView.printMessage("당첨 통계");
