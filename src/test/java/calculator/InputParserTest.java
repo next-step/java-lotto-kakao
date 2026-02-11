@@ -4,15 +4,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ParserTest {
+class InputParserTest {
 
     @Test
     @DisplayName("커스텀 구분자가 없는 정상 입력인 경우")
     void inputTest1() {
         String successInput = "1,2,3";
-        Parser parser = new Parser(successInput);
+        InputParser inputParser = new InputParser(successInput);
 
-        Assertions.assertThat(parser.getNumber().getNumbers()).containsExactly(1, 2, 3);
+        Assertions.assertThat(inputParser.getNumber().getNumbers()).containsExactly(1, 2, 3);
     }
 
     @Test
@@ -26,7 +26,7 @@ class ParserTest {
     @DisplayName("등록한 구분자 이외의 구분자를 사용한 경우")
     void inputExceptionTest3() {
         Assertions.assertThatThrownBy(() -> {
-            Parser parser = new Parser("1^2,3");
+            InputParser inputParser = new InputParser("1^2,3");
         }).isInstanceOf(IllegalArgumentException.class).hasMessage("등록되지 않은 커스텀 구분자가 입력되었습니다.");
     }
 
@@ -50,7 +50,7 @@ class ParserTest {
     @DisplayName("구분자를 연속적으로 사용한 경우")
     void inputExceptionTest6() {
         Assertions.assertThatThrownBy(() -> {
-            Parser parser = new Parser("1,2,,3");
+            InputParser inputParser = new InputParser("1,2,,3");
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
