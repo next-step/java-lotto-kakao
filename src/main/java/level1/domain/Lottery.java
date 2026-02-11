@@ -20,8 +20,7 @@ public class Lottery {
 
         - 삭제된 메서드
             - #parseNumber(String) :
-                string 을 int 로 파싱하는 기능은 `로또 번호 정보 소유` 책임과 무관한 것 같아 다른 class 를 구성했습니다.
-                (@see StringParser)
+                string 을 int 로 파싱하는 기능은 `로또 번호 정보 소유` 책임과 무관한 것 같아 제거했습니다.
 
         - 삭제 또는 변경된 내부 로직
             - 생성자의 `로또 번호의 최소 최대값 검증` 을 제거하였습니다. 다만 `중복된 번호 검증` 은 남겨두었습니다.
