@@ -15,11 +15,13 @@ public class Lotto {
 	}
 
 	public static Lotto createRandomLotto() {
+		// ToDo: LottoNumber 클래스에서 min, max 값 설정 후 매직 넘버 수정
 		List<Integer> pool = IntStream.rangeClosed(1, 45)
 			.boxed()
 			.collect(Collectors.toList());
 
 		Collections.shuffle(pool);
+		// ToDo: Application 클래스 리팩토링 시 Lotto 길이 검증 로직 추가 후 매직 넘버 수정
 		List<Integer> picked = new ArrayList<>(pool.subList(0, 6));
 		Collections.sort(picked);
 

@@ -6,6 +6,7 @@ import java.util.Map;
 public class LotteryChecker {
 
 	private final Map<MatchCount, Integer> counts = new EnumMap<>(MatchCount.class);
+	private static final int DIGIT = 100;
 
 	public LotteryChecker() {
 		for (MatchCount match : MatchCount.values()) {
@@ -35,7 +36,7 @@ public class LotteryChecker {
 
 	public static double calculateReturnRate(int totalPrize, int totalPurchaseCost) {
 		double rate = (double) totalPrize / totalPurchaseCost;
-		return Math.round(rate * 100) / 100.0;
+		return Math.round(rate * DIGIT) / (double)DIGIT;
 	}
 
 }

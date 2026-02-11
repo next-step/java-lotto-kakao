@@ -6,6 +6,7 @@ import java.util.List;
 public class Buyer {
 
 	private final List<Lotto> tickets;
+	private final static int LOTTO_PRICE = 1_000;
 
 	Buyer(List<Lotto> tickets) {
 		this.tickets = List.copyOf(tickets);
@@ -13,7 +14,7 @@ public class Buyer {
 
 	public static Buyer buyLotteries(int budget) {
 		List<Lotto> temp = new ArrayList<>();
-		int cnt = budget / 1_000;
+		int cnt = budget / LOTTO_PRICE;
 		if (cnt == 0) {
 			throw new IllegalArgumentException("한 개의 로또도 살 수 없는 돈입니다.");
 		}

@@ -69,6 +69,7 @@ public class Application {
 	}
 
 	private static void validateNoDuplicates(List<Integer> numbers) {
+		// ToDo: Application 클래스 리팩토링 시 Lotto 길이 검증 로직 추가 후 매직 넘버 수정
 		if (new HashSet<>(numbers).size() != 6) {
 			throw new IllegalArgumentException("당첨 번호는 중복될 수 없습니다.");
 		}
@@ -78,6 +79,7 @@ public class Application {
 		System.out.println("보너스 볼을 입력해 주세요.");
 		int bonus = Integer.parseInt(scanner.nextLine());
 
+		// ToDo: LottoNumber 클래스에서 min, max 값 설정 후 매직 넘버 수정
 		if (bonus < 1 || bonus > 45) {
 			throw new IllegalArgumentException("보너스 볼은 1~45 사이의 숫자여야 합니다.");
 		}
