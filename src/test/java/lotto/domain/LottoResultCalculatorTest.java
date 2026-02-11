@@ -32,8 +32,11 @@ public class LottoResultCalculatorTest {
         long profit = LottoStatus.totalPrize(status);
         double profitRate = (double) profit / lottoPlayer.getPrice();
 
-
         assertThat(status.get(LottoStatus.SIX_CORRECT)).isEqualTo(1);
+        assertThat(status.getOrDefault(LottoStatus.FIVE_CORRECT_BONUS, 0)).isEqualTo(0);
+        assertThat(status.getOrDefault(LottoStatus.FIVE_CORRECT, 0)).isEqualTo(0);
+        assertThat(status.getOrDefault(LottoStatus.FOUR_CORRECT, 0)).isEqualTo(0);
+        assertThat(status.getOrDefault(LottoStatus.THREE_CORRECT, 0)).isEqualTo(0);
         assertThat(profit).isEqualTo(2_000_000_000L);
         assertThat(profitRate).isEqualTo(666_666.6666666666);
     }
