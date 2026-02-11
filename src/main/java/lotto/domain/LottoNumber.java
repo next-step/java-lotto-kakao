@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class LottoNumber {
 
+    public static final int MIN_LOTTO_NUMBER = 1;
+    public static final int MAX_LOTTO_NUMBER = 45;
     public static final String RANGE_FAIL_MSG = "로또 번호의 범위는 1 ~ 45사이어야 합니다.";
 
     private final int value;
@@ -14,7 +16,7 @@ public class LottoNumber {
     }
 
     public void validate(int value) {
-        if (value < 1 || value > 45) {
+        if (value < MIN_LOTTO_NUMBER || value > MAX_LOTTO_NUMBER) {
             throw new IllegalArgumentException(RANGE_FAIL_MSG);
         }
     }
