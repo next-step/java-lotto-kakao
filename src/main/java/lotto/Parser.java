@@ -4,31 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
-    private static String delimiter = ", ";
+	private static String delimiter = ", ";
 
-    public List<Ball> parse(String input) {
-        String[] lines = input.split(delimiter);
-        if (lines.length != 6) {
-            throw new IllegalArgumentException("입력이 잘못되었습니다: ");
-        }
+	private static void makeBall(String[] lines, List<Ball> balls) {
+		for (String line : lines) {
+			balls.add(new Ball(line));
+		}
+	}
 
-        return makeBalls(lines);
-    }
+	public List<Ball> parse(String input) {
+		String[] lines = input.split(delimiter);
+		if (lines.length != 6) {
+			throw new IllegalArgumentException("입력이 잘못되었습니다: ");
+		}
 
-    private List<Ball> makeBalls(String[] lines) {
-        List<Ball> balls  = new ArrayList<>();
-        try{
-            makeBall(lines, balls);
-        }
-        catch(Exception e) {
-            throw new IllegalArgumentException("입력이 잘못되었습니다: ");
-        }
-        return balls;
-    }
+		return makeBalls(lines);
+	}
 
-    private static void makeBall(String[] lines, List<Ball> balls) {
-        for(String line : lines) {
-            balls.add(new Ball(line));
-        }
-    }
+	private List<Ball> makeBalls(String[] lines) {
+		List<Ball> balls = new ArrayList<>();
+		try {
+			makeBall(lines, balls);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("입력이 잘못되었습니다: ");
+		}
+		return balls;
+	}
 }
