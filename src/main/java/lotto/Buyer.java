@@ -13,15 +13,15 @@ public class Buyer {
 	}
 
 	public static Buyer buyLotteries(int budget) {
-		List<Lotto> temp = new ArrayList<>();
-		int cnt = budget / LOTTO_PRICE;
-		if (cnt == 0) {
+		List<Lotto> tickets = new ArrayList<>();
+		int amount = budget / LOTTO_PRICE;
+		if (amount == 0) {
 			throw new IllegalArgumentException("한 개의 로또도 살 수 없는 돈입니다.");
 		}
-		while (cnt-- > 0) {
-			temp.add(Lotto.createRandomLotto());
+		while (amount-- > 0) {
+			tickets.add(Lotto.createRandomLotto());
 		}
-		return new Buyer(temp);
+		return new Buyer(tickets);
 	}
 
 	public List<Lotto> getTickets() {
