@@ -5,6 +5,10 @@ public class Wallet {
     private Money balance;
     private Money receipt;
 
+    public Wallet(int balance){
+        this(new Money(balance));
+    }
+
     public Wallet(Money balance) {
         if(balance.isDebt()) throw new RuntimeException("잔액은 항상 0원 이상이어야 합니다.");
         this.balance = balance;
