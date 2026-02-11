@@ -1,7 +1,7 @@
 package lotto;
 
-public class Money {
-    private long money;
+public final class Money {
+    private final long money;
 
     public Money(long money) {
         validateUnit(money);
