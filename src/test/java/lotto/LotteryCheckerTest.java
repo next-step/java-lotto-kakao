@@ -43,10 +43,13 @@ public class LotteryCheckerTest {
 
 	@Test
 	void calculateReturnRateTest() {
-		int totalPrize = 5000;
+		LotteryChecker lotteryChecker = new LotteryChecker();
+		lotteryChecker.increase(MatchCount.THREE);
+		lotteryChecker.increase(MatchCount.FOUR);
+		lotteryChecker.increase(MatchCount.FIVE);
 		int totalPurchaseCost = 14000;
-		double returnRate = LotteryChecker.calculateReturnRate(totalPrize, totalPurchaseCost);
-		assertThat(returnRate).isEqualTo(0.36);
+		double returnRate = lotteryChecker.calculateReturnRate(totalPurchaseCost);
+		assertThat(returnRate).isEqualTo(111.07);
 	}
 
 }

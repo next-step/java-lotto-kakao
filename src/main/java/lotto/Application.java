@@ -116,6 +116,6 @@ public class Application {
 		System.out.println("6개 일치 (2000000000원)- " + counts.get(MatchCount.SIX) + "개");
 
 		int totalPrize = checker.calculateTotalPrize();
-		System.out.println("총 수익률은 " + LotteryChecker.calculateReturnRate(totalPrize, budget) + "입니다.");
+		System.out.println("총 수익률은 " + checker.calculateReturnRate(budget) + "입니다.");
 	}
 }
