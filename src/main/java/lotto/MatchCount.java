@@ -31,24 +31,5 @@ public enum MatchCount {
 		return price;
 	}
 
-	public static MatchCount from(int count, boolean bonus) {
-		if (count == MatchCount.SIX.getCount()) {
-			return SIX;
-		}
-		if (count == MatchCount.FIVE.getCount() && bonus == MatchCount.FIVE.hasBonus()) {
-			return FIVE_BONUS;
-		}
-		if (count == MatchCount.FIVE.getCount()) {
-			return FIVE;
-		}
-		if (count == MatchCount.FOUR.getCount()) {
-			return FOUR;
-		}
-		if (count == MatchCount.THREE.getCount()) {
-			return THREE;
-		}
-		return NOTHING;
-	}
-
 }
 

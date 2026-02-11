@@ -37,10 +37,19 @@ public class LottoNumber implements Comparable<LottoNumber>{
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof LottoNumber)) return false;
-		LottoNumber that = (LottoNumber) o;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof LottoNumber that)) {
+			return false;
+		}
 		return number == that.number;
 	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(number);
+	}
+
 }
 

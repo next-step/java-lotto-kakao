@@ -95,9 +95,7 @@ public class Application {
 		LotteryChecker checker = new LotteryChecker();
 
 		for (Lotto ticket : tickets) {
-			int count = winningLotto.checkNumbers(ticket);
-			boolean bonus = winningLotto.isContainBonus(ticket);
-			MatchCount match = MatchCount.from(count, bonus);
+			MatchCount match = winningLotto.aggreateMatchCount(ticket);
 			checker.increase(match);
 		}
 
