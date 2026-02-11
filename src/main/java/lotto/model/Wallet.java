@@ -30,7 +30,7 @@ public class Wallet {
             receipt = new Money(0);
             balance = balance.sum(money);
             return rateOfReturn;
-        }catch (MatchException e){
+        }catch (ArithmeticException e){
             return 1.0;
         }
     }
