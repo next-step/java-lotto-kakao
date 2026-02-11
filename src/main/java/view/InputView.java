@@ -6,11 +6,14 @@ import java.util.Scanner;
 
 public class InputView {
 
-    public InputView() {}
+    private final Scanner scanner;
+
+    public InputView() {
+        this.scanner = new Scanner(System.in);
+    }
 
     public int enterPurchaseAmount() {
         System.out.println("구입금액을 입력해 주세요.");
-        Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
         validateNumber(input);
@@ -24,7 +27,6 @@ public class InputView {
 
     public List<Integer> enterWinningNumbers() {
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-        Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         return parseNumbers(input);
     }
@@ -43,7 +45,6 @@ public class InputView {
 
     public int enterBonusNumber() {
         System.out.println("보너스 볼을 입력해 주세요.");
-        Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
         validateNumber(input);
