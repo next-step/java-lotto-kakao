@@ -11,6 +11,9 @@ public class LottoTicketList {
     }
 
     public LottoTicketList(List<LottoTicket> lottoTickets) {
+        if(lottoTickets == null) {
+            lottoTickets = new ArrayList<>();
+        }
         this.lottoTickets = lottoTickets;
     }
 
