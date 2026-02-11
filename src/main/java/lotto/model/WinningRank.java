@@ -27,14 +27,14 @@ public enum WinningRank {
         this.bonusCount = bonusCount;
     }
 
-    public boolean isSatisfied(int matchCount, int bounceCount) {
+    public boolean isSatisfied(int matchCount, int bonusCount) {
         return matchCount >= this.matchCount
-                && bounceCount >= this.bonusCount;
+                && bonusCount >= this.bonusCount;
     }
 
-    public static WinningRank getRank(int matchCount, int bounceCount) {
+    public static WinningRank getRank(int matchCount, int bonusCount) {
         return Arrays.stream(values())
-                .filter(rank -> rank.isSatisfied(matchCount, bounceCount))
+                .filter(rank -> rank.isSatisfied(matchCount, bonusCount))
                 .min(Comparator.comparingInt(r -> r.rank))
                 .orElse(NONE);
     }
