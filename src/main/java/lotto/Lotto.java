@@ -14,8 +14,8 @@ public class Lotto {
         this.lottoNumbers = lottoNumbers;
     }
 
-    public List<LottoNumber> getLottoNumbers() {
-        return lottoNumbers;
+    public int getLottoNumbersSize() {
+        return lottoNumbers.size();
     }
 
     public int countMatchingNumbers(Lotto other) {
