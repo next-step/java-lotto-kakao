@@ -5,11 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class LottoJudgeTest {
+public class WinningLottoTest {
 
     Lotto lotto;
     WinningLotto winning;
@@ -23,16 +22,14 @@ public class LottoJudgeTest {
     @Test
     @DisplayName("일치하는 개수 판단")
     void 일치개수_테스트() {
-        LottoJudge judge = new LottoJudge();
-        winning = new WinningLotto(testSetWinning(20, 26), new LottoNumber(40));
-        Assertions.assertThat(judge.judge(winning, lotto)).isEqualTo(Rank.MISS);
+        WinningLotto winning = new WinningLotto(testSetWinning(20, 26), new LottoNumber(40));
+        Assertions.assertThat(winning.judge(lotto)).isEqualTo(Rank.MISS);
     }
 
 
     @Test
     void 일등_테스트() {
-        LottoJudge judge = new LottoJudge();
-        Assertions.assertThat(judge.judge(winning, lotto)).isEqualTo(Rank.FIRST);
+        Assertions.assertThat(winning.judge(lotto)).isEqualTo(Rank.FIRST);
     }
 
     Lotto testSetLotto() {
@@ -41,9 +38,9 @@ public class LottoJudgeTest {
                 .collect(Collectors.toList()));
     }
 
-    List<LottoNumber> testSetWinning(int start, int end) {
-        return IntStream.range(start, end)
+    Lotto testSetWinning(int start, int end) {
+        return new Lotto(IntStream.range(start, end)
                 .mapToObj(LottoNumber::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }

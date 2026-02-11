@@ -1,24 +1,28 @@
 package lotto;
 
-import java.util.List;
-
-public class WinningLotto extends Lotto {
-
+public class WinningLotto {
+    private final Lotto lotto;
     private final LottoNumber bonusNumber;
 
-    public WinningLotto(List<LottoNumber> lottoNumbers, LottoNumber bonusNumber) {
-        super(lottoNumbers);
-        validateBonusNumber(lottoNumbers, bonusNumber);
+    public WinningLotto(Lotto lotto, LottoNumber bonusNumber) {
+        validateBonusNumber(lotto, bonusNumber);
+        this.lotto = lotto;
         this.bonusNumber = bonusNumber;
     }
-
-    public boolean matchBonus(Lotto lotto){
-        return lotto.contains(bonusNumber);
+    public boolean matchBonus(Lotto matchLotto){
+        return matchLotto.contains(bonusNumber);
     }
 
-    private void validateBonusNumber(List<LottoNumber> lottoNumbers, LottoNumber bonusNumber) {
-        if (lottoNumbers.contains(bonusNumber)) {
+    private void validateBonusNumber(Lotto lotto, LottoNumber bonusNumber) {
+        if (lotto.contains(bonusNumber)) {
             throw new IllegalArgumentException("보너스 번호가 잘못 되었습니다.");
         }
+    }
+
+    public Rank judge(Lotto judgeLotto){
+        int count = lotto.countMatchingNumbers(judgeLotto);
+        boolean matchBonus = matchBonus(judgeLotto);
+
+        return Rank.valueOf(count, matchBonus);
     }
 }

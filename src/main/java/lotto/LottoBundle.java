@@ -16,7 +16,7 @@ public class LottoBundle implements Iterable<Lotto>  {
 
     public LottoResult getLottoResult(WinningLotto winningLotto){
         return new LottoResult(lottos.stream()
-                .map(lotto -> LottoJudge.judge(winningLotto, lotto))
+                .map(winningLotto::judge)
                 .collect(Collectors.toList()));
     }
 

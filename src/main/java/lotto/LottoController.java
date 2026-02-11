@@ -42,11 +42,11 @@ public class LottoController {
 
     private WinningLotto makeWinningLotto() {
         String winningNumbers = InputView.readWinningNumbers();
+        Lotto lotto = new Lotto(Arrays.stream(winningNumbers.split(", "))
+                .map((String number) -> new LottoNumber(Integer.parseInt(number)))
+                .collect(Collectors.toList()));
         int bonusNumber = InputView.readingBonusNumber();
 
-        return new WinningLotto(Arrays.stream(winningNumbers.split(", "))
-                .map((String number) -> new LottoNumber(Integer.parseInt(number)))
-                .collect(Collectors.toList()), new LottoNumber(bonusNumber));
-
+        return new WinningLotto(lotto, new LottoNumber(bonusNumber));
     }
 }
