@@ -2,6 +2,7 @@ package domain.lotto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class LottoIssuer {
 
@@ -13,10 +14,9 @@ public class LottoIssuer {
 
     public LottoGroup issueAuto(int price) {
         int count = getCount(price);
-        List<Lotto> lottoList = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            lottoList.add(lottoFactory.createAutoLotto());
-        }
+        List<Lotto> lottoList = IntStream.range(0, count)
+                .mapToObj(i -> lottoFactory.createAutoLotto())
+                .toList();
         return new LottoGroup(lottoList);
     }
 
