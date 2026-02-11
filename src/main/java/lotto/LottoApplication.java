@@ -1,6 +1,10 @@
 package lotto;
 
-import lotto.domain.*;
+import lotto.domain.Lotto;
+import lotto.domain.LottoPickStrategy;
+import lotto.domain.LottoPlayer;
+import lotto.domain.LottoStatus;
+import lotto.domain.WinningLotto;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 
