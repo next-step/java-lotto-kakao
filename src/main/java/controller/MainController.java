@@ -14,6 +14,7 @@ import view.TicketBoothView;
 public class MainController {
 	public static final int MAX_BALL_NUMBER = 45;
 	public static final int MIN_BALL_NUMBER = 1;
+	public static final int BALL_COUNT = 6;
 	TicketBooth ticketBooth = new TicketBooth();
 	private final TicketBoothView ticketBoothView = new TicketBoothView();
 	private final GameScoreView gameScoreView = new GameScoreView();
@@ -24,40 +25,29 @@ public class MainController {
 	}
 
 	private void ticketBoothRender() {
-		ticketBoothView.showInputPriceMessage();
-		Integer price = ticketBoothView.inputTicketPrice();
-		List<Ticket> tickets = ticketBooth.issueTickets(price);
-		ticketBoothView.showTicketInfo(tickets);
-		gameScoreRender(tickets);
+		try {
+			ticketBoothView.showInputPriceMessage();
+			Integer price = ticketBoothView.inputTicketPrice();
+			List<Ticket> tickets = ticketBooth.issueTickets(price);
+			ticketBoothView.showTicketInfo(tickets);
+			gameScoreRender(tickets);
+		} catch (IllegalArgumentException e) {
+			ticketBoothView.showErrorMessage(e);
+			ticketBoothRender();
+		}
 	}
 
 	private void gameScoreRender(List<Ticket> tickets) {
-		gameScoreView.showInputWinNumberMessage();
-
-		List<Integer> winNumbers = gameScoreView.inputWinNumber();
-		if(winNumbers.size() != 6) {
-			gameScoreView.showErrorMessage(new IllegalArgumentException("숫자 6개를 입력해주세요"));
+		try {
+			gameScoreView.showInputWinNumberMessage();
+			List<Integer> winNumbers = gameScoreView.inputWinNumber(BALL_COUNT, MIN_BALL_NUMBER, MAX_BALL_NUMBER);
+			gameScoreView.showInputBonusBall();
+			Integer bonusBall = gameScoreView.inputBonusBall(MIN_BALL_NUMBER, MAX_BALL_NUMBER);
+			statBoardRender(new GameScore(bonusBall, winNumbers), tickets);
+		} catch (IllegalArgumentException e) {
+			gameScoreView.showErrorMessage(e);
 			gameScoreRender(tickets);
-			return;
 		}
-
-		for (Integer winNumber : winNumbers) {
-			if(winNumber < MIN_BALL_NUMBER || winNumber > MAX_BALL_NUMBER) {
-				gameScoreView.showErrorMessage(new IllegalArgumentException("1부터 45까지를 입력하세요"));
-				gameScoreRender(tickets);
-				return;
-			}
-		}
-
-		gameScoreView.showInputBonusBall();
-		Integer bonusBall = gameScoreView.inputBonusBall();
-		if(bonusBall < MIN_BALL_NUMBER || bonusBall > MAX_BALL_NUMBER) {
-			gameScoreView.showErrorMessage(new IllegalArgumentException("1부터 45까지를 입력하세요"));
-			gameScoreRender(tickets);
-			return;
-		}
-
-		statBoardRender(new GameScore(bonusBall, winNumbers), tickets);
 	}
 
 	private void statBoardRender(GameScore score, List<Ticket> tickets) {
