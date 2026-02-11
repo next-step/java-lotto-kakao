@@ -8,7 +8,7 @@ public class InputView {
     public static Long readPurchaseAmount() {
         System.out.println("구입금액을 입력해 주세요.");
 
-        return parseNumber(scanner.nextLine());
+        return parseLong(scanner.nextLine());
     }
 
     public static String readWinningNumbers() {
@@ -18,12 +18,20 @@ public class InputView {
 
     public static int readingBonusNumber(){
         System.out.println("보너스 볼을 입력해주세요.");
-        return scanner.nextInt();
+        return parseNumber(scanner.nextLine());
     }
 
-    private static Long parseNumber(String number) {
+    private static Long parseLong(String number) {
         try {
             return Long.parseLong(number);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자만 입력해주세요.");
+        }
+    }
+
+    private static int parseNumber(String number) {
+        try {
+            return Integer.parseInt(number);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("숫자만 입력해주세요.");
         }
