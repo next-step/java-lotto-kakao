@@ -10,7 +10,7 @@ public class WinningInfo {
     public WinningInfo() {
         this.info = new TreeMap<>();
         Arrays.stream(WinningRank.values())
-                .map(rank -> info.put(rank, 0));
+                .forEach(rank -> info.put(rank, 0));
     }
 
     public void addResult(WinningRank rank) {
