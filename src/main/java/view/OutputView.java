@@ -36,14 +36,14 @@ public class OutputView {
     private void printRankLine(LottoRank rank, int count) {
         String label = labelOf(rank);
 
-        System.out.printf("%s (%s) - %d개%n", label, rank.prize, count);
+        System.out.printf("%s (%s) - %d개%n", label, rank.getPrize(), count);
     }
 
     private String labelOf(LottoRank rank) {
         if (rank == LottoRank.SECOND) {
             return "5개 일치, 보너스 볼 일치";
         }
-        return String.format("%d개 일치", rank.matchCount);
+        return String.format("%d개 일치", rank.getMatchCount());
     }
 
     public void printProfitRate(double profitRate) {

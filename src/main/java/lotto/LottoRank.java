@@ -10,14 +10,26 @@ public enum LottoRank {
     FIFTH(3, false, Money.won(5000)),
     LOSE(0, false, Money.won(0));
 
-    public final Money prize;
-    public final int matchCount;
-    private final Boolean hasBonus;
+    private final Money prize;
+    private final int matchCount;
+    private final boolean hasBonus;
 
-    LottoRank(int matchCount, Boolean hasBonus, Money prize) {
+    LottoRank(int matchCount, boolean hasBonus, Money prize) {
         this.matchCount = matchCount;
         this.hasBonus = hasBonus;
         this.prize = prize;
+    }
+
+    public Money getPrize() {
+        return prize;
+    }
+
+    public int getMatchCount() {
+        return matchCount;
+    }
+
+    public boolean hasBonus() {
+        return hasBonus;
     }
 
     public static LottoRank searchRank(int count, boolean bonus) {
@@ -36,6 +48,6 @@ public enum LottoRank {
         if (this.matchCount != count) {
             return false;
         }
-        return this.matchCount != 5 || hasBonus == bonus;
+        return this.matchCount != 5 || this.hasBonus == bonus;
     }
 }

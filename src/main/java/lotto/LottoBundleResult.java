@@ -21,7 +21,7 @@ public class LottoBundleResult {
         Money totalPrize = Money.won(0L);
 
         for (LottoRank rank : LottoRank.values()) {
-            totalPrize = totalPrize.plus(rank.prize.times(getRankCount(rank)));
+            totalPrize = totalPrize.plus(rank.getPrize().times(getRankCount(rank)));
         }
 
         return totalPrize.calculateMoneyRate(totalFee);
