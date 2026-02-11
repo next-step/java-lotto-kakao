@@ -2,37 +2,27 @@ package lotto.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.*;
 
 class WinningRankTest {
 
-    @Test
-    @DisplayName("1등일 때")
-    public void firstRank(){
-        WinningRank rank = WinningRank.getRank(6, 0);
-        assertThat(rank).isEqualTo(WinningRank.FIRST);
-    }
-
-    @Test
-    @DisplayName("2등일 때")
-    public void secondRank(){
-        WinningRank rank = WinningRank.getRank(5, 1);
-        assertThat(rank).isEqualTo(WinningRank.SECOND);
-    }
-
-    @Test
-    @DisplayName("4등일 때")
-    public void fourthRank(){
-        WinningRank rank = WinningRank.getRank(4, 1);
-        assertThat(rank).isEqualTo(WinningRank.FOURTH);
-    }
-
-    @Test
-    @DisplayName("등수가 없을 때")
-    public void noneRank(){
-        WinningRank rank = WinningRank.getRank(2,1);
-        assertThat(rank).isEqualTo(WinningRank.NONE);
+    @ParameterizedTest(name = "matchCount={0}, bonusCount={1} -> {2}")
+    @DisplayName("등수 판별")
+    @CsvSource({
+            "6, 0, FIRST",
+            "5, 1, SECOND",
+            "5, 0, THIRD",
+            "4, 0, FOURTH",
+            "4, 1, FOURTH",
+            "3, 0, FIFTH",
+            "2, 0, NONE"
+    })
+    public void getRank(int matchCount, int bonusCount, WinningRank expected) {
+        WinningRank rank = WinningRank.getRank(matchCount, bonusCount);
+        assertThat(rank).isEqualTo(expected);
     }
 
     @Test
