@@ -2,7 +2,6 @@ package lotto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import lotto.enums.LottoStatus;
@@ -10,14 +9,14 @@ import lotto.enums.LottoStatus;
 public class LottoView {
 	private final Scanner scanner = new Scanner(System.in);
 
-	private static void printDetailResult(Map<LottoStatus, Integer> result, List<LottoStatus> winStatuses) {
+	private static void printDetailResult(LottoResult result, List<LottoStatus> winStatuses) {
 		for (LottoStatus status : winStatuses) {
 			String format = "%d개 일치 (%,d원) - %d개%n";
 
 			if (status == LottoStatus.SIX_BONUS) {
 				format = "%d개 일치, 보너스 볼 일치 (%,d원) - %d개%n";
 			}
-			System.out.printf(format, status.getCount(), status.getMoney(), result.getOrDefault(status, 0));
+			System.out.printf(format, status.getCount(), status.getMoney(), result.get(status));
 		}
 	}
 
