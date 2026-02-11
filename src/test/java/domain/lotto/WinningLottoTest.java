@@ -1,4 +1,5 @@
-import domain.lotto.Lotto;
+package domain.lotto;
+
 import domain.winning.WinningLotto;
 import domain.winning.WinningStatus;
 import org.junit.jupiter.api.Assertions;

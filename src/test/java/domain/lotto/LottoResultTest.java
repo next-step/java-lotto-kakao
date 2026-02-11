@@ -1,6 +1,5 @@
-import domain.lotto.LottoFactory;
-import domain.lotto.LottoIssuer;
-import domain.lotto.LottoGroup;
+package domain.lotto;
+
 import domain.winning.LottoResult;
 import domain.winning.WinningLotto;
 import org.junit.jupiter.api.Assertions;
