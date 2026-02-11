@@ -1,15 +1,11 @@
 package lotto.controller;
 
-import lotto.model.LottoNumberGenerator;
-import lotto.model.LottoNumbers;
-import lotto.model.LottoResult;
-import lotto.model.PurchaseResult;
+import lotto.model.*;
 import lotto.view.InputHistoryView;
 import lotto.view.InputPriceView;
 import lotto.view.InputManualView;
 import lotto.view.OutputView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +42,7 @@ public class LottoController {
         outputView.printPurchasedLottos(purchaseResult);
 
         // 지난주 결과 입력
-        final LottoNumbers winningNumber = doInputWinningNumbers();
+        final WinningNumbers winningNumber = doInputWinningNumbers();
 
         // 통계 계산 및 출력
         Map<LottoResult, Integer> rank = countByRank(winningNumber, purchaseResult.purchasedNumbers());
@@ -69,13 +65,13 @@ public class LottoController {
         return new PurchaseResult(purchasedNumbers, manualCount, autoCount);
     }
 
-    private LottoNumbers doInputWinningNumbers() {
+    private WinningNumbers doInputWinningNumbers() {
         List<Integer> numbers = inputHistoryView.inputWinningNumbers();
         int bonusNumber = inputHistoryView.inputBonusNumber(numbers);
-        return new LottoNumbers(numbers, bonusNumber);
+        return new WinningNumbers(numbers, bonusNumber);
     }
 
-    private Map<LottoResult, Integer> countByRank(LottoNumbers winningNumber, List<LottoNumbers> purchasedNumbers) {
+    private Map<LottoResult, Integer> countByRank(WinningNumbers winningNumber, List<LottoNumbers> purchasedNumbers) {
         Map<LottoResult, Integer> rank = new HashMap<>();
         for (LottoNumbers numbers : purchasedNumbers) {
             final LottoResult result = winningNumber.compare(numbers);
