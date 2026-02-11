@@ -2,7 +2,7 @@ package view;
 
 import model.WinLevel;
 
-public class StatBoardView {
+public class StatsBoardView {
 
     public void showStatResult() {
         System.out.println("당첨 통계");

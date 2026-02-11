@@ -8,7 +8,7 @@ import model.Ticket;
 import model.TicketBooth;
 import model.WinLevel;
 import view.GameScoreView;
-import view.StatBoardView;
+import view.StatsBoardView;
 import view.TicketBoothView;
 
 public class MainController {
@@ -19,7 +19,7 @@ public class MainController {
 
     private final TicketBoothView ticketBoothView = new TicketBoothView();
     private final GameScoreView gameScoreView = new GameScoreView();
-    private final StatBoardView statBoardView = new StatBoardView();
+    private final StatsBoardView statsBoardView = new StatsBoardView();
 
     TicketBooth ticketBooth = new TicketBooth();
 
@@ -55,11 +55,11 @@ public class MainController {
 
     private void statBoardRender(GameScore score, List<Ticket> tickets) {
         StatsBoard statsBoard = new StatsBoard(score, tickets);
-        statBoardView.showStatResult();
+        statsBoardView.showStatResult();
         List<WinLevel> winLevels = List.of(WinLevel.FIFTH, WinLevel.FOURTH, WinLevel.THIRD, WinLevel.SECOND, WinLevel.FIRST);
         for (WinLevel winLevel : winLevels) {
-            statBoardView.showWinCountMessage(winLevel, statsBoard.getLevelCount(winLevel));
+            statsBoardView.showWinCountMessage(winLevel, statsBoard.getLevelCount(winLevel));
         }
-        statBoardView.showProfitMessage(statsBoard.getProfitRatio());
+        statsBoardView.showProfitMessage(statsBoard.getProfitRatio());
     }
 }
