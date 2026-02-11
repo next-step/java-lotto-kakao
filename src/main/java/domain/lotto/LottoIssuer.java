@@ -14,10 +14,10 @@ public class LottoIssuer {
 
     public LottoGroup issueAuto(int price) {
         int count = getCount(price);
-        List<Lotto> lottoList = IntStream.range(0, count)
+        List<Lotto> lottos = IntStream.range(0, count)
                 .mapToObj(i -> lottoFactory.createAutoLotto())
                 .toList();
-        return new LottoGroup(lottoList);
+        return new LottoGroup(lottos);
     }
 
     public int getCount(int price) {

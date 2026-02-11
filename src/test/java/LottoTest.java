@@ -40,11 +40,11 @@ public class LottoTest {
         LottoIssuer lottoIssuer = new LottoIssuer(lottoFactory);
         LottoGroup lottoGroup = lottoIssuer.issueAuto(5000);
 
-        for (Lotto lotto : lottoGroup.getLottoList()) {
+        for (Lotto lotto : lottoGroup.getLottos()) {
             List<LottoNumber> lottoNumbers = lotto.getNumbers();
             assertEquals(6, new HashSet<>(lottoNumbers).size());
         }
-        assertEquals(5, lottoGroup.getLottoList().size());
+        assertEquals(5, lottoGroup.getLottos().size());
     }
 
 }

@@ -17,7 +17,7 @@ public class OutputView {
     public void printLottoCount(LottoGroup lottoGroup) {
         System.out.println(lottoGroup.getSize() + "개를 구매했습니다.");
 
-        for (Lotto lotto : lottoGroup.getLottoList()) {
+        for (Lotto lotto : lottoGroup.getLottos()) {
             List<LottoNumber> lottoNumbers = lotto.getNumbers();
             System.out.println(lottoNumbers);
         }
