@@ -29,7 +29,7 @@ public class WinningLottoTest {
             int bonusNumber = 46;
             WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("1 ~ 45 범위를 벗어나는 숫자가 입력되었습니다.");
+                .hasMessage(LottoNumber.RANGE_FAIL_MSG);
 
     }
 
