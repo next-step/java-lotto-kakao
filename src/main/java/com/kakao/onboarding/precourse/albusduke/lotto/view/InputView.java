@@ -9,7 +9,7 @@ import com.kakao.onboarding.precourse.albusduke.lotto.domain.PurchaseAmount;
 import com.kakao.onboarding.precourse.albusduke.lotto.domain.WinningNumbers;
 import com.kakao.onboarding.precourse.albusduke.lotto.util.Input;
 
-public class InputConsoleView {
+public class InputView {
 
 	private static final int MIN_PURCHASE_AMOUNT = 0;
 	private static final int MAX_PURCHASE_AMOUNT = 100_000;
@@ -23,7 +23,7 @@ public class InputConsoleView {
 
 	private final Input input;
 
-	public InputConsoleView(Input input) {
+	public InputView(Input input) {
 		this.input = input;
 	}
 
