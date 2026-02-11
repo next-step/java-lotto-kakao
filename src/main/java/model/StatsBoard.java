@@ -6,36 +6,38 @@ import java.util.Map;
 
 public class StatsBoard {
 
-	private final GameInfo gameInfo;
+	private final GameScore gameScore;
 	private final Map<WinLevel, Integer> matchedWinLevelCount;
 	private final Integer ticketCount;
-	public StatsBoard(GameInfo gameInfo, List<Ticket> tickets) {
-		this.gameInfo = gameInfo;
+	public StatsBoard(GameScore gameScore, List<Ticket> tickets) {
+		this.gameScore = gameScore;
 		ticketCount = tickets.size();
 		matchedWinLevelCount = new HashMap<>();
+
 		for(WinLevel winLevel: WinLevel.getAll()) {
 			matchedWinLevelCount.put(winLevel, 0);
 		}
+
 		for(Ticket ticket: tickets) {
 			WinLevel level = validateTicket(ticket);
 			matchedWinLevelCount.put(level, matchedWinLevelCount.getOrDefault(level, 0) + 1);
 		}
-
 	}
 
 	public Integer getLevelCount(WinLevel winLevel) {
 		return matchedWinLevelCount.get(winLevel);
 	}
+
 	WinLevel validateTicket(Ticket ticket) {
-		if(gameInfo == null) {
+		if(gameScore == null) {
 			throw new IllegalArgumentException("게임 정보가 없습니다!");
 		}
 		Long key = ticket.getKey();
 		Integer winMatchcount = 0;
-		for(var winNumber: gameInfo.winNumbers) {
+		for(var winNumber: gameScore.winNumbers) {
 			winMatchcount += (key & (1L <<winNumber)) == 0 ? 0 : 1;
 		}
-		Boolean bonousMatched = (key & (1L <<gameInfo.bonusNumber)) > 0;
+		Boolean bonousMatched = (key & (1L << gameScore.bonusNumber)) > 0;
 		return winLevelRouter(winMatchcount, bonousMatched);
 	}
 

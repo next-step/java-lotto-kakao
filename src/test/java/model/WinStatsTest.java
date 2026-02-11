@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class WinStatsTest {
-	GameInfo gameInfo = new GameInfo(7, Arrays.asList(1,2,3,4,5,6));
+	GameScore gameScore = new GameScore(7, Arrays.asList(1,2,3,4,5,6));
 	@Test
 	void HelloStats() {
 		Ticket ticket = new Ticket(1,2,3,4,5,6);
@@ -29,7 +29,7 @@ public class WinStatsTest {
 			WinLevel.FIFTH,
 			WinLevel.LOSER,
 		};
-		StatsBoard statsBoard = new StatsBoard(gameInfo,tickets);
+		StatsBoard statsBoard = new StatsBoard(gameScore,tickets);
 
 
 		for(int i = 0; i< 6; i++) {
@@ -39,7 +39,7 @@ public class WinStatsTest {
 	}
 	@Test
 	void profitRatioMaker() {
-		StatsBoard statsBoard = new StatsBoard(gameInfo,  Arrays.asList(
+		StatsBoard statsBoard = new StatsBoard(gameScore,  Arrays.asList(
 			new Ticket(1,2,3,4,5,6),
 			new Ticket(1,2,3,4,5,7),
 			new Ticket(1,2,3,4,5,8),

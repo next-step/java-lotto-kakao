@@ -1,5 +1,7 @@
 package view;
 
+import java.nio.file.attribute.BasicFileAttributes;
+
 import model.WinLevel;
 
 public class StatBoardView {

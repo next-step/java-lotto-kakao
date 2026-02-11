@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import model.GameInfo;
+import model.GameScore;
 import model.StatsBoard;
 import model.Ticket;
 import model.TicketBooth;
@@ -12,23 +12,34 @@ import view.StatBoardView;
 import view.TicketBoothView;
 
 public class MainController {
-	TicketBoothView ticketBoothView = new TicketBoothView();
 	TicketBooth ticketBooth = new TicketBooth();
-	GameScoreView gameScoreView = new GameScoreView();
-	StatBoardView statBoardView = new StatBoardView();
+	private TicketBoothView ticketBoothView = new TicketBoothView();
+	private GameScoreView gameScoreView = new GameScoreView();
+	private StatBoardView statBoardView = new StatBoardView();
+	
 	public void render() {
+		List<Ticket> tickets = ticketBoothRender();
+		GameScore gameScore = gameScoreRender();
+		statBoardRender(gameScore, tickets);
+	}
+
+	private List<Ticket> ticketBoothRender() {
 		ticketBoothView.showInputPriceMessage();
 		Integer price = ticketBoothView.inputTicketPrice();
 		List<Ticket> tickets = ticketBooth.issueTickets(price);
 		ticketBoothView.showTicketInfo(tickets);
-
+		return tickets;
+	}
+	private GameScore gameScoreRender() {
 		gameScoreView.showInputWinNumberMessage();
 		List<Integer> winNumbers = gameScoreView.inputWinNumber();
 		gameScoreView.showInputBonusBall();
 		Integer bonusBall = gameScoreView.inputBonusBall();
-		GameInfo info = new GameInfo(bonusBall, winNumbers);
+		return new GameScore(bonusBall, winNumbers);
+	}
 
-		StatsBoard statsBoard = new StatsBoard(info, tickets);
+	private void statBoardRender(GameScore score, List<Ticket> tickets) {
+		StatsBoard statsBoard = new StatsBoard(score, tickets);
 		statBoardView.showStatResult();
 		for(WinLevel winLevel: WinLevel.getAll()) {
 			statBoardView.showWinCountMessage(winLevel, statsBoard.getLevelCount(winLevel));
