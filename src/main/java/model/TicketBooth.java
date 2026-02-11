@@ -6,15 +6,21 @@ import java.util.List;
 
 public class TicketBooth {
 
-    public List<Ticket> issueTickets(int price) {
-        issueTicketsValidation(price);
+    private final List<Ticket> tickets;
+
+    public TicketBooth(String rawPrice) {
+        int price = validate(rawPrice);
         int ticketCount = price / 1000;
-        List<Ticket> result = new ArrayList<>();
-        while (result.size() < ticketCount) {
+        List<Ticket> tickets = new ArrayList<>();
+        while (tickets.size() < ticketCount) {
             Ticket ticket = issueTicket();
-            result.add(ticket);
+            tickets.add(ticket);
         }
-        return result;
+        this.tickets = tickets;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
     private Ticket issueTicket() {
@@ -30,7 +36,13 @@ public class TicketBooth {
         return new Ticket(result);
     }
 
-    private void issueTicketsValidation(int price) {
+    private int validate(String rawPrice) {
+        int price = 0;
+        try {
+            price = Integer.parseInt(rawPrice);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("숫자를 입력해주세요.");
+        }
         if (price < 0) {
             throw new IllegalArgumentException("음수로는 구매할 수 없습니다.");
         }
@@ -40,5 +52,6 @@ public class TicketBooth {
         if (price % 1000 != 0) {
             throw new IllegalArgumentException("1000원 단위로 입력해주세요.");
         }
+        return price;
     }
 }

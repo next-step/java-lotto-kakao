@@ -21,8 +21,6 @@ public class MainController {
     private final GameScoreView gameScoreView = new GameScoreView();
     private final StatsBoardView statsBoardView = new StatsBoardView();
 
-    private final TicketBooth ticketBooth = new TicketBooth();
-
     public void render() {
         ticketBoothRender();
     }
@@ -30,8 +28,9 @@ public class MainController {
     private void ticketBoothRender() {
         try {
             ticketBoothView.showInputPriceMessage();
-            int price = ticketBoothView.inputTicketPrice();
-            List<Ticket> tickets = ticketBooth.issueTickets(price);
+            String price = ticketBoothView.inputTicketPrice();
+            TicketBooth ticketBooth = new TicketBooth(price);
+            List<Ticket> tickets = ticketBooth.getTickets();
             ticketBoothView.showTicketInfo(tickets);
             gameScoreRender(tickets);
         } catch (IllegalArgumentException e) {

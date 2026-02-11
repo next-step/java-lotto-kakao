@@ -19,19 +19,17 @@ public class LottoMakerTest {
 
     @Test
     void ticketBoothValidatorThrow() {
-        TicketBooth ticketBooth = new TicketBooth();
-
-        List<Integer> prices = new ArrayList<>(Arrays.asList(1050,  -123142341, 0));
-        for (int price : prices) {
-            assertThatThrownBy(() -> ticketBooth.issueTickets(price))
+        List<String> prices = new ArrayList<>(Arrays.asList("1050",  "-123142341", "0"));
+        for (String price : prices) {
+            assertThatThrownBy(() -> new TicketBooth(price))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }
 
     @Test
     void ticketBoothIssue() {
-        TicketBooth ticketBooth = new TicketBooth();
-        List<Ticket> tickets = ticketBooth.issueTickets(12000);
+        TicketBooth ticketBooth = new TicketBooth("12000");
+        List<Ticket> tickets = ticketBooth.getTickets();
         assertThat(tickets.size()).isEqualTo(12);
     }
 }
