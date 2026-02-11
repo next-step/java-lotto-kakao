@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static lotto.domain.LottoStatus.*;
-
 public class LottoApplication {
 
     private final LottoPickStrategy randomNumberGenerator;
@@ -38,19 +36,8 @@ public class LottoApplication {
         printResult(statuses, profitRate);
     }
 
-    private void printResult(
-            Map<LottoStatus, Integer> statuses,
-            double profitRate
-    ) {
-        outputView.printMessage("당첨 통계");
-        outputView.printMessage("---------");
-        outputView.printMessage("3개 일치 (" + THREE_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(THREE_CORRECT, 0) + "개");
-        outputView.printMessage("4개 일치 (" + FOUR_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(FOUR_CORRECT, 0) + "개");
-        outputView.printMessage("5개 일치 (" + FIVE_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(FIVE_CORRECT, 0) + "개");
-        outputView.printMessage("5개 일치, 보너스 볼 일치 (" + FIVE_CORRECT_BONUS.getPrice() + "원) - " + statuses.getOrDefault(FIVE_CORRECT_BONUS, 0) + "개");
-        outputView.printMessage("6개 일치 (" + SIX_CORRECT.getPrice() + "원) - " + statuses.getOrDefault(SIX_CORRECT, 0) + "개");
-
-        outputView.printMessage("총 수익률은 " + String.format("%.2f입니다.", profitRate));
+    private void printResult(Map<LottoStatus, Integer> statuses, double profitRate) {
+        outputView.printWinningStatistics(statuses, profitRate);
     }
 
     private WinningLotto createWinningLotto() {
@@ -82,7 +69,7 @@ public class LottoApplication {
         outputView.printMessage(lottoCount + "개를 구매했습니다.");
 
         List<Lotto> lottos = buyLottos(lottoCount);
-        printPurchasedLottos(lottos);
+        outputView.printLottos(lottos);
 
         return new LottoPlayer(price, lottoCount, lottos);
     }
@@ -93,12 +80,6 @@ public class LottoApplication {
             lottos.add(new Lotto(randomNumberGenerator.generate()));
         }
         return lottos;
-    }
-
-    private void printPurchasedLottos(List<Lotto> lottos) {
-        for (Lotto lotto : lottos) {
-            outputView.printLog(lotto.getNumbers());
-        }
     }
 
 }

@@ -3,17 +3,18 @@ package lotto;
 import lotto.domain.Lotto;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoPickStrategy;
+import lotto.domain.LottoStatus;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static lotto.domain.LottoStatus.*;
+import static lotto.domain.LottoStatus.FIVE_CORRECT_BONUS;
+import static lotto.domain.LottoStatus.SIX_CORRECT;
 import static org.assertj.core.api.Assertions.*;
 
 public class LottoApplicationTest {
@@ -105,12 +106,31 @@ public class LottoApplicationTest {
         }
 
         @Override
-        public void printLog(List<Integer> list) {
-            String result = list.stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(", ", "[", "]"));
+        public void printLottos(List<Lotto> lottos) {
+            for (Lotto lotto : lottos) {
+                output.add(lotto.toString());
+            }
+        }
 
-            output.add(result);
+        public void printWinningStatistics(
+                final Map<LottoStatus, Integer> statuses,
+                double profitRate
+        ) {
+            printMessage("당첨 통계");
+            printMessage("---------");
+
+            printStatusLine(THREE_CORRECT, "3개 일치", statuses);
+            printStatusLine(FOUR_CORRECT,  "4개 일치", statuses);
+            printStatusLine(FIVE_CORRECT,  "5개 일치", statuses);
+            printStatusLine(FIVE_CORRECT_BONUS, "5개 일치, 보너스 볼 일치", statuses);
+            printStatusLine(SIX_CORRECT,   "6개 일치", statuses);
+
+            printMessage("총 수익률은 " + String.format("%.2f입니다.", profitRate));
+        }
+
+        private void printStatusLine(LottoStatus status, String label, Map<LottoStatus, Integer> statuses) {
+            int count = statuses.getOrDefault(status, 0);
+            printMessage(label + " (" + status.getPrice() + "원) - " + count + "개");
         }
 
         public List<String> getOutput() {
