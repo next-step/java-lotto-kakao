@@ -27,7 +27,7 @@ public class OutputView {
     }
 
     private static void printRankLine(Rank rank, int count) {
-        System.out.println(rank.getMessage() + " - " + count + "개");
+        System.out.println(RankMessage.format(rank) + " - " + count + "개");
     }
 
     public static void printYield(double yield) {
