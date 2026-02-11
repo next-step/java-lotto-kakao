@@ -1,12 +1,20 @@
 plugins {
     id 'java'
+    id 'org.ec4j.editorconfig' version '0.0.3'
+    id 'checkstyle'
+}
+editorconfig {
+    excludes = ['build']
 }
 
+check.dependsOn editorconfigCheck
 version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
     testImplementation 'org.assertj:assertj-core:3.27.7'
@@ -15,7 +23,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
