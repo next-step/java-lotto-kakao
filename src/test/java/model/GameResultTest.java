@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class GameResultTest {
+
     GameScore gameScore = new GameScore(7, Arrays.asList(1, 2, 3, 4, 5, 6));
 
     @Test
@@ -44,7 +45,7 @@ public class GameResultTest {
                 new Ticket(1, 2, 3, 10, 9, 8),
                 new Ticket(7, 8, 9, 10, 11, 12)
         ));
-        Double profitRatio = statsBoard.getProfitRatio();
+        double profitRatio = statsBoard.getProfitRatio();
         assertThat(profitRatio).isEqualTo(338592.5);
     }
 }

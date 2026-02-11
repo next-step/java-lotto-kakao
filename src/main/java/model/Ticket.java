@@ -9,21 +9,21 @@ public class Ticket {
     private final List<Integer> numbers;
     private final long key;
 
-    Ticket(Integer... numbers) {
+    public Ticket(Integer... numbers) {
         this(new ArrayList<>(Arrays.asList(numbers)));
     }
 
-    Ticket(List<Integer> numbers) {
+    public Ticket(List<Integer> numbers) {
         numbers.sort(((o1, o2) -> o1 - o2));
         long key = 0L;
-        for (Integer number : numbers) {
+        for (int number : numbers) {
             key |= (1L << number);
         }
         this.numbers = numbers;
         this.key = key;
     }
 
-    public Long getKey() {
+    public long getKey() {
         return key;
     }
 

@@ -6,7 +6,7 @@ public enum WinLevel {
 
     FIRST, SECOND, THIRD, FOURTH, FIFTH, LOSER;
 
-    public Long getPrice() {
+    public long getPrice() {
         if (this == WinLevel.FIRST) return 2_000_000_000L;
         if (this == WinLevel.SECOND) return 30_000_000L;
         if (this == WinLevel.THIRD) return 1_500_000L;
@@ -24,7 +24,7 @@ public enum WinLevel {
         return "당첨 되지 않았습니다.";
     }
 
-    public static WinLevel make(Integer winMatchCount, Boolean bonusMatched) {
+    public static WinLevel make(int winMatchCount, boolean bonusMatched) {
         if (winMatchCount == 6) return WinLevel.FIRST;
         if (winMatchCount == 5 && bonusMatched) return WinLevel.SECOND;
         if (winMatchCount == 5) return WinLevel.THIRD;

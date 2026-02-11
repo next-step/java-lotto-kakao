@@ -20,7 +20,7 @@ public class TicketBoothView {
         }
     }
 
-    public Integer inputTicketPrice() {
+    public int inputTicketPrice() {
         String input = SCANNER.nextLine();
         try {
             return Integer.parseInt(input);

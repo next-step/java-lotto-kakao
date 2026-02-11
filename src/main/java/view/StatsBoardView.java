@@ -9,11 +9,11 @@ public class StatsBoardView {
         System.out.println("---------");
     }
 
-    public void showWinCountMessage(WinLevel winLevel, Integer count) {
+    public void showWinCountMessage(WinLevel winLevel, int count) {
         System.out.printf("%s (%d원) - %d개\n", winLevel.getDescription(), winLevel.getPrice(), count);
     }
 
-    public void showProfitMessage(Double profitRatio) {
+    public void showProfitMessage(double profitRatio) {
         System.out.printf("총 수익률은 %.2f입니다.\n", profitRatio);
     }
 }

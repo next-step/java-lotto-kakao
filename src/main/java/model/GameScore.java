@@ -10,12 +10,11 @@ public class GameScore {
 
     public GameScore(int bonusNumber, List<Integer> winNumbers) {
         winNumbers.sort(((o1, o2) -> o1 - o2));
-
         this.bonusNumber = bonusNumber;
         this.winNumbers = winNumbers;
     }
 
-    public Integer getBonusNumber() {
+    public int getBonusNumber() {
         return bonusNumber;
     }
 
@@ -29,7 +28,8 @@ public class GameScore {
             return false;
         }
         GameScore gameScore = (GameScore) o;
-        return Objects.equals(bonusNumber, gameScore.bonusNumber) && Objects.equals(winNumbers, gameScore.winNumbers);
+        return Objects.equals(bonusNumber, gameScore.bonusNumber) &&
+                Objects.equals(winNumbers, gameScore.winNumbers);
     }
 
     @Override

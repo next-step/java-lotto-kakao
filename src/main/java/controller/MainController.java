@@ -13,15 +13,15 @@ import view.TicketBoothView;
 
 public class MainController {
 
-    public static final int BALL_COUNT = 6;
-    public static final int MIN_BALL_NUMBER = 1;
-    public static final int MAX_BALL_NUMBER = 45;
+    private static final int BALL_COUNT = 6;
+    private static final int MIN_BALL_NUMBER = 1;
+    private static final int MAX_BALL_NUMBER = 45;
 
     private final TicketBoothView ticketBoothView = new TicketBoothView();
     private final GameScoreView gameScoreView = new GameScoreView();
     private final StatsBoardView statsBoardView = new StatsBoardView();
 
-    TicketBooth ticketBooth = new TicketBooth();
+    private final TicketBooth ticketBooth = new TicketBooth();
 
     public void render() {
         ticketBoothRender();
@@ -30,7 +30,7 @@ public class MainController {
     private void ticketBoothRender() {
         try {
             ticketBoothView.showInputPriceMessage();
-            Integer price = ticketBoothView.inputTicketPrice();
+            int price = ticketBoothView.inputTicketPrice();
             List<Ticket> tickets = ticketBooth.issueTickets(price);
             ticketBoothView.showTicketInfo(tickets);
             gameScoreRender(tickets);
@@ -45,7 +45,7 @@ public class MainController {
             gameScoreView.showInputWinNumberMessage();
             List<Integer> winNumbers = gameScoreView.inputWinNumber(BALL_COUNT, MIN_BALL_NUMBER, MAX_BALL_NUMBER);
             gameScoreView.showInputBonusBall();
-            Integer bonusBall = gameScoreView.inputBonusBall(MIN_BALL_NUMBER, MAX_BALL_NUMBER);
+            int bonusBall = gameScoreView.inputBonusBall(MIN_BALL_NUMBER, MAX_BALL_NUMBER);
             statBoardRender(new GameScore(bonusBall, winNumbers), tickets);
         } catch (IllegalArgumentException e) {
             gameScoreView.showErrorMessage(e);

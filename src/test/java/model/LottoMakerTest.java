@@ -2,6 +2,8 @@ package model;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -19,8 +21,8 @@ public class LottoMakerTest {
     void ticketBoothValidatorThrow() {
         TicketBooth ticketBooth = new TicketBooth();
 
-        Integer[] prices = new Integer[]{1050, -123142341, 0};
-        for (Integer price : prices) {
+        List<Integer> prices = new ArrayList<>(Arrays.asList(1050,  -123142341, 0));
+        for (int price : prices) {
             assertThatThrownBy(() -> ticketBooth.issueTickets(price))
                     .isInstanceOf(IllegalArgumentException.class);
         }
@@ -32,5 +34,4 @@ public class LottoMakerTest {
         List<Ticket> tickets = ticketBooth.issueTickets(12000);
         assertThat(tickets.size()).isEqualTo(12);
     }
-
 }
