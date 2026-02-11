@@ -9,21 +9,26 @@ public class LottoNumberGenerator {
     private static final int LOTTO_SIZE = 6;
 
     private final Random random;
+    private final List<Integer> candidates = new ArrayList<>();
 
     public LottoNumberGenerator() {
         this.random = new Random();
+        generateBaseNumbers();
     }
 
     public LottoNumberGenerator(long seed) {
         this.random = new Random(seed);
+        generateBaseNumbers();
     }
 
-    public LottoNumbers generate() {
-        // 1 ~ 45 숫자 리스트를 생성하고 랜덤하게 섞기
-        final List<Integer> candidates = new ArrayList<>();
+    private void generateBaseNumbers() {
         for (int number = LottoNumber.MIN_NUMBER; number <= LottoNumber.MAX_NUMBER; number++) {
             candidates.add(number);
         }
+    }
+
+    public LottoNumbers generate() {
+        // 1 ~ 45 숫자 리스트를 랜덤하게 섞기
         Collections.shuffle(candidates, random);
 
         // 랜덤한 리스트의 앞 6개 숫자를 추출하고 정렬
