@@ -9,6 +9,7 @@ public class StatsBoard {
 	private final GameScore gameScore;
 	private final Map<WinLevel, Integer> matchedWinLevelCount;
 	private final Integer ticketCount;
+
 	public StatsBoard(GameScore gameScore, List<Ticket> tickets) {
 		this.gameScore = gameScore;
 		ticketCount = tickets.size();
@@ -33,21 +34,17 @@ public class StatsBoard {
 			throw new IllegalArgumentException("게임 정보가 없습니다!");
 		}
 		Long key = ticket.getKey();
-		Integer winMatchcount = 0;
-		for(var winNumber: gameScore.winNumbers) {
+		int winMatchcount = 0;
+		for(var winNumber: gameScore.getWinNumbers()) {
 			winMatchcount += (key & (1L <<winNumber)) == 0 ? 0 : 1;
 		}
-		Boolean bonousMatched = (key & (1L << gameScore.bonusNumber)) > 0;
+		Boolean bonousMatched = (key & (1L << gameScore.getBonusNumber())) > 0;
 		return winLevelRouter(winMatchcount, bonousMatched);
 	}
 
+	// 핵심 비즈니스 로직 Winlevel의 FIRST / SECOND 등등이 뭘 의미 하는지 여기 담겨있음
 	private WinLevel winLevelRouter(Integer winMatchCount, Boolean bonusMatched) {
-		if(winMatchCount == 6) return WinLevel.FIRST;
-		if(winMatchCount == 5 && bonusMatched) return WinLevel.SECOND;
-		if(winMatchCount == 5) return WinLevel.THIRD;
-		if(winMatchCount == 4) return WinLevel.FOURTH;
-		if(winMatchCount == 3) return WinLevel.FIFTH;
-		return WinLevel.LOSER;
+		return WinLevel.make(winMatchCount, bonusMatched);
 	}
 
 	public Double getProfitRatio() {

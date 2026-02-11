@@ -13,10 +13,10 @@ import view.TicketBoothView;
 
 public class MainController {
 	TicketBooth ticketBooth = new TicketBooth();
-	private TicketBoothView ticketBoothView = new TicketBoothView();
-	private GameScoreView gameScoreView = new GameScoreView();
-	private StatBoardView statBoardView = new StatBoardView();
-	
+	private final TicketBoothView ticketBoothView = new TicketBoothView();
+	private final GameScoreView gameScoreView = new GameScoreView();
+	private final StatBoardView statBoardView = new StatBoardView();
+
 	public void render() {
 		List<Ticket> tickets = ticketBoothRender();
 		GameScore gameScore = gameScoreRender();
@@ -30,6 +30,7 @@ public class MainController {
 		ticketBoothView.showTicketInfo(tickets);
 		return tickets;
 	}
+
 	private GameScore gameScoreRender() {
 		gameScoreView.showInputWinNumberMessage();
 		List<Integer> winNumbers = gameScoreView.inputWinNumber();
@@ -41,7 +42,8 @@ public class MainController {
 	private void statBoardRender(GameScore score, List<Ticket> tickets) {
 		StatsBoard statsBoard = new StatsBoard(score, tickets);
 		statBoardView.showStatResult();
-		for(WinLevel winLevel: WinLevel.getAll()) {
+		List<WinLevel> winLevels = List.of(WinLevel.FIFTH, WinLevel.FOURTH, WinLevel.THIRD, WinLevel.SECOND, WinLevel.FIRST);
+		for(WinLevel winLevel: winLevels) {
 			statBoardView.showWinCountMessage(winLevel, statsBoard.getLevelCount(winLevel));
 		}
 		statBoardView.showProfitMessage(statsBoard.getProfitRatio());

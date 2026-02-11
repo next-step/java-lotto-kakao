@@ -4,13 +4,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class GameScore {
-	final Integer bonusNumber;
-	final List<Integer> winNumbers;
+	private final Integer bonusNumber;
+	private final List<Integer> winNumbers;
 
 	public GameScore(int bonusNumber, List<Integer> winNumbers) {
 		winNumbers.sort(((o1,o2) -> o1 - o2));
 		this.bonusNumber = bonusNumber;
 		this.winNumbers = winNumbers;
+	}
+
+	public Integer getBonusNumber() {
+		return bonusNumber;
+	}
+
+	public List<Integer> getWinNumbers() {
+		return winNumbers;
 	}
 
 	@Override
