@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class Lotto {
 
+    public static final int REQUIRED_SIZE = 6;
+
     public static final String COUNT_FAIL_MSG = "입력된 숫자가 6개가 아닙니다.";
     public static final String DUPLICATE_FAIL_MSG = "중복된 숫자가 입력되었습니다.";
 
@@ -33,7 +35,7 @@ public class Lotto {
     }
 
     private void validateNumberCount(List<Integer> numbers) {
-        if (numbers.size() != 6) {
+        if (numbers.size() != REQUIRED_SIZE) {
             throw new IllegalArgumentException(COUNT_FAIL_MSG);
         }
     }
