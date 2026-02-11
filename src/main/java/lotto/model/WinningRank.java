@@ -18,18 +18,18 @@ public enum WinningRank {
     public final Money winningPrice;
     public final int rank;
     private final int matchCount;
-    private final int bounceCount;
+    private final int bonusCount;
 
-    WinningRank(int winningPrice, int rank, int matchCount, int bounceCount) {
+    WinningRank(int winningPrice, int rank, int matchCount, int bonusCount) {
         this.winningPrice = new Money(winningPrice);
         this.rank = rank;
         this.matchCount = matchCount;
-        this.bounceCount = bounceCount;
+        this.bonusCount = bonusCount;
     }
 
     public boolean isSatisfied(int matchCount, int bounceCount) {
         return matchCount >= this.matchCount
-                && bounceCount >= this.bounceCount;
+                && bounceCount >= this.bonusCount;
     }
 
     public static WinningRank getRank(int matchCount, int bounceCount) {
@@ -41,7 +41,7 @@ public enum WinningRank {
 
     public String getInfoString(){
         StringBuilder sb =  new StringBuilder(matchCount+"개 일치");
-        if(bounceCount!=0){
+        if(bonusCount !=0){
             sb.append(", 보너스 볼 일치");
         }
         sb.append(" ("+winningPrice.toString()+")");
