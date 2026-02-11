@@ -44,11 +44,10 @@ public class LottoBundle {
     }
 
     public LottoBundleResult evaluate(WinLotto win) {
-        LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder();
+        LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder(Money.won(Lotto.PRICE));
         for (Lotto lotto : lottos) {
             LottoRank rank = win.lottery(lotto);
             lottoBundleResultBuilder.count(rank);
-            lottoBundleResultBuilder.addFee(Money.won(Lotto.PRICE));
         }
         return lottoBundleResultBuilder.build();
     }
