@@ -1,10 +1,8 @@
 package lotto;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Lotto {
 
@@ -24,6 +22,16 @@ public class Lotto {
 		if (distinctCount != LOTTO_SIZE) {
 			throw new IllegalArgumentException("로또 번호는 중복될 수 없습니다.");
 		}
+	}
+
+	public int countMatch(Lotto other) {
+		return (int) this.numbers.stream()
+			.filter(other.numbers::contains)
+			.count();
+	}
+
+	public boolean isContainBonusBall(LottoNumber bonus) {
+		return this.numbers.contains(bonus);
 	}
 
 	public static Lotto createRandomLotto() {

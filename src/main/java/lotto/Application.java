@@ -1,13 +1,10 @@
 package lotto;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Application {
+
 	private static final String LOTTO_REGEX =
 		"^(?:[1-9]|[1-3][0-9]|4[0-5])(?:,\\s*(?:[1-9]|[1-3][0-9]|4[0-5])){5}$";
 
@@ -41,20 +38,24 @@ public class Application {
 	}
 
 	private static WinningLotto readWinningLotto(Scanner scanner) {
-		List<Integer> numbers = readWinningNumbers(scanner);
-		int bonus = readBonus(scanner, numbers);
-		return new WinningLotto(numbers, bonus);
+		List<LottoNumber> numbers = readWinningNumbers(scanner);
+		Lotto winningLotto = new Lotto(numbers);
+
+		LottoNumber bonus = readBonus(scanner, numbers);
+
+		return new WinningLotto(winningLotto, bonus);
 	}
 
-	private static List<Integer> readWinningNumbers(Scanner scanner) {
+	private static List<LottoNumber> readWinningNumbers(Scanner scanner) {
 		System.out.println("지난 주 당첨 번호를 입력해 주세요.");
 		String input = scanner.nextLine();
 
 		validateWinningNumbersFormat(input);
 
-		List<Integer> numbers = Arrays.stream(input.split(","))
+		List<LottoNumber> numbers = Arrays.stream(input.split(","))
 			.map(String::trim)
 			.map(Integer::parseInt)
+			.map(LottoNumber::new)
 			.collect(Collectors.toList());
 
 		validateNoDuplicates(numbers);
@@ -68,14 +69,13 @@ public class Application {
 		}
 	}
 
-	private static void validateNoDuplicates(List<Integer> numbers) {
-		// ToDo: Application 클래스 리팩토링 시 Lotto 길이 검증 로직 추가 후 매직 넘버 수정
-		if (new HashSet<>(numbers).size() != 6) {
+	private static void validateNoDuplicates(List<LottoNumber> numbers) {
+		if (new HashSet<>(numbers).size() != numbers.size()) {
 			throw new IllegalArgumentException("당첨 번호는 중복될 수 없습니다.");
 		}
 	}
 
-	private static int readBonus(Scanner scanner, List<Integer> winningNumbers) {
+	private static LottoNumber readBonus(Scanner scanner, List<LottoNumber> winningNumbers) {
 		System.out.println("보너스 볼을 입력해 주세요.");
 		int bonus = Integer.parseInt(scanner.nextLine());
 
@@ -88,9 +88,8 @@ public class Application {
 			throw new IllegalArgumentException("보너스 볼은 당첨 번호와 중복될 수 없습니다.");
 		}
 
-		return bonus;
+		return new LottoNumber(bonus);
 	}
-
 
 	private static LotteryChecker countMatches(List<Lotto> tickets, WinningLotto winningLotto) {
 		LotteryChecker checker = new LotteryChecker();
@@ -109,13 +108,12 @@ public class Application {
 		Map<MatchCount, Integer> counts = checker.getCounts();
 
 		System.out.println("당첨 통계");
-		System.out.println("3개 일치 (5000원)- " + counts.get(MatchCount.THREE) + "개");
-		System.out.println("4개 일치 (50000원)- " + counts.get(MatchCount.FOUR) + "개");
-		System.out.println("5개 일치 (1500000원)- " + counts.get(MatchCount.FIVE) + "개");
-		System.out.println("5개 일치, 보너스 볼 일치(30000000원)- " + counts.get(MatchCount.FIVE_BONUS) + "개");
-		System.out.println("6개 일치 (2000000000원)- " + counts.get(MatchCount.SIX) + "개");
+		System.out.println("3개 일치 (5000원)- " + counts.getOrDefault(MatchCount.THREE, 0) + "개");
+		System.out.println("4개 일치 (50000원)- " + counts.getOrDefault(MatchCount.FOUR, 0) + "개");
+		System.out.println("5개 일치 (1500000원)- " + counts.getOrDefault(MatchCount.FIVE, 0) + "개");
+		System.out.println("5개 일치, 보너스 볼 일치(30000000원)- " + counts.getOrDefault(MatchCount.FIVE_BONUS, 0) + "개");
+		System.out.println("6개 일치 (2000000000원)- " + counts.getOrDefault(MatchCount.SIX, 0) + "개");
 
-		int totalPrize = checker.calculateTotalPrize();
 		System.out.println("총 수익률은 " + checker.calculateReturnRate(budget) + "입니다.");
 	}
 }

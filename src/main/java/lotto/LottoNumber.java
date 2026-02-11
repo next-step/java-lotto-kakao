@@ -34,5 +34,13 @@ public class LottoNumber implements Comparable<LottoNumber>{
 	public int compareTo(LottoNumber that) {
 		return this.number - that.number;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof LottoNumber)) return false;
+		LottoNumber that = (LottoNumber) o;
+		return number == that.number;
+	}
 }
 

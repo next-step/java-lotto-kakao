@@ -9,27 +9,51 @@ import org.junit.jupiter.api.Test;
 
 public class WinningLottoTest {
 
-	List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
-	int bonus = 7;
-	WinningLotto winningLotto = new WinningLotto(numbers, bonus);
+	List<LottoNumber> numbers = Arrays.asList(
+		new LottoNumber(1),
+		new LottoNumber(2),
+		new LottoNumber(3),
+		new LottoNumber(4),
+		new LottoNumber(5),
+		new LottoNumber(6)
+	);
+
+	Lotto winningNumbers = new Lotto(numbers);
+	LottoNumber bonus = LottoNumber.getCache().get(6);
+	WinningLotto winningLotto = new WinningLotto(winningNumbers, bonus);
 
 	@Test
 	void winningLottoTest() {
-		List<Integer> winningLottoNumber = winningLotto.getNumbers();
-		assertThat(winningLottoNumber.size()).isEqualTo(6);
+		assertThat(winningNumbers.getNumbers().size()).isEqualTo(6);
 	}
 
 	@Test
 	void lotteryNumberListCheckerTest() {
-		Lotto lotto = new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6));
-		int hits = winningLotto.checkNumbers(lotto);
+		List<LottoNumber> ticketNumber = Arrays.asList(
+			new LottoNumber(1),
+			new LottoNumber(2),
+			new LottoNumber(3),
+			new LottoNumber(4),
+			new LottoNumber(5),
+			new LottoNumber(6)
+		);
+		Lotto ticket = new Lotto(ticketNumber);
+		int hits = winningLotto.checkNumbers(ticket);
 		assertThat(hits).isEqualTo(6);
 	}
 
 	@Test
 	void lotteryBonusCheckerTest() {
-		Lotto lotto = new Lotto(Arrays.asList(1, 2, 3, 4, 5, 7));
-		boolean isContainBonus = winningLotto.isContainBonus(lotto);
+		List<LottoNumber> ticketNumber = Arrays.asList(
+			new LottoNumber(1),
+			new LottoNumber(2),
+			new LottoNumber(3),
+			new LottoNumber(4),
+			new LottoNumber(5),
+			new LottoNumber(7)
+		);
+		Lotto ticket = new Lotto(ticketNumber);
+		boolean isContainBonus = winningLotto.isContainBonus(ticket);
 		assertThat(isContainBonus).isEqualTo(true);
 	}
 }

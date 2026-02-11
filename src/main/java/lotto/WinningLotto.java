@@ -1,28 +1,24 @@
 package lotto;
 
-import java.util.List;
-
 public class WinningLotto {
 
-	private final List<Integer> numbers;
-	private final int bonus;
+	private final Lotto winningNumbers;
+	private final LottoNumber bonus;
 
-	WinningLotto(List<Integer> numbers, int bonus) {
-		this.numbers = numbers;
+	WinningLotto(Lotto winningNumbers, LottoNumber bonus) {
+		this.winningNumbers = winningNumbers;
 		this.bonus = bonus;
 	}
 
-	List<Integer> getNumbers() {
-		return this.numbers;
+	Lotto getNumbers() {
+		return this.winningNumbers;
 	}
 
-	int checkNumbers(Lotto lotto) {
-		return (int) lotto.getNumbers().stream()
-			.filter(numbers::contains)
-			.count();
+	int checkNumbers(Lotto tickets) {
+		return winningNumbers.countMatch(tickets);
 	}
 
-	boolean isContainBonus(Lotto lotto) {
-		return lotto.getNumbers().contains(bonus);
+	boolean isContainBonus(Lotto tickets) {
+		return tickets.isContainBonusBall(bonus);
 	}
 }
