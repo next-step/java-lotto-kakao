@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class WinStatsTest {
 	GameScore gameScore = new GameScore(7, Arrays.asList(1,2,3,4,5,6));
 	@Test
-	void HelloStats() {
+	void ticketLevel() {
 		Ticket ticket = new Ticket(1,2,3,4,5,6);
 		Integer bonusBall = 7;
 		List<Ticket> tickets =  Arrays.asList(
@@ -33,10 +33,10 @@ public class WinStatsTest {
 
 
 		for(int i = 0; i< 6; i++) {
-			WinLevel winLevel = statsBoard.validateTicket(tickets.get(i));
-			assertThat(winLevel).isEqualTo(winLevels[i]);
+			assertThat(tickets.get(i).getWinLevel(gameScore)).isEqualTo(winLevels[i]);
 		}
 	}
+
 	@Test
 	void profitRatioMaker() {
 		StatsBoard statsBoard = new StatsBoard(gameScore,  Arrays.asList(

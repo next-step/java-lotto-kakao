@@ -29,10 +29,7 @@ public class LottoMakerTest {
 	@Test
 	void ticketBoothIssue() {
 		TicketBooth ticketBooth = new TicketBooth();
-
-
 		List<Ticket> tickets = ticketBooth.issueTickets(12000);
-
 		/// 티켓들 갯수가 12개여야한다.
 		assertThat(tickets.size()).isEqualTo(12);
 	}

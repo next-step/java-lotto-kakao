@@ -17,4 +17,8 @@ public class StatBoardView {
 	public void showProfitMessage(Double profitRatio) {
 		System.out.printf("총 수익률은 %.2f입니다.\n", profitRatio);
 	}
+
+	public void showErrorMessage(IllegalArgumentException e) {
+		System.out.println("[Error] " + e.getMessage());
+	}
 }

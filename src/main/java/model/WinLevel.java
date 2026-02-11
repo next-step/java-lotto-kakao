@@ -23,6 +23,7 @@ public enum WinLevel {
 		if(winMatchCount == 3) return WinLevel.FIFTH;
 		return WinLevel.LOSER;
 	}
+
 	public String getDescription() {
 		if(this == WinLevel.FIRST) return "6개 일치";
 		if(this == WinLevel.SECOND) return "5개 일치, 보너스 볼 일치";

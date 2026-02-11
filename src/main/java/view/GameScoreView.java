@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GameScoreView {
-	private Scanner scanner = new Scanner(System.in);
+	private final Scanner scanner = new Scanner(System.in);
 
 	public void showInputWinNumberMessage() {
 		System.out.println("지난 주 당첨 번호를 입력해 주세요.");
@@ -18,6 +18,7 @@ public class GameScoreView {
 		}
 		return result;
 	}
+
 	public void showInputBonusBall() {
 		System.out.println("보너스 볼을 입력해 주세요.");
 	}
@@ -25,5 +26,9 @@ public class GameScoreView {
 	public Integer inputBonusBall() {
 		String rawNumber = scanner.nextLine();
 		return Integer.parseInt(rawNumber);
+	}
+
+	public void showErrorMessage(IllegalArgumentException e) {
+		System.out.println("[Error] " + e.getMessage());
 	}
 }

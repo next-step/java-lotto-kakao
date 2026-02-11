@@ -6,7 +6,7 @@ import java.util.Scanner;
 import model.Ticket;
 
 public class TicketBoothView {
-	private Scanner scanner = new Scanner(System.in);
+	private final Scanner scanner = new Scanner(System.in);
 	public void showInputPriceMessage() {
 		System.out.println("구입금액을 입력해 주세요.");
 	}
@@ -26,9 +26,7 @@ public class TicketBoothView {
 			throw new IllegalArgumentException("잘 못 된 입력");
 		}
 	}
-
-
 	public void showErrorMessage(IllegalArgumentException e) {
-		System.out.println(e.getMessage());
+		System.out.println("[Error] " + e.getMessage());
 	}
 }
