@@ -1,6 +1,5 @@
 package com.kakao.onboarding.precourse.albusduke.lotto.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -16,21 +15,23 @@ public class LottoNumbers {
 	private final List<LottoNumber> lottoNumbers;
 
 	public LottoNumbers(List<Integer> numbers) {
-		if (numbers.size() != NUMBER_SIZE) {
-			throw new IllegalArgumentException(NUMBER_SIZE_ERR_MSG);
-		}
+		validateSize(numbers);
+		validateUnique(numbers);
 
+		lottoNumbers = numbers.stream().map(LottoNumber::new).toList();
+	}
+
+	private static void validateUnique(List<Integer> numbers) {
 		Set<Integer> uniqueNumbers = new HashSet<>(numbers);
 		if (uniqueNumbers.size() != numbers.size()) {
 			throw new IllegalArgumentException(DUPLICATED_NUMBER_ERR_MSG);
 		}
+	}
 
-		lottoNumbers = new ArrayList<>();
-
-		for (int number : numbers) {
-			lottoNumbers.add(new LottoNumber(number));
+	private static void validateSize(List<Integer> numbers) {
+		if (numbers.size() != NUMBER_SIZE) {
+			throw new IllegalArgumentException(NUMBER_SIZE_ERR_MSG);
 		}
-
 	}
 
 	public boolean hasNumber(LottoNumber number) {
