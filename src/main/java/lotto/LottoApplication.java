@@ -28,8 +28,8 @@ public class LottoApplication {
     }
 
     public void play() {
-        LottoPlayer player = makeUserInfo();
-        WinningLotto winningLotto = makeWinningLotto();
+        LottoPlayer player = createPlayer();
+        WinningLotto winningLotto = createWinningLotto();
 
         Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
         long profit = LottoStatus.totalPrize(statuses);
@@ -53,18 +53,18 @@ public class LottoApplication {
         outputView.printMessage("총 수익률은 " + String.format("%.2f입니다.", profitRate));
     }
 
-    private WinningLotto makeWinningLotto() {
+    private WinningLotto createWinningLotto() {
         String[] winningLottoArray = makeWinningLottoNumbers();
 
         List<Integer> winningLottoList = Arrays.stream(winningLottoArray)
                 .map(Integer::parseInt)
                 .toList();
 
-        int bonusNumber = makeBonusNumber();
+        int bonusNumber = readBonusNumber();
         return new WinningLotto(new Lotto(winningLottoList), bonusNumber);
     }
 
-    private int makeBonusNumber() {
+    private int readBonusNumber() {
         outputView.printMessage("보너스 볼을 입력해 주세요.");
         return Integer.parseInt(inputView.input());
     }
@@ -75,16 +75,16 @@ public class LottoApplication {
         return winningLottoStr.split(",");
     }
 
-    private LottoPlayer makeUserInfo() {
+    private LottoPlayer createPlayer() {
         outputView.printMessage("구입금액을 입력해 주세요.");
         int price = Integer.parseInt(inputView.input());
         int lottoCount = price / 1000;
         outputView.printMessage(lottoCount + "개를 구매했습니다.");
 
-        return makeUserLottoInfo(lottoCount, price);
+        return buyLottos(lottoCount, price);
     }
 
-    private LottoPlayer makeUserLottoInfo(int lottoCount, int price) {
+    private LottoPlayer buyLottos(int lottoCount, int price) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < lottoCount; i++) {
             lottos.add(new Lotto(randomNumberGenerator.generate()));
