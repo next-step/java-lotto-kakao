@@ -33,13 +33,7 @@ public class LottoNumbers {
 	}
 
 	public boolean hasNumber(LottoNumber number) {
-		for (LottoNumber lottoNumber : lottoNumbers) {
-			if (lottoNumber.equals(number)) {
-				return true;
-			}
-		}
-
-		return false;
+		return lottoNumbers.contains(number);
 	}
 
 	public int countMatchingNumbers(LottoNumbers otherNumbers) {
