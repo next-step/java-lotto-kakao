@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class WinningLotto {
 
+    public static final String BONUS_DUPLICATE_FAIL_MSG = "당첨번호와 중복된 숫자를 보너스 번호로 등록할 수 없습니다.";
+
     private final Lotto lotto;
     private final LottoNumber bonusNumber;
 
@@ -21,7 +23,7 @@ public class WinningLotto {
 
     private void validateDuplicate(Lotto lotto, int bonusNumber) {
         if (lotto.getNumbers().contains(bonusNumber)) {
-            throw new IllegalArgumentException("당첨번호와 중복된 숫자를 보너스 번호로 등록할 수 없습니다.");
+            throw new IllegalArgumentException(BONUS_DUPLICATE_FAIL_MSG);
         }
     }
 

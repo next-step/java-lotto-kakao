@@ -42,7 +42,7 @@ public class WinningLottoTest {
             int bonusNumber = 1;
             WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("당첨번호와 중복된 숫자를 보너스 번호로 등록할 수 없습니다.");
+                .hasMessage(WinningLotto.BONUS_DUPLICATE_FAIL_MSG);
 
     }
 
