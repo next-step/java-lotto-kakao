@@ -9,18 +9,22 @@ import java.util.Set;
 import lotto.enums.LottoStatus;
 
 public class Lotto {
-	private List<Integer> allNumbers = new ArrayList<>(
-		List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-			26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45));
+	private static final List<Integer> ALL_NUMBERS = new ArrayList<>();
+
+	static {
+		for (int i = 1; i <= 45; i++)
+			ALL_NUMBERS.add(i);
+	}
+
 	private List<Ball> balls;
 	private LottoStatus status;
 	private Ball bonus;
 
 	public Lotto() {
-		Collections.shuffle(allNumbers);
+		Collections.shuffle(ALL_NUMBERS);
 		balls = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
-			balls.add(new Ball(allNumbers.get(i)));
+			balls.add(new Ball(ALL_NUMBERS.get(i)));
 		}
 		Collections.sort(balls);
 		status = LottoStatus.ZERO;
