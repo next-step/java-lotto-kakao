@@ -17,7 +17,7 @@ public class LottoTicket {
 
     public LottoTicket(Set<LottoNumber> lottoNumbers){
         if(!validate(lottoNumbers)){
-            throw new RuntimeException("로또 티켓에는 6개의 번호가 필요합니다.");
+            throw new RuntimeException("로또 티켓에는 "+TICKET_SIZE+"개의 번호가 필요합니다.");
         }
         this.lottoNumbers = lottoNumbers;
     }
