@@ -3,48 +3,54 @@ package level1.domain;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import level1.exception.DuplicateLotteryNumberException;
 
 public class Lottery {
 
-    protected final Set<Integer> lottery;
+    private final Set<Integer> lotteryNumbers;
 
-    public Lottery(List<String> numbers) {
-        Set<String> numberSet = new HashSet<>(numbers);
+    /*
+    `규칙 3: 모든 원시값과 문자열을 포장한다.`
+    로또 번호의 객체가 있다면 로또 번호만의 책임을 부여할수있지 않을까요?
 
-        this.lottery = numberSet.stream()
-                .map(this::parseNumber)
-                .collect(Collectors.toSet());
+    --> `Lottery` 의 책임을 "로또 번호 정보 소유" 에 집중해 리팩터링 해봤습니다.
+        - 추가된 메서드
+            - #countMatchingLotteryNumbers(Lottery) :
+                다른 `Lottery` 와 번호가 얼마나 일치하는지 비교할 수 있다.
 
-        if (this.lottery.size() != Constant.LOTTERY_SIZE) {
-            throw new RuntimeException("숫자는 6 개여야 합니다.");
+        - 삭제된 메서드
+            - #parseNumber(String) :
+                string 을 int 로 파싱하는 기능은 `로또 번호 정보 소유` 책임과 무관한 것 같아 다른 class 를 구성했습니다.
+                (@see StringParser)
+
+        - 삭제 또는 변경된 내부 로직
+            - 생성자의 `로또 번호의 최소 최대값 검증` 을 제거하였습니다. 다만 `중복된 번호 검증` 은 남겨두었습니다.
+            - `Set<Integer> lotteryNumbers` 의 접근 제어자를 `protect` 에서 `private` 으로 변경하였습니다.
+     */
+    public Lottery(List<Integer> numbers) {
+        this.lotteryNumbers = new HashSet<>(numbers);
+
+        if (this.lotteryNumbers.size() != numbers.size()) {
+            throw new DuplicateLotteryNumberException("중복된 로또 번호가 제공되었습니다.");
         }
-    }
-
-    protected int parseNumber(String number) {
-        int num;
-        try {
-            num = Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            throw new RuntimeException("숫자가 아닌 값은 허용되지 않습니다.");
-        }
-
-        if (
-                num < Constant.LOTTERY_MIN_VALUE ||
-                num > Constant.LOTTERY_MAX_VALUE
-        ) {
-            throw new RuntimeException("로또 번호는 1 - 45 범위 숫자만 가능합니다.");
-        }
-
-        return num;
     }
 
     public boolean contains(int given) {
-        return this.lottery.contains(given);
+        return this.lotteryNumbers.contains(given);
+    }
+
+    public long countMatchingLotteryNumbers(Lottery givenLottery) {
+        return this.lotteryNumbers.stream()
+                .filter(givenLottery.lotteryNumbers::contains)
+                .count();
+    }
+
+    public int getLotteryNumberLength() {
+        return this.lotteryNumbers.size();
     }
 
     public String represent() {
-        List<Integer> sortedNumbers = lottery.stream()
+        List<Integer> sortedNumbers = this.lotteryNumbers.stream()
                 .sorted()
                 .toList();
 

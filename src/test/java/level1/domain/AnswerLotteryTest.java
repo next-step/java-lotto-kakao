@@ -1,55 +1,47 @@
 package level1.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.List;
-import java.util.stream.Stream;
+import level1.exception.DuplicateLotteryNumberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class AnswerLotteryTest {
 
-    private static final List<String> answerLotteryNumbers = List.of("1", "2", "3", "4", "5", "6");
-    private static final String bonusLotteryNumber = "10";
-
-    private static Stream<Arguments> judgeLotteryArgs() {
-        return Stream.of(
-                Arguments.of(List.of("11", "12", "13", "14", "15", "16"), Match.NONE),
-                Arguments.of(List.of("1", "12", "13", "14", "15", "16"), Match.NONE),
-                Arguments.of(List.of("1", "2", "13", "14", "15", "16"), Match.NONE),
-                Arguments.of(List.of("1", "2", "3", "14", "15", "16"), Match.THREE),
-                Arguments.of(List.of("1", "2", "3", "4", "15", "16"), Match.FOUR),
-                Arguments.of(List.of("1", "2", "3", "4", "5", "16"), Match.FIVE),
-                Arguments.of(List.of("1", "2", "3", "4", "5", "10"), Match.FIVE_WITH_BONUS),
-                Arguments.of(List.of("1", "2", "3", "4", "5", "6"), Match.SIX)
-        );
-    }
+    private static final List<Integer> lotteryNumbers = List.of(1, 2, 3);
 
     @Test
     @DisplayName("보너스 볼은 기존 로또 번호와 중복되지 않는다.")
     void testDuplicateBonusLottery() {
-
-        List<String> lottery = List.of(
-                "1", "2", "3", "4", "5", "6"
-        );
-        String bonusLottery = "1";
-
-        assertThatThrownBy(() -> new AnswerLottery(lottery, bonusLottery))
-                .isInstanceOf(RuntimeException.class);
+        for (Integer bonusLotteryNumber : lotteryNumbers) {
+            assertThatThrownBy(() -> new AnswerLottery(lotteryNumbers, bonusLotteryNumber))
+                    .isInstanceOf(DuplicateLotteryNumberException.class);
+        }
     }
 
-    @ParameterizedTest
-    @MethodSource("judgeLotteryArgs")
-    @DisplayName("사용자 로또와 당첨 번호를 비교하여 일치하는 숫자를 반환한다")
-    void testJudgeLottery(List<String> givenLotteryNumbers, Match expectedMatch) {
+    @Test
+    @DisplayName("보너스 번호가 포함되는지 확인할 수 있다.")
+    void testContainsBonusNumber() {
+        int bonusNumber1 = 10, bonusNumber2 = 20;
 
-        AnswerLottery answerLottery = new AnswerLottery(answerLotteryNumbers, bonusLotteryNumber);
-        Lottery givenLottery = new Lottery(givenLotteryNumbers);
+        //noinspection ConstantValue
+        assert bonusNumber1 != bonusNumber2;
+        assert !lotteryNumbers.contains(bonusNumber1);
+        assert !lotteryNumbers.contains(bonusNumber2);
 
-        assertThat(answerLottery.judge(givenLottery)).isEqualTo(expectedMatch);
+        AnswerLottery answerLottery1 = new AnswerLottery(lotteryNumbers, bonusNumber1);
+        AnswerLottery answerLottery2 = new AnswerLottery(lotteryNumbers, bonusNumber2);
+
+        Lottery lottery1 = new Lottery(List.of(bonusNumber1));
+        Lottery lottery2 = new Lottery(List.of(bonusNumber2));
+
+        assertThat(answerLottery1.containsBonusNumber(lottery1)).isTrue();
+        assertThat(answerLottery1.containsBonusNumber(lottery2)).isFalse();
+
+        assertThat(answerLottery2.containsBonusNumber(lottery1)).isFalse();
+        assertThat(answerLottery2.containsBonusNumber(lottery2)).isTrue();
+
     }
 }
