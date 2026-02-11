@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class WinStatsTest {
+public class GameResultTest {
     GameScore gameScore = new GameScore(7, Arrays.asList(1, 2, 3, 4, 5, 6));
 
     @Test
@@ -28,8 +28,6 @@ public class WinStatsTest {
                 WinLevel.FIFTH,
                 WinLevel.LOSER,
         };
-        StatsBoard statsBoard = new StatsBoard(gameScore, tickets);
-
 
         for (int i = 0; i < 6; i++) {
             assertThat(tickets.get(i).getWinLevel(gameScore)).isEqualTo(winLevels[i]);
