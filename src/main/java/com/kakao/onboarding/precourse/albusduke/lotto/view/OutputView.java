@@ -55,6 +55,7 @@ public class OutputView {
 		sb.append(STATISTICS_PREFIX).append("\n")
 			.append(SEPARATE_LINE).append("\n")
 			.append(createOutput(Prize.FIFTH, winningPrizes.getCounts().getOrDefault(Prize.FIFTH, 0))).append("\n")
+			.append(createOutput(Prize.FORTH, winningPrizes.getCounts().getOrDefault(Prize.FORTH, 0))).append("\n")
 			.append(createOutput(Prize.THIRD, winningPrizes.getCounts().getOrDefault(Prize.THIRD, 0))).append("\n")
 			.append(createOutput(Prize.SECOND, winningPrizes.getCounts().getOrDefault(Prize.SECOND, 0))).append("\n")
 			.append(createOutput(Prize.FIRST, winningPrizes.getCounts().getOrDefault(Prize.FIRST, 0))).append("\n")
