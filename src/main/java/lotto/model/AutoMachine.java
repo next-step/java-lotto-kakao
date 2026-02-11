@@ -25,7 +25,7 @@ public class AutoMachine {
     public LottoTicketList allIn(Wallet wallet) {
 
         LottoTicketList lottoTicketList = new LottoTicketList(new ArrayList<>());
-        while (wallet.checkBalance(LOTTO_PRICE)) {
+        while (wallet.canAfford(LOTTO_PRICE)) {
             lottoTicketList.insertTicket(this.issue(wallet));
         }
         return lottoTicketList;

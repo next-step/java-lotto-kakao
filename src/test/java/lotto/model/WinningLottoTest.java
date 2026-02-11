@@ -28,7 +28,7 @@ class WinningLottoTest {
     @DisplayName("로또 등수 판별(4등)")
     public void getWinningRank4(){
         WinningLotto winningLotto = new WinningLotto(new LottoTicket(1, 2, 3, 4, 5, 6), new LottoNumber(8));
-        WinningRank rank = winningLotto.checkRank(new LottoTicket(3,4,5,6,7,8));
+        WinningRank rank = winningLotto.rank(new LottoTicket(3,4,5,6,7,8));
         assertThat(rank).isEqualTo(WinningRank.FOURTH);
     }
 
@@ -36,7 +36,7 @@ class WinningLottoTest {
     @DisplayName("로또 등수 판별(3등)")
     public void getWinningRank3(){
         WinningLotto winningLotto = new WinningLotto(new LottoTicket(1, 2, 3, 4, 5, 6), new LottoNumber(8));
-        WinningRank rank = winningLotto.checkRank(new LottoTicket(3,4,5,6,2,9));
+        WinningRank rank = winningLotto.rank(new LottoTicket(3,4,5,6,2,9));
         assertThat(rank).isEqualTo(WinningRank.THIRD);
     }
 
@@ -44,7 +44,7 @@ class WinningLottoTest {
     @DisplayName("로또 등수 판별(2등)")
     public void getWinningRank2(){
         WinningLotto winningLotto = new WinningLotto(new LottoTicket(1, 2, 3, 4, 5, 6), new LottoNumber(8));
-        WinningRank rank = winningLotto.checkRank(new LottoTicket(3,4,5,6,1,8));
+        WinningRank rank = winningLotto.rank(new LottoTicket(3,4,5,6,1,8));
         assertThat(rank).isEqualTo(WinningRank.SECOND);
     }
 }

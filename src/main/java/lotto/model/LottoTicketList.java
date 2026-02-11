@@ -21,9 +21,9 @@ public class LottoTicketList {
         lottoTickets.add(lottoTicket);
     }
 
-    public WinningInfo cumulativeReport(WinningLotto winningLotto){
+    public WinningInfo result(WinningLotto winningLotto){
         WinningInfo winningInfo = new WinningInfo();
-        lottoTickets.forEach(ticket -> winningInfo.addResult(winningLotto.checkRank(ticket)));
+        lottoTickets.forEach(ticket -> winningInfo.addResult(winningLotto.rank(ticket)));
         return winningInfo;
     }
 

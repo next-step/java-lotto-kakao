@@ -11,15 +11,14 @@ public class WinningLotto {
     }
 
     private void validate(LottoTicket lottoTicket, LottoNumber bonusNumber) {
-        if (lottoTicket.duplicateNumber(bonusNumber)) {
+        if (lottoTicket.contains(bonusNumber)) {
             throw new IllegalArgumentException("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
     }
 
-
-    public WinningRank checkRank(LottoTicket lottoTicket) {
-        int matchCount = winningTicket.duplicateNumber(lottoTicket);
-        int bounceCount = lottoTicket.duplicateNumber(bonusNumber) ? 1:0;
-        return WinningRank.getRank(matchCount, bounceCount);
+    public WinningRank rank(LottoTicket lottoTicket) {
+        int matchCount = winningTicket.matchCount(lottoTicket);
+        int bonusCount = lottoTicket.contains(bonusNumber) ? 1 : 0;
+        return WinningRank.getRank(matchCount, bonusCount);
     }
 }

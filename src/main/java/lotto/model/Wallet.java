@@ -19,17 +19,16 @@ public class Wallet {
         receipt = receipt.sum(money);
     }
 
-    public boolean checkBalance(Money money){
+    public boolean canAfford(Money money){
         Money newBalance = balance.sum(money);
         return !newBalance.isDebt();
     }
 
-    public Double Settlement(Money money) {
+    public Double returnRate(Money money) {
         Double rateOfReturn = -1 * money.division(receipt);
         receipt = new Money(0);
         balance = balance.sum(money);
         return rateOfReturn;
-
     }
 
 

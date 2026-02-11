@@ -27,11 +27,11 @@ public class LottoController {
         LottoNumber bonusNumber = inputView.inputBonusNumber();
         WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
 
-        WinningInfo winningInfo = ticketList.cumulativeReport(winningLotto);
+        WinningInfo winningInfo = ticketList.result(winningLotto);
         outputView.printStatistics(winningInfo);
 
         Money totalPrize = winningInfo.getTotalPrice();
-        double rateOfReturn = wallet.Settlement(totalPrize);
+        double rateOfReturn = wallet.returnRate(totalPrize);
         outputView.printRateOfReturn(rateOfReturn);
     }
 }
