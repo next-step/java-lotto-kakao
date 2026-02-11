@@ -32,9 +32,7 @@ public class LottoController {
     }
 
     private void processResult(LottoBundle lottos, WinningLotto winningLotto, Money money) {
-        LottoResult lottoResult = new LottoResult(lottos.getLottos().stream()
-                .map(lotto -> LottoJudge.judge(winningLotto, lotto))
-                .collect(Collectors.toList()));
+        LottoResult lottoResult = lottos.getLottoResult(winningLotto);
 
         OutputView.printStatisticsHeader();
         OutputView.printResult(lottoResult);
