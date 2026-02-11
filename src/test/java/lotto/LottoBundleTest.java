@@ -58,12 +58,19 @@ public class LottoBundleTest {
     void buyLottoBundle() {
         Money money = Money.won(14000);
         LottoBundle lottoBundle = LottoBundle.buy(money);
-        assertThat(Lotto.calculatePurchasableCount(money)).isEqualTo(lottoBundle.size());
+        assertThat(lottoBundle.size()).isEqualTo(14);
     }
 
     @Test
     void buyFailLottoBundle() {
         Money money = Money.won(900);
+        assertThrows(IllegalArgumentException.class,
+                () -> LottoBundle.buy(money));
+    }
+
+    @Test
+    void buyFailForZeroMoney() {
+        Money money = Money.won(0);
         assertThrows(IllegalArgumentException.class,
                 () -> LottoBundle.buy(money));
     }

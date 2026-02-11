@@ -1,6 +1,5 @@
 package lotto;
 
-import money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,18 +22,6 @@ public class LottoTest {
                 () -> new Lotto(1, 2, 3, 4, 5, 6, 7));
         assertThrows(IllegalArgumentException.class,
                 () -> new Lotto(1, 2));
-    }
-
-    @Test
-    void failsForInvalidMoney() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Lotto.calculatePurchasableCount(Money.won(900)));
-    }
-
-    @Test
-    void failsForZeroMoney() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Lotto.calculatePurchasableCount(Money.won(0)));
     }
 
     @Test

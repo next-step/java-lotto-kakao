@@ -1,7 +1,5 @@
 package lotto;
 
-import money.Money;
-
 import java.util.*;
 
 public class Lotto {
@@ -32,16 +30,6 @@ public class Lotto {
 
     static int numberCount() {
         return LENGTH;
-    }
-
-    public static long calculatePurchasableCount(Money money) {
-        long count = money.calculatePurchasableCount(PRICE);
-        if (count <= 0L) {
-            throw new IllegalArgumentException(
-                    String.format("구매금액은 로또 가격 이상이어야 합니다. 로또 가격 : %d", PRICE)
-            );
-        }
-        return count;
     }
 
     private void validate(Set<LottoNumber> lottoNumberSet) {
