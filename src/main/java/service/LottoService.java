@@ -17,9 +17,4 @@ public class LottoService {
         LottoIssuer lottoIssuer = new LottoIssuer(new LottoFactory());
         return lottoIssuer.issueAuto(purchaseAmount);
     }
-
-    public LottoResult calculateResult(LottoGroup lottoGroup, List<Integer> winningNumbers, int bonusNumber) {
-        WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
-        return lottoGroup.compare(winningLotto);
-    }
 }

@@ -14,6 +14,10 @@ public class OutputView {
     public OutputView() {
     }
 
+    public void printError(String message) {
+        System.out.println("[ERROR] " + message);
+    }
+
     public void printLottoCount(LottoGroup lottoGroup) {
         System.out.println(lottoGroup.getSize() + "개를 구매했습니다.");
 

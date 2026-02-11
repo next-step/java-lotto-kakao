@@ -2,6 +2,7 @@ package controller;
 
 import domain.lotto.LottoGroup;
 import domain.winning.LottoResult;
+import domain.winning.WinningLotto;
 import service.LottoService;
 import view.InputView;
 import view.OutputView;
@@ -12,23 +13,42 @@ public class LottoController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final LottoService lottoService;
 
     public LottoController(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.lottoService = new LottoService();
     }
 
     public void run() {
-        int purchaseAmount = inputView.enterPurchaseAmount();
-        LottoService lottoService = new LottoService();
-        LottoGroup lottoGroup = lottoService.issueLottos(purchaseAmount);
+        LottoGroup lottoGroup = generateLottoGroup();
         outputView.printLottoCount(lottoGroup);
+        WinningLotto winningLotto = requestWinningNumbers();
 
-        List<Integer> winningNumbers = inputView.enterWinningNumbers();
-        int bonus = inputView.enterBonusNumber();
-        LottoResult lottoResult = lottoService.calculateResult(lottoGroup, winningNumbers, bonus);
+        LottoResult lottoResult = lottoGroup.compare(winningLotto);
         outputView.printStatistics(lottoResult);
     }
 
+    private LottoGroup generateLottoGroup() {
+        try {
+            int purchaseAmount = inputView.enterPurchaseAmount();
+            return lottoService.issueLottos(purchaseAmount);
+        } catch (Exception e) {
+            outputView.printError(e.getMessage());
+            return generateLottoGroup();
+        }
+    }
+
+    private WinningLotto requestWinningNumbers() {
+        try {
+            List<Integer> winningNumbers = inputView.enterWinningNumbers();
+            int bonusNumber = inputView.enterBonusNumber();
+            return new WinningLotto(winningNumbers, bonusNumber);
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
+            return requestWinningNumbers();
+        }
+    }
 
 }
