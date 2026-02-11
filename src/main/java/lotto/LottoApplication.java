@@ -77,7 +77,7 @@ public class LottoApplication {
 
     private LottoPlayer createPlayer() {
         outputView.printMessage("구입금액을 입력해 주세요.");
-        int price = Integer.parseInt(inputView.input());
+        int price = inputView.inputNumber();
         int lottoCount = price / 1000;
         outputView.printMessage(lottoCount + "개를 구매했습니다.");
 

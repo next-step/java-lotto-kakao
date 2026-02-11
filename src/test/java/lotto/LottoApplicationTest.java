@@ -84,6 +84,11 @@ public class LottoApplicationTest {
         public String input() {
             return queue.poll();
         }
+
+        @Override
+        public int inputNumber() {
+            return Integer.parseInt(queue.poll());
+        }
     }
 
     static class MockOutputView implements OutputView {
