@@ -9,9 +9,9 @@ public class OutputView {
     }
 
     public static void printLottoBundle(LottoBundle bundle) {
-        bundle.getLottos()
-                .forEach(System.out::println);
-
+        for (Lotto lotto : bundle) {
+            System.out.println(lotto);
+        }
     }
 
     public static void printStatisticsHeader() {
