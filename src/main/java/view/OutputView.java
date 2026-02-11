@@ -3,9 +3,12 @@ package view;
 import lotto.Lotto;
 import lotto.LottoBundle;
 import lotto.LottoBundleResult;
+import lotto.LottoNumber;
 import lotto.LottoRank;
+import money.Money;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 public class OutputView {
     private static final List<LottoRank> PRINT_ORDER = List.of(
@@ -19,8 +22,16 @@ public class OutputView {
     public void printPurchasedLottos(LottoBundle lottoBundle) {
         System.out.printf("%d개를 구매했습니다.%n", lottoBundle.size());
         for (Lotto lotto : lottoBundle.asList()) {
-            System.out.println(lotto);
+            System.out.println(formatLotto(lotto));
         }
+    }
+
+    private String formatLotto(Lotto lotto) {
+        StringJoiner joiner = new StringJoiner(", ", "[", "]");
+        for (LottoNumber number : lotto.numbers()) {
+            joiner.add(String.valueOf(number.value()));
+        }
+        return joiner.toString();
     }
 
     public void printStatistic(LottoBundleResult lottoBundleResult) {
@@ -36,7 +47,11 @@ public class OutputView {
     private void printRankLine(LottoRank rank, int count) {
         String label = labelOf(rank);
 
-        System.out.printf("%s (%s) - %d개%n", label, rank.getPrize(), count);
+        System.out.printf("%s (%s) - %d개%n", label, formatMoney(rank.getPrize()), count);
+    }
+
+    private String formatMoney(Money money) {
+        return money.value() + "원";
     }
 
     private String labelOf(LottoRank rank) {

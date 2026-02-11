@@ -29,11 +29,6 @@ public record LottoNumber(int value) implements Comparable<LottoNumber> {
         }
     }
 
-    @Override
-    public String toString() {
-        return "" + value;
-    }
-
     private static List<LottoNumber> createAllNumbers() {
         List<LottoNumber> allNumbers = new ArrayList<>();
         for (int value = MIN; value <= MAX; value++) {

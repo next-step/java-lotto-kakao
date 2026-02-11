@@ -69,11 +69,6 @@ public class Lotto {
         return list;
     }
 
-    @Override
-    public String toString() {
-        return this.numbers().toString();
-    }
-
     public boolean contains(LottoNumber number) {
         return lottoNumberSet.contains(number);
     }

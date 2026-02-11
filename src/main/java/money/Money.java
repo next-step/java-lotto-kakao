@@ -55,6 +55,10 @@ public final class Money {
         return value == 0L;
     }
 
+    public long value() {
+        return value;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
@@ -68,8 +72,4 @@ public final class Money {
         return Objects.hash(value);
     }
 
-    @Override
-    public String toString() {
-        return value + "원";
-    }
 }
