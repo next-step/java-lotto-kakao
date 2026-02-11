@@ -28,8 +28,8 @@ public class Number {
     public void validateNumber(String number) {
         try {
             Integer.parseInt(number);
-        } catch (Exception e) {
-            throw new RuntimeException("숫자 형식이 아닙니다.");
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자 형식이 아닙니다.", e);
         }
     }
 

@@ -81,20 +81,24 @@ public class LottoApplication {
         int lottoCount = price / 1000;
         outputView.printMessage(lottoCount + "개를 구매했습니다.");
 
-        return buyLottos(lottoCount, price);
+        List<Lotto> lottos = buyLottos(lottoCount);
+        printPurchasedLottos(lottos);
+
+        return new LottoPlayer(price, lottoCount, lottos);
     }
 
-    private LottoPlayer buyLottos(int lottoCount, int price) {
+    private List<Lotto> buyLottos(int count) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < lottoCount; i++) {
+        for (int i = 0; i < count; i++) {
             lottos.add(new Lotto(randomNumberGenerator.generate()));
         }
+        return lottos;
+    }
 
-        LottoPlayer player = new LottoPlayer(price, lottoCount, lottos);
-        for (Lotto lotto : player.getLottos()) {
+    private void printPurchasedLottos(List<Lotto> lottos) {
+        for (Lotto lotto : lottos) {
             outputView.printLog(lotto.getNumbers());
         }
-        return player;
     }
 
 }
