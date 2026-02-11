@@ -25,10 +25,14 @@ public class Wallet {
     }
 
     public Double returnRate(Money money) {
-        Double rateOfReturn = -1 * money.division(receipt);
-        receipt = new Money(0);
-        balance = balance.sum(money);
-        return rateOfReturn;
+        try {
+            Double rateOfReturn = -1 * money.division(receipt);
+            receipt = new Money(0);
+            balance = balance.sum(money);
+            return rateOfReturn;
+        }catch (MatchException e){
+            return 1.0;
+        }
     }
 
 

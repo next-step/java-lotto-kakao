@@ -17,6 +17,9 @@ public class Money {
     }
 
     public Double division(Money m2) {
+        if(m2.value == 0){
+            throw new ArithmeticException("0으로 나눌 수 없습니다.");
+        }
         return  (double) this.value / m2.value;
     }
 
