@@ -31,7 +31,7 @@ public class Lotto {
 		Set<Ball> set = new HashSet<Ball>(balls);
 		set.add(bonus);
 		if (set.size() != 7) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("중복된 숫자 입력은 불가합니다.");
 		}
 		Collections.sort(balls);
 		this.balls = balls;
