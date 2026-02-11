@@ -12,7 +12,7 @@ public class WinningLottoTest {
     @Test
     @DisplayName("성공케이스")
     void success() {
-        Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
         int bonusNumber = 7;
         WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
 
@@ -25,7 +25,7 @@ public class WinningLottoTest {
     void fail_bonusNumberRange() {
 
         assertThatThrownBy(() -> {
-            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
             int bonusNumber = 46;
             WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
@@ -38,7 +38,7 @@ public class WinningLottoTest {
     void fail_bonusNumberDuplicate() {
 
         assertThatThrownBy(() -> {
-            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
             int bonusNumber = 1;
             WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)

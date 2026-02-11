@@ -2,10 +2,10 @@ package lotto.view.input;
 
 import java.util.Scanner;
 
-public class CommandInputView implements InputView {
+public class TerminalInputView implements InputView {
     private Scanner scanner;
 
-    public CommandInputView() {
+    public TerminalInputView() {
         this.scanner = new Scanner(System.in);
     }
 

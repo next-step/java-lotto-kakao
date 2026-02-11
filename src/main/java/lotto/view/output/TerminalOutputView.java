@@ -3,7 +3,7 @@ package lotto.view.output;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CommandOutputView implements OutputView {
+public class TerminalOutputView implements OutputView {
 
     public void printMessage(String message) {
         System.out.println(message);

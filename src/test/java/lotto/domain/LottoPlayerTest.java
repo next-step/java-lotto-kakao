@@ -15,13 +15,11 @@ public class LottoPlayerTest {
     void successTest() {
         int price = 3000;
         int lottoCount = 3;
-        List<Lotto> lottos = new ArrayList<>(
-                List.of(
-                        new Lotto(List.of(1,2,3,4,5,6)),
-                        new Lotto(List.of(1,2,3,4,5,6)),
-                        new Lotto(List.of(1,2,3,4,5,6))
-                )
-        );
+        List<Lotto> lottos = new ArrayList<>(List.of(
+                new Lotto(1, 2, 3, 4, 5, 6),
+                new Lotto(1, 2, 3, 4, 5, 6),
+                new Lotto(1, 2, 3, 4, 5, 6)
+        ));
 
         LottoPlayer lottoPlayer = new LottoPlayer(price, lottoCount, lottos);
 
@@ -38,7 +36,7 @@ public class LottoPlayerTest {
             int lottoCount = 0;
             LottoPlayer lottoPlayer = new LottoPlayer(price, lottoCount, new ArrayList<>());
         }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("1000원 미만의 구매 금액이 입력되었습니다.");
+                .hasMessage(LottoPlayer.PRICE_TOO_LOW_FAIL_MSG);
     }
 
 }

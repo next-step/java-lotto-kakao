@@ -22,12 +22,12 @@ public class LottoApplicationTest {
     @Test
     @DisplayName("통합 테스트")
     public void success_1() {
-        Lotto lotto1 = new Lotto(List.of(1, 2, 3, 4, 5, 6));
-        Lotto lotto2 = new Lotto(List.of(7, 8, 9, 10, 11, 12));
-        Lotto lotto3 = new Lotto(List.of(13, 14, 15, 16, 17, 18));
+        Lotto lotto1 = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto lotto2 = new Lotto(7, 8, 9, 10, 11, 12);
+        Lotto lotto3 = new Lotto(13, 14, 15, 16, 17, 18);
         List<Lotto> lottos = List.of(lotto1, lotto2, lotto3);
 
-        Lotto winningLottoNumber = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lotto winningLottoNumber = new Lotto(1, 2, 3, 4, 5, 6);
 
         LottoPlayer lottoPlayer = new LottoPlayer(3000, 3, lottos);
         RandomPickStrategy numberGenerator = new FixedNumberGenerator();

@@ -15,9 +15,9 @@ public class LottoResultCalculatorTest {
 
     @BeforeEach
     void beforeEach() {
-        Lotto lotto1 = new Lotto(List.of(1, 2, 3, 4, 5, 6));
-        Lotto lotto2 = new Lotto(List.of(7, 8, 9, 10, 11, 12));
-        Lotto lotto3 = new Lotto(List.of(13, 14, 15, 16, 17, 18));
+        Lotto lotto1 = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto lotto2 = new Lotto(7, 8, 9, 10, 11, 12);
+        Lotto lotto3 = new Lotto(13, 14, 15, 16, 17, 18);
         List<Lotto> lottos = List.of(lotto1, lotto2, lotto3);
 
         this.lottoPlayer = new LottoPlayer(3000, 3, lottos);
@@ -26,7 +26,7 @@ public class LottoResultCalculatorTest {
     @Test
     @DisplayName("성공케이스")
     void success() {
-        WinningLotto winningLotto = new WinningLotto(new Lotto(List.of(1, 2, 3, 4, 5, 6)), 7);
+        WinningLotto winningLotto = new WinningLotto(new Lotto(1, 2, 3, 4, 5, 6), 7);
 
         Map<LottoStatus, Integer> status = winningLotto.countByStatus(lottoPlayer.getLottos());
         long profit = LottoStatus.totalPrize(status);

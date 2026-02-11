@@ -4,6 +4,8 @@ import java.util.List;
 
 public class LottoPlayer {
 
+    public static final String PRICE_TOO_LOW_FAIL_MSG = "1000원 미만의 구매 금액이 입력되었습니다.";
+
     private int price;
     private int lottoCount;
     private List<Lotto> lottos;
@@ -17,7 +19,7 @@ public class LottoPlayer {
 
     private void validatePrice(int price) {
         if (price < 1000) {
-            throw new IllegalArgumentException("1000원 미만의 구매 금액이 입력되었습니다.");
+            throw new IllegalArgumentException(PRICE_TOO_LOW_FAIL_MSG);
         }
     }
 

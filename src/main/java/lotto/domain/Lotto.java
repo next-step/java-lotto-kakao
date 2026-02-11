@@ -4,6 +4,9 @@ import java.util.*;
 
 public class Lotto {
 
+    public static final String COUNT_FAIL_MSG = "입력된 숫자가 6개가 아닙니다.";
+    public static final String DUPLICATE_FAIL_MSG = "중복된 숫자가 입력되었습니다.";
+
     private final List<LottoNumber> numbers;
 
     public Lotto(List<Integer> values) {
@@ -14,6 +17,10 @@ public class Lotto {
         }
     }
 
+    public Lotto(int... values) {
+        this(Arrays.stream(values).boxed().toList());
+    }
+
     private void validate(List<Integer> numbers) {
         validateDuplicate(numbers);
         validateNumberCount(numbers);
@@ -21,14 +28,14 @@ public class Lotto {
 
     private void validateNumberCount(List<Integer> numbers) {
         if (numbers.size() != 6) {
-            throw new IllegalArgumentException("입력된 숫자가 6개가 아닙니다.");
+            throw new IllegalArgumentException(COUNT_FAIL_MSG);
         }
     }
 
     private void validateDuplicate(List<Integer> numbers) {
         Set<Integer> numberSet = new HashSet<>(numbers);
         if (numberSet.size() != numbers.size()) {
-            throw new IllegalArgumentException("중복된 숫자가 입력되었습니다.");
+            throw new IllegalArgumentException(DUPLICATE_FAIL_MSG);
         }
     }
 
