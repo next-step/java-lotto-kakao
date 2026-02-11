@@ -32,10 +32,10 @@ public enum Match {
         this.description = description;
     }
 
-    public static Match matchOf(long matchCount, boolean bonusBallMatch) {
+    public static Match matchOf(long matchCount, boolean bonusNumberMatch) {
 
         if (matchCount == FIVE.matchCount) {
-            return findFiveMatch(bonusBallMatch);
+            return !bonusNumberMatch ? FIVE : FIVE_WITH_BONUS;
         }
 
         return Arrays.stream(values())
@@ -44,11 +44,10 @@ public enum Match {
                 .orElse(NONE);
     }
 
-    private static Match findFiveMatch(boolean bonusBallMatch) {
-        if (bonusBallMatch) {
-            return FIVE_WITH_BONUS;
-        }
-        return FIVE;
+    public static Match[] valuesExcept(Match expect) {
+        return Arrays.stream(Match.values())
+                .filter(m -> !m.equals(expect))
+                .toArray(Match[]::new);
     }
 
     public int getPrize() {
@@ -57,5 +56,9 @@ public enum Match {
 
     public String getDescription() {
         return description;
+    }
+
+    public long calculatePrizeSum(long matchCount) {
+        return matchCount * this.prize;
     }
 }

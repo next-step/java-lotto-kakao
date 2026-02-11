@@ -1,6 +1,5 @@
 package level1;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,68 +9,44 @@ import level1.domain.Match;
 
 public class Report {
 
-    private final int price;
+    private final Map<Match, Long> matchCountMap;
 
-    private final MatchCountMap matchCountMap;
+    /*
+    정답 로또와 다수의 로또를 비교한 결과를 지칭하는 class 입니다.
 
-    public Report(int price, AnswerLottery answerLottery, List<Lottery> lotteries) {
-        this.price = price;
-        this.matchCountMap = new MatchCountMap(answerLottery, lotteries);
-    }
+    기존 `representReport` 와 같은 메서드는 책임을 분리하는 것이 좋겠다 생각해 제거하였습니다.
 
-    public int getMatchCount(Match match) {
-        return matchCountMap.getMatchCount(match);
-    }
-
-    public String representReport() {
-        StringBuilder sb = new StringBuilder("당첨 통계\n---------\n");
-
-        appendMatchStatistics(sb);
-
-        sb.append(String.format(
-                "총 수익률은 %.2f입니다.(기준이 1이기 때문에 결과적으로 손해라는 의미임)",
-                calculateProfitRate()
+    - 삭제된 메서드
+        - #representReport(), #appendMatchStatistics() :
+            출력과 관련된 부분이므로 제거하였습니다.
+     */
+    public Report(AnswerLottery answerLottery, List<Lottery> lotteries) {
+        this.matchCountMap = lotteries.stream().collect(Collectors.groupingBy(
+                lottery -> this.inspectMatch(answerLottery, lottery),
+                Collectors.counting()
         ));
-
-        return sb.toString();
     }
 
-    private void appendMatchStatistics(StringBuilder sb) {
-        List<Match> winningMatches = List.of(
-                Match.THREE, Match.FOUR, Match.FIVE, Match.FIVE_WITH_BONUS, Match.SIX
-        );
+    public long getTotalPrize() {
+        long prizeSum = 0L;
 
-        for (Match match : winningMatches) {
-            sb.append(String.format(
-                    "%s - %d개\n",
-                    match.getDescription(), matchCountMap.getMatchCount(match)
-            ));
+        for (Map.Entry<Match, Long> entry : matchCountMap.entrySet()) {
+            Match match = entry.getKey();
+            long count = entry.getValue();
+            prizeSum += match.calculatePrizeSum(count);
         }
+
+        return prizeSum;
     }
 
-    private double calculateProfitRate() {
-        long totalPrize = Arrays.stream(Match.values())
-                .mapToLong(m -> (long) m.getPrize() * matchCountMap.getMatchCount(m))
-                .sum();
-
-        return (double) totalPrize / price;
+    public long getMatchCount(Match match) {
+        return matchCountMap.getOrDefault(match, 0L);
     }
 
-    private static class MatchCountMap {
+    private Match inspectMatch(AnswerLottery answerLottery, Lottery lottery) {
+        long matchCount = answerLottery.countMatchingLotteryNumbers(lottery);
+        boolean containsBonusNumber = answerLottery.containsBonusNumber(lottery);
 
-        private final Map<Match, Integer> map;
-
-        private MatchCountMap(AnswerLottery answerLottery, List<Lottery> givenLotteries) {
-            this.map = givenLotteries.stream().collect(
-                    Collectors.groupingBy(
-                            answerLottery::judge,
-                            Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
-                    )
-            );
-        }
-
-        private int getMatchCount(Match match) {
-            return map.getOrDefault(match, 0);
-        }
+        return Match.matchOf(matchCount, containsBonusNumber);
     }
 }
