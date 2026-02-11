@@ -1,6 +1,6 @@
 package level0;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,14 +43,21 @@ public class Input {
         }
 
         String[] inputs = inputString.split(buildSplitter());
-        List<Number> numberList = new ArrayList<>();
 
-        for (String input : inputs) {
-            Number number = new Number(input);
-            numberList.add(number);
-        }
+        /*
+        변수명에 자료구조 타입(List)을 포함하고 있습니다.
+            - 타입 정보는 이미 선언부 List에 명시되어 있어 중복
+            - 나중에 자료구조가 변경되면 변수명도 함께 수정해야 함
+            - 변수명은 "어떤 타입인가"가 아니라 "무엇을 담고 있는가"를 표현
 
-        return new Numbers(numberList);
+        --> List<Number> 변수명 numberList 에서 numbers 로 변경
+        --> Stream api 사용
+         */
+        List<Number> numbers = Arrays.stream(inputs)
+                .map(Number::new)
+                .toList();
+
+        return new Numbers(numbers);
     }
 
     private String buildSplitter() {
