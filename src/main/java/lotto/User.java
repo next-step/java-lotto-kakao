@@ -9,7 +9,7 @@ import lotto.enums.LottoStatus;
 
 public class User {
 	private static final long TICKET_COST = 1000;
-	private final long price;
+	private final Money money;
 	private List<Lotto> lottos;
 	private long award;
 	;
@@ -20,9 +20,9 @@ public class User {
 		if (inputPrice <= 0 || inputPrice % TICKET_COST != 0) {
 			throw new IllegalArgumentException("잘못된 구입 금액입니다.");
 		}
-		this.price = inputPrice;
+		this.money = new Money(inputPrice);
 		lottos = new ArrayList<>();
-		for (int i = 0; i < price / TICKET_COST; i++) {
+		for (int i = 0; i < money.getPrice() / TICKET_COST; i++) {
 			lottos.add(new Lotto());
 		}
 	}
@@ -40,7 +40,7 @@ public class User {
 	}
 
 	public long getPrice() {
-		return price;
+		return money.getPrice();
 	}
 
 	public List<Lotto> getLottos() {
