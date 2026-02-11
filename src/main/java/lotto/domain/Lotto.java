@@ -1,8 +1,6 @@
 package lotto.domain;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,31 +14,50 @@ public class Lotto {
     public static final String DUPLICATE_FAIL_MSG = "중복된 숫자가 입력되었습니다.";
 
     private final List<LottoNumber> numbers;
+    private final Set<Integer> numberSet;
+
+
+    public static Lotto fromIntegers(List<Integer> values) {
+        validate(values);
+
+        List<LottoNumber> lottoNumbers = values.stream()
+                .map(LottoNumber::of)
+                .toList();
+
+        Set<Integer> set = new HashSet<>(values);
+        return new Lotto(lottoNumbers, Set.copyOf(set));
+    }
 
     public Lotto(List<Integer> values) {
-        validate(values);
-        numbers = new ArrayList<>();
-        for (int number: values) {
-            numbers.add(new LottoNumber(number));
-        }
+        this(Lotto.fromIntegers(values));
     }
 
     public Lotto(int... values) {
         this(Arrays.stream(values).boxed().toList());
     }
 
-    private void validate(List<Integer> numbers) {
+    private Lotto(Lotto other) {
+        this.numbers = other.numbers;
+        this.numberSet = other.numberSet;
+    }
+
+    private Lotto(List<LottoNumber> numbers, Set<Integer> numberSet) {
+        this.numbers = List.copyOf(numbers);
+        this.numberSet = Set.copyOf(numberSet);
+    }
+
+    private static void validate(List<Integer> numbers) {
         validateDuplicate(numbers);
         validateNumberCount(numbers);
     }
 
-    private void validateNumberCount(List<Integer> numbers) {
+    private static void validateNumberCount(List<Integer> numbers) {
         if (numbers.size() != REQUIRED_SIZE) {
             throw new IllegalArgumentException(COUNT_FAIL_MSG);
         }
     }
 
-    private void validateDuplicate(List<Integer> numbers) {
+    private static void validateDuplicate(List<Integer> numbers) {
         Set<Integer> numberSet = new HashSet<>(numbers);
         if (numberSet.size() != numbers.size()) {
             throw new IllegalArgumentException(DUPLICATE_FAIL_MSG);
@@ -49,17 +66,23 @@ public class Lotto {
 
 
     public List<Integer> getNumbers() {
-        List<Integer> result = new ArrayList<>();
-        for (LottoNumber number: numbers) {
-            result.add(number.getValue());
-        }
-        return Collections.unmodifiableList(result);
+        return numbers.stream()
+                .map(LottoNumber::getValue)
+                .toList();
+    }
+
+    public Set<Integer> getNumberSet() {
+        return numberSet;
     }
 
     public int matchCount(Lotto other) {
-        HashSet<Integer> otherNumbers = new HashSet<>(other.getNumbers());
-        otherNumbers.retainAll(this.getNumbers());
-        return otherNumbers.size();
+        int count = 0;
+        for (LottoNumber number : this.numbers) {
+            if (other.getNumberSet().contains(number.getValue())) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public boolean contains(LottoNumber number) {
