@@ -1,6 +1,5 @@
 package lotto;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,7 @@ import lotto.enums.LottoStatus;
 public class User {
 	private static final long TICKET_COST = 1000;
 	private final Money money;
-	private List<Lotto> lottos;
+	private LottoList lottos;
 	private long award;
 	;
 	private Map<LottoStatus, Integer> result = new HashMap<>();
@@ -21,14 +20,14 @@ public class User {
 			throw new IllegalArgumentException("잘못된 구입 금액입니다.");
 		}
 		this.money = new Money(inputPrice);
-		lottos = new ArrayList<>();
+		lottos = new LottoList();
 		for (int i = 0; i < money.getPrice() / TICKET_COST; i++) {
-			lottos.add(new Lotto());
+			lottos.addLotto(new Lotto());
 		}
 	}
 
 	public void calculateAward(Lotto answerLotto) {
-		for (Lotto lotto : lottos) {
+		for (Lotto lotto : lottos.getLottos()) {
 			lotto.check(answerLotto);
 			award += lotto.getStatus().getMoney();
 			result.put(lotto.getStatus(), result.getOrDefault(lotto.getStatus(), 0) + 1);
@@ -44,11 +43,11 @@ public class User {
 	}
 
 	public List<Lotto> getLottos() {
-		return this.lottos;
+		return lottos.getLottos();
 	}
 
 	public void setLottos(List<Lotto> lottos) {
-		this.lottos = lottos;
+		this.lottos.setLottos(lottos);
 	}
 
 	public long getAward() {
