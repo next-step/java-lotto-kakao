@@ -59,7 +59,12 @@ public class LottoController {
 	}
 
 	public void calculateStatistics(WinningNumbers winningNumbers, LottoGames lottoGames) {
-		Statistics statistics = statisticsService.calculateStatistics(winningNumbers, lottoGames);
-		outputView.outputStatistics(statistics);
+		try {
+			Statistics statistics = statisticsService.calculateStatistics(winningNumbers, lottoGames);
+			outputView.outputStatistics(statistics);
+		} catch (IllegalArgumentException e) {
+			outputView.outputError(e);
+			createWinningNumbers();
+		}
 	}
 }
