@@ -39,4 +39,5 @@ public class LottoTicketList {
         }
         return sb.toString().trim();
     }
+
 }

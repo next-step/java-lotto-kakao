@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class WinningInfo {
+
     private final Map<WinningRank, Integer> info;
 
     public WinningInfo() {
@@ -42,5 +43,6 @@ public class WinningInfo {
         int count = info.getOrDefault(rank, 0);
         sb.append(rank.getInfoString()).append("- ").append(count).append("개\n");
     }
+
 }
 

@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class InputView {
+
     private final Scanner scanner;
 
     public InputView() {
@@ -42,4 +43,5 @@ public class InputView {
                 .map(LottoNumber::new)
                 .collect(Collectors.toList());
     }
+
 }

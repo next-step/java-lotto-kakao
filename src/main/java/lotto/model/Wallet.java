@@ -1,6 +1,7 @@
 package lotto.model;
 
 public class Wallet {
+
     private Money balance;
     private Money receipt;
 
@@ -34,6 +35,5 @@ public class Wallet {
             return 1.0;
         }
     }
-
 
 }

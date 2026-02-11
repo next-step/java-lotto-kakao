@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class LottoTicket {
+
     private final Set<LottoNumber> lottoNumbers;
     public static final int TICKET_SIZE = 6;
 
@@ -48,4 +49,5 @@ public class LottoTicket {
     public String toString() {
         return lottoNumbers.toString();
     }
+
 }

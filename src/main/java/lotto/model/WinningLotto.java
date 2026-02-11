@@ -1,6 +1,7 @@
 package lotto.model;
 
 public class WinningLotto {
+
     private final LottoTicket winningTicket;
     private final LottoNumber bonusNumber;
 
@@ -21,4 +22,5 @@ public class WinningLotto {
         int bonusCount = lottoTicket.contains(bonusNumber) ? 1 : 0;
         return WinningRank.getRank(matchCount, bonusCount);
     }
+
 }

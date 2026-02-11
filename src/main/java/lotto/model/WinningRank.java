@@ -54,4 +54,5 @@ public enum WinningRank {
                 .sorted(Comparator.comparingInt(r -> -r.rank))
                 .collect(Collectors.toList());
     }
+
 }
