@@ -2,8 +2,7 @@ package lotto;
 
 import lotto.domain.Lotto;
 import lotto.domain.LottoPlayer;
-import lotto.domain.LottoResult;
-import lotto.domain.RandomPickStrategy;
+import lotto.domain.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,7 @@ public class LottoApplicationTest {
         Lotto winningLottoNumber = new Lotto(1, 2, 3, 4, 5, 6);
 
         LottoPlayer lottoPlayer = new LottoPlayer(3000, 3, lottos);
-        RandomPickStrategy numberGenerator = new FixedNumberGenerator();
+        LottoPickStrategy numberGenerator = new FixedNumberGenerator();
         MockInputView inputView = new MockInputView(List.of(
                 "3000",
                 "1,2,3,4,5,6",
@@ -65,7 +64,7 @@ public class LottoApplicationTest {
         );
     }
 
-    static class FixedNumberGenerator implements RandomPickStrategy {
+    static class FixedNumberGenerator implements LottoPickStrategy {
 
         @Override
         public List<Integer> generate() {

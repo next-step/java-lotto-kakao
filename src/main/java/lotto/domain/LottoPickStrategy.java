@@ -2,7 +2,7 @@ package lotto.domain;
 
 import java.util.List;
 
-public interface RandomPickStrategy {
+public interface LottoPickStrategy {
 
     public List<Integer> generate();
 }

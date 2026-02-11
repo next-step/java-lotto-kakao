@@ -13,12 +13,12 @@ import static lotto.domain.LottoStatus.*;
 
 public class LottoApplication {
 
-    private final RandomPickStrategy randomNumberGenerator;
+    private final LottoPickStrategy randomNumberGenerator;
     private final InputView inputView;
     private final OutputView outputView;
 
     public LottoApplication(
-            RandomPickStrategy randomNumberGenerator,
+            LottoPickStrategy randomNumberGenerator,
             InputView inputView,
             OutputView outputView
     ) {

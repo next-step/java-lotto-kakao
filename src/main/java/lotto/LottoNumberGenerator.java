@@ -1,12 +1,12 @@
 package lotto;
 
-import lotto.domain.RandomPickStrategy;
+import lotto.domain.LottoPickStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RandomNumberGenerator implements RandomPickStrategy {
+public class LottoNumberGenerator implements LottoPickStrategy {
     @Override
     public List<Integer> generate() {
         List<Integer> numbers = new ArrayList<>();

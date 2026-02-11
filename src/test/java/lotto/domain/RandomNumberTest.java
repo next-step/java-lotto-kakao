@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import lotto.RandomNumberGenerator;
+import lotto.LottoNumberGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ public class RandomNumberTest {
     @Test
     @DisplayName("성공 케이스")
     void success() {
-        RandomPickStrategy module = new RandomNumberGenerator();
+        LottoPickStrategy module = new LottoNumberGenerator();
         List<Integer> numbers = module.generate();
         Assertions.assertThat(numbers).hasSize(6);
     }
