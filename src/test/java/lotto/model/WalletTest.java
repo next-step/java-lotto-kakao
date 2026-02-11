@@ -17,7 +17,7 @@ class WalletTest {
     @DisplayName("금액 소비")
     public void useBalance(){
         Wallet wallet = new Wallet(new Money(10000));
-        assertThatCode(()->wallet.change(new Money(3000)));
+        assertThatCode(()->wallet.change(new Money(-3000)));
     }
 
     @Test
