@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import lotto.model.Buyer;
 import lotto.model.LottoNumber;
 
 public class LottoNumberTest {
@@ -15,4 +16,9 @@ public class LottoNumberTest {
 		List<LottoNumber> lottoNumbers = LottoNumber.getCache();
 		assertThat(lottoNumbers.size()).isEqualTo(45);
 	}
+
+	@Test
+	void validateLottoNumberRange() {
+		assertThatThrownBy(() -> new LottoNumber(50))
+			.isInstanceOf(IllegalArgumentException.class);	}
 }

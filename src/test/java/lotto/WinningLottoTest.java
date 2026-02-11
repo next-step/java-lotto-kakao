@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import lotto.model.Buyer;
 import lotto.model.Lotto;
 import lotto.model.LottoNumber;
 import lotto.model.WinningLotto;
@@ -60,4 +61,12 @@ public class WinningLottoTest {
 		boolean isContainBonus = winningLotto.isContainBonus(ticket);
 		assertThat(isContainBonus).isEqualTo(true);
 	}
+
+	@Test
+	void throwExceptionWhenBonusBallDuplicate() {
+		LottoNumber bonus = LottoNumber.getCache().get(5);
+		assertThatThrownBy(() -> new WinningLotto(winningNumbers, bonus))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
 }
