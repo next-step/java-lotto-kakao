@@ -3,12 +3,15 @@ package model;
 import java.util.List;
 import java.util.Objects;
 
+import controller.MainController;
+
 public class GameScore {
 	private final Integer bonusNumber;
 	private final List<Integer> winNumbers;
 
 	public GameScore(int bonusNumber, List<Integer> winNumbers) {
 		winNumbers.sort(((o1,o2) -> o1 - o2));
+
 		this.bonusNumber = bonusNumber;
 		this.winNumbers = winNumbers;
 	}

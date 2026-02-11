@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Ticket {
+
 	private final List<Integer> numbers;
 	private final Long key;
 	Ticket(Integer... numbers) {
