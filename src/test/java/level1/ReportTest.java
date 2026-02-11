@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.util.List;
+import level1.domain.AnswerLottery;
+import level1.domain.Lottery;
+import level1.domain.Match;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package level1;
+package level1.domain;
 
 import static java.util.stream.Collectors.joining;
 

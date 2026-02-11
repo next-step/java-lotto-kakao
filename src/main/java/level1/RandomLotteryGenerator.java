@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import level1.domain.Constant;
+import level1.domain.Lotteries;
+import level1.domain.Lottery;
 
 public class RandomLotteryGenerator {
 

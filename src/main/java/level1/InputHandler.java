@@ -3,6 +3,7 @@ package level1;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import level1.domain.AnswerLottery;
 
 public class InputHandler {
 

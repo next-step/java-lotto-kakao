@@ -1,5 +1,9 @@
 package level1;
 
+import level1.domain.AnswerLottery;
+import level1.domain.Constant;
+import level1.domain.Lotteries;
+
 public class Main {
 
     private static final InputHandler inputHandler;
