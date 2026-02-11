@@ -30,23 +30,18 @@ public class Lotto {
         return result;
     }
 
-    public static Lotto random() {
-        List<Integer> pool = new ArrayList<>();
-        for (int i = 1; i <= 45; i++) {
-            pool.add(i);
-        }
-        Collections.shuffle(pool);
-        return new Lotto(pool.subList(0, LENGTH));
+    static int numberCount() {
+        return LENGTH;
     }
 
     public static long calculatePurchasableCount(Money money) {
-        if (money.isZero()) {
-            throw new IllegalArgumentException("구매금액은 0이면 안됩니다.");
+        long count = money.calculatePurchasableCount(PRICE);
+        if (count <= 0L) {
+            throw new IllegalArgumentException(
+                    String.format("구매금액은 로또 가격 이상이어야 합니다. 로또 가격 : %d", PRICE)
+            );
         }
-        if (!money.isMultipleOf(PRICE)) {
-            throw new IllegalArgumentException(String.format("구매금액은 로또 가격의 배수여야 합니다. 로또 가격 : %d", PRICE));
-        }
-        return money.calculatePurchasableCount(PRICE);
+        return count;
     }
 
     private void validate(Set<LottoNumber> lottoNumberSet) {
