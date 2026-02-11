@@ -18,11 +18,10 @@ class WinningLottoTest {
     @Test
     @DisplayName("보너스 번호가 겹친 당첨로또")
     public void InvalidWinningLotto() {
-
         LottoNumber bonusNum = new LottoNumber(1);
         assertThatThrownBy(() -> new WinningLotto(new LottoTicket(1,2,3,4,5,6), bonusNum))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("보너스 숫자 겹침!");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
     }
 
     @Test
