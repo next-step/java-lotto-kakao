@@ -29,10 +29,18 @@ public class LottoBundle {
     }
 
     public static LottoBundle buy(Money money) {
+        return buy(money, new LottoGenerator());
+    }
+
+    private static LottoBundle buy(Money money, LottoGenerator lottoGenerator) {
+        if (lottoGenerator == null) {
+            throw new IllegalArgumentException("로또 생성기는 null일 수 없습니다.");
+        }
+
         long count = Lotto.calculatePurchasableCount(money);
         List<Lotto> lottos = new ArrayList<>();
         for (long c = 0; c < count; c++) {
-            lottos.add(Lotto.random());
+            lottos.add(lottoGenerator.generate());
         }
         return new LottoBundle(lottos);
     }

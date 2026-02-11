@@ -1,11 +1,19 @@
 package lotto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public record LottoNumber(int value) implements Comparable<LottoNumber> {
     private static final int MIN = 1;
     private static final int MAX = 45;
+    private static final List<LottoNumber> ALL_NUMBERS = createAllNumbers();
 
     public LottoNumber {
         validate(value);
+    }
+
+    public static List<LottoNumber> allNumbers() {
+        return new ArrayList<>(ALL_NUMBERS);
     }
 
     @Override
@@ -24,5 +32,13 @@ public record LottoNumber(int value) implements Comparable<LottoNumber> {
     @Override
     public String toString() {
         return "" + value;
+    }
+
+    private static List<LottoNumber> createAllNumbers() {
+        List<LottoNumber> allNumbers = new ArrayList<>();
+        for (int value = MIN; value <= MAX; value++) {
+            allNumbers.add(new LottoNumber(value));
+        }
+        return List.copyOf(allNumbers);
     }
 }

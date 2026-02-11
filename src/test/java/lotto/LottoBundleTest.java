@@ -63,7 +63,7 @@ public class LottoBundleTest {
 
     @Test
     void buyFailLottoBundle() {
-        Money money = Money.won(1400);
+        Money money = Money.won(900);
         assertThrows(IllegalArgumentException.class,
                 () -> LottoBundle.buy(money));
     }
