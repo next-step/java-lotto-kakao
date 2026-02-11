@@ -99,10 +99,7 @@ public class Application {
 			int count = winningLotto.checkNumbers(ticket);
 			boolean bonus = winningLotto.isContainBonus(ticket);
 			MatchCount match = MatchCount.from(count, bonus);
-
-			if (match != null) {
-				checker.increase(match);
-			}
+			checker.increase(match);
 		}
 
 		return checker;

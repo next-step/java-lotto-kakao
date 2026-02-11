@@ -2,6 +2,7 @@ package lotto;
 
 public enum MatchCount {
 
+	NOTHING(0, false, 0),
 	THREE(3, false, 5000),
 	FOUR(4, false, 50000),
 	FIVE(5, false, 1500000),
@@ -31,22 +32,22 @@ public enum MatchCount {
 	}
 
 	public static MatchCount from(int count, boolean bonus) {
-		if (count == 6) {
+		if (count == MatchCount.SIX.getCount()) {
 			return SIX;
 		}
-		if (count == 5 && bonus) {
+		if (count == MatchCount.FIVE.getCount() && bonus == MatchCount.FIVE.hasBonus()) {
 			return FIVE_BONUS;
 		}
-		if (count == 5) {
+		if (count == MatchCount.FIVE.getCount()) {
 			return FIVE;
 		}
-		if (count == 4) {
+		if (count == MatchCount.FOUR.getCount()) {
 			return FOUR;
 		}
-		if (count == 3) {
+		if (count == MatchCount.THREE.getCount()) {
 			return THREE;
 		}
-		return null;
+		return NOTHING;
 	}
 
 }
