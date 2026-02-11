@@ -41,7 +41,7 @@ public class ParserTest {
 
 	@Test
 	void splitTestWithCustomDelimiter() {
-		String input = "//;\\n1;2,3";
+		String input = "//;\n1;2,3";
 		String[] expected = {"1", "2", "3"};
 		String[] actual = parser.split(input);
 		assertThat(actual).isEqualTo(expected);

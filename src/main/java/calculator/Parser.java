@@ -10,16 +10,14 @@ public class Parser {
 		Pattern.compile("//(.)\n(.*)");
 
 	public String[] split(String input) {
+		Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(input);
 		String delimiter = DEFAULT_DELIMITER;
 
-		Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(input);
-
 		if (matcher.find()) {
-			String customDelimiter = matcher.group(1);
-			delimiter = DEFAULT_DELIMITER + "|" + Pattern.quote(customDelimiter);
+			delimiter += "|" + Pattern.quote(matcher.group(1));
 			input = matcher.group(2);
 		}
-
 		return input.split(delimiter);
 	}
+
 }
