@@ -1,5 +1,6 @@
 package lotto.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,16 @@ public class LottoController {
 
 	public void run() {
 		int amount = inputView.readPurchaseAmount();
-		List<Lotto> lottos = lottoMachine.issue(amount);
-		outputView.printLottos(lottos);
+		int manualCount = inputView.readManualCount();
+
+		int autoCount = lottoMachine.calculateRandomCountFromAmount(amount, manualCount);
+		List<Lotto> manualLottos = lottoMachine.issueManual(inputView.readManualNumbers(manualCount));
+		List<Lotto> autoLottos = lottoMachine.issueRandom(autoCount);
+
+		List<Lotto> lottos = new ArrayList<>();
+		lottos.addAll(manualLottos);
+		lottos.addAll(autoLottos);
+		outputView.printLottos(lottos, manualCount, autoCount);
 
 		Lotto winningNumbers = Lotto.from(inputView.readWinningNumbers());
 		LottoNumber bonusNumber = LottoNumber.from(inputView.readBonusNumber());

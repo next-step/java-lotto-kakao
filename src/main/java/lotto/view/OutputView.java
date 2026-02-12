@@ -8,8 +8,8 @@ import lotto.domain.LottoResult;
 import lotto.domain.LottoStatistics;
 
 public class OutputView {
-	public void printLottos(List<Lotto> lottos) {
-		System.out.println(lottos.size() + "개를 구매했습니다.");
+	public void printLottos(List<Lotto> lottos, int manualCount, int autoCount) {
+		System.out.println(String.format("수동으로 %d장, 자동으로 %d개를 구매했습니다.", manualCount, autoCount));
 		for (Lotto lotto : lottos) {
 			System.out.println(lotto.getNumbers());
 		}
