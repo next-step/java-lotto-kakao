@@ -28,12 +28,16 @@ public class LottoController {
 
         AnswerLotto answerLotto = setAnswer();
 
-        LottoResults answer = new LottoResults(myLotto, answerLotto);
+        printResult(myLotto, answerLotto);
+    }
 
-        LottoTotalResult answer2 = new LottoTotalResult(answer);
+    private void printResult(MyLotto myLotto, AnswerLotto answerLotto) throws IOException {
+        LottoResults lottoResults = new LottoResults(myLotto, answerLotto);
+
+        LottoTotalResult lottoTotalResult = new LottoTotalResult(lottoResults);
         outputView.write(OutputMessage.LOTTO_STATISTICS);
-        outputView.write(answer2.getTotalResultString());
-        outputView.write(OutputMessage.LOTTO_PROFIT, answer2.getProfit());
+        outputView.write(lottoTotalResult.getTotalResultString());
+        outputView.write(OutputMessage.LOTTO_PROFIT, lottoTotalResult.getProfit());
     }
 
     private AnswerLotto setAnswer() throws IOException {
