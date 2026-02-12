@@ -23,7 +23,7 @@ public class LottoNumbers {
         }
         long numberMask = 0L;
         for (LottoNumber lottoNumber : lottoNumbers) {
-            if ((numberMask & (1L << lottoNumber.getLottoNumber())) == 1) {
+            if ((numberMask & (1L << lottoNumber.getLottoNumber())) != 0) {
                 throw new IllegalArgumentException("중복된 숫자를 입력할 수 없습니다.");
             }
             numberMask |= 1L << lottoNumber.getLottoNumber();

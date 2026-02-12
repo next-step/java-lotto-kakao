@@ -23,7 +23,7 @@ public class Lotto {
         for (LottoNumber lottoNumber : lottoResult.getMainNumbers().getLottoNumbers()) {
             matchCount += (numberMask & (1L << lottoNumber.getLottoNumber())) == 0 ? 0 : 1;
         }
-        boolean bonus = (numberMask & (1L << lottoResult.getBonusNumber().getLottoNumber())) > 0;
+        boolean bonus = (numberMask & (1L << lottoResult.getBonusNumber().getLottoNumber())) != 0;
         return Rank.make(matchCount, bonus);
     }
 
