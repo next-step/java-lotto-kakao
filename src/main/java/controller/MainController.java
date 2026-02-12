@@ -21,47 +21,45 @@ public class MainController {
     }
 
     private Lottos issueLottos() {
-        Lottos lottos = null;
-        try {
-            outputView.printInputPriceMessage();
-            int price = inputView.getNumber();
-            lottos = new Lottos(price);
-            outputView.printLottos(lottos);
-        } catch (IllegalArgumentException e) {
-            outputView.printErrorMessage(e);
-            issueLottos();
+        while (true) {
+            try {
+                outputView.printInputPriceMessage();
+                int price = inputView.getNumber();
+                Lottos lottos = new Lottos(price);
+                outputView.printLottos(lottos);
+                return lottos;
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
+            }
         }
-        return lottos;
     }
 
     private LottoNumbers inputMainNumbers() {
-        LottoNumbers mainNumbers = null;
-        try {
-            outputView.printInputMainNumbersMessage();
-            List<Integer> numbers = inputView.getMainNumbers();
-            List<LottoNumber> lottoNumbers = new ArrayList<>();
-            for (Integer number : numbers) {
-                lottoNumbers.add(new LottoNumber(number));
+        while (true) {
+            try {
+                outputView.printInputMainNumbersMessage();
+                List<Integer> numbers = inputView.getMainNumbers();
+                List<LottoNumber> lottoNumbers = new ArrayList<>();
+                for (Integer number : numbers) {
+                    lottoNumbers.add(new LottoNumber(number));
+                }
+                return new LottoNumbers(lottoNumbers);
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
             }
-            mainNumbers = new LottoNumbers(lottoNumbers);
-        } catch (IllegalArgumentException e) {
-            outputView.printErrorMessage(e);
-            inputMainNumbers();
         }
-        return mainNumbers;
     }
 
     private LottoNumber inputBonusNumber() {
-        LottoNumber bonusNumber = null;
-        try {
-            outputView.printInputBonusBall();
-            int number = inputView.getNumber();
-            bonusNumber = new LottoNumber(number);
-        } catch (IllegalArgumentException e) {
-            outputView.printErrorMessage(e);
-            inputBonusNumber();
+        while (true) {
+            try {
+                outputView.printInputBonusBall();
+                int number = inputView.getNumber();
+                return new LottoNumber(number);
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
+            }
         }
-        return bonusNumber;
     }
 
     private void printLottoStatistics(LottoStatistics lottoStatistics) {
