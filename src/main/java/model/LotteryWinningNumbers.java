@@ -3,13 +3,12 @@ package model;
 import java.util.List;
 import java.util.Objects;
 
-public class GameScore {
+public class LotteryWinningNumbers {
 	private final Integer bonusNumber;
 	private final List<Integer> winNumbers;
 
-	public GameScore(int bonusNumber, List<Integer> winNumbers) {
+	public LotteryWinningNumbers(int bonusNumber, List<Integer> winNumbers) {
 		winNumbers.sort(((o1,o2) -> o1 - o2));
-
 		this.bonusNumber = bonusNumber;
 		this.winNumbers = winNumbers;
 	}
@@ -26,9 +25,9 @@ public class GameScore {
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass())
 			return false;
-		GameScore gameScore = (GameScore)o;
-		return Objects.equals(bonusNumber, gameScore.bonusNumber) && Objects.equals(winNumbers,
-			gameScore.winNumbers);
+		LotteryWinningNumbers lotteryWinningNumbers = (LotteryWinningNumbers)o;
+		return Objects.equals(bonusNumber, lotteryWinningNumbers.bonusNumber) && Objects.equals(winNumbers,
+			lotteryWinningNumbers.winNumbers);
 	}
 
 	@Override

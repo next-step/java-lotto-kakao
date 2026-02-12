@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class LottoMakerTest {
+public class TicketTest {
 
 	@Test
-	void imTicket() {
+	void ticketNumberCompared() {
 		Ticket leftTicket = new Ticket(1,2,3,4,5,6);
 		Ticket rightTicket = new Ticket(6,5,4,3,2,1);
-		assertThat(leftTicket.getKey()).isEqualTo(rightTicket.getKey());
+		assertThat(leftTicket.getNumbers()).isEqualTo(rightTicket.getNumbers());
 	}
 
 	@Test

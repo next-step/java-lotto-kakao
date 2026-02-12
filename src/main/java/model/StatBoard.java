@@ -9,7 +9,7 @@ public class StatBoard {
 	private final Map<WinLevel, Integer> matchedWinLevelCount;
 	private final Integer ticketCount;
 
-	public StatBoard(GameScore gameScore, List<Ticket> tickets) {
+	public StatBoard(LotteryWinningNumbers lotteryWinningNumbers, List<Ticket> tickets) {
 		ticketCount = tickets.size();
 		matchedWinLevelCount = new HashMap<>();
 
@@ -18,7 +18,7 @@ public class StatBoard {
 		}
 
 		for(Ticket ticket: tickets) {
-			WinLevel level = ticket.getWinLevel(gameScore);
+			WinLevel level = ticket.getWinLevel(lotteryWinningNumbers);
 			matchedWinLevelCount.put(level, matchedWinLevelCount.getOrDefault(level, 0) + 1);
 		}
 	}

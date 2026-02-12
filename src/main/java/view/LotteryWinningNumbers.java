@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameScoreView {
+public class LotteryWinningNumbers {
 	private final Scanner scanner = new Scanner(System.in);
 
 	public void showInputWinNumberMessage() {

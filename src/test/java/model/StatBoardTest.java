@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class WinStatTest {
-	GameScore gameScore = new GameScore(7, Arrays.asList(1,2,3,4,5,6));
+public class StatBoardTest {
+	LotteryWinningNumbers lotteryWinningNumbers = new LotteryWinningNumbers(7, Arrays.asList(1,2,3,4,5,6));
 	@Test
 	void ticketLevel() {
 		Ticket ticket = new Ticket(1,2,3,4,5,6);
@@ -29,17 +29,17 @@ public class WinStatTest {
 			WinLevel.FIFTH,
 			WinLevel.LOSER,
 		};
-		StatBoard statBoard = new StatBoard(gameScore,tickets);
+		StatBoard statBoard = new StatBoard(lotteryWinningNumbers,tickets);
 
 
 		for(int i = 0; i< 6; i++) {
-			assertThat(tickets.get(i).getWinLevel(gameScore)).isEqualTo(winLevels[i]);
+			assertThat(tickets.get(i).getWinLevel(lotteryWinningNumbers)).isEqualTo(winLevels[i]);
 		}
 	}
 
 	@Test
 	void profitRatioMaker() {
-		StatBoard statBoard = new StatBoard(gameScore,  Arrays.asList(
+		StatBoard statBoard = new StatBoard(lotteryWinningNumbers,  Arrays.asList(
 			new Ticket(1,2,3,4,5,6),
 			new Ticket(1,2,3,4,5,7),
 			new Ticket(1,2,3,4,5,8),

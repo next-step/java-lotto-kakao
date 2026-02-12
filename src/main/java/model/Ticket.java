@@ -7,33 +7,29 @@ import java.util.List;
 public class Ticket {
 
 	private final List<Integer> numbers;
-	private final Long key;
-	Ticket(Integer... numbers) {
+
+	public Ticket(Integer... numbers) {
 		this(new ArrayList<>(Arrays.asList(numbers)));
 	}
 
-	Ticket(List<Integer> numbers) {
+	public Ticket(List<Integer> numbers) {
 		numbers.sort(((o1, o2) -> o1 - o2));
+		this.numbers = numbers;
+	}
+	
+	public WinLevel getWinLevel(LotteryWinningNumbers lotteryWinningNumbers) {
 		long key = 0L;
 		for(Integer number: numbers) {
 			key |= (1L << number);
 		}
-		this.numbers = numbers;
-		this.key = key;
-	}
-
-	public Long getKey() {
-		return key;
-	}
-
-	public WinLevel getWinLevel(GameScore gameScore) {
 		int winMatchcount = 0;
-		for(var winNumber: gameScore.getWinNumbers()) {
+		for(var winNumber: lotteryWinningNumbers.getWinNumbers()) {
 			winMatchcount += (key & (1L <<winNumber)) == 0 ? 0 : 1;
 		}
-		Boolean bonusMatched = (key & (1L << gameScore.getBonusNumber())) > 0;
+		Boolean bonusMatched = (key & (1L << lotteryWinningNumbers.getBonusNumber())) > 0;
 		return WinLevel.make(winMatchcount, bonusMatched);
 	}
+
 
 	@Override
 	public String toString() {
@@ -47,4 +43,5 @@ public class Ticket {
 		stringBuilder.append("]");
 		return stringBuilder.toString();
 	}
+
 }
