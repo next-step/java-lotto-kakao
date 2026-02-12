@@ -11,7 +11,7 @@ public class StatBoardView {
 	}
 
 	public void showWinCountMessage(WinLevel winLevel, Integer count) {
-		System.out.printf("%s (%d원) - %d개\n",winLevel.getDescription(), winLevel.getPrice(), count);
+		System.out.printf("%s (%d원) - %d개\n", winLevel.getDescription(), winLevel.getPrice(), count);
 	}
 
 	public void showProfitMessage(Double profitRatio) {
