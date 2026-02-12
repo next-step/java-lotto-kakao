@@ -5,7 +5,6 @@ import lotto.util.Splitter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +13,11 @@ public class InputView {
 
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public int readPurchaseAmount() throws IOException {
+    public int readTotalPurchaseAmount() throws IOException {
+        return Integer.parseInt(br.readLine());
+    }
+
+    public int readManualCount() throws IOException {
         return Integer.parseInt(br.readLine());
     }
 

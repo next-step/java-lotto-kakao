@@ -2,7 +2,9 @@ package lotto.view;
 
 public enum OutputMessage {
     INPUT_PURCHASE_AMOUNT("구입금액을 입력해 주세요.\n"),
-    PURCHASE_COUNT("%d개를 구매했습니다.\n"),
+    TOTAL_PURCHASE_COUNT("수동으로 %d장, 자동으로 %d개를 구매했습니다.\n"),
+    INPUT_MANUAL_PURCHASE_AMOUNT("수동으로 구매할 로또 수를 입력해 주세요.\n"),
+    INPUT_MANUAL_PURCHASE_LOTTO_NUMBER("수동으로 구매할 번호를 입력해 주세요.\n"),
     LOTTO_LIST("%s\n\n"),
     INPUT_WINNING_NUMBERS("지난 주 당첨 번호를 입력해주세요.\n"),
     INPUT_BONUS_NUMBER("보너스 볼을 입력해주세요.\n"),

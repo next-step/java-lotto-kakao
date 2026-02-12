@@ -11,12 +11,12 @@ public class MyLotto {
     private final List<LottoBalls> myLottoList = new ArrayList<>();
 
     public MyLotto(int autoSize, int manualSize) {
-        NumberCreator numberCreator = new NumberAutoCreator();
-        for (int i = 0; i < autoSize; i++) {
+        NumberCreator numberCreator = new NumberManualCreator();
+        for (int i = 0; i < manualSize; i++) {
             myLottoList.add(new LottoBalls(numberCreator.numberCreate()));
         }
-        numberCreator = new NumberManualCreator();
-        for (int i = 0; i < manualSize; i++) {
+        numberCreator = new NumberAutoCreator();
+        for (int i = 0; i < autoSize; i++) {
             myLottoList.add(new LottoBalls(numberCreator.numberCreate()));
         }
     }

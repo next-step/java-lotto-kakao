@@ -54,10 +54,15 @@ public class LottoController {
     private MyLotto makeMyLotto() throws IOException {
         outputView.write(OutputMessage.INPUT_PURCHASE_AMOUNT);
 
-        int count = inputView.readPurchaseAmount() / LottoBalls.getPrice();
+        int totalCount = inputView.readTotalPurchaseAmount() / LottoBalls.getPrice();
 
-        MyLotto myLotto = new MyLotto(count, 0);
-        outputView.write(OutputMessage.PURCHASE_COUNT, count);
+        outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_AMOUNT);
+        int manualCount = inputView.readManualCount();
+        int autoCount = totalCount - manualCount;
+
+        outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_LOTTO_NUMBER);
+        MyLotto myLotto = new MyLotto(autoCount, manualCount);
+        outputView.write(OutputMessage.TOTAL_PURCHASE_COUNT, manualCount, autoCount);
         return myLotto;
     }
 }
