@@ -56,7 +56,7 @@ public class LottoController {
 
         int count = inputView.readPurchaseAmount() / Lotto.getPrice();
 
-        MyLotto myLotto = new MyLotto(count);
+        MyLotto myLotto = new MyLotto(count, 0);
         outputView.write(OutputMessage.PURCHASE_COUNT, count);
         return myLotto;
     }

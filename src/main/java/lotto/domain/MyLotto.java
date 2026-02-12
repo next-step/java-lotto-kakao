@@ -1,14 +1,20 @@
 package lotto.domain;
 
+import lotto.util.LottoAutoCreator;
+import lotto.util.LottoManualCreator;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyLotto {
     private final List<Lotto> myLottoList = new ArrayList<>();
 
-    public MyLotto(int size) {
-        for (int i = 0; i < size; i++) {
-            myLottoList.add(new Lotto());
+    public MyLotto(int autoSize, int manualSize) {
+        for (int i = 0; i < autoSize; i++) {
+            myLottoList.add(new Lotto(new LottoAutoCreator()));
+        }
+        for (int i = 0; i < manualSize; i++) {
+            myLottoList.add(new Lotto(new LottoManualCreator()));
         }
     }
 

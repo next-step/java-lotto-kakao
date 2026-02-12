@@ -11,7 +11,7 @@ public class LottoTest {
     @DisplayName("myLotto 생성 테스트")
     void makeMyLotto() {
         int lottoNum = 10;
-        MyLotto myLotto = new MyLotto(lottoNum);
+        MyLotto myLotto = new MyLotto(lottoNum, 0);
 
         assertThat(myLotto.getSize()).isEqualTo(lottoNum);
     }

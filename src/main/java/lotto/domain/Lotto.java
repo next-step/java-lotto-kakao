@@ -1,13 +1,14 @@
 package lotto.domain;
 
 import lotto.util.LottoAutoCreator;
+import lotto.util.LottoNumberCreator;
 
 public class Lotto {
     private static final int PRICE = 1000;
     private final LottoBalls lottoBalls;
 
-    public Lotto() {
-        this.lottoBalls = LottoAutoCreator.lottoCreate();
+    public Lotto(LottoNumberCreator numberCreator) {
+        this.lottoBalls = numberCreator.lottoCreate();
     }
 
     public Lotto(Lotto lotto) {

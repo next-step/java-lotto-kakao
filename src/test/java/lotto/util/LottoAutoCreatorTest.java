@@ -26,7 +26,7 @@ public class LottoAutoCreatorTest {
     @DisplayName("정상적으로 suffle 실행")
     void createLottoTest() {
         assertDoesNotThrow(() -> {
-            LottoAutoCreator.lottoCreate();
+            new LottoAutoCreator().lottoCreate();
         });
     }
 }

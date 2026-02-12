@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class LottoAutoCreator {
+public class LottoAutoCreator implements LottoNumberCreator {
 
-    public static LottoBalls lottoCreate() {
+    @Override
+    public LottoBalls lottoCreate() {
 
         ArrayList<Integer> numbers = new ArrayList<>();
 
