@@ -3,7 +3,7 @@ package view;
 import java.util.List;
 import java.util.Scanner;
 
-import model.Ticket;
+import model.Lotto;
 
 public class TicketBoothView {
 
@@ -17,10 +17,10 @@ public class TicketBoothView {
         return SCANNER.nextLine();
     }
 
-    public void showTicketInfo(List<Ticket> tickets) {
-        System.out.println(tickets.size() + "개를 구매했습니다.");
-        for (Ticket ticket : tickets) {
-            System.out.println(ticket);
+    public void showTicketInfo(List<Lotto> lottos) {
+        System.out.println(lottos.size() + "개를 구매했습니다.");
+        for (Lotto lotto : lottos) {
+            System.out.println(lotto);
         }
     }
 

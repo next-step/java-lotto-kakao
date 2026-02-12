@@ -4,8 +4,8 @@ import java.util.List;
 
 import model.GameScore;
 import model.StatsBoard;
-import model.Ticket;
-import model.TicketBooth;
+import model.Lotto;
+import model.Lottos;
 import model.WinLevel;
 import view.GameScoreView;
 import view.StatsBoardView;
@@ -29,31 +29,31 @@ public class MainController {
         try {
             ticketBoothView.showInputPriceMessage();
             String price = ticketBoothView.inputTicketPrice();
-            TicketBooth ticketBooth = new TicketBooth(price);
-            List<Ticket> tickets = ticketBooth.getTickets();
-            ticketBoothView.showTicketInfo(tickets);
-            gameScoreRender(tickets);
+            Lottos ticketBooth = new Lottos(price);
+            List<Lotto> lottos = ticketBooth.getTickets();
+            ticketBoothView.showTicketInfo(lottos);
+            gameScoreRender(lottos);
         } catch (IllegalArgumentException e) {
             ticketBoothView.showErrorMessage(e);
             ticketBoothRender();
         }
     }
 
-    private void gameScoreRender(List<Ticket> tickets) {
+    private void gameScoreRender(List<Lotto> lottos) {
         try {
             gameScoreView.showInputWinNumberMessage();
             List<Integer> winNumbers = gameScoreView.inputWinNumber(BALL_COUNT, MIN_BALL_NUMBER, MAX_BALL_NUMBER);
             gameScoreView.showInputBonusBall();
             int bonusBall = gameScoreView.inputBonusBall(MIN_BALL_NUMBER, MAX_BALL_NUMBER);
-            statBoardRender(new GameScore(bonusBall, winNumbers), tickets);
+            statBoardRender(new GameScore(bonusBall, winNumbers), lottos);
         } catch (IllegalArgumentException e) {
             gameScoreView.showErrorMessage(e);
-            gameScoreRender(tickets);
+            gameScoreRender(lottos);
         }
     }
 
-    private void statBoardRender(GameScore score, List<Ticket> tickets) {
-        StatsBoard statsBoard = new StatsBoard(score, tickets);
+    private void statBoardRender(GameScore score, List<Lotto> lottos) {
+        StatsBoard statsBoard = new StatsBoard(score, lottos);
         statsBoardView.showStatResult();
         List<WinLevel> winLevels = List.of(WinLevel.FIFTH, WinLevel.FOURTH, WinLevel.THIRD, WinLevel.SECOND, WinLevel.FIRST);
         for (WinLevel winLevel : winLevels) {

@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TicketBooth {
+public class Lottos {
 
-    private final List<Ticket> tickets;
+    private final List<Lotto> lottos;
 
-    public TicketBooth(String rawPrice) {
+    public Lottos(String rawPrice) {
         int price = validate(rawPrice);
         int ticketCount = price / 1000;
-        List<Ticket> tickets = new ArrayList<>();
-        while (tickets.size() < ticketCount) {
-            Ticket ticket = issueTicket();
-            tickets.add(ticket);
+        List<Lotto> lottos = new ArrayList<>();
+        while (lottos.size() < ticketCount) {
+            Lotto lotto = issueTicket();
+            lottos.add(lotto);
         }
-        this.tickets = tickets;
+        this.lottos = lottos;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
+    public List<Lotto> getTickets() {
+        return lottos;
     }
 
-    private Ticket issueTicket() {
+    private Lotto issueTicket() {
         List<Integer> number = new ArrayList<>();
         for (int i = 1; i <= 45; i++) {
             number.add(i);
@@ -33,7 +33,7 @@ public class TicketBooth {
         for (int i = 0; i < 6; i++) {
             result.add(number.get(i));
         }
-        return new Ticket(result);
+        return new Lotto(result);
     }
 
     private int validate(String rawPrice) {

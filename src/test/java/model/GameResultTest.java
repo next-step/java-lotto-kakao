@@ -13,13 +13,13 @@ public class GameResultTest {
 
     @Test
     void ticketLevel() {
-        List<Ticket> tickets = Arrays.asList(
-                new Ticket(1, 2, 3, 4, 5, 6),
-                new Ticket(1, 2, 3, 4, 5, 7),
-                new Ticket(1, 2, 3, 4, 5, 8),
-                new Ticket(1, 2, 3, 4, 9, 8),
-                new Ticket(1, 2, 3, 10, 9, 8),
-                new Ticket(7, 8, 9, 10, 11, 12)
+        List<Lotto> lottos = Arrays.asList(
+                new Lotto(1, 2, 3, 4, 5, 6),
+                new Lotto(1, 2, 3, 4, 5, 7),
+                new Lotto(1, 2, 3, 4, 5, 8),
+                new Lotto(1, 2, 3, 4, 9, 8),
+                new Lotto(1, 2, 3, 10, 9, 8),
+                new Lotto(7, 8, 9, 10, 11, 12)
         );
         WinLevel[] winLevels = {
                 WinLevel.FIRST,
@@ -31,19 +31,19 @@ public class GameResultTest {
         };
 
         for (int i = 0; i < 6; i++) {
-            assertThat(tickets.get(i).getWinLevel(gameScore)).isEqualTo(winLevels[i]);
+            assertThat(lottos.get(i).getWinLevel(gameScore)).isEqualTo(winLevels[i]);
         }
     }
 
     @Test
     void profitRatioMaker() {
         StatsBoard statsBoard = new StatsBoard(gameScore, Arrays.asList(
-                new Ticket(1, 2, 3, 4, 5, 6),
-                new Ticket(1, 2, 3, 4, 5, 7),
-                new Ticket(1, 2, 3, 4, 5, 8),
-                new Ticket(1, 2, 3, 4, 9, 8),
-                new Ticket(1, 2, 3, 10, 9, 8),
-                new Ticket(7, 8, 9, 10, 11, 12)
+                new Lotto(1, 2, 3, 4, 5, 6),
+                new Lotto(1, 2, 3, 4, 5, 7),
+                new Lotto(1, 2, 3, 4, 5, 8),
+                new Lotto(1, 2, 3, 4, 9, 8),
+                new Lotto(1, 2, 3, 10, 9, 8),
+                new Lotto(7, 8, 9, 10, 11, 12)
         ));
         double profitRatio = statsBoard.getProfitRatio();
         assertThat(profitRatio).isEqualTo(338592.5);

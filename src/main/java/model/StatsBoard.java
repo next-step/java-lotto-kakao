@@ -10,16 +10,16 @@ public class StatsBoard {
     private final Map<WinLevel, Integer> matchedWinLevelCount;
     private final int ticketCount;
 
-    public StatsBoard(GameScore gameScore, List<Ticket> tickets) {
-        ticketCount = tickets.size();
+    public StatsBoard(GameScore gameScore, List<Lotto> lottos) {
+        ticketCount = lottos.size();
         matchedWinLevelCount = new HashMap<>();
 
         for (WinLevel winLevel : WinLevel.getAll()) {
             matchedWinLevelCount.put(winLevel, 0);
         }
 
-        for (Ticket ticket : tickets) {
-            WinLevel level = ticket.getWinLevel(gameScore);
+        for (Lotto lotto : lottos) {
+            WinLevel level = lotto.getWinLevel(gameScore);
             matchedWinLevelCount.put(level, matchedWinLevelCount.getOrDefault(level, 0) + 1);
         }
     }

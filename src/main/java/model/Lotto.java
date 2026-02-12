@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Ticket {
+public class Lotto {
 
     private final List<Integer> numbers;
     private final long key;
 
-    public Ticket(Integer... numbers) {
+    public Lotto(Integer... numbers) {
         this(new ArrayList<>(Arrays.asList(numbers)));
     }
 
-    public Ticket(List<Integer> numbers) {
+    public Lotto(List<Integer> numbers) {
         numbers.sort(((o1, o2) -> o1 - o2));
         long key = 0L;
         for (int number : numbers) {

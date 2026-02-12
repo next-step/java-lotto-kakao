@@ -12,24 +12,24 @@ public class LottoMakerTest {
 
     @Test
     void ticketKeyEqual() {
-        Ticket ticket1 = new Ticket(1, 2, 3, 4, 5, 6);
-        Ticket ticket2 = new Ticket(6, 5, 4, 3, 2, 1);
-        assertThat(ticket1.getKey()).isEqualTo(ticket2.getKey());
+        Lotto lotto1 = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto lotto2 = new Lotto(6, 5, 4, 3, 2, 1);
+        assertThat(lotto1.getKey()).isEqualTo(lotto2.getKey());
     }
 
     @Test
     void ticketBoothValidatorThrow() {
         List<String> prices = new ArrayList<>(Arrays.asList("1050",  "-123142341", "0"));
         for (String price : prices) {
-            assertThatThrownBy(() -> new TicketBooth(price))
+            assertThatThrownBy(() -> new Lottos(price))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }
 
     @Test
     void ticketBoothIssue() {
-        TicketBooth ticketBooth = new TicketBooth("12000");
-        List<Ticket> tickets = ticketBooth.getTickets();
-        assertThat(tickets.size()).isEqualTo(12);
+        Lottos ticketBooth = new Lottos("12000");
+        List<Lotto> lottos = ticketBooth.getTickets();
+        assertThat(lottos.size()).isEqualTo(12);
     }
 }
