@@ -32,7 +32,7 @@ public class Ticket {
         for (var winNumber : gameScore.getWinNumbers()) {
             winMatchcount += (key & (1L << winNumber)) == 0 ? 0 : 1;
         }
-        Boolean bonusMatched = (key & (1L << gameScore.getBonusNumber())) > 0;
+        boolean bonusMatched = (key & (1L << gameScore.getBonusNumber())) > 0;
         return WinLevel.make(winMatchcount, bonusMatched);
     }
 
