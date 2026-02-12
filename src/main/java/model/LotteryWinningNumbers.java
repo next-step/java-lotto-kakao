@@ -1,23 +1,25 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class LotteryWinningNumbers {
-	private final Integer bonusNumber;
-	private final List<Integer> winNumbers;
+	private final LottoNumber bonusNumber;
+	private final List<LottoNumber> winNumbers;
 
-	public LotteryWinningNumbers(int bonusNumber, List<Integer> winNumbers) {
-		winNumbers.sort(((o1,o2) -> o1 - o2));
+	public LotteryWinningNumbers(LottoNumber bonusNumber, List<LottoNumber> winNumbers) {
+		List<LottoNumber> sortedNumbers = new ArrayList<>(winNumbers);
+		sortedNumbers.sort(null);
 		this.bonusNumber = bonusNumber;
-		this.winNumbers = winNumbers;
+		this.winNumbers = sortedNumbers;
 	}
 
-	public Integer getBonusNumber() {
+	public LottoNumber getBonusNumber() {
 		return bonusNumber;
 	}
 
-	public List<Integer> getWinNumbers() {
+	public List<LottoNumber> getWinNumbers() {
 		return winNumbers;
 	}
 

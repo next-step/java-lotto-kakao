@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 
 import model.LotteryWinningNumbers;
+import model.LottoNumber;
 import model.StatBoard;
 import model.Ticket;
 import model.TicketBooth;
@@ -11,8 +12,6 @@ import view.StatBoardView;
 import view.TicketBoothView;
 
 public class MainController {
-	public static final int MAX_BALL_NUMBER = 45;
-	public static final int MIN_BALL_NUMBER = 1;
 	public static final int BALL_COUNT = 6;
 	private final TicketBooth ticketBooth = new TicketBooth();
 	private final TicketBoothView ticketBoothView = new TicketBoothView();
@@ -39,9 +38,9 @@ public class MainController {
 	private void gameScoreRender(List<Ticket> tickets) {
 		try {
 			lotteryWinningNumbers.showInputWinNumberMessage();
-			List<Integer> winNumbers = lotteryWinningNumbers.inputWinNumber(BALL_COUNT, MIN_BALL_NUMBER, MAX_BALL_NUMBER);
+			List<LottoNumber> winNumbers = lotteryWinningNumbers.inputWinNumber(BALL_COUNT);
 			lotteryWinningNumbers.showInputBonusBall();
-			Integer bonusBall = lotteryWinningNumbers.inputBonusBall(MIN_BALL_NUMBER, MAX_BALL_NUMBER);
+			LottoNumber bonusBall = lotteryWinningNumbers.inputBonusBall();
 			statBoardRender(new LotteryWinningNumbers(bonusBall, winNumbers), tickets);
 		} catch (IllegalArgumentException e) {
 			lotteryWinningNumbers.showErrorMessage(e);
