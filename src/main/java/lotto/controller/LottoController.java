@@ -54,7 +54,7 @@ public class LottoController {
     private MyLotto makeMyLotto() throws IOException {
         outputView.write(OutputMessage.INPUT_PURCHASE_AMOUNT);
 
-        int count = inputView.readPurchaseAmount() / Lotto.getPrice();
+        int count = inputView.readPurchaseAmount() / LottoBalls.getPrice();
 
         MyLotto myLotto = new MyLotto(count, 0);
         outputView.write(OutputMessage.PURCHASE_COUNT, count);

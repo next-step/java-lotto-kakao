@@ -21,7 +21,7 @@ public class NumberAutoCreator implements NumberCreator {
 
         Collections.shuffle(numbers);
 
-        ArrayList<Integer> result = new ArrayList<>(numbers.subList(0, LottoBalls.getLottoLength()));
+        ArrayList<Integer> result = new ArrayList<>(numbers.subList(0, LottoBalls.getLength()));
         Collections.sort(result);
 
         return new HashSet<>(result);

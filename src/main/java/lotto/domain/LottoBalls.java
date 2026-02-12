@@ -7,13 +7,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class LottoBalls {
-    private final static int LOTTO_LENGTH = 6;
+    private final static int LENGTH = 6;
+    private final static int PRICE = 1000;
     private final Set<LottoNumber> lotto;
 
-    public LottoBalls(Set<Integer> lottoNums) {
-        checkLottoLength(lottoNums);
+    public LottoBalls(Set<Integer> lottoNumbers) {
+        checkLottoLength(lottoNumbers);
 
-        this.lotto = lottoNums.stream()
+        this.lotto = lottoNumbers.stream()
                 .map(LottoNumber::new)
                 .collect(Collectors.toCollection(HashSet::new));
     }
@@ -23,13 +24,17 @@ public class LottoBalls {
     }
 
     private static void checkLottoLength(Set<Integer> numSet) {
-        if (numSet.size() != LOTTO_LENGTH) {
+        if (numSet.size() != LENGTH) {
             throw new LottoException(ExceptionCode.INVALID_LOTTO_NUMBER_COUNT);
         }
     }
 
-    public static int getLottoLength() {
-        return LOTTO_LENGTH;
+    public static int getLength() {
+        return LENGTH;
+    }
+
+    public static int getPrice() {
+        return PRICE;
     }
 
     public Set<LottoNumber> getLottoBalls() {
