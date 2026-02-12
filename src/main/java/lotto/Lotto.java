@@ -7,10 +7,12 @@ import java.util.*;
 public class Lotto {
     public static final long PRICE = 1000L;
     private static final int LENGTH = 6;
+    private static final int MIN_NUMBER = 1;
+    private static final int MAX_NUMBER = 45;
     private final Set<LottoNumber> lottoNumberSet;
 
     public Lotto(List<Integer> numbers) {
-        this(convert(numbers));
+        this(convertListToSet(numbers));
     }
 
     public Lotto(Integer... numbers) {
@@ -22,7 +24,7 @@ public class Lotto {
         this.lottoNumberSet = Set.copyOf(lottoNumberSet);
     }
 
-    private static Set<LottoNumber> convert(List<Integer> numbers) {
+    private static Set<LottoNumber> convertListToSet(List<Integer> numbers) {
         Set<LottoNumber> result = new HashSet<>();
         for (Integer number : numbers) {
             result.add(new LottoNumber(number));
@@ -32,7 +34,7 @@ public class Lotto {
 
     public static Lotto random() {
         List<Integer> pool = new ArrayList<>();
-        for (int i = 1; i <= 45; i++) {
+        for (int i = MIN_NUMBER; i <= MAX_NUMBER; i++) {
             pool.add(i);
         }
         Collections.shuffle(pool);
