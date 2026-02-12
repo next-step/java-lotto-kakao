@@ -55,7 +55,7 @@
 ---
 ### 4. PR  리뷰에 따른 리팩터링 [ ]
    4-1. 기존 명명 최적화 및 변경 | 원시값 타입 최적화 | 접근 제한자 최적화 [✅]
-   4-2. StatBoardTest 내부 ticketLevel 테스트 세분화 [ ]
+   4-2. StatBoardTest 내부 ticketLevel 테스트 세분화 [✅]
    4-3. ticket toString 메서드 변경, 티켓 숫자 정보 출력 개선 [ ]
    4-4. WinLevel Enum 타입 개선 [ ]
    4-5. LottoNumber 객체 도입, 로또 숫자 범위 제한 대응 [ ]

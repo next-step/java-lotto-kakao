@@ -30,6 +30,9 @@ public class Ticket {
 		return WinLevel.make(winMatchcount, bonusMatched);
 	}
 
+	public List<Integer> getNumbers() {
+		return numbers;
+	}
 
 	@Override
 	public String toString() {
