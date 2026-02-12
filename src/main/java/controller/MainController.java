@@ -13,9 +13,7 @@ public class MainController {
 
     public void run() {
         Lottos lottos = issueLottos();
-        LottoNumbers mainNumbers = inputMainNumbers();
-        LottoNumber bonusNumber = inputBonusNumber();
-        LottoResult lottoResult = new LottoResult(mainNumbers, bonusNumber);
+        LottoResult lottoResult = getLottoResult();
         LottoStatistics lottoStatistics = new LottoStatistics(lottos.getLottos(), lottoResult);
         printLottoStatistics(lottoStatistics);
     }
@@ -28,6 +26,18 @@ public class MainController {
                 Lottos lottos = new Lottos(price);
                 outputView.printLottos(lottos);
                 return lottos;
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
+            }
+        }
+    }
+
+    private LottoResult getLottoResult() {
+        while (true) {
+            try {
+                LottoNumbers mainNumbers = inputMainNumbers();
+                LottoNumber bonusNumber = inputBonusNumber();
+                return new LottoResult(mainNumbers, bonusNumber);
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e);
             }
