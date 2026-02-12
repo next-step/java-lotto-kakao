@@ -28,9 +28,9 @@ public class MainController {
     private void ticketBoothRender() {
         try {
             ticketBoothView.showInputPriceMessage();
-            String price = ticketBoothView.inputTicketPrice();
+            int price = ticketBoothView.inputTicketPrice();
             Lottos ticketBooth = new Lottos(price);
-            List<Lotto> lottos = ticketBooth.getTickets();
+            List<Lotto> lottos = ticketBooth.getLottos();
             ticketBoothView.showTicketInfo(lottos);
             gameScoreRender(lottos);
         } catch (IllegalArgumentException e) {

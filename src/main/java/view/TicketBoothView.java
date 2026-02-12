@@ -13,8 +13,12 @@ public class TicketBoothView {
         System.out.println("구입금액을 입력해 주세요.");
     }
 
-    public String inputTicketPrice() {
-        return SCANNER.nextLine();
+    public int inputTicketPrice() {
+        try {
+            return Integer.parseInt(SCANNER.nextLine());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("숫자를 입력하세요.");
+        }
     }
 
     public void showTicketInfo(List<Lotto> lottos) {

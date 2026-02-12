@@ -1,38 +1,29 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Lotto {
 
-    private final List<Integer> numbers;
-    private final long key;
+    private final LottoNumbers lotto;
+    private final long numberMask;
 
-    public Lotto(Integer... numbers) {
-        this(new ArrayList<>(Arrays.asList(numbers)));
-    }
-
-    public Lotto(List<Integer> numbers) {
-        numbers.sort(((o1, o2) -> o1 - o2));
-        long key = 0L;
-        for (int number : numbers) {
-            key |= (1L << number);
+    public Lotto(LottoNumbers lotto) {
+        long numberMask = 0L;
+        for (LottoNumber lottoNumber : lotto.getLottoNumbers()) {
+            numberMask |= (1L << lottoNumber.getLottoNumber());
         }
-        this.numbers = numbers;
-        this.key = key;
+        this.lotto = lotto;
+        this.numberMask = numberMask;
     }
 
-    public long getKey() {
-        return key;
+    public long getNumberMask() {
+        return numberMask;
     }
 
     public WinLevel getWinLevel(GameScore gameScore) {
         int winMatchcount = 0;
         for (var winNumber : gameScore.getWinNumbers()) {
-            winMatchcount += (key & (1L << winNumber)) == 0 ? 0 : 1;
+            winMatchcount += (numberMask & (1L << winNumber)) == 0 ? 0 : 1;
         }
-        boolean bonusMatched = (key & (1L << gameScore.getBonusNumber())) > 0;
+        boolean bonusMatched = (numberMask & (1L << gameScore.getBonusNumber())) > 0;
         return WinLevel.make(winMatchcount, bonusMatched);
     }
 
@@ -40,8 +31,8 @@ public class Lotto {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        for (Integer number : numbers) {
-            stringBuilder.append(number).append(", ");
+        for (LottoNumber number : lotto.getLottoNumbers()) {
+            stringBuilder.append(number.getLottoNumber()).append(", ");
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);

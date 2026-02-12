@@ -6,27 +6,27 @@ public class LottoNumbers {
 
     private static final int SIZE = 6;
 
-    private final List<LottoNumber> numbers;
+    private final List<LottoNumber> lottoNumbers;
 
-    public LottoNumbers(List<LottoNumber> numbers) {
-        validate(numbers);
-        this.numbers = numbers;
+    public LottoNumbers(List<LottoNumber> lottoNumbers) {
+        validate(lottoNumbers);
+        this.lottoNumbers = lottoNumbers;
     }
 
-    public List<LottoNumber> getNumbers() {
-        return numbers;
+    public List<LottoNumber> getLottoNumbers() {
+        return lottoNumbers;
     }
 
-    private void validate(List<LottoNumber> numbers) {
-        if (numbers.size() != SIZE) {
+    private void validate(List<LottoNumber> lottoNumbers) {
+        if (lottoNumbers.size() != SIZE) {
             throw new IllegalArgumentException("숫자는 " + SIZE + "개만 입력해야 합니다.");
         }
-        long key = 0L;
-        for (LottoNumber number : numbers) {
-            if ((key & (1L << number.getNumber())) == 1) {
+        long numberMask = 0L;
+        for (LottoNumber lottoNumber : lottoNumbers) {
+            if ((numberMask & (1L << lottoNumber.getLottoNumber())) == 1) {
                 throw new IllegalArgumentException("중복된 숫자를 입력할 수 없습니다.");
             }
-            key |= 1L << number.getNumber();
+            numberMask |= 1L << lottoNumber.getLottoNumber();
         }
     }
 }

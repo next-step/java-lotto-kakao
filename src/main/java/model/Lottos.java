@@ -8,41 +8,35 @@ public class Lottos {
 
     private final List<Lotto> lottos;
 
-    public Lottos(String rawPrice) {
-        int price = validate(rawPrice);
+    public Lottos(int price) {
+        validate(price);
         int ticketCount = price / 1000;
         List<Lotto> lottos = new ArrayList<>();
         while (lottos.size() < ticketCount) {
-            Lotto lotto = issueTicket();
+            Lotto lotto = issue();
             lottos.add(lotto);
         }
         this.lottos = lottos;
     }
 
-    public List<Lotto> getTickets() {
+    public List<Lotto> getLottos() {
         return lottos;
     }
 
-    private Lotto issueTicket() {
-        List<Integer> number = new ArrayList<>();
+    private Lotto issue() {
+        List<Integer> numbers = new ArrayList<>();
         for (int i = 1; i <= 45; i++) {
-            number.add(i);
+            numbers.add(i);
         }
-        Collections.shuffle(number);
-        List<Integer> result = new ArrayList<>();
+        Collections.shuffle(numbers);
+        List<LottoNumber> lottoNumbers = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            result.add(number.get(i));
+            lottoNumbers.add(new LottoNumber(numbers.get(i)));
         }
-        return new Lotto(result);
+        return new Lotto(new LottoNumbers(lottoNumbers));
     }
 
-    private int validate(String rawPrice) {
-        int price = 0;
-        try {
-            price = Integer.parseInt(rawPrice);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("숫자를 입력해주세요.");
-        }
+    private void validate(int price) {
         if (price < 0) {
             throw new IllegalArgumentException("음수로는 구매할 수 없습니다.");
         }
@@ -52,6 +46,5 @@ public class Lottos {
         if (price % 1000 != 0) {
             throw new IllegalArgumentException("1000원 단위로 입력해주세요.");
         }
-        return price;
     }
 }
