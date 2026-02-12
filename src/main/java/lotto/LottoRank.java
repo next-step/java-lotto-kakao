@@ -34,10 +34,6 @@ public enum LottoRank {
         return matchCount;
     }
 
-    public boolean hasBonus() {
-        return hasBonus;
-    }
-
     public static LottoRank searchRank(int count, boolean bonus) {
         if (isSecondRankCondition(count, bonus)) {
             return SECOND;
