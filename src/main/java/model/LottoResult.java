@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 public class LottoResult {
 
     private final LottoNumbers mainNumbers;
@@ -18,20 +16,5 @@ public class LottoResult {
 
     public LottoNumber getBonusNumber() {
         return bonusNumber;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        LottoResult lottoResult = (LottoResult) o;
-        return Objects.equals(bonusNumber, lottoResult.bonusNumber) &&
-                Objects.equals(mainNumbers, lottoResult.mainNumbers);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(bonusNumber, mainNumbers);
     }
 }

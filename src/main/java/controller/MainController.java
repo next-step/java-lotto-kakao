@@ -1,56 +1,75 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
-import view.GameScoreView;
-import view.StatsBoardView;
-import view.TicketBoothView;
+import view.*;
 
 public class MainController {
 
-    private final TicketBoothView ticketBoothView = new TicketBoothView();
-    private final GameScoreView gameScoreView = new GameScoreView();
-    private final StatsBoardView statsBoardView = new StatsBoardView();
+    private final InputView inputView = new InputView();
+    private final OutputView outputView = new OutputView();
 
-    public void render() {
-        ticketBoothRender();
+    public void run() {
+        Lottos lottos = issueLottos();
+        LottoNumbers mainNumbers = inputMainNumbers();
+        LottoNumber bonusNumber = inputBonusNumber();
+        LottoResult lottoResult = new LottoResult(mainNumbers, bonusNumber);
+        LottoStatistics lottoStatistics = new LottoStatistics(lottos.getLottos(), lottoResult);
+        printLottoStatistics(lottoStatistics);
     }
 
-    private void ticketBoothRender() {
+    private Lottos issueLottos() {
+        Lottos lottos = null;
         try {
-            ticketBoothView.showInputPriceMessage();
-            int price = ticketBoothView.inputTicketPrice();
-            Lottos ticketBooth = new Lottos(price);
-            List<Lotto> lottos = ticketBooth.getLottos();
-            ticketBoothView.showTicketInfo(lottos);
-            gameScoreRender(lottos);
+            outputView.printInputPriceMessage();
+            int price = inputView.getNumber();
+            lottos = new Lottos(price);
+            outputView.printLottos(lottos);
         } catch (IllegalArgumentException e) {
-            ticketBoothView.showErrorMessage(e);
-            ticketBoothRender();
+            outputView.printErrorMessage(e);
+            issueLottos();
         }
+        return lottos;
     }
 
-    private void gameScoreRender(List<Lotto> lottos) {
+    private LottoNumbers inputMainNumbers() {
+        LottoNumbers mainNumbers = null;
         try {
-            gameScoreView.showInputWinNumberMessage();
-            LottoNumbers mainNumbers = gameScoreView.inputWinNumber();
-            gameScoreView.showInputBonusBall();
-            LottoNumber bonusNumber = gameScoreView.inputBonusBall();
-            statBoardRender(new LottoResult(mainNumbers, bonusNumber), lottos);
+            outputView.printInputMainNumbersMessage();
+            List<Integer> numbers = inputView.getMainNumbers();
+            List<LottoNumber> lottoNumbers = new ArrayList<>();
+            for (Integer number : numbers) {
+                lottoNumbers.add(new LottoNumber(number));
+            }
+            mainNumbers = new LottoNumbers(lottoNumbers);
         } catch (IllegalArgumentException e) {
-            gameScoreView.showErrorMessage(e);
-            gameScoreRender(lottos);
+            outputView.printErrorMessage(e);
+            inputMainNumbers();
         }
+        return mainNumbers;
     }
 
-    private void statBoardRender(LottoResult score, List<Lotto> lottos) {
-        LottoStatistics lottoStatistics = new LottoStatistics(lottos, score);
-        statsBoardView.showStatResult();
+    private LottoNumber inputBonusNumber() {
+        LottoNumber bonusNumber = null;
+        try {
+            outputView.printInputBonusBall();
+            int number = inputView.getNumber();
+            bonusNumber = new LottoNumber(number);
+        } catch (IllegalArgumentException e) {
+            outputView.printErrorMessage(e);
+            inputBonusNumber();
+        }
+        return bonusNumber;
+    }
+
+    private void printLottoStatistics(LottoStatistics lottoStatistics) {
+        outputView.printLottoStatisticsTitle();
         List<Rank> ranks = List.of(Rank.FIFTH, Rank.FOURTH, Rank.THIRD, Rank.SECOND, Rank.FIRST);
         for (Rank rank : ranks) {
-            statsBoardView.showWinCountMessage(rank, lottoStatistics.getLevelCount(rank));
+            outputView.printLottoStatisticsDetail(rank, lottoStatistics.getLevelCount(rank));
         }
-        statsBoardView.showProfitMessage(lottoStatistics.getProfitRates());
+        outputView.printLottoProfitRates(lottoStatistics.getProfitRates());
     }
 }
