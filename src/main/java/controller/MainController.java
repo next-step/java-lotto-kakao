@@ -74,10 +74,9 @@ public class MainController {
 
     private void printLottoStatistics(LottoStatistics lottoStatistics) {
         outputView.printLottoStatisticsTitle();
-        List<Rank> ranks = List.of(Rank.FIFTH, Rank.FOURTH, Rank.THIRD, Rank.SECOND, Rank.FIRST);
-        for (Rank rank : ranks) {
-            outputView.printLottoStatisticsDetail(rank, lottoStatistics.getLevelCount(rank));
+        for (RankView rankView : RankView.values()) {
+            outputView.printLottoStatisticsDetail(rankView, lottoStatistics);
         }
-        outputView.printLottoProfitRates(lottoStatistics.getProfitRates());
+        outputView.printLottoProfitRates(lottoStatistics);
     }
 }

@@ -1,8 +1,6 @@
 package view;
 
-import model.Lotto;
-import model.Lottos;
-import model.Rank;
+import model.*;
 
 public class OutputView {
 
@@ -30,12 +28,15 @@ public class OutputView {
         System.out.println("---------");
     }
 
-    public void printLottoStatisticsDetail(Rank rank, int count) {
-        System.out.printf("%s (%d원) - %d개\n", rank.getDescription(), rank.getPrice(), count);
+    public void printLottoStatisticsDetail(RankView rankView, LottoStatistics lottoStatistics) {
+        System.out.printf("%s (%d원) - %d개\n",
+                rankView.getDescription(),
+                rankView.getRank().getPrice(),
+                lottoStatistics.getLevelCount(rankView.getRank()));
     }
 
-    public void printLottoProfitRates(double profitRates) {
-        System.out.printf("총 수익률은 %.2f입니다.\n", profitRates);
+    public void printLottoProfitRates(LottoStatistics lottoStatistics) {
+        System.out.printf("총 수익률은 %.2f입니다.\n", lottoStatistics.getProfitRates());
     }
 
     public void printErrorMessage(IllegalArgumentException e) {
