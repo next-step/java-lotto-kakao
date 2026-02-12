@@ -1,6 +1,6 @@
 package view;
 
-import model.WinLevel;
+import model.Rank;
 
 public class StatsBoardView {
 
@@ -9,8 +9,8 @@ public class StatsBoardView {
         System.out.println("---------");
     }
 
-    public void showWinCountMessage(WinLevel winLevel, int count) {
-        System.out.printf("%s (%d원) - %d개\n", winLevel.getDescription(), winLevel.getPrice(), count);
+    public void showWinCountMessage(Rank rank, int count) {
+        System.out.printf("%s (%d원) - %d개\n", rank.getDescription(), rank.getPrice(), count);
     }
 
     public void showProfitMessage(double profitRatio) {

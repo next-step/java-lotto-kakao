@@ -18,13 +18,13 @@ public class Lotto {
         return numberMask;
     }
 
-    public WinLevel getWinLevel(GameScore gameScore) {
-        int winMatchcount = 0;
+    public Rank getRank(GameScore gameScore) {
+        int matchCount = 0;
         for (var winNumber : gameScore.getWinNumbers()) {
-            winMatchcount += (numberMask & (1L << winNumber)) == 0 ? 0 : 1;
+            matchCount += (numberMask & (1L << winNumber)) == 0 ? 0 : 1;
         }
-        boolean bonusMatched = (numberMask & (1L << gameScore.getBonusNumber())) > 0;
-        return WinLevel.make(winMatchcount, bonusMatched);
+        boolean bonus = (numberMask & (1L << gameScore.getBonusNumber())) > 0;
+        return Rank.make(matchCount, bonus);
     }
 
     @Override

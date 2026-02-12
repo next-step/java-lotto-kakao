@@ -48,17 +48,17 @@ public class GameResultTest {
 
     @Test
     void ticketLevel() {
-        WinLevel[] winLevels = {
-                WinLevel.FIRST,
-                WinLevel.SECOND,
-                WinLevel.THIRD,
-                WinLevel.FOURTH,
-                WinLevel.FIFTH,
-                WinLevel.LOSER,
+        Rank[] ranks = {
+                Rank.FIRST,
+                Rank.SECOND,
+                Rank.THIRD,
+                Rank.FOURTH,
+                Rank.FIFTH,
+                Rank.LOSER,
         };
 
         for (int i = 0; i < 6; i++) {
-            assertThat(lottos.get(i).getWinLevel(gameScore)).isEqualTo(winLevels[i]);
+            assertThat(lottos.get(i).getRank(gameScore)).isEqualTo(ranks[i]);
         }
     }
 

@@ -6,7 +6,7 @@ import model.GameScore;
 import model.StatsBoard;
 import model.Lotto;
 import model.Lottos;
-import model.WinLevel;
+import model.Rank;
 import view.GameScoreView;
 import view.StatsBoardView;
 import view.TicketBoothView;
@@ -55,9 +55,9 @@ public class MainController {
     private void statBoardRender(GameScore score, List<Lotto> lottos) {
         StatsBoard statsBoard = new StatsBoard(score, lottos);
         statsBoardView.showStatResult();
-        List<WinLevel> winLevels = List.of(WinLevel.FIFTH, WinLevel.FOURTH, WinLevel.THIRD, WinLevel.SECOND, WinLevel.FIRST);
-        for (WinLevel winLevel : winLevels) {
-            statsBoardView.showWinCountMessage(winLevel, statsBoard.getLevelCount(winLevel));
+        List<Rank> ranks = List.of(Rank.FIFTH, Rank.FOURTH, Rank.THIRD, Rank.SECOND, Rank.FIRST);
+        for (Rank rank : ranks) {
+            statsBoardView.showWinCountMessage(rank, statsBoard.getLevelCount(rank));
         }
         statsBoardView.showProfitMessage(statsBoard.getProfitRatio());
     }
