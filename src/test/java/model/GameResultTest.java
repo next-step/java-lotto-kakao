@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 public class GameResultTest {
 
-    GameScore gameScore = new GameScore(7, Arrays.asList(1, 2, 3, 4, 5, 6));
     List<Lotto> lottos;
+    LottoResult lottoResult;
 
     @BeforeEach
     void beforeTest() {
@@ -43,7 +43,13 @@ public class GameResultTest {
         Lotto lotto6 = new Lotto(new LottoNumbers(
                 Arrays.asList(number1, number2, number7, number8, number9, number10)
         ));
+
         lottos = Arrays.asList(lotto1, lotto2, lotto3, lotto4, lotto5, lotto6);
+
+        lottoResult = new LottoResult(
+                new LottoNumbers(Arrays.asList(number1, number2, number3, number4, number5, number6)),
+                new LottoNumber(7)
+        );
     }
 
     @Test
@@ -58,13 +64,13 @@ public class GameResultTest {
         };
 
         for (int i = 0; i < 6; i++) {
-            assertThat(lottos.get(i).getRank(gameScore)).isEqualTo(ranks[i]);
+            assertThat(lottos.get(i).getRank(lottoResult)).isEqualTo(ranks[i]);
         }
     }
 
     @Test
     void profitRatioMaker() {
-        StatsBoard statsBoard = new StatsBoard(gameScore, lottos);
+        StatsBoard statsBoard = new StatsBoard(lottoResult, lottos);
         double profitRatio = statsBoard.getProfitRatio();
         assertThat(profitRatio).isEqualTo(338592.5);
     }

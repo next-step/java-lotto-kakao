@@ -1,5 +1,8 @@
 package view;
 
+import model.LottoNumber;
+import model.LottoNumbers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,39 +15,32 @@ public class GameScoreView {
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
     }
 
-    public List<Integer> inputWinNumber(int ballCount, int minBallNumber, int maxBallNumber) {
-        String rawNumbers = SCANNER.nextLine();
-        if (!rawNumbers.matches("^[0-9][0-9, ]*$")) {
-            throw new IllegalArgumentException("숫자와 ','만 입력 가능합니다.");
-        }
-        List<Integer> result = new ArrayList<>();
-        for (String rawNumber : rawNumbers.split(",")) {
-            int number = Integer.parseInt(rawNumber.trim());
-            if (number < minBallNumber || number > maxBallNumber) {
-                throw new IllegalArgumentException("1부터 45까지의 숫자들만 입력하세요.");
+    public LottoNumbers inputWinNumber() {
+        List<LottoNumber> lottoNumbers = new ArrayList<>();
+        try {
+            String[] input = SCANNER.nextLine().split(",");
+            for (String string : input) {
+                int number = Integer.parseInt(string.trim());
+                lottoNumbers.add(new LottoNumber(number));
             }
-            result.add(number);
+            return new LottoNumbers(lottoNumbers);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("숫자와 ','만 입력해주세요.");
         }
-        if (result.size() != ballCount) {
-            throw new IllegalArgumentException("숫자 6개를 입력해주세요.");
-        }
-        return result;
     }
 
     public void showInputBonusBall() {
         System.out.println("보너스 볼을 입력해 주세요.");
     }
 
-    public int inputBonusBall(Integer minBallNumber, Integer maxBallNumber) {
-        String rawNumber = SCANNER.nextLine();
-        if (!rawNumber.matches("[0-9]*$")) {
+    public LottoNumber inputBonusBall() {
+        int number;
+        try {
+            number = Integer.parseInt(SCANNER.nextLine());
+        } catch (Exception e) {
             throw new IllegalArgumentException("숫자만 입력 가능합니다.");
         }
-        int result = Integer.parseInt(rawNumber);
-        if (result < minBallNumber || result > maxBallNumber) {
-            throw new IllegalArgumentException("1부터 45까지의 숫자를 입력하세요.");
-        }
-        return result;
+        return new LottoNumber(number);
     }
 
     public void showErrorMessage(IllegalArgumentException e) {

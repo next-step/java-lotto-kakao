@@ -10,7 +10,7 @@ public class StatsBoard {
     private final Map<Rank, Integer> matchedWinLevelCount;
     private final int ticketCount;
 
-    public StatsBoard(GameScore gameScore, List<Lotto> lottos) {
+    public StatsBoard(LottoResult lottoResult, List<Lotto> lottos) {
         ticketCount = lottos.size();
         matchedWinLevelCount = new HashMap<>();
 
@@ -19,7 +19,7 @@ public class StatsBoard {
         }
 
         for (Lotto lotto : lottos) {
-            Rank level = lotto.getRank(gameScore);
+            Rank level = lotto.getRank(lottoResult);
             matchedWinLevelCount.put(level, matchedWinLevelCount.getOrDefault(level, 0) + 1);
         }
     }

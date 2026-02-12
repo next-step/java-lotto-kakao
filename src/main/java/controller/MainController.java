@@ -2,11 +2,7 @@ package controller;
 
 import java.util.List;
 
-import model.GameScore;
-import model.StatsBoard;
-import model.Lotto;
-import model.Lottos;
-import model.Rank;
+import model.*;
 import view.GameScoreView;
 import view.StatsBoardView;
 import view.TicketBoothView;
@@ -42,17 +38,17 @@ public class MainController {
     private void gameScoreRender(List<Lotto> lottos) {
         try {
             gameScoreView.showInputWinNumberMessage();
-            List<Integer> winNumbers = gameScoreView.inputWinNumber(BALL_COUNT, MIN_BALL_NUMBER, MAX_BALL_NUMBER);
+            LottoNumbers mainNumbers = gameScoreView.inputWinNumber();
             gameScoreView.showInputBonusBall();
-            int bonusBall = gameScoreView.inputBonusBall(MIN_BALL_NUMBER, MAX_BALL_NUMBER);
-            statBoardRender(new GameScore(bonusBall, winNumbers), lottos);
+            LottoNumber bonusNumber = gameScoreView.inputBonusBall();
+            statBoardRender(new LottoResult(mainNumbers, bonusNumber), lottos);
         } catch (IllegalArgumentException e) {
             gameScoreView.showErrorMessage(e);
             gameScoreRender(lottos);
         }
     }
 
-    private void statBoardRender(GameScore score, List<Lotto> lottos) {
+    private void statBoardRender(LottoResult score, List<Lotto> lottos) {
         StatsBoard statsBoard = new StatsBoard(score, lottos);
         statsBoardView.showStatResult();
         List<Rank> ranks = List.of(Rank.FIFTH, Rank.FOURTH, Rank.THIRD, Rank.SECOND, Rank.FIRST);
