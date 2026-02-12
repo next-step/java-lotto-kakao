@@ -15,11 +15,9 @@ public class LottoStatistics {
     public LottoStatistics(List<Lotto> lottos, LottoResult lottoResult) {
         lottoCount = lottos.size();
         rankCountMap = new HashMap<>();
-
         for (Rank rank : Rank.values()) {
             rankCountMap.put(rank, 0);
         }
-
         for (Lotto lotto : lottos) {
             Rank rank = lotto.getRank(lottoResult);
             rankCountMap.put(rank, rankCountMap.getOrDefault(rank, 0) + 1);

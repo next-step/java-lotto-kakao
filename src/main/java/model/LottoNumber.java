@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 import static model.Constants.MIN_NUMBER;
 import static model.Constants.MAX_NUMBER;
 

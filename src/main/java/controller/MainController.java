@@ -1,10 +1,16 @@
 package controller;
 
+import model.LottoNumber;
+import model.LottoNumbers;
+import model.LottoResult;
+import model.LottoStatistics;
+import model.Lottos;
+import model.RankView;
+import view.InputView;
+import view.OutputView;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import model.*;
-import view.*;
 
 public class MainController {
 
