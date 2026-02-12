@@ -9,10 +9,6 @@ import view.TicketBoothView;
 
 public class MainController {
 
-    private static final int BALL_COUNT = 6;
-    private static final int MIN_BALL_NUMBER = 1;
-    private static final int MAX_BALL_NUMBER = 45;
-
     private final TicketBoothView ticketBoothView = new TicketBoothView();
     private final GameScoreView gameScoreView = new GameScoreView();
     private final StatsBoardView statsBoardView = new StatsBoardView();
@@ -49,12 +45,12 @@ public class MainController {
     }
 
     private void statBoardRender(LottoResult score, List<Lotto> lottos) {
-        StatsBoard statsBoard = new StatsBoard(score, lottos);
+        LottoStatistics lottoStatistics = new LottoStatistics(lottos, score);
         statsBoardView.showStatResult();
         List<Rank> ranks = List.of(Rank.FIFTH, Rank.FOURTH, Rank.THIRD, Rank.SECOND, Rank.FIRST);
         for (Rank rank : ranks) {
-            statsBoardView.showWinCountMessage(rank, statsBoard.getLevelCount(rank));
+            statsBoardView.showWinCountMessage(rank, lottoStatistics.getLevelCount(rank));
         }
-        statsBoardView.showProfitMessage(statsBoard.getProfitRatio());
+        statsBoardView.showProfitMessage(lottoStatistics.getProfitRates());
     }
 }

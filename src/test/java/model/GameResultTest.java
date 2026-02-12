@@ -70,8 +70,8 @@ public class GameResultTest {
 
     @Test
     void profitRatioMaker() {
-        StatsBoard statsBoard = new StatsBoard(lottoResult, lottos);
-        double profitRatio = statsBoard.getProfitRatio();
+        LottoStatistics lottoStatistics = new LottoStatistics(lottos, lottoResult);
+        double profitRatio = lottoStatistics.getProfitRates();
         assertThat(profitRatio).isEqualTo(338592.5);
     }
 }
