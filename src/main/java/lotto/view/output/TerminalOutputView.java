@@ -26,16 +26,41 @@ public class TerminalOutputView implements OutputView {
             final Map<LottoStatus, Integer> statuses,
             double profitRate
     ) {
-        printMessage("당첨 통계");
-        printMessage("---------");
+        List<LottoStatus> order = List.of(
+                THREE_CORRECT,
+                FOUR_CORRECT,
+                FIVE_CORRECT,
+                FIVE_CORRECT_BONUS,
+                SIX_CORRECT
+        );
 
-        printStatusLine(THREE_CORRECT, "3개 일치", statuses);
-        printStatusLine(FOUR_CORRECT,  "4개 일치", statuses);
-        printStatusLine(FIVE_CORRECT,  "5개 일치", statuses);
-        printStatusLine(FIVE_CORRECT_BONUS, "5개 일치, 보너스 볼 일치", statuses);
-        printStatusLine(SIX_CORRECT,   "6개 일치", statuses);
+        StringBuilder sb = new StringBuilder();
+        sb.append("당첨 통계").append("\n");
+        sb.append("---------").append("\n");
 
-        printMessage("총 수익률은 " + String.format("%.2f입니다.", profitRate));
+        for (LottoStatus status : order) {
+            int count = statuses.getOrDefault(status, 0);
+            sb.append(labelOf(status))
+                    .append(" (")
+                    .append(status.getPrice())
+                    .append("원) - ")
+                    .append(count)
+                    .append("개")
+                    .append("\n");
+        }
+
+        sb.append("총 수익률은 ").append(String.format("%.2f입니다.", profitRate)).append("\n");
+        System.out.print(sb);
+    }
+
+
+    private String labelOf(LottoStatus status) {
+        if (status == THREE_CORRECT) return "3개 일치";
+        if (status == FOUR_CORRECT) return "4개 일치";
+        if (status == FIVE_CORRECT) return "5개 일치";
+        if (status == FIVE_CORRECT_BONUS) return "5개 일치, 보너스 볼 일치";
+        if (status == SIX_CORRECT) return "6개 일치";
+        return "";
     }
 
     private void printStatusLine(LottoStatus status, String label, Map<LottoStatus, Integer> statuses) {
