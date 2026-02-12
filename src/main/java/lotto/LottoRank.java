@@ -6,23 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum LottoRank {
-    FIRST(6, false, Money.won(2000000000)),
-    SECOND(5, true, Money.won(30000000)),
-    THIRD(5, false, Money.won(1500000)),
-    FOURTH(4, false, Money.won(50000)),
-    FIFTH(3, false, Money.won(5000)),
-    LOSE(0, false, Money.won(0));
+    FIRST(6, Money.won(2000000000)),
+    SECOND(5, Money.won(30000000)),
+    THIRD(5, Money.won(1500000)),
+    FOURTH(4, Money.won(50000)),
+    FIFTH(3, Money.won(5000)),
+    LOSE(0, Money.won(0));
 
     private final Money prize;
     private final int matchCount;
-    private final boolean hasBonus;
     private static final List<LottoRank> RANK_BY_MATCH_COUNT = new ArrayList<>(
             List.of(LOSE, LOSE, LOSE, FIFTH, FOURTH, THIRD, FIRST)
     );
 
-    LottoRank(int matchCount, boolean hasBonus, Money prize) {
+    LottoRank(int matchCount, Money prize) {
         this.matchCount = matchCount;
-        this.hasBonus = hasBonus;
         this.prize = prize;
     }
 
