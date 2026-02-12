@@ -23,9 +23,11 @@ public class Lotto {
 		List<Integer> numbers = new ArrayList<>(ALL_NUMBERS);
 		Collections.shuffle(numbers);
 
+		List<Integer> picked = numbers.subList(0, LOTTO_SIZE);
+
 		Set<Ball> temp = new HashSet<>();
-		for (int i = 0; i < LOTTO_SIZE; i++) {
-			temp.add(new Ball(numbers.get(i)));
+		for (int n : picked) {
+			temp.add(new Ball(n));
 		}
 		this.balls = Collections.unmodifiableSet(temp);
 	}
@@ -34,7 +36,7 @@ public class Lotto {
 		if (new HashSet<>(balls).size() != LOTTO_SIZE) {
 			throw new IllegalArgumentException("로또 번호는 중복 없이 6개여야 합니다.");
 		}
-		this.balls = Collections.unmodifiableSet(new HashSet<>(balls));
+		this.balls = Set.copyOf(balls);
 	}
 
 	public LottoStatus check(AnswerLotto answer) {
@@ -56,6 +58,9 @@ public class Lotto {
 
 	@Override
 	public String toString() {
-		return balls.toString();
+		return balls.stream()
+			.sorted()
+			.toList()
+			.toString();
 	}
 }
