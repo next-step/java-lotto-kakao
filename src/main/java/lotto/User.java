@@ -8,11 +8,11 @@ import lotto.enums.LottoStatus;
 
 public class User {
 	private static final long TICKET_COST = 1000;
+
 	private final Money money;
+	private final Map<LottoStatus, Integer> result = new HashMap<>();
 	private LottoList lottos;
 	private long award;
-	;
-	private Map<LottoStatus, Integer> result = new HashMap<>();
 
 	public User(String input) {
 		long inputPrice = Long.parseLong(input);
@@ -20,17 +20,21 @@ public class User {
 			throw new IllegalArgumentException("잘못된 구입 금액입니다.");
 		}
 		this.money = new Money(inputPrice);
+
 		lottos = new LottoList();
 		for (int i = 0; i < money.getPrice() / TICKET_COST; i++) {
 			lottos.addLotto(new Lotto());
 		}
 	}
 
-	public void calculateAward(Lotto answerLotto) {
+	public void calculateAward(AnswerLotto answerLotto) {
+		award = 0;
+		result.clear();
+
 		for (Lotto lotto : lottos.getLottos()) {
-			lotto.check(answerLotto);
-			award += lotto.getStatus().getMoney();
-			result.put(lotto.getStatus(), result.getOrDefault(lotto.getStatus(), 0) + 1);
+			LottoStatus status = lotto.check(answerLotto);
+			award += status.getMoney();
+			result.put(status, result.getOrDefault(status, 0) + 1);
 		}
 	}
 

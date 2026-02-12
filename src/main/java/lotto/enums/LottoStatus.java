@@ -1,16 +1,21 @@
 package lotto.enums;
 
+import java.util.Map;
+
 public enum LottoStatus {
-	ZERO(0, 0),
-	ONE(1, 0),
-	TWO(2, 0),
+	MISS(0, 0),
 	THREE(3, 5_000),
 	FOUR(4, 50_000),
 	FIVE(5, 1_500_000),
-	SIX(6, 2_000_000_000),
-	SIX_BONUS(6, 30_000_000),
-	ANSWER(6, 0);
+	SIX_BONUS(5, 30_000_000),
+	SIX(6, 2_000_000_000);
 
+	private static final Map<Integer, LottoStatus> BY_COUNT = Map.of(
+		3, THREE,
+		4, FOUR,
+		5, FIVE,
+		6, SIX
+	);
 	private final int count;
 	private final long money;
 
@@ -19,11 +24,10 @@ public enum LottoStatus {
 		this.money = money;
 	}
 
-	public static LottoStatus update(LottoStatus status) {
-		int nextIndex = status.ordinal() + 1;
-		LottoStatus[] values = LottoStatus.values();
-
-		return values[nextIndex];
+	public static LottoStatus of(int count, boolean hasBonus) {
+		if (count == 5 && hasBonus)
+			return SIX_BONUS;
+		return BY_COUNT.getOrDefault(count, MISS);
 	}
 
 	public int getCount() {

@@ -15,17 +15,20 @@ public class LottoController {
 		User user = getUser();
 		view.printPurchasedLotto(user.getLottos());
 
-		Lotto answer = getAnswerLotto();
+		AnswerLotto answer = getAnswerLotto();
 		user.calculateAward(answer);
 		view.printResult(user);
 	}
 
-	private Lotto getAnswerLotto() {
+	private AnswerLotto getAnswerLotto() {
 		try {
 			String previousLottoLine = view.readPreviousLotto();
 			List<Ball> balls = parser.parse(previousLottoLine);
+
 			String previousBonus = view.readPreviousBonusBall();
-			return new Lotto(balls, new Ball(previousBonus));
+			Ball bonus = new Ball(previousBonus);
+
+			return new AnswerLotto(balls, bonus);
 		} catch (IllegalArgumentException e) {
 			view.print(e.getMessage());
 			return getAnswerLotto();
