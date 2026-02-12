@@ -32,7 +32,7 @@ public class OutputView {
         System.out.printf("%s (%d원) - %d개\n",
                 rankView.getDescription(),
                 rankView.getRank().getPrice(),
-                lottoStatistics.getLevelCount(rankView.getRank()));
+                lottoStatistics.getRankCount(rankView.getRank()));
     }
 
     public void printLottoProfitRates(LottoStatistics lottoStatistics) {

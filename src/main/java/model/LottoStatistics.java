@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static model.Constants.COST;
+
 public class LottoStatistics {
 
-    private final Map<Rank, Integer> rankCountMap;
     private final int lottoCount;
+    private final Map<Rank, Integer> rankCountMap;
 
     public LottoStatistics(List<Lotto> lottos, LottoResult lottoResult) {
         lottoCount = lottos.size();
@@ -19,21 +21,21 @@ public class LottoStatistics {
         }
 
         for (Lotto lotto : lottos) {
-            Rank level = lotto.getRank(lottoResult);
-            rankCountMap.put(level, rankCountMap.getOrDefault(level, 0) + 1);
+            Rank rank = lotto.getRank(lottoResult);
+            rankCountMap.put(rank, rankCountMap.getOrDefault(rank, 0) + 1);
         }
     }
 
-    public int getLevelCount(Rank rank) {
+    public int getRankCount(Rank rank) {
         return rankCountMap.get(rank);
     }
 
     public double getProfitRates() {
-        long ticketRevenue = 0L;
-        long cost = 1000L * lottoCount;
+        long profit = 0L;
+        long cost = (long) COST * lottoCount;
         for (Entry<Rank, Integer> entry : rankCountMap.entrySet()) {
-            ticketRevenue += entry.getKey().getPrice() * entry.getValue();
+            profit += entry.getKey().getPrice() * entry.getValue();
         }
-        return (double) ticketRevenue / cost;
+        return (double) profit / cost;
     }
 }
