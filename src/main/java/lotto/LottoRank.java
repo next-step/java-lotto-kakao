@@ -51,4 +51,8 @@ public enum LottoRank {
     private static boolean isOutOfRange(int count) {
         return count < 0 || count >= RANK_BY_MATCH_COUNT.size();
     }
+
+    public boolean isSecond() {
+        return this == SECOND;
+    }
 }
