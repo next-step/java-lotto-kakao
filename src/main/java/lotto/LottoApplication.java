@@ -4,6 +4,7 @@ import lotto.domain.Lotto;
 import lotto.domain.LottoPickStrategy;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
+import lotto.domain.Lottos;
 import lotto.domain.WinningLotto;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
@@ -75,7 +76,7 @@ public class LottoApplication {
         List<Lotto> lottos = buyLottos(lottoCount);
         outputView.printLottos(lottos);
 
-        return new LottoPlayer(price, lottoCount, lottos);
+        return new LottoPlayer(price, new Lottos(lottos));
     }
 
     private List<Lotto> buyLottos(int count) {

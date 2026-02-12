@@ -1,21 +1,27 @@
 package lotto;
 
 import lotto.domain.Lotto;
-import lotto.domain.LottoPlayer;
 import lotto.domain.LottoPickStrategy;
+import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
+import lotto.domain.Lottos;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
-import static lotto.domain.LottoStatus.*;
+import static lotto.domain.LottoStatus.FIVE_CORRECT;
 import static lotto.domain.LottoStatus.FIVE_CORRECT_BONUS;
+import static lotto.domain.LottoStatus.FOUR_CORRECT;
 import static lotto.domain.LottoStatus.SIX_CORRECT;
-import static org.assertj.core.api.Assertions.*;
+import static lotto.domain.LottoStatus.THREE_CORRECT;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LottoApplicationTest {
 
@@ -29,7 +35,7 @@ public class LottoApplicationTest {
 
         Lotto winningLottoNumber = new Lotto(1, 2, 3, 4, 5, 6);
 
-        LottoPlayer lottoPlayer = new LottoPlayer(3000, 3, lottos);
+        LottoPlayer lottoPlayer = new LottoPlayer(3000, new Lottos(lottos));
         LottoPickStrategy numberGenerator = new FixedNumberGenerator();
         MockInputView inputView = new MockInputView(List.of(
                 "3000",

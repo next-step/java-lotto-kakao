@@ -1,7 +1,6 @@
 package lotto.domain;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 public class WinningLotto {
@@ -33,9 +32,9 @@ public class WinningLotto {
         return LottoStatus.judgeGameStatus(matchCount, hasBonus);
     }
 
-    public Map<LottoStatus, Integer> countByStatus(List<Lotto> playerLottos) {
+    public Map<LottoStatus, Integer> countByStatus(Lottos playerLottos) {
         Map<LottoStatus, Integer> counts = new EnumMap<>(LottoStatus.class);
-        for (Lotto playerLotto: playerLottos) {
+        for (Lotto playerLotto: playerLottos.asList()) {
             LottoStatus status = judge(playerLotto);
             counts.put(status, counts.getOrDefault(status, 0) + 1);
         }
