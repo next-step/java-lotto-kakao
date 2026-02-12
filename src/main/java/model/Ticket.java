@@ -33,18 +33,4 @@ public class Ticket {
 	public List<Integer> getNumbers() {
 		return numbers;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("[");
-		for (Integer number : numbers) {
-			stringBuilder.append(number).append(", ");
-		}
-		stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-		stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-		stringBuilder.append("]");
-		return stringBuilder.toString();
-	}
-
 }

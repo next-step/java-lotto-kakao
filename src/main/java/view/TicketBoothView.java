@@ -14,7 +14,8 @@ public class TicketBoothView {
 	public void showTicketInfo(List<Ticket> tickets) {
 		System.out.println(tickets.size() + "개를 구매했습니다.");
 		for(Ticket ticket: tickets) {
-			System.out.println(ticket);
+			TicketView ticketView = new TicketView(ticket);
+			ticketView.showTicketNumberInfo();
 		}
 	}
 
