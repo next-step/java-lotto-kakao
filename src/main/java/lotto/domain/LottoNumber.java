@@ -16,6 +16,14 @@ public class LottoNumber implements Comparable<LottoNumber> {
         this.number = number;
     }
 
+    public static int getLottoMinNum() {
+        return LOTTO_MIN_NUM;
+    }
+
+    public static int getLottoMaxNum() {
+        return LOTTO_MAX_NUM;
+    }
+
     @Override
     public int compareTo(LottoNumber o) {
         return this.number - o.number;

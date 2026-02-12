@@ -28,6 +28,10 @@ public class LottoBalls {
         }
     }
 
+    public static int getLottoLength() {
+        return LOTTO_LENGTH;
+    }
+
     public Set<LottoNumber> getLottoBalls() {
         return lotto;
     }
