@@ -1,9 +1,9 @@
 package model;
 
-public class LottoNumber {
+import static model.Constants.MIN_NUMBER;
+import static model.Constants.MAX_NUMBER;
 
-    private static final int MIN = 1;
-    private static final int MAX = 45;
+public class LottoNumber {
 
     private final int lottoNumber;
 
@@ -17,8 +17,8 @@ public class LottoNumber {
     }
 
     private void validate(int lottoNumber) {
-        if (lottoNumber < MIN || lottoNumber > MAX) {
-            throw new IllegalArgumentException(MIN + "에서 " + MAX + "사이의 숫자를 입력해 주세요.");
+        if (lottoNumber < MIN_NUMBER || lottoNumber > MAX_NUMBER) {
+            throw new IllegalArgumentException(MIN_NUMBER + "에서 " + MAX_NUMBER + "사이의 숫자를 입력해 주세요.");
         }
     }
 }

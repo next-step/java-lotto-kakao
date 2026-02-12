@@ -2,9 +2,9 @@ package model;
 
 import java.util.List;
 
-public class LottoNumbers {
+import static model.Constants.SIZE;
 
-    private static final int SIZE = 6;
+public class LottoNumbers {
 
     private final List<LottoNumber> lottoNumbers;
 
