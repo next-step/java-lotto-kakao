@@ -14,7 +14,7 @@ public class WinningLotto {
     public WinningLotto(Lotto lotto, int bonusNumber) {
         validate(lotto, bonusNumber);
         this.lotto = lotto;
-        this.bonusNumber = new LottoNumber(bonusNumber);
+        this.bonusNumber = LottoNumber.of(bonusNumber);
     }
 
     private void validate(Lotto lotto, int bonusNumber) {
