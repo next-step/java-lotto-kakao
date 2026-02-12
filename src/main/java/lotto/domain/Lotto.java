@@ -1,14 +1,15 @@
 package lotto.domain;
 
-import lotto.util.LottoAutoCreator;
-import lotto.util.LottoNumberCreator;
+import lotto.util.NumberCreator;
+
+import java.util.HashSet;
 
 public class Lotto {
     private static final int PRICE = 1000;
     private final LottoBalls lottoBalls;
 
-    public Lotto(LottoNumberCreator numberCreator) {
-        this.lottoBalls = numberCreator.lottoCreate();
+    public Lotto(NumberCreator numberCreator) {
+        this.lottoBalls = new LottoBalls(new HashSet<>(numberCreator.numberCreate()));
     }
 
     public Lotto(Lotto lotto) {

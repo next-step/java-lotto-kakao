@@ -16,11 +16,11 @@ public class LottoNumber implements Comparable<LottoNumber> {
         this.number = number;
     }
 
-    public static int getLottoMinNum() {
+    public static int getMinNum() {
         return LOTTO_MIN_NUM;
     }
 
-    public static int getLottoMaxNum() {
+    public static int getMaxNum() {
         return LOTTO_MAX_NUM;
     }
 

@@ -1,7 +1,7 @@
 package lotto.domain;
 
-import lotto.util.LottoAutoCreator;
-import lotto.util.LottoManualCreator;
+import lotto.util.NumberAutoCreator;
+import lotto.util.NumberManualCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ public class MyLotto {
 
     public MyLotto(int autoSize, int manualSize) {
         for (int i = 0; i < autoSize; i++) {
-            myLottoList.add(new Lotto(new LottoAutoCreator()));
+            myLottoList.add(new Lotto(new NumberAutoCreator()));
         }
         for (int i = 0; i < manualSize; i++) {
-            myLottoList.add(new Lotto(new LottoManualCreator()));
+            myLottoList.add(new Lotto(new NumberManualCreator()));
         }
     }
 
