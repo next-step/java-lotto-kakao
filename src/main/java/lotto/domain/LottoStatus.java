@@ -5,11 +5,11 @@ import java.util.Map;
 
 public enum LottoStatus {
 
-    SIX_CORRECT(2000000000L, 6, false, false),
-    FIVE_CORRECT_BONUS(30000000L, 5, true, true),
-    FIVE_CORRECT(1500000L, 5, false, true),
-    FOUR_CORRECT(50000L, 4, false, false),
-    THREE_CORRECT(5000L, 3, false, false),
+    SIX_CORRECT(2_000_000_000L, 6, false, false),
+    FIVE_CORRECT_BONUS(30_000_000L, 5, true, true),
+    FIVE_CORRECT(1_500_000L, 5, false, true),
+    FOUR_CORRECT(50_000L, 4, false, false),
+    THREE_CORRECT(5_000L, 3, false, false),
     FAIL(0L, -1, false, false)
     ;
 

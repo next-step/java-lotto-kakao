@@ -16,7 +16,6 @@ public class Lotto {
     private final List<LottoNumber> numbers;
     private final Set<Integer> numberSet;
 
-
     public static Lotto fromIntegers(List<Integer> values) {
         validate(values);
 
