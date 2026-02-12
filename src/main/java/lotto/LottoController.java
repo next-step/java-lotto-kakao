@@ -25,6 +25,9 @@ public class LottoController {
 
     private LottoBundle buyLottos(Money money) {
         int count = money.calculateLottoCount();
+        int manualCount = InputView.readManualCount();
+        PurchasedCount purchasedCount = new PurchasedCount(manualCount, count);
+
         OutputView.printPurchaseCount(count);
         LottoBundle bundle = lottoService.purchase(count); // 앞서 논의한 Service 활용
         OutputView.printLottoBundle(bundle);

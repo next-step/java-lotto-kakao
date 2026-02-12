@@ -16,6 +16,11 @@ public class InputView {
         return scanner.nextLine();
     }
 
+    public static int readManualCount() {
+        System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+        return parseNumber(scanner.nextLine());
+    }
+
     public static int readingBonusNumber(){
         System.out.println("보너스 볼을 입력해주세요.");
         return parseNumber(scanner.nextLine());
