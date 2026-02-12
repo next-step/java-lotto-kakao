@@ -28,7 +28,7 @@ public class Lotto {
         return result;
     }
 
-    static int numberCount() {
+    public static int numberCount() {
         return LENGTH;
     }
 

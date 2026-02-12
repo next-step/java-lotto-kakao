@@ -2,6 +2,9 @@ package lotto;
 
 import money.Money;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum LottoRank {
     FIRST(6, false, Money.won(2000000000)),
     SECOND(5, true, Money.won(30000000)),
@@ -13,6 +16,9 @@ public enum LottoRank {
     private final Money prize;
     private final int matchCount;
     private final boolean hasBonus;
+    private static final List<LottoRank> RANK_BY_MATCH_COUNT = new ArrayList<>(
+            List.of(LOSE, LOSE, LOSE, FIFTH, FOURTH, THIRD, FIRST)
+    );
 
     LottoRank(int matchCount, boolean hasBonus, Money prize) {
         this.matchCount = matchCount;
@@ -33,21 +39,20 @@ public enum LottoRank {
     }
 
     public static LottoRank searchRank(int count, boolean bonus) {
-        for (LottoRank rank : values()) {
-            if (rank.matches(count, bonus)) {
-                return rank;
-            }
+        if (isSecondRankCondition(count, bonus)) {
+            return SECOND;
         }
-        return LOSE;
+        if (isOutOfRange(count)) {
+            return LOSE;
+        }
+        return RANK_BY_MATCH_COUNT.get(count);
     }
 
-    private boolean matches(int count, boolean bonus) {
-        if (this == LOSE) {
-            return false;
-        }
-        if (this.matchCount != count) {
-            return false;
-        }
-        return this.matchCount != 5 || this.hasBonus == bonus;
+    private static boolean isSecondRankCondition(int count, boolean bonus) {
+        return count == 5 && bonus;
+    }
+
+    private static boolean isOutOfRange(int count) {
+        return count < 0 || count >= RANK_BY_MATCH_COUNT.size();
     }
 }
