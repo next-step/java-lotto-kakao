@@ -14,12 +14,7 @@ public class BallTest {
 	}
 
 	@Test
-	void 문자가_들어왔을_때() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new Ball("a"));
-	}
-
-	@Test
 	void 범위밖의_숫자가_들어왔을_때() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new Ball("46"));
+		assertThatIllegalArgumentException().isThrownBy(() -> new Ball(46));
 	}
 }

@@ -3,31 +3,17 @@ package lotto;
 import java.util.Objects;
 
 public class Ball implements Comparable<Ball> {
+	private static final int MIN_NUMBER = 1;
+	private static final int MAX_NUMBER = 45;
 	private final int value;
-
-	public Ball() {
-		this.value = 0;
-	}
 
 	public Ball(int value) {
 		validateRange(value);
 		this.value = value;
 	}
 
-	public Ball(String value) {
-		this(parseAndValidate(value));
-	}
-
-	private static int parseAndValidate(String value) {
-		try {
-			return Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("로또 번호는 숫자만 입력 가능합니다.");
-		}
-	}
-
 	private void validateRange(int value) {
-		if (value < 1 || value > 45) {
+		if (value < MIN_NUMBER || value > MAX_NUMBER) {
 			throw new IllegalArgumentException("1부터 45 사이의 숫자만 입력 가능합니다.");
 		}
 	}
@@ -51,7 +37,7 @@ public class Ball implements Comparable<Ball> {
 
 	@Override
 	public int compareTo(Ball o) {
-		return this.value - o.getValue();
+		return Integer.compare(this.value, o.getValue());
 	}
 
 	@Override

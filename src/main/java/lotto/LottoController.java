@@ -25,8 +25,7 @@ public class LottoController {
 			String previousLottoLine = view.readPreviousLotto();
 			List<Ball> balls = parser.parse(previousLottoLine);
 
-			String previousBonus = view.readPreviousBonusBall();
-			Ball bonus = new Ball(previousBonus);
+			Ball bonus = parser.parseBall(view.readPreviousBonusBall());
 
 			return new AnswerLotto(balls, bonus);
 		} catch (IllegalArgumentException e) {
