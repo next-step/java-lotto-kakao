@@ -58,14 +58,6 @@ public final class Money {
         return value / price;
     }
 
-    public boolean isMultipleOf(long price) {
-        return value % price == 0L;
-    }
-
-    public boolean isZero() {
-        return value == 0L;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
