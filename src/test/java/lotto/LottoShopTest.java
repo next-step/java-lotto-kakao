@@ -2,6 +2,7 @@ package lotto;
 
 import money.Money;
 import org.junit.jupiter.api.Test;
+import purchase.Purchase;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,8 +11,15 @@ class LottoShopTest {
     @Test
     void purchaseBundle() {
         long moneyAmount = 14000L;
-        LottoBundle lottoBundle = LottoShop.purchaseBundle(Money.won(moneyAmount));
-        assertThat(moneyAmount / LottoShop.PRICE).isEqualTo(lottoBundle.size());
+        long count = moneyAmount / LottoShop.PRICE;
+        Money total = Money.won(moneyAmount);
+        Money paid = Money.won(LottoShop.PRICE).times(count);
+        Money change = total.minus(paid);
+
+        Purchase<LottoBundle> lottoBundlePurchase = LottoShop.purchaseBundle(Money.won(moneyAmount));
+        assertThat(count).isEqualTo(lottoBundlePurchase.item().size());
+        assertThat(total).isEqualTo(lottoBundlePurchase.paid());
+        assertThat(change).isEqualTo(lottoBundlePurchase.change());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package lotto;
 
-import money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +46,7 @@ public class LottoBundleTest {
                 new Lotto(List.of(3, 8, 27, 30, 35, 44))
         );
 
-        LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win, Money.won(LottoShop.PRICE));
+        LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win);
 
         assertThat(lottoBundleResult.getRankCount(LottoRank.FIFTH)).isEqualTo(1);
         assertThat(lottoBundleResult.getRankCount(LottoRank.FOURTH)).isEqualTo(0);

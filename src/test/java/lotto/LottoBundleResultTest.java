@@ -12,7 +12,7 @@ public class LottoBundleResultTest {
     @Test
     @DisplayName("존재하지 않는 등수 조회 시 0을 반환한다.")
     void returnsZeroWhenRankAbsent() {
-        LottoBundleResult result = new LottoBundleResult(Map.of(), Money.won(0));
+        LottoBundleResult result = new LottoBundleResult(Map.of());
         assertThat(result.getRankCount(LottoRank.FIFTH)).isZero();
     }
 
@@ -22,7 +22,7 @@ public class LottoBundleResultTest {
         LottoBundleResult result = new LottoBundleResult(Map.of(
                 LottoRank.FIFTH, 1,
                 LottoRank.FOURTH, 2
-        ), Money.won(LottoShop.PRICE * 3));
+        ));
 
         assertThat(result.getRankCount(LottoRank.FIFTH)).isEqualTo(1);
         assertThat(result.getRankCount(LottoRank.FOURTH)).isEqualTo(2);
@@ -35,9 +35,9 @@ public class LottoBundleResultTest {
                 LottoRank.FIFTH, 1,
                 LottoRank.FOURTH, 2,
                 LottoRank.LOSE, 5
-        ), Money.won(LottoShop.PRICE * 8));
+        ));
 
-        double rate = result.calculateProfitRate();
+        double rate = result.calculateProfitRate(Money.won(LottoShop.PRICE * 8));
         assertThat(13.125).isEqualTo(rate);
     }
 }

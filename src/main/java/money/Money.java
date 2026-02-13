@@ -22,7 +22,7 @@ public final class Money {
         }
     }
 
-    public Money times(int multiplier) {
+    public Money times(long multiplier) {
         if (multiplier < 0) {
             throw new IllegalArgumentException("곱하는 값은 0 또는 양수여야 합니다.: " + multiplier);
         }
@@ -41,6 +41,13 @@ public final class Money {
             throw new IllegalArgumentException("Money는 null일 수 없습니다.");
         }
         return Money.won(Math.addExact(this.value, other.value));
+    }
+
+    public Money minus(Money other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Money는 null일 수 없습니다.");
+        }
+        return Money.won(Math.subtractExact(this.value, other.value));
     }
 
     public long calculatePurchasableCount(long price) {

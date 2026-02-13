@@ -1,7 +1,5 @@
 package lotto;
 
-import money.Money;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +32,8 @@ public class LottoBundle {
         }
     }
 
-    public LottoBundleResult evaluate(WinLotto win, Money lottoPrice) {
-        LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder(lottoPrice);
+    public LottoBundleResult evaluate(WinLotto win) {
+        LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder();
         for (Lotto lotto : lottos) {
             LottoRank rank = win.lottery(lotto);
             lottoBundleResultBuilder.count(rank);

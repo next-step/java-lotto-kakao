@@ -6,18 +6,16 @@ import java.util.Map;
 
 public class LottoBundleResult {
     private final Map<LottoRank, Integer> lottoRankIntegerMap;
-    private final Money totalFee;
 
-    public LottoBundleResult(Map<LottoRank, Integer> lottoRankIntegerMap, Money totalFee) {
+    LottoBundleResult(Map<LottoRank, Integer> lottoRankIntegerMap) {
         this.lottoRankIntegerMap = lottoRankIntegerMap;
-        this.totalFee = totalFee;
     }
 
     public int getRankCount(LottoRank lottoRank) {
         return lottoRankIntegerMap.getOrDefault(lottoRank, 0);
     }
 
-    public double calculateProfitRate() {
+    public double calculateProfitRate(Money totalFee) {
         Money totalPrize = Money.won(0L);
 
         for (LottoRank rank : LottoRank.values()) {
