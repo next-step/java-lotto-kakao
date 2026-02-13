@@ -59,9 +59,9 @@ public class Lotto {
         }
     }
 
-    public int matchCount(Lotto win) {
+    public int matchCount(Lotto other) {
         Set<LottoNumber> intersection = new HashSet<>(lottoNumberSet);
-        intersection.retainAll(win.lottoNumberSet);
+        intersection.retainAll(other.lottoNumberSet);
 
         return intersection.size();
     }
