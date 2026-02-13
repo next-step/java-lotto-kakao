@@ -1,10 +1,15 @@
 package controller;
 
-import lotto.*;
+import lotto.LottoBundle;
+import lotto.LottoBundleResult;
+import lotto.LottoShop;
+import lotto.WinLotto;
 import money.Money;
 import utils.InputParser;
 import view.InputView;
 import view.OutputView;
+
+import java.util.List;
 
 public class LottoController {
     private final InputView inputView;
@@ -19,7 +24,7 @@ public class LottoController {
         LottoBundle lottoBundle = purchaseLottoBundle();
         outputView.printPurchasedLottos(lottoBundle);
         WinLotto win = readWinLotto();
-        LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win);
+        LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win, Money.won(LottoShop.PRICE));
         outputView.printStatistic(lottoBundleResult);
         double profitRate = lottoBundleResult.calculateProfitRate();
         outputView.printProfitRate(profitRate);
@@ -30,7 +35,7 @@ public class LottoController {
             try {
                 String raw = inputView.readPurchaseMoney();
                 Money money = Money.won(InputParser.parseMoney(raw));
-                return LottoBundle.buy(money);
+                return LottoShop.purchaseBundle(money);
             } catch (Exception e) {
                 outputView.printError(e.getMessage());
             }
@@ -41,12 +46,12 @@ public class LottoController {
         while (true) {
             try {
                 String rawLotto = inputView.readWinningNumbers();
-                Lotto lotto = new Lotto(InputParser.parseLottoFormat(rawLotto));
+                List<Integer> lottoNumbers = InputParser.parseLottoFormat(rawLotto);
 
                 String rawBonus = inputView.readBonusNumber();
-                LottoNumber bonus = new LottoNumber(InputParser.parseBonusNumberFormat(rawBonus));
+                int bonus = InputParser.parseBonusNumberFormat(rawBonus);
 
-                return new WinLotto(bonus, lotto);
+                return new WinLotto(bonus, lottoNumbers);
             } catch (Exception e) {
                 outputView.printError(e.getMessage());
             }

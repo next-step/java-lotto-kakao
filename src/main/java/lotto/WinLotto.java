@@ -1,14 +1,16 @@
 package lotto;
 
+import java.util.List;
+
 public class WinLotto {
     private final LottoNumber bonus;
     private final Lotto win;
 
-    public WinLotto(int bonus, Integer... lottoNumbers) {
+    public WinLotto(int bonus, List<Integer> lottoNumbers) {
         this(new LottoNumber(bonus), (new Lotto(lottoNumbers)));
     }
 
-    public WinLotto(LottoNumber bonus, Lotto win) {
+    private WinLotto(LottoNumber bonus, Lotto win) {
         validate(bonus, win);
         this.bonus = bonus;
         this.win = win;

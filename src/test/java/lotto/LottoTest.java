@@ -1,6 +1,5 @@
 package lotto;
 
-import money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,16 +14,18 @@ public class LottoTest {
 
     @BeforeEach
     void setUp() {
-        win = new WinLotto(7, 1, 2, 3, 4, 5, 6);
+        win = new WinLotto(7, List.of(1, 2, 3, 4, 5, 6));
     }
 
     @Test
     @DisplayName("로또 번호는 반드시 6개여야 한다")
     void validateLottoNumberCount() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Lotto(1, 2, 3, 4, 5, 6, 7));
+                () -> new Lotto(List.of(1, 2, 3, 4, 5, 6, 7)));
         assertThrows(IllegalArgumentException.class,
-                () -> new Lotto(1, 2));
+                () -> new Lotto(List.of(1, 2)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new Lotto(List.of()));
     }
 
     @Test
@@ -43,55 +44,43 @@ public class LottoTest {
     }
 
     @Test
-    void failsForInvalidMoney() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Lotto.calculatePurchasableCount(Money.won(1400)));
-    }
-
-    @Test
-    void failsForZeroMoney() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Lotto.calculatePurchasableCount(Money.won(0)));
-    }
-
-    @Test
     void lose() {
-        Lotto buy = new Lotto(7, 8, 9, 10, 11, 12);
+        Lotto buy = new Lotto(List.of(7, 8, 9, 10, 11, 12));
         LottoRank rank = win.lottery(buy);
         assertThat(rank).isEqualTo(LottoRank.LOSE);
     }
 
     @Test
     void fifthWin() {
-        Lotto buy = new Lotto(1, 2, 3, 10, 11, 12);
+        Lotto buy = new Lotto(List.of(1, 2, 3, 10, 11, 12));
         LottoRank rank = win.lottery(buy);
         assertThat(rank).isEqualTo(LottoRank.FIFTH);
     }
 
     @Test
     void fourthWin() {
-        Lotto buy = new Lotto(1, 2, 3, 4, 11, 12);
+        Lotto buy = new Lotto(List.of(1, 2, 3, 4, 11, 12));
         LottoRank rank = win.lottery(buy);
         assertThat(rank).isEqualTo(LottoRank.FOURTH);
     }
 
     @Test
     void thirdWin() {
-        Lotto buy = new Lotto(1, 2, 3, 4, 5, 12);
+        Lotto buy = new Lotto(List.of(1, 2, 3, 4, 5, 12));
         LottoRank rank = win.lottery(buy);
         assertThat(rank).isEqualTo(LottoRank.THIRD);
     }
 
     @Test
     void secondWin() {
-        Lotto buy = new Lotto(1, 2, 3, 4, 5, 7);
+        Lotto buy = new Lotto(List.of(1, 2, 3, 4, 5, 7));
         LottoRank rank = win.lottery(buy);
         assertThat(rank).isEqualTo(LottoRank.SECOND);
     }
 
     @Test
     void firstWin() {
-        Lotto buy = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto buy = new Lotto(List.of(1, 2, 3, 4, 5, 6));
         LottoRank rank = win.lottery(buy);
         assertThat(rank).isEqualTo(LottoRank.FIRST);
     }

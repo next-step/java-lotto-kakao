@@ -9,11 +9,11 @@ import java.util.List;
 public class LottoBundle {
     private final List<Lotto> lottos;
 
-    public LottoBundle(Lotto first, Lotto... rest) {
+    LottoBundle(Lotto first, Lotto... rest) {
         this(mergeToList(first, rest));
     }
 
-    public LottoBundle(List<Lotto> lottos) {
+    LottoBundle(List<Lotto> lottos) {
         validate(lottos);
         this.lottos = List.copyOf(lottos);
     }
@@ -28,23 +28,14 @@ public class LottoBundle {
         return list;
     }
 
-    public static LottoBundle buy(Money money) {
-        long count = Lotto.calculatePurchasableCount(money);
-        List<Lotto> lottos = new ArrayList<>();
-        for (long c = 0; c < count; c++) {
-            lottos.add(Lotto.random());
-        }
-        return new LottoBundle(lottos);
-    }
-
     private void validate(List<Lotto> lottos) {
         if (lottos == null || lottos.contains(null)) {
             throw new IllegalArgumentException("로또 묶음에 null이 포함될 수 없습니다.");
         }
     }
 
-    public LottoBundleResult evaluate(WinLotto win) {
-        LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder(Money.won(Lotto.PRICE));
+    public LottoBundleResult evaluate(WinLotto win, Money lottoPrice) {
+        LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder(lottoPrice);
         for (Lotto lotto : lottos) {
             LottoRank rank = win.lottery(lotto);
             lottoBundleResultBuilder.count(rank);

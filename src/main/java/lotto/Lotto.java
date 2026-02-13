@@ -1,11 +1,8 @@
 package lotto;
 
-import money.Money;
-
 import java.util.*;
 
 public class Lotto {
-    public static final long PRICE = 1000L;
     private static final int LENGTH = 6;
     private static final int MIN_NUMBER = 1;
     private static final int MAX_NUMBER = 45;
@@ -15,11 +12,7 @@ public class Lotto {
         this(convertListToSet(numbers));
     }
 
-    public Lotto(Integer... numbers) {
-        this(Arrays.asList(numbers));
-    }
-
-    public Lotto(Set<LottoNumber> lottoNumberSet) {
+    private Lotto(Set<LottoNumber> lottoNumberSet) {
         validate(lottoNumberSet);
         this.lottoNumberSet = Set.copyOf(lottoNumberSet);
     }
@@ -39,16 +32,6 @@ public class Lotto {
         }
         Collections.shuffle(pool);
         return new Lotto(pool.subList(0, LENGTH));
-    }
-
-    public static long calculatePurchasableCount(Money money) {
-        if (money.isZero()) {
-            throw new IllegalArgumentException("구매금액은 0이면 안됩니다.");
-        }
-        if (!money.isMultipleOf(PRICE)) {
-            throw new IllegalArgumentException(String.format("구매금액은 로또 가격의 배수여야 합니다. 로또 가격 : %d", PRICE));
-        }
-        return money.calculatePurchasableCount(PRICE);
     }
 
     private void validate(Set<LottoNumber> lottoNumberSet) {
