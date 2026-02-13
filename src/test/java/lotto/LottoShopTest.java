@@ -18,7 +18,7 @@ class LottoShopTest {
 
         Purchase<LottoBundle> lottoBundlePurchase = LottoShop.purchaseBundle(Money.won(moneyAmount));
         assertThat(count).isEqualTo(lottoBundlePurchase.item().size());
-        assertThat(total).isEqualTo(lottoBundlePurchase.paid());
+        assertThat(paid).isEqualTo(lottoBundlePurchase.paid());
         assertThat(change).isEqualTo(lottoBundlePurchase.change());
     }
 
