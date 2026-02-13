@@ -43,7 +43,7 @@ public class OutputView {
         if (rank.isSecond()) {
             return "5개 일치, 보너스 볼 일치";
         }
-        return String.format("%d개 일치", rank.matchCount);
+        return String.format("%d개 일치", rank.getMatchCount());
     }
 
     public void printProfitRate(double profitRate) {
