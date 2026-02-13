@@ -10,8 +10,8 @@ public enum LottoRank {
     FIFTH(3, false, Money.won(5000)),
     LOSE(0, false, Money.won(0));
 
-    public final Money prize;
     public final int matchCount;
+    private final Money prize;
     private final Boolean hasBonus;
 
     LottoRank(int matchCount, Boolean hasBonus, Money prize) {
@@ -27,6 +27,14 @@ public enum LottoRank {
             }
         }
         return LOSE;
+    }
+
+    public Money calculatePrize(int quantity) {
+        return this.prize.times(quantity);
+    }
+
+    public Money getPrize() {
+        return prize;
     }
 
     private boolean matches(int count, boolean bonus) {
