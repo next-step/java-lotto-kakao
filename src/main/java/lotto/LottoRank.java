@@ -46,4 +46,8 @@ public enum LottoRank {
         }
         return this.matchCount != 5 || hasBonus == bonus;
     }
+
+    public boolean isSecond() {
+        return this == LottoRank.SECOND;
+    }
 }

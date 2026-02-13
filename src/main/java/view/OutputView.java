@@ -40,7 +40,7 @@ public class OutputView {
     }
 
     private String labelOf(LottoRank rank) {
-        if (rank == LottoRank.SECOND) {
+        if (rank.isSecond()) {
             return "5개 일치, 보너스 볼 일치";
         }
         return String.format("%d개 일치", rank.matchCount);
