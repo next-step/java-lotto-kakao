@@ -30,6 +30,9 @@ public class LottoBundle {
         if (lottos == null || lottos.contains(null)) {
             throw new IllegalArgumentException("로또 묶음에 null이 포함될 수 없습니다.");
         }
+        if (lottos.isEmpty()) {
+            throw new IllegalArgumentException("로또 묶음은 비어있을 수 없습니다.");
+        }
     }
 
     public LottoBundleResult evaluate(WinLotto win) {

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class LottoShopTest {
     @Test
     void purchaseBundle() {
-        long moneyAmount = 14000L;
+        long moneyAmount = 14500L;
         long count = moneyAmount / LottoShop.PRICE;
         Money total = Money.won(moneyAmount);
         Money paid = Money.won(LottoShop.PRICE).times(count);
@@ -25,8 +25,8 @@ class LottoShopTest {
     @Test
     void purchaseBundleFail() {
         assertThrows(IllegalArgumentException.class,
-                () -> LottoShop.purchaseBundle(Money.won(1400)));
-        assertThrows(IllegalArgumentException.class,
                 () -> LottoShop.purchaseBundle(Money.won(0)));
+        assertThrows(IllegalArgumentException.class,
+                () -> LottoShop.purchaseBundle(Money.won(999)));
     }
 }
