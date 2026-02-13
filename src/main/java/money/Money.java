@@ -14,6 +14,10 @@ public final class Money {
         return new Money(value);
     }
 
+    public long amount() {
+        return value;
+    }
+
     private void validate(long value) {
         if (value < 0L) {
             throw new IllegalArgumentException(

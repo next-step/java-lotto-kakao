@@ -1,11 +1,9 @@
 package view;
 
-import lotto.Lotto;
-import lotto.LottoBundle;
-import lotto.LottoBundleResult;
-import lotto.LottoRank;
+import lotto.*;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 public class OutputView {
     private static final List<LottoRank> PRINT_ORDER = List.of(
@@ -19,8 +17,18 @@ public class OutputView {
     public void printPurchasedLottos(LottoBundle lottoBundle) {
         System.out.printf("%d개를 구매했습니다.%n", lottoBundle.size());
         for (Lotto lotto : lottoBundle.asList()) {
-            System.out.println(lotto);
+            printLotto(lotto);
         }
+    }
+
+    private void printLotto(Lotto lotto) {
+        StringJoiner joiner = new StringJoiner(", ", "[", "]");
+
+        for (LottoNumber number : lotto.numbers()) {
+            joiner.add("" + number.value());
+        }
+
+        System.out.println(joiner);
     }
 
     public void printStatistic(LottoBundleResult lottoBundleResult) {
@@ -36,7 +44,7 @@ public class OutputView {
     private void printRankLine(LottoRank rank, int count) {
         String label = labelOf(rank);
 
-        System.out.printf("%s (%s) - %d개%n", label, rank.getPrize(), count);
+        System.out.printf("%s (%s원) - %d개%n", label, rank.getPrize().amount(), count);
     }
 
     private String labelOf(LottoRank rank) {
@@ -47,18 +55,20 @@ public class OutputView {
     }
 
     public void printProfitRate(double profitRate) {
+        String resultMessage = getResultMessage(profitRate);
+        System.out.printf("총 수익률은 %.2f입니다.(%s)%n", Math.floor(profitRate * 100) / 100, resultMessage);
+    }
+
+    private String getResultMessage(double profitRate) {
         final double EPS = 1e-9;
 
-        String resultMessage;
         if (profitRate > 1) {
-            resultMessage = "기준이 1이기 때문에 결과적으로 이익이라는 의미임";
-        } else if (Math.abs(profitRate - 1) <= EPS) {
-            resultMessage = "기준이 1이기 때문에 본전이라는 의미임";
-        } else {
-            resultMessage = "기준이 1이기 때문에 결과적으로 손해라는 의미임";
+            return "기준이 1이기 때문에 결과적으로 이익이라는 의미임";
         }
-
-        System.out.printf("총 수익률은 %.2f입니다.(%s)%n", Math.floor(profitRate * 100) / 100, resultMessage);
+        if (Math.abs(profitRate - 1) <= EPS) {
+            return "기준이 1이기 때문에 결과적으로 본전이라는 의미임";
+        }
+        return "기준이 1이기 때문에 결과적으로 손해라는 의미임";
     }
 
     public void printError(String message) {
