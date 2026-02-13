@@ -1,6 +1,9 @@
     package lotto.domain;
 
+    import java.util.Map;
     import java.util.Objects;
+    import java.util.stream.Collectors;
+    import java.util.stream.IntStream;
 
     public class LottoNumber {
 
@@ -8,13 +11,13 @@
         public static final int MAX_LOTTO_NUMBER = 45;
         public static final String RANGE_FAIL_MSG = "로또 번호의 범위는 1 ~ 45사이어야 합니다.";
 
-        private static final LottoNumber[] CACHE = new LottoNumber[MAX_LOTTO_NUMBER + 1];
-
-        static  {
-            for (int i = MIN_LOTTO_NUMBER; i <= MAX_LOTTO_NUMBER; i++) {
-                CACHE[i] = new LottoNumber(i);
-            }
-        }
+        private static final Map<Integer, LottoNumber> CACHE =
+                IntStream.rangeClosed(MIN_LOTTO_NUMBER, MAX_LOTTO_NUMBER)
+                        .boxed()
+                        .collect(Collectors.toUnmodifiableMap(
+                                i -> i,
+                                LottoNumber::new
+                        ));
 
         private final int value;
 
@@ -33,9 +36,9 @@
             return value;
         }
 
-        public static LottoNumber of(int value) {
+        public static LottoNumber from(int value) {
             validate(value);
-            return CACHE[value];
+            return CACHE.get(value);
         }
 
 

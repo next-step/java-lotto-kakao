@@ -20,7 +20,7 @@ public class Lotto {
         validate(values);
 
         List<LottoNumber> lottoNumbers = values.stream()
-                .map(LottoNumber::of)
+                .map(LottoNumber::from)
                 .toList();
 
         Set<Integer> set = new HashSet<>(values);
@@ -29,6 +29,10 @@ public class Lotto {
 
     public Lotto(List<Integer> values) {
         this(Lotto.fromIntegers(values));
+    }
+
+    public Lotto(int v1, int v2, int v3, int v4, int v5, int v6) {
+        this(List.of(v1, v2, v3, v4, v5, v6));
     }
 
     public Lotto(int... values) {

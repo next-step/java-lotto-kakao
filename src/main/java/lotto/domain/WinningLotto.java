@@ -13,7 +13,7 @@ public class WinningLotto {
     public WinningLotto(Lotto lotto, int bonusNumber) {
         validate(lotto, bonusNumber);
         this.lotto = lotto;
-        this.bonusNumber = LottoNumber.of(bonusNumber);
+        this.bonusNumber = LottoNumber.from(bonusNumber);
     }
 
     private void validate(Lotto lotto, int bonusNumber) {

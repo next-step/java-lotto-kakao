@@ -6,10 +6,7 @@ public class Input {
     }
 
     public static boolean isBlank(String input) {
-        if (input == null) {
-            return true;
-        }
-        return input.isEmpty();
+        return input == null || input.isEmpty();
     }
 
 
