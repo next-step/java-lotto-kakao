@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class LottoTicketRandomGenerator {
+public class LottoTicketRandomGenerator extends LottoTicketGenerator{
 
 	private final Random random;
 
@@ -21,13 +21,14 @@ public class LottoTicketRandomGenerator {
 	}
 
 	public LottoTicket generate() {
-		List<LottoNumber> allNumbers = new ArrayList<>(IntStream.rangeClosed(1, 45)
+		List<Integer> allNumbers = new ArrayList<>(IntStream.rangeClosed(1, 45)
 				.boxed()
-				.map(LottoNumber::of)
 				.toList());
+		
 		Collections.shuffle(allNumbers, random);
-		List<LottoNumber> numbers = allNumbers.subList(0, LottoTicket.LOTTO_LENGTH);
-		return new LottoTicket(numbers);
+		List<Integer> numbers = allNumbers.subList(0, LottoTicket.LOTTO_LENGTH);
+
+		return super.generate(numbers);
 	}
 
 	public List<LottoTicket> generate(int count) {

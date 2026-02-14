@@ -7,7 +7,7 @@ import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class LottoTicketRandomGeneratorTest {
+public class LottoTicketRandomGeneratorTest{
 
 	@Test
 	@DisplayName("같은 시드에서 같은 결과값을 반환")
