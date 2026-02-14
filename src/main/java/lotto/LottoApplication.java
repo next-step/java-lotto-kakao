@@ -1,7 +1,7 @@
 package lotto;
 
 import lotto.domain.Lotto;
-import lotto.domain.LottoPickStrategy;
+import lotto.domain.pick.LottoPickStrategy;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
@@ -16,16 +16,16 @@ import java.util.Map;
 
 public class LottoApplication {
 
-    private final LottoPickStrategy randomNumberGenerator;
+    private final LottoPickStrategy lottoNumberGenerator;
     private final InputView inputView;
     private final OutputView outputView;
 
     public LottoApplication(
-            LottoPickStrategy randomNumberGenerator,
+            LottoPickStrategy lottoNumberGenerator,
             InputView inputView,
             OutputView outputView
     ) {
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.lottoNumberGenerator = lottoNumberGenerator;
         this.inputView = inputView;
         this.outputView = outputView;
     }
@@ -76,13 +76,13 @@ public class LottoApplication {
         List<Lotto> lottos = buyLottos(lottoCount);
         outputView.printLottos(lottos);
 
-        return new LottoPlayer(price, new Lottos(lottos));
+        return new LottoPlayer(price, Lottos.from(lottos));
     }
 
     private List<Lotto> buyLottos(int count) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            lottos.add(new Lotto(randomNumberGenerator.generate()));
+            lottos.add(new Lotto(lottoNumberGenerator.generate()));
         }
         return lottos;
     }

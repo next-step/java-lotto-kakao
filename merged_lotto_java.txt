@@ -2,7 +2,7 @@
 package lotto;
 
 import lotto.domain.Lotto;
-import lotto.domain.LottoPickStrategy;
+import lotto.domain.pick.LottoPickStrategy;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
@@ -17,16 +17,16 @@ import java.util.Map;
 
 public class LottoApplication {
 
-    private final LottoPickStrategy randomNumberGenerator;
+    private final LottoPickStrategy lottoNumberGenerator;
     private final InputView inputView;
     private final OutputView outputView;
 
     public LottoApplication(
-            LottoPickStrategy randomNumberGenerator,
+            LottoPickStrategy lottoNumberGenerator,
             InputView inputView,
             OutputView outputView
     ) {
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.lottoNumberGenerator = lottoNumberGenerator;
         this.inputView = inputView;
         this.outputView = outputView;
     }
@@ -83,40 +83,18 @@ public class LottoApplication {
     private List<Lotto> buyLottos(int count) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            lottos.add(new Lotto(randomNumberGenerator.generate()));
+            lottos.add(new Lotto(lottoNumberGenerator.generate()));
         }
         return lottos;
     }
 
 }
 
-===== FILE: ./src/main/java/lotto/LottoNumberGenerator.java =====
-package lotto;
-
-import lotto.domain.LottoPickStrategy;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class LottoNumberGenerator implements LottoPickStrategy {
-    @Override
-    public List<Integer> generate() {
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = 1; i <= 45; i++) numbers.add(i);
-
-        Collections.shuffle(numbers);
-        List<Integer> result = numbers.subList(0, 6);
-        Collections.sort(result);
-
-        return result;
-    }
-}
-
 ===== FILE: ./src/main/java/lotto/Main.java =====
 package lotto;
 
-import lotto.domain.LottoPickStrategy;
+import lotto.domain.pick.AutoLottoNumberGenerator;
+import lotto.domain.pick.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.input.TerminalInputView;
 import lotto.view.output.OutputView;
@@ -126,7 +104,7 @@ public class Main {
     public static void main(String[] args) {
         InputView input = new TerminalInputView();
         OutputView output = new TerminalOutputView();
-        LottoPickStrategy pickStrategy = new LottoNumberGenerator();
+        LottoPickStrategy pickStrategy = new AutoLottoNumberGenerator();
         LottoApplication app = new LottoApplication(
                 pickStrategy,
                 input,
@@ -140,9 +118,14 @@ public class Main {
 ===== FILE: ./src/main/java/lotto/view/input/TerminalInputView.java =====
 package lotto.view.input;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TerminalInputView implements InputView {
+
+    public static final String INVALID_NUMBER_FORMAT_MSG_PREFIX = "숫자만 입력할 수 있습니다. 현재 입력: ";
+
     private Scanner scanner;
 
     public TerminalInputView() {
@@ -161,7 +144,22 @@ public class TerminalInputView implements InputView {
             return Integer.parseInt(line);
         } catch (NumberFormatException e) {
             // 요구사항: 문자가 입력되면 예외를 던진다
-            throw new IllegalArgumentException("숫자만 입력할 수 있습니다. 현재 입력: " + line, e);
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + line, e);
+        }
+    }
+
+    @Override
+    public List<Integer> inputNumbers(String delimiter) {
+        String line = scanner.nextLine().trim();
+        List<Integer> result = new ArrayList<>();
+        try {
+            String[] numbers = line.split(delimiter);
+            for (String number: numbers) {
+                result.add(Integer.parseInt(number));
+            }
+            return result;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + line, e);
         }
     }
 }
@@ -169,11 +167,15 @@ public class TerminalInputView implements InputView {
 ===== FILE: ./src/main/java/lotto/view/input/InputView.java =====
 package lotto.view.input;
 
+import java.util.List;
+
 public interface InputView {
 
     public String input();
 
     public int inputNumber();
+
+    public List<Integer> inputNumbers(String delimiter);
 }
 
 ===== FILE: ./src/main/java/lotto/view/output/OutputView.java =====
@@ -275,27 +277,24 @@ package lotto.domain;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.BiPredicate;
 
 public enum LottoStatus {
 
-    SIX_CORRECT(2_000_000_000L, 6, false, false),
-    FIVE_CORRECT_BONUS(30_000_000L, 5, true, true),
-    FIVE_CORRECT(1_500_000L, 5, false, true),
-    FOUR_CORRECT(50_000L, 4, false, false),
-    THREE_CORRECT(5_000L, 3, false, false),
-    FAIL(0L, -1, false, false)
+    SIX_CORRECT(2_000_000_000L, (match, bonus) -> match == 6),
+    FIVE_CORRECT_BONUS(30_000_000L, (match, bonus) -> match == 5 && bonus),
+    FIVE_CORRECT(1_500_000L, (match, bonus) -> match == 5 && !bonus),
+    FOUR_CORRECT(50_000L, (match, bonus) -> match == 4),
+    THREE_CORRECT(5_000L, (match, bonus) -> match == 3),
+    FAIL(0L, (match, bonus) -> true)
     ;
 
     private final long price;
-    private final int count;
-    private final boolean expectedBonus;
-    private final boolean bonusRelevant;
+    private final BiPredicate<Integer, Boolean> matchPredicate;
 
-    LottoStatus(long price, int count, boolean expectedBonus, boolean bonusRelevant) {
+    LottoStatus(long price, BiPredicate<Integer, Boolean> matchPredicate) {
         this.price = price;
-        this.count = count;
-        this.expectedBonus = expectedBonus;
-        this.bonusRelevant = bonusRelevant;
+        this.matchPredicate = matchPredicate;
     }
 
     public long getPrice() {
@@ -304,9 +303,9 @@ public enum LottoStatus {
 
     public static LottoStatus judgeGameStatus(int matchCount, boolean hasBonus) {
         return Arrays.stream(values())
-                .filter(status -> status.match(matchCount, hasBonus))
-                .findFirst()
-                .orElse(FAIL);
+                    .filter(status -> status.matchPredicate.test(matchCount, hasBonus))
+                    .findFirst()
+                    .orElse(FAIL);
     }
 
     public static long totalPrize(Map<LottoStatus, Integer> counts) {
@@ -317,16 +316,12 @@ public enum LottoStatus {
         return sum;
     }
 
-    public boolean match(int matchCount, boolean hasBonus) {
-        if (this.count != matchCount) {
-            return false;
-        }
-        if (!bonusRelevant) {
-            return true;
-        }
-        return this.expectedBonus == hasBonus;
-    }
+}
 
+===== FILE: ./src/main/java/lotto/domain/LottoService.java =====
+package lotto.domain;
+
+public class LottoService {
 
 
 }
@@ -370,7 +365,10 @@ public class LottoPlayer {
 ===== FILE: ./src/main/java/lotto/domain/LottoNumber.java =====
     package lotto.domain;
 
+    import java.util.Map;
     import java.util.Objects;
+    import java.util.stream.Collectors;
+    import java.util.stream.IntStream;
 
     public class LottoNumber {
 
@@ -378,13 +376,13 @@ public class LottoPlayer {
         public static final int MAX_LOTTO_NUMBER = 45;
         public static final String RANGE_FAIL_MSG = "로또 번호의 범위는 1 ~ 45사이어야 합니다.";
 
-        private static final LottoNumber[] CACHE = new LottoNumber[MAX_LOTTO_NUMBER + 1];
-
-        static  {
-            for (int i = MIN_LOTTO_NUMBER; i <= MAX_LOTTO_NUMBER; i++) {
-                CACHE[i] = new LottoNumber(i);
-            }
-        }
+        private static final Map<Integer, LottoNumber> CACHE =
+                IntStream.rangeClosed(MIN_LOTTO_NUMBER, MAX_LOTTO_NUMBER)
+                        .boxed()
+                        .collect(Collectors.toUnmodifiableMap(
+                                i -> i,
+                                LottoNumber::new
+                        ));
 
         private final int value;
 
@@ -403,9 +401,9 @@ public class LottoPlayer {
             return value;
         }
 
-        public static LottoNumber of(int value) {
+        public static LottoNumber from(int value) {
             validate(value);
-            return CACHE[value];
+            return CACHE.get(value);
         }
 
 
@@ -445,7 +443,7 @@ public class Lotto {
         validate(values);
 
         List<LottoNumber> lottoNumbers = values.stream()
-                .map(LottoNumber::of)
+                .map(LottoNumber::from)
                 .toList();
 
         Set<Integer> set = new HashSet<>(values);
@@ -454,6 +452,10 @@ public class Lotto {
 
     public Lotto(List<Integer> values) {
         this(Lotto.fromIntegers(values));
+    }
+
+    public Lotto(int v1, int v2, int v3, int v4, int v5, int v6) {
+        this(List.of(v1, v2, v3, v4, v5, v6));
     }
 
     public Lotto(int... values) {
@@ -544,16 +546,6 @@ public class Lottos {
     }
 }
 
-===== FILE: ./src/main/java/lotto/domain/LottoPickStrategy.java =====
-package lotto.domain;
-
-import java.util.List;
-
-public interface LottoPickStrategy {
-
-    public List<Integer> generate();
-}
-
 ===== FILE: ./src/main/java/lotto/domain/WinningLotto.java =====
 package lotto.domain;
 
@@ -570,7 +562,7 @@ public class WinningLotto {
     public WinningLotto(Lotto lotto, int bonusNumber) {
         validate(lotto, bonusNumber);
         this.lotto = lotto;
-        this.bonusNumber = LottoNumber.of(bonusNumber);
+        this.bonusNumber = LottoNumber.from(bonusNumber);
     }
 
     private void validate(Lotto lotto, int bonusNumber) {
@@ -605,5 +597,67 @@ public class WinningLotto {
     public int getBonusNumber() {
         return bonusNumber.getValue();
     }
+}
+
+===== FILE: ./src/main/java/lotto/domain/pick/AutoLottoNumberGenerator.java =====
+package lotto.domain.pick;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class AutoLottoNumberGenerator implements LottoPickStrategy {
+
+    @Override
+    public List<Integer> generate() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 1; i <= 45; i++) numbers.add(i);
+
+        Collections.shuffle(numbers);
+        List<Integer> result = numbers.subList(0, LOTTO_SIZE);
+        Collections.sort(result);
+
+        return result;
+    }
+
+}
+
+===== FILE: ./src/main/java/lotto/domain/pick/ManualLottoNumberGenerator.java =====
+package lotto.domain.pick;
+
+import lotto.view.input.InputView;
+import lotto.view.output.OutputView;
+
+import java.util.List;
+
+public class ManualLottoNumberGenerator implements LottoPickStrategy {
+
+    private final InputView inputView;
+    private final OutputView outputView;
+
+    public ManualLottoNumberGenerator(
+            final InputView inputView,
+            final OutputView outputView) {
+        this.inputView = inputView;
+        this.outputView = outputView;
+    }
+
+    @Override
+    public List<Integer> generate() {
+        outputView.printMessage("수동으로 구매할 번호를 입력해 주세요.");
+        return inputView.inputNumbers(",");
+    }
+}
+
+===== FILE: ./src/main/java/lotto/domain/pick/LottoPickStrategy.java =====
+package lotto.domain.pick;
+
+import java.util.List;
+
+public interface LottoPickStrategy {
+
+    public static final int LOTTO_SIZE = 6;
+
+    public List<Integer> generate();
 }
 

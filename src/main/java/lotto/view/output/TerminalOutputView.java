@@ -2,6 +2,7 @@ package lotto.view.output;
 
 import lotto.domain.Lotto;
 import lotto.domain.LottoStatus;
+import lotto.domain.Lottos;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,11 @@ public class TerminalOutputView implements OutputView {
 
     public void printMessage(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void printLottos(Lottos lottos) {
+        printLottos(lottos.asList());
     }
 
     public void printLottos(List<Lotto> lottos) {
@@ -50,7 +56,44 @@ public class TerminalOutputView implements OutputView {
         }
 
         sb.append("총 수익률은 ").append(String.format("%.2f입니다.", profitRate)).append("\n");
-        System.out.print(sb);
+        System.out.print(sb.toString());
+    }
+
+    @Override
+    public void printManualCountRequest() {
+        System.out.println("\n수동으로 구매할 로또 수를 입력해 주세요.");
+    }
+
+    @Override
+    public void printManualLottoRequest() {
+        System.out.println("\n수동으로 구매할 번호를 입력해 주세요.");
+    }
+
+    @Override
+    public void printAutoNumberRequest() {
+        System.out.println("\n자동으로 구매할 로또 수를 입력해 주세요.");
+    }
+
+    @Override
+    public void printPriceRequest() {
+        System.out.println("구입금액을 입력해 주세요.");
+    }
+
+    @Override
+    public void printAutoBuyResult(int count) {
+        System.out.println(count + "개를 구매했습니다.");
+    }
+
+    @Override
+    public void printManualBuyResult(int manualCount, int totalCount) {
+        StringBuilder sb = new StringBuilder();
+        int autoCount = totalCount - manualCount;
+        sb.append("\n")
+                .append("수동으로 ").append(manualCount)
+                .append("장, 자동으로 ").append(autoCount)
+                .append("개를 구매했습니다.");
+
+        System.out.println(sb.toString());
     }
 
 
