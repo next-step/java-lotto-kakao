@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,15 +8,16 @@ public class LottoParser {
 
 	private static final String DELIMITER = ", ";
 
-	private LottoParser() {}
+	private LottoParser() {
+	}
 
-	public static List<LottoNumber> parseWinningNumbers(String input) {
+	public static List<LottoNumber> parseLottoNumbers(String input) {
 		validateEmpty(input);
-		return Arrays.stream(input.split(DELIMITER))
+		return new ArrayList<>(Arrays.stream(input.split(DELIMITER))
 			.map(String::trim)
 			.map(LottoParser::toInt)
 			.map(LottoNumber::new)
-			.toList();
+			.toList());
 	}
 
 	public static int parseBonusNumber(String input) {

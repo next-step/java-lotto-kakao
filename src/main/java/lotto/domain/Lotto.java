@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Lotto {
+    private static final int LOTTO_SIZE = 6;
     private final List<LottoNumber> lottoNumbers;
 
     public Lotto(List<LottoNumber> lottoNumbers) {
@@ -36,17 +37,14 @@ public class Lotto {
     }
 
     private static void validateSize(List<LottoNumber> lottoNumbers){
-        if (lottoNumbers.size() != 6){
+        if (lottoNumbers.size() != LOTTO_SIZE){
             throw new IllegalArgumentException("로또번호가 6개가 아닙니다.");
         }
     }
-
-    @Override
-    public String toString() {
+    public List<Integer> getNumbers() {
         return lottoNumbers.stream()
-                .map(LottoNumber::getNumber) // LottoNumber 객체에서 숫자(int)만 추출
-                .sorted()                    // 오름차순 정렬 (요구사항)
-                .toList()
-                .toString();                 // [1, 2, 3, 4, 5, 6] 형태로 반환
+            .map(LottoNumber::getNumber)
+            .sorted()
+            .toList();
     }
 }

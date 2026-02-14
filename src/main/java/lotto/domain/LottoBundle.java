@@ -3,16 +3,23 @@ package lotto.domain;
 import java.util.List;
 
 public class LottoBundle {
-    private final List<Lotto> lottos;
-    public LottoBundle(List<Lotto> lottos) {
-        this.lottos = lottos;
-    }
+	private final List<Lotto> lottos;
 
-    public int size() {
-        return lottos.size();
-    }
+	public LottoBundle(List<Lotto> lottos) {
+		this.lottos = lottos;
+	}
 
-    public List<Lotto> getLottos() {
-        return lottos;
-    }
+	public int size() {
+		return lottos.size();
+	}
+
+	public List<Lotto> getLottos() {
+		return lottos;
+	}
+
+	public List<Rank> match(WinningLotto winningLotto) {
+		return lottos.stream()
+			.map(winningLotto::judge)
+			.toList();
+	}
 }
