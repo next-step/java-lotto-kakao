@@ -15,4 +15,12 @@ public final class PurchasedCount {
             throw new IllegalArgumentException();
         }
     }
+
+    public int manualCount(){
+        return this.manualCount;
+    }
+
+    public int autoCount(){
+        return this.autoCount;
+    }
 }
