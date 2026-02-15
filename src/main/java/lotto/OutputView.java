@@ -20,8 +20,8 @@ public class OutputView {
     public static void printResult(LottoResult lottoResult) {
         Arrays.stream(Rank.values())
                 .filter(rank -> rank != Rank.MISS)
-                .sorted(Comparator.comparingInt(Rank::getWinningMoney))
-                .forEach(rank -> printRankLine(rank, lottoResult.getCount(rank)));
+                .sorted(Comparator.comparingInt(Rank::toWinningMoney))
+                .forEach(rank -> printRankLine(rank, lottoResult.toCount(rank)));
     }
 
     private static void printRankLine(Rank rank, int count) {

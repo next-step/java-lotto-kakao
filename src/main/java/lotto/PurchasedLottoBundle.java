@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class PurchasedLottoBundle {
-    private LottoBundle manualBundle;
-    private LottoBundle autoBundle;
+    private final LottoBundle manualBundle;
+    private final LottoBundle autoBundle;
 
     public PurchasedLottoBundle(LottoBundle manualBundle, LottoBundle autoBundle) {
         this.manualBundle = manualBundle;

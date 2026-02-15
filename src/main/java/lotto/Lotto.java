@@ -10,11 +10,11 @@ public class Lotto {
 
     public Lotto(List<LottoNumber> lottoNumbers) {
         validateSize(lottoNumbers);
-        lottoNumbers.sort(Comparator.comparingInt(LottoNumber::getNumber).reversed());
+        lottoNumbers.sort(Comparator.comparingInt(LottoNumber::toNumber).reversed());
         this.lottoNumbers = lottoNumbers;
     }
 
-    public int getLottoNumbersSize() {
+    public int toLottoNumbersSize() {
         return lottoNumbers.size();
     }
 
