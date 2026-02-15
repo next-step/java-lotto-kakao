@@ -12,7 +12,7 @@ public class LottoNumber {
         this.number = number;
     }
 
-    public int getNumber(){
+    public int toNumber(){
         return this.number;
     }
 

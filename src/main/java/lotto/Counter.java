@@ -7,7 +7,7 @@ public class Counter {
         this.count = count;
     }
 
-    public int getCount() {
+    public int count() {
         return count;
     }
 

@@ -60,9 +60,9 @@ public class PurchasedLottoBundleTest {
 
         LottoResult lottoResult = purchasedLottoBundle.makeLottoResult(winningLotto);
 
-        Assertions.assertThat(lottoResult.getCount(Rank.FIRST)).isEqualTo(1);
-        Assertions.assertThat(lottoResult.getCount(Rank.SECOND)).isEqualTo(1);
-        Assertions.assertThat(lottoResult.getCount(Rank.MISS)).isEqualTo(1);
+        Assertions.assertThat(lottoResult.toCount(Rank.FIRST)).isEqualTo(1);
+        Assertions.assertThat(lottoResult.toCount(Rank.SECOND)).isEqualTo(1);
+        Assertions.assertThat(lottoResult.toCount(Rank.MISS)).isEqualTo(1);
     }
 
     private Lotto makeLotto(int... numbers) {

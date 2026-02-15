@@ -14,7 +14,7 @@ public class LottoTest {
                 .collect(Collectors.toList());
         Lotto lotto = new Lotto(numbers);
 
-        Assertions.assertThat(lotto.getLottoNumbersSize())
+        Assertions.assertThat(lotto.toLottoNumbersSize())
                 .isEqualTo(6);
     }
 

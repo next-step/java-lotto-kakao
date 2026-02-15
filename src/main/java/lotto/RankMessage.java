@@ -20,8 +20,8 @@ public enum RankMessage {
     }
 
     private String render(Rank rank) {
-        String money = String.format(Locale.KOREA, "%,d", rank.getWinningMoney());
-        return String.format(template, rank.getCountOfMatch(), money);
+        String money = String.format(Locale.KOREA, "%,d", rank.toWinningMoney());
+        return String.format(template, rank.toCountOfMatch(), money);
     }
 }
 

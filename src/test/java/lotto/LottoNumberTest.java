@@ -12,7 +12,7 @@ public class LottoNumberTest {
     @ValueSource(ints = {1, 2, 3, 4})
     void 숫자_범위_테스트(int number){
         LottoNumber lottoNumber = new LottoNumber(number);
-        Assertions.assertThat(lottoNumber.getNumber()).isBetween(1, 45);
+        Assertions.assertThat(lottoNumber.toNumber()).isBetween(1, 45);
     }
     @ParameterizedTest
     @ValueSource(ints = {0, 46})

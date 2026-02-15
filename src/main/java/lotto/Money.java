@@ -10,7 +10,7 @@ public final class Money {
         this.money = money;
     }
 
-    public long getMoney() {
+    public long money() {
         return money;
     }
 

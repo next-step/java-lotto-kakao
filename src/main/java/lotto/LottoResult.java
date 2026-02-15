@@ -18,15 +18,15 @@ public class LottoResult {
         return summary;
     }
 
-    public int getCount(Rank rank) {
-        return result.get(rank).getCount();
+    public int toCount(Rank rank) {
+        return result.get(rank).count();
     }
 
     public double calculateYield(Money purchaseMoney) {
         long totalPrize = Arrays.stream(Rank.values())
-                .mapToLong(rank -> (long) rank.getWinningMoney() * result.get(rank).getCount())
+                .mapToLong(rank -> (long) rank.toWinningMoney() * result.get(rank).count())
                 .sum();
 
-        return YieldCalculator.calculate(totalPrize, purchaseMoney.getMoney());
+        return YieldCalculator.calculate(totalPrize, purchaseMoney.money());
     }
 }
