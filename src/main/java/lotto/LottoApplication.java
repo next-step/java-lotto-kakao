@@ -3,6 +3,7 @@ package lotto;
 import lotto.domain.Lotto;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
+import lotto.domain.Money;
 import lotto.domain.WinningLotto;
 import lotto.domain.service.LottoService;
 import lotto.view.input.InputView;
@@ -32,8 +33,8 @@ public class LottoApplication {
         WinningLotto winningLotto = createWinningLotto();
 
         Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
-        long profit = LottoStatus.totalPrize(statuses);
-        double profitRate = (double) profit / player.getPrice();
+        Money profit = Money.won(LottoStatus.totalPrize(statuses));
+        double profitRate = profit.rateOf(player.getPrice());
 
         printResult(statuses, profitRate);
     }
