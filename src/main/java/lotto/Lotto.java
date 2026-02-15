@@ -18,7 +18,7 @@ public class Lotto {
         return lottoNumbers.size();
     }
 
-    public int countMatchingNumbers(Lotto other) {
+    public int matchCount(Lotto other) {
         return (int) lottoNumbers.stream()
                 .filter(other::contains) // 아래 contains 메서드 활용
                 .count();

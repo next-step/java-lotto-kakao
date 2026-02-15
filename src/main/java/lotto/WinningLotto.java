@@ -19,9 +19,9 @@ public class WinningLotto {
         }
     }
 
-    public Rank judge(Lotto judgeLotto){
-        int count = lotto.countMatchingNumbers(judgeLotto);
-        boolean matchBonus = matchBonus(judgeLotto);
+    public Rank judge(Lotto compare){
+        int count = lotto.matchCount(compare);
+        boolean matchBonus = matchBonus(compare);
 
         return Rank.valueOf(count, matchBonus);
     }
