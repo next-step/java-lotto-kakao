@@ -43,17 +43,21 @@ public enum LottoRank {
         }
 
         if (rank.bonusDependent) {
-            rankMap.put(rank.matchCount + ":" + rank.hasBonus, rank);
+            rankMap.put(rankKey(rank.matchCount, rank.hasBonus), rank);
             return;
         }
 
-        rankMap.put(rank.matchCount + ":true", rank);
-        rankMap.put(rank.matchCount + ":false", rank);
+        rankMap.put(rankKey(rank.matchCount, true), rank);
+        rankMap.put(rankKey(rank.matchCount, false), rank);
     }
 
-    public static LottoRank searchRank(int count, boolean bonus) {
-        String key = count + ":" + bonus;
+    public static LottoRank searchRank(int matchCount, boolean hasBonus) {
+        String key = rankKey(matchCount, hasBonus);
         return RANK_MAP.getOrDefault(key, LottoRank.LOSE);
+    }
+
+    private static String rankKey(int matchCount, boolean hasBonus) {
+        return matchCount + ":" + hasBonus;
     }
 
     public Money calculatePrize(int quantity) {
