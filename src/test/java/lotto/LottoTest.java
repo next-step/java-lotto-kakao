@@ -37,6 +37,7 @@ public class LottoTest {
             assertThat(numbers).hasSize(6);
             assertThat(numbers)
                     .allSatisfy(n -> assertThat(n.value()).isBetween(1, 45));
+            assertThat(numbers).doesNotHaveDuplicates();
         }
     }
 
