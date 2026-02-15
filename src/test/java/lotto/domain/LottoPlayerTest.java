@@ -22,7 +22,7 @@ public class LottoPlayerTest {
                 new Lotto(1, 2, 3, 4, 5, 6)
         ));
 
-        LottoPlayer lottoPlayer = new LottoPlayer(price, new Lottos(lottos));
+        LottoPlayer lottoPlayer = new LottoPlayer(price, Lottos.from(lottos));
 
         assertThat(lottoPlayer.getPrice()).isEqualTo(3000);
         assertThat(lottoPlayer.getLottoCount()).isEqualTo(3);
@@ -34,7 +34,7 @@ public class LottoPlayerTest {
         assertThatThrownBy(() -> {
             int price = 900;
             int lottoCount = 0;
-            LottoPlayer lottoPlayer = new LottoPlayer(price, new Lottos(Collections.emptyList()));
+            LottoPlayer lottoPlayer = new LottoPlayer(price, Lottos.from(Collections.emptyList()));
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(LottoPlayer.PRICE_TOO_LOW_FAIL_MSG);
     }

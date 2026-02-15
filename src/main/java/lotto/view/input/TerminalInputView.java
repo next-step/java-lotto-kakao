@@ -1,8 +1,13 @@
 package lotto.view.input;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TerminalInputView implements InputView {
+
+    public static final String INVALID_NUMBER_FORMAT_MSG_PREFIX = "숫자만 입력할 수 있습니다. 현재 입력: ";
+
     private Scanner scanner;
 
     public TerminalInputView() {
@@ -21,7 +26,22 @@ public class TerminalInputView implements InputView {
             return Integer.parseInt(line);
         } catch (NumberFormatException e) {
             // 요구사항: 문자가 입력되면 예외를 던진다
-            throw new IllegalArgumentException("숫자만 입력할 수 있습니다. 현재 입력: " + line, e);
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + line, e);
+        }
+    }
+
+    @Override
+    public List<Integer> inputNumbers(String delimiter) {
+        String line = scanner.nextLine().trim();
+        List<Integer> result = new ArrayList<>();
+        try {
+            String[] numbers = line.split(delimiter);
+            for (String number: numbers) {
+                result.add(Integer.parseInt(number));
+            }
+            return result;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + line, e);
         }
     }
 }

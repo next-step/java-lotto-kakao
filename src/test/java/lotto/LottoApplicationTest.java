@@ -1,7 +1,7 @@
 package lotto;
 
 import lotto.domain.Lotto;
-import lotto.domain.LottoPickStrategy;
+import lotto.domain.pick.LottoPickStrategy;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
@@ -35,7 +35,7 @@ public class LottoApplicationTest {
 
         Lotto winningLottoNumber = new Lotto(1, 2, 3, 4, 5, 6);
 
-        LottoPlayer lottoPlayer = new LottoPlayer(3000, new Lottos(lottos));
+        LottoPlayer lottoPlayer = new LottoPlayer(3000, Lottos.from(lottos));
         LottoPickStrategy numberGenerator = new FixedNumberGenerator();
         MockInputView inputView = new MockInputView(List.of(
                 "3000",
@@ -112,8 +112,8 @@ public class LottoApplicationTest {
         }
 
         @Override
-        public void printLottos(List<Lotto> lottos) {
-            for (Lotto lotto : lottos) {
+        public void printLottos(Lottos lottos) {
+            for (Lotto lotto : lottos.asList()) {
                 output.add(lotto.toString());
             }
         }

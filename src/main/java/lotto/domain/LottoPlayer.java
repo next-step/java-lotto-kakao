@@ -14,6 +14,10 @@ public class LottoPlayer {
         this.lottos = lottos;
     }
 
+    public static LottoPlayer of(int price, Lottos lottos) {
+        return new LottoPlayer(price, lottos);
+    }
+
     private void validatePrice(int price) {
         if (price < LOTTO_PRICE) {
             throw new IllegalArgumentException(PRICE_TOO_LOW_FAIL_MSG);

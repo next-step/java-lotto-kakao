@@ -1,6 +1,7 @@
 package lotto;
 
-import lotto.domain.LottoPickStrategy;
+import lotto.domain.pick.AutoLottoNumberGenerator;
+import lotto.domain.pick.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.input.TerminalInputView;
 import lotto.view.output.OutputView;
@@ -10,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         InputView input = new TerminalInputView();
         OutputView output = new TerminalOutputView();
-        LottoPickStrategy pickStrategy = new LottoNumberGenerator();
+        LottoPickStrategy pickStrategy = new AutoLottoNumberGenerator();
         LottoApplication app = new LottoApplication(
                 pickStrategy,
                 input,
