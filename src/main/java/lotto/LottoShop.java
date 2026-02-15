@@ -3,8 +3,9 @@ package lotto;
 import money.Money;
 import purchase.Purchase;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LottoShop {
     public static final Money PRICE = Money.won(1000L);
@@ -16,10 +17,9 @@ public class LottoShop {
         }
         Money paid = PRICE.times(count);
         Money change = purchaseAmount.minus(paid);
-        List<Lotto> lottos = new ArrayList<>();
-        for (long c = 0; c < count; c++) {
-            lottos.add(Lotto.random());
-        }
+        List<Lotto> lottos = Stream.generate(Lotto::random)
+                .limit(count)
+                .collect(Collectors.toList());
         return new Purchase<>(new LottoBundle(lottos), paid, change);
     }
 }

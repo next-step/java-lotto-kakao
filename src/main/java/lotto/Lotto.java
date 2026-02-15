@@ -1,6 +1,7 @@
 package lotto;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Lotto {
     private static final int LENGTH = 6;
@@ -18,11 +19,9 @@ public class Lotto {
     }
 
     private static Set<LottoNumber> convertListToSet(List<Integer> numbers) {
-        Set<LottoNumber> result = new HashSet<>();
-        for (Integer number : numbers) {
-            result.add(new LottoNumber(number));
-        }
-        return result;
+        return numbers.stream()
+                .map(LottoNumber::new)
+                .collect(Collectors.toSet());
     }
 
     public static Lotto random() {

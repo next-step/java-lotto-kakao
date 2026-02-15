@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InputParser {
@@ -29,13 +29,9 @@ public class InputParser {
     }
 
     private static List<Integer> parseTokens(String rawInput) {
-        List<Integer> numbers = new ArrayList<>();
-        String[] tokens = rawInput.split(",");
-
-        for (String token : tokens) {
-            numbers.add(parseInt(token));
-        }
-        return numbers;
+        return Arrays.stream(rawInput.split(","))
+                .map(InputParser::parseInt)
+                .toList();
     }
 
     private static int parseInt(String token) {

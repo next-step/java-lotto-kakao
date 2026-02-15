@@ -1,9 +1,12 @@
 package view;
 
-import lotto.*;
+import lotto.Lotto;
+import lotto.LottoBundle;
+import lotto.LottoBundleResult;
+import lotto.LottoRank;
 
 import java.util.List;
-import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class OutputView {
     private static final List<LottoRank> PRINT_ORDER = List.of(
@@ -22,13 +25,10 @@ public class OutputView {
     }
 
     private void printLotto(Lotto lotto) {
-        StringJoiner joiner = new StringJoiner(", ", "[", "]");
-
-        for (LottoNumber number : lotto.numbers()) {
-            joiner.add("" + number.value());
-        }
-
-        System.out.println(joiner);
+        String output = lotto.numbers().stream()
+                .map(number -> String.valueOf(number.value()))
+                .collect(Collectors.joining(", ", "[", "]"));
+        System.out.println(output);
     }
 
     public void printStatistic(LottoBundleResult lottoBundleResult) {
