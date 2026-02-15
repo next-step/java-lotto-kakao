@@ -5,7 +5,7 @@ import lotto.LottoBundleResult;
 import lotto.LottoShop;
 import lotto.WinLotto;
 import money.Money;
-import purchase.Purchase;
+import purchase.LottoBundlePurchase;
 import utils.InputParser;
 import view.InputView;
 import view.OutputView;
@@ -22,8 +22,8 @@ public class LottoController {
     }
 
     public void run() {
-        Purchase<LottoBundle> lottoBundlePurchase = purchaseLottoBundle();
-        LottoBundle lottoBundle = lottoBundlePurchase.item();
+        LottoBundlePurchase lottoBundlePurchase = purchaseLottoBundle();
+        LottoBundle lottoBundle = lottoBundlePurchase.lottoBundle();
         outputView.printPurchasedLottos(lottoBundle);
         WinLotto win = readWinLotto();
         LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win);
@@ -32,7 +32,7 @@ public class LottoController {
         outputView.printProfitRate(profitRate);
     }
 
-    private Purchase<LottoBundle> purchaseLottoBundle() {
+    private LottoBundlePurchase purchaseLottoBundle() {
         while (true) {
             try {
                 String raw = inputView.readPurchaseMoney();
