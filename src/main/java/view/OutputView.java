@@ -44,7 +44,7 @@ public class OutputView {
     private void printRankLine(LottoRank rank, int count) {
         String label = labelOf(rank);
 
-        System.out.printf("%s (%s원) - %d개%n", label, rank.getPrize().amount(), count);
+        System.out.printf("%s (%d원) - %d개%n", label, rank.getPrizeAmount(), count);
     }
 
     private String labelOf(LottoRank rank) {

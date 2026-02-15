@@ -61,8 +61,8 @@ public enum LottoRank {
         return matchCount;
     }
 
-    public Money getPrize() {
-        return prize;
+    public long getPrizeAmount() {
+        return prize.amount();
     }
 
     public boolean isSecond() {
