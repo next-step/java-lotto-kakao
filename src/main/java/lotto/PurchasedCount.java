@@ -14,6 +14,9 @@ public final class PurchasedCount {
         if(manual > total){
             throw new IllegalArgumentException();
         }
+        if(manual < 0){
+            throw new IllegalArgumentException();
+        }
     }
 
     public int manualCount(){

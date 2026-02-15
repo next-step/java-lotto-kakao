@@ -12,4 +12,12 @@ public class PurchasedCountTest {
         assertThrows(IllegalArgumentException.class,
                 () -> new PurchasedCount(manual, total));
     }
+
+    @Test
+    void 음수_예외_테스트(){
+        int manual = -5;
+        int total = 4;
+        assertThrows(IllegalArgumentException.class,
+                () -> new PurchasedCount(manual, total));
+    }
 }

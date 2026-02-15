@@ -22,5 +22,8 @@ public final class Money {
         if (money % LOTTO_UNIT != 0){
             throw new IllegalArgumentException("천원 단위로만 입력이 가능합니다.");
         }
+        if (money < 0){
+            throw new IllegalArgumentException("양수로만 입력이 가능합니다.");
+        }
     }
 }

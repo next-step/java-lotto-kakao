@@ -13,4 +13,11 @@ public class MoneyTest {
                 .isThrownBy(() -> new Money(1500))
                 .withMessage("천원 단위로만 입력이 가능합니다.");
     }
+
+    @Test
+    void 음수_돈_예외_테스트(){
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> new Money(-1000))
+                .withMessage("양수로만 입력이 가능합니다.");
+    }
 }
