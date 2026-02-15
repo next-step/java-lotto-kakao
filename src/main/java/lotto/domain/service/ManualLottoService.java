@@ -1,8 +1,10 @@
 package lotto.domain.service;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.Lottos;
+import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
@@ -13,9 +15,6 @@ import java.util.List;
 
 public class ManualLottoService implements LottoService {
 
-
-    public static final String NEGATIVE_MANUAL_COUNT_MSG = "수동 구매 수는 0 이상이어야 합니다.";
-    public static final String TOO_MANY_MANUAL_COUNT_MSG = "수동 구매 수가 전체 구매 수보다 클 수 없습니다.";
 
     private final LottoPickStrategy autoPickStrategy;
     private final LottoPickStrategy manualPickStrategy;
@@ -36,17 +35,16 @@ public class ManualLottoService implements LottoService {
 
     @Override
     public LottoPlayer createPlayer() {
-        int price = readPrice();
-        int totalCount = countFrom(price);
-
-        int manualCount = readManualCount(totalCount);
-        int autoCount = totalCount-manualCount;
+        Money price = readPrice();
+        LottoCount totalCount = price.toLottoCount(ONE_LOTTO_PRICE);
+        LottoCount manualCount = readManualCount(totalCount);
+        LottoCount autoCount = totalCount.minus(manualCount);
 
         outputView.printManualLottoRequest();
 
         Lottos manualLottos = buyLottos(manualCount, manualPickStrategy);
         Lottos autoLottos = buyLottos(autoCount, autoPickStrategy);
-        outputView.printManualBuyResult(manualCount, totalCount);
+        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
 
         Lottos all = Lottos.merge(manualLottos, autoLottos);
         outputView.printLottos(all);
@@ -54,44 +52,21 @@ public class ManualLottoService implements LottoService {
         return LottoPlayer.of(price, all);
     }
 
-    private int readPrice() {
+    private Money readPrice() {
         outputView.printPriceRequest();
-        int price = inputView.inputNumber();
-        validatePrice(price);
-        return price;
+        return Money.won(inputView.inputNumber());
     }
 
-    private void validatePrice(int price) {
-        if (price < LottoService.ONE_LOTTO_PRICE) {
-            throw new IllegalArgumentException(LottoService.PRICE_NOT_ENOUGH_MSG);
-        }
-    }
-
-    private int countFrom(int price) {
-        return price / LottoService.ONE_LOTTO_PRICE;
-    }
-
-    private int readManualCount(int totalCount) {
-        outputView.printManualCountRequest();   
-        int manualCount = inputView.inputNumber();
-        validateManualCount(manualCount, totalCount);
-
+    private LottoCount readManualCount(LottoCount totalCount) {
+        outputView.printManualCountRequest();
+        LottoCount manualCount = LottoCount.manual(inputView.inputNumber());
+        manualCount.validateNotExceeded(totalCount);
         return manualCount;
     }
 
-    private void validateManualCount(int manualCount, int totalCount) {
-        if (manualCount < 0) {
-            throw new IllegalArgumentException(NEGATIVE_MANUAL_COUNT_MSG);
-        }
-
-        if (manualCount > totalCount) {
-            throw new IllegalArgumentException(TOO_MANY_MANUAL_COUNT_MSG);
-        }
-    }
-
-    private Lottos buyLottos(int count, LottoPickStrategy strategy) {
+    private Lottos buyLottos(LottoCount count, LottoPickStrategy strategy) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count.value(); i++) {
             lottos.add(createSortedLotto(strategy));
         }
         return Lottos.from(lottos);

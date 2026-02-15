@@ -2,34 +2,24 @@ package lotto.domain;
 
 public class LottoPlayer {
 
-    public static final int LOTTO_PRICE = 1000;
-    public static final String PRICE_TOO_LOW_FAIL_MSG = "1000원 미만의 구매 금액이 입력되었습니다.";
-
-    private int price;
+    private Money price;
     private Lottos lottos;
 
-    public LottoPlayer(int price, Lottos lottos) {
-        validatePrice(price);
+    public LottoPlayer(Money price, Lottos lottos) {
         this.price = price;
         this.lottos = lottos;
     }
 
-    public static LottoPlayer of(int price, Lottos lottos) {
+    public static LottoPlayer of(Money price, Lottos lottos) {
         return new LottoPlayer(price, lottos);
     }
 
-    private void validatePrice(int price) {
-        if (price < LOTTO_PRICE) {
-            throw new IllegalArgumentException(PRICE_TOO_LOW_FAIL_MSG);
-        }
-    }
-
-    public int getPrice() {
+    public Money getPrice() {
         return price;
     }
 
-    public int getLottoCount() {
-        return lottos.size();
+    public LottoCount getLottoCount() {
+        return LottoCount.of(lottos.size());
     }
 
     public Lottos getLottos() {

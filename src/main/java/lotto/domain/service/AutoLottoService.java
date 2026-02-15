@@ -1,8 +1,10 @@
 package lotto.domain.service;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.Lottos;
+import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
@@ -29,10 +31,10 @@ public class AutoLottoService implements LottoService {
 
     @Override
     public LottoPlayer createPlayer() {
-        int price = readPrice();
-        int lottoCount = countFrom(price);
+        Money price = readPrice();
+        LottoCount lottoCount = price.toLottoCount(ONE_LOTTO_PRICE);
 
-        outputView.printAutoBuyResult(lottoCount);
+        outputView.printAutoBuyResult(lottoCount.value());
 
         Lottos lottos = buyLottos(lottoCount);
         outputView.printLottos(lottos);
@@ -40,26 +42,14 @@ public class AutoLottoService implements LottoService {
         return LottoPlayer.of(price, lottos);
     }
 
-    private int readPrice() {
+    private Money readPrice() {
         outputView.printPriceRequest();
-        int price = inputView.inputNumber();
-        validatePrice(price);
-        return price;
+        return Money.won(inputView.inputNumber());
     }
 
-    private void validatePrice(int price) {
-        if (price < ONE_LOTTO_PRICE) {
-            throw new IllegalArgumentException(PRICE_NOT_ENOUGH_MSG);
-        }
-    }
-
-    private int countFrom(int price) {
-        return price / LottoService.ONE_LOTTO_PRICE;
-    }
-
-    private Lottos buyLottos(int count) {
+    private Lottos buyLottos(LottoCount count) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count.value(); i++) {
             lottos.add(new Lotto(autoPickStrategy.generate()));
         }
         return Lottos.from(lottos);
