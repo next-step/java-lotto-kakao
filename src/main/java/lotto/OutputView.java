@@ -4,14 +4,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class OutputView {
-    public static void printPurchaseCount(int count) {
-        System.out.println(count + "개를 구매했습니다.");
+    public static void printPurchaseCount(int manualCount, int autoCount) {
+        System.out.println("수동으로 "+ manualCount + "장, 자동으로 "+ autoCount+"개를 구매했습니다.");
     }
 
-    public static void printLottoBundle(LottoBundle bundle) {
-        for (Lotto lotto : bundle) {
-            System.out.println(lotto);
-        }
+    public static void printLottoBundle(PurchasedLottoBundle bundle) {
+        bundle.forEachLottoInOrder(System.out::println);
     }
 
     public static void printStatisticsHeader() {

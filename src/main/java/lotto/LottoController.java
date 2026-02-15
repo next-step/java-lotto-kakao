@@ -17,6 +17,7 @@ public class LottoController {
         try {
             Money money = new Money(InputView.readPurchaseAmount());
             PurchasedLottoBundle purchasedLottoBundle = buyLottos(money);
+            OutputView.printLottoBundle(purchasedLottoBundle);
             WinningLotto winningLotto = makeWinningLotto();
             processResult(purchasedLottoBundle, winningLotto, money);
         } catch (IllegalArgumentException e) {
@@ -32,7 +33,6 @@ public class LottoController {
         LottoBundle manualLottoBundle = makeManualLottoBundle(purchasedCount.manualCount());
         LottoBundle autoLottoBundle = lottoService.purchase(count-purchasedCount.manualCount()); // 앞서 논의한 Service 활용
         OutputView.printPurchaseCount(purchasedCount.manualCount(), purchasedCount.autoCount());
-        OutputView.printLottoBundle(autoLottoBundle);
         return new PurchasedLottoBundle(manualLottoBundle, autoLottoBundle);
     }
 

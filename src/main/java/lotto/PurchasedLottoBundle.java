@@ -2,6 +2,7 @@ package lotto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class PurchasedLottoBundle {
     private LottoBundle manualBundle;
@@ -20,5 +21,10 @@ public class PurchasedLottoBundle {
         ranks.addAll(autoRankList);
 
         return new LottoResult(ranks);
+    }
+
+    public void forEachLottoInOrder(Consumer<Lotto> action) {
+        manualBundle.forEach(action);
+        autoBundle.forEach(action);
     }
 }
