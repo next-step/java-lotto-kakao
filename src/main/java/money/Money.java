@@ -54,8 +54,8 @@ public final class Money {
         return Money.won(Math.subtractExact(this.value, other.value));
     }
 
-    public long calculatePurchasableCount(long price) {
-        return value / price;
+    public long calculatePurchasableCount(Money price) {
+        return value / price.value;
     }
 
     @Override

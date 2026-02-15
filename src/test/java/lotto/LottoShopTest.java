@@ -10,13 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class LottoShopTest {
     @Test
     void purchaseBundle() {
-        long moneyAmount = 14500L;
-        long count = moneyAmount / LottoShop.PRICE;
-        Money total = Money.won(moneyAmount);
-        Money paid = Money.won(LottoShop.PRICE).times(count);
+        Money total = Money.won(14500L);
+        long count = total.calculatePurchasableCount(LottoShop.PRICE);
+        Money paid = LottoShop.PRICE.times(count);
         Money change = total.minus(paid);
 
-        Purchase<LottoBundle> lottoBundlePurchase = LottoShop.purchaseBundle(Money.won(moneyAmount));
+        Purchase<LottoBundle> lottoBundlePurchase = LottoShop.purchaseBundle(total);
         assertThat(count).isEqualTo(lottoBundlePurchase.item().size());
         assertThat(paid).isEqualTo(lottoBundlePurchase.paid());
         assertThat(change).isEqualTo(lottoBundlePurchase.change());
