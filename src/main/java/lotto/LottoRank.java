@@ -35,7 +35,7 @@ public enum LottoRank {
     }
 
     private static void setRankMap(LottoRank rank) {
-        if (rank == LOSE) {
+        if (rank.isLose()) {
             return;
         }
 
@@ -67,5 +67,9 @@ public enum LottoRank {
 
     public boolean isSecond() {
         return this == LottoRank.SECOND;
+    }
+
+    public boolean isLose() {
+        return this == LottoRank.LOSE;
     }
 }
