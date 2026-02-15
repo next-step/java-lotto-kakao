@@ -42,7 +42,7 @@ public class ManualLottoService implements LottoService {
         int manualCount = readManualCount(totalCount);
         int autoCount = totalCount-manualCount;
 
-        outputView.printManualCountRequest();
+        outputView.printManualLottoRequest();
 
         Lottos manualLottos = buyLottos(manualCount, manualPickStrategy);
         Lottos autoLottos = buyLottos(autoCount, autoPickStrategy);
@@ -72,9 +72,11 @@ public class ManualLottoService implements LottoService {
     }
 
     private int readManualCount(int totalCount) {
-        outputView.printManualLottoRequest();
+        outputView.printManualCountRequest();   
         int manualCount = inputView.inputNumber();
         validateManualCount(manualCount, totalCount);
+
+        return manualCount;
     }
 
     private void validateManualCount(int manualCount, int totalCount) {
