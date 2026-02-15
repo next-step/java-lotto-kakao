@@ -1,22 +1,15 @@
 package lotto;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LottoBundleTest {
-    private WinLotto win;
-
-    @BeforeEach
-    void setUp() {
-        win = new WinLotto(7, List.of(1, 2, 3, 4, 5, 6));
-    }
-
     @Test
     @DisplayName("로또 번들에 null 값이 들어갈 수 없다.")
     void validateLottoNumberCount() {
@@ -46,12 +39,14 @@ public class LottoBundleTest {
                 new Lotto(List.of(3, 8, 27, 30, 35, 44))
         );
 
-        LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win);
+        LottoBundleResult lottoBundleResult = lottoBundle.evaluate(new WinLotto(7, List.of(1, 2, 3, 4, 5, 6)));
 
-        assertThat(lottoBundleResult.getRankCount(LottoRank.FIFTH)).isEqualTo(1);
-        assertThat(lottoBundleResult.getRankCount(LottoRank.FOURTH)).isEqualTo(0);
-        assertThat(lottoBundleResult.getRankCount(LottoRank.THIRD)).isEqualTo(0);
-        assertThat(lottoBundleResult.getRankCount(LottoRank.SECOND)).isEqualTo(0);
-        assertThat(lottoBundleResult.getRankCount(LottoRank.FIRST)).isEqualTo(0);
+        assertAll(
+                () -> assertThat(lottoBundleResult.getRankCount(LottoRank.FIFTH)).isEqualTo(1),
+                () -> assertThat(lottoBundleResult.getRankCount(LottoRank.FOURTH)).isZero(),
+                () -> assertThat(lottoBundleResult.getRankCount(LottoRank.THIRD)).isZero(),
+                () -> assertThat(lottoBundleResult.getRankCount(LottoRank.SECOND)).isZero(),
+                () -> assertThat(lottoBundleResult.getRankCount(LottoRank.FIRST)).isZero()
+        );
     }
 }
