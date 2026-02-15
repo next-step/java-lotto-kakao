@@ -2,15 +2,15 @@ package lotto;
 import java.util.*;
 
 public class LottoResult {
-    private final Map<Rank, WinningCount> result;
+    private final Map<Rank, Counter> result;
 
     public LottoResult(List<Rank> ranks) {
         this.result = summarize(ranks);
     }
 
-    private Map<Rank, WinningCount> summarize(List<Rank> ranks) {
-        Map<Rank, WinningCount> summary = new EnumMap<>(Rank.class);
-        Arrays.stream(Rank.values()).forEach(rank -> summary.put(rank, new WinningCount(0)));
+    private Map<Rank, Counter> summarize(List<Rank> ranks) {
+        Map<Rank, Counter> summary = new EnumMap<>(Rank.class);
+        Arrays.stream(Rank.values()).forEach(rank -> summary.put(rank, new Counter(0)));
 
         for (Rank rank : ranks) {
             summary.get(rank).addCount();
