@@ -32,7 +32,7 @@ public class LottoBundle {
         return buy(money, new LottoGenerator());
     }
 
-    private static LottoBundle buy(Money money, LottoGenerator lottoGenerator) {
+    static LottoBundle buy(Money money, LottoGenerator lottoGenerator) {
         if (lottoGenerator == null) {
             throw new IllegalArgumentException("로또 생성기는 null일 수 없습니다.");
         }

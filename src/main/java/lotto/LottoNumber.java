@@ -13,7 +13,7 @@ public record LottoNumber(int value) implements Comparable<LottoNumber> {
     }
 
     public static List<LottoNumber> allNumbers() {
-        return new ArrayList<>(ALL_NUMBERS);
+        return ALL_NUMBERS;
     }
 
     @Override

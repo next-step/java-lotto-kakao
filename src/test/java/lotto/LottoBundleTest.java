@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -59,6 +61,23 @@ public class LottoBundleTest {
         Money money = Money.won(14000);
         LottoBundle lottoBundle = LottoBundle.buy(money);
         assertThat(Lotto.calculatePurchasableCount(money)).isEqualTo(lottoBundle.size());
+    }
+
+    @Test
+    void buyLottoBundleWithInjectedGenerator() {
+        Money money = Money.won(3000);
+        Lotto fixedLotto = new Lotto(1, 2, 3, 4, 5, 6);
+        LottoGenerator fixedGenerator = new LottoGenerator() {
+            @Override
+            public Lotto generate() {
+                return fixedLotto;
+            }
+        };
+
+        LottoBundle lottoBundle = LottoBundle.buy(money, fixedGenerator);
+
+        assertThat(lottoBundle.size()).isEqualTo(3);
+        assertThat(lottoBundle.asList()).isEqualTo(List.of(fixedLotto, fixedLotto, fixedLotto));
     }
 
     @Test

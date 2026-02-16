@@ -8,6 +8,7 @@ public class Lotto {
     public static final long PRICE = 1000L;
     private static final int LENGTH = 6;
     private final Set<LottoNumber> lottoNumberSet;
+    private final List<LottoNumber> sortedNumbers;
 
     public Lotto(List<Integer> numbers) {
         this(convert(numbers));
@@ -19,7 +20,8 @@ public class Lotto {
 
     public Lotto(Set<LottoNumber> lottoNumberSet) {
         validate(lottoNumberSet);
-        this.lottoNumberSet = lottoNumberSet;
+        this.lottoNumberSet = Set.copyOf(lottoNumberSet);
+        this.sortedNumbers = sortNumbers(this.lottoNumberSet);
     }
 
     private static Set<LottoNumber> convert(List<Integer> numbers) {
@@ -64,9 +66,7 @@ public class Lotto {
     }
 
     public List<LottoNumber> numbers() {
-        List<LottoNumber> list = new ArrayList<>(lottoNumberSet);
-        Collections.sort(list);
-        return list;
+        return sortedNumbers;
     }
 
     @Override
@@ -76,5 +76,11 @@ public class Lotto {
 
     public boolean contains(LottoNumber number) {
         return lottoNumberSet.contains(number);
+    }
+
+    private static List<LottoNumber> sortNumbers(Set<LottoNumber> lottoNumberSet) {
+        List<LottoNumber> list = new ArrayList<>(lottoNumberSet);
+        Collections.sort(list);
+        return List.copyOf(list);
     }
 }
