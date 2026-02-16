@@ -7,25 +7,30 @@ import java.util.Map;
 
 public interface OutputView {
 
-    public void printMessage(String message);
+    void printMessage(String message);
 
-    public void printLottos(Lottos lottos);
+    void printLottos(Lottos lottos);
 
-    public void printWinningStatistics(
+    void printWinningStatistics(
             final Map<LottoStatus, Integer> statuses,
             double profitRate
     );
 
-    public void printManualCountRequest();
+    void printManualCountRequest();
 
-    public void printManualLottoRequest();
+    void printManualLottoRequest();
 
-    public void printAutoNumberRequest();
+    void printAutoNumberRequest();
 
-    public void printPriceRequest();
+    void printPriceRequest();
 
-    public void printAutoBuyResult(int count);
+    void printAutoBuyResult(int count);
 
-    public void printManualBuyResult(int manualCount, int totalCount);
+    void printManualBuyResult(int manualCount, int totalCount);
+
+    void printLastWeekWinningNumberRequest();
+
+    void printBonusNumberRequest();
+
 
 }

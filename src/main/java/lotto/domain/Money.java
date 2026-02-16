@@ -36,8 +36,8 @@ public class Money {
         return LottoCount.of(Math.toIntExact(amount / unit.amount));
     }
 
-    public double rateOf(Money base) {
-        return (double) this.amount / base.amount;
+    public long getAmount() {
+        return this.amount;
     }
 
     @Override

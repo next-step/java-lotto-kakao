@@ -13,7 +13,7 @@ public class WinningLottoTest {
     void success() {
         Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
         int bonusNumber = 7;
-        WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
+        WinningLotto winningLotto = WinningLotto.of(lotto, bonusNumber);
 
         assertThat(winningLotto.getLotto().getNumbers()).containsExactly(1,2,3,4,5,6);
         assertThat(winningLotto.getBonusNumber()).isEqualTo(7);
@@ -26,7 +26,7 @@ public class WinningLottoTest {
         assertThatThrownBy(() -> {
             Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
             int bonusNumber = 46;
-            WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
+            WinningLotto winningLotto = WinningLotto.of(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(LottoNumber.RANGE_FAIL_MSG);
 
@@ -39,7 +39,7 @@ public class WinningLottoTest {
         assertThatThrownBy(() -> {
             Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
             int bonusNumber = 1;
-            WinningLotto winningLotto = new WinningLotto(lotto, bonusNumber);
+            WinningLotto winningLotto = WinningLotto.of(lotto, bonusNumber);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(WinningLotto.BONUS_DUPLICATE_FAIL_MSG);
 

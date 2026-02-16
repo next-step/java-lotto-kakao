@@ -96,6 +96,15 @@ public class TerminalOutputView implements OutputView {
         System.out.println(sb.toString());
     }
 
+    @Override
+    public void printLastWeekWinningNumberRequest() {
+        System.out.println("지난 주 당첨 번호를 입력해 주세요.");
+    }
+
+    @Override
+    public void printBonusNumberRequest() {
+        System.out.println("보너스 볼을 입력해 주세요.");
+    }
 
     private String labelOf(LottoStatus status) {
         if (status == THREE_CORRECT) return "3개 일치";

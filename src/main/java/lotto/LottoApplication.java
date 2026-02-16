@@ -1,6 +1,7 @@
 package lotto;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
 import lotto.domain.Money;
@@ -9,6 +10,7 @@ import lotto.domain.service.LottoService;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,34 +30,64 @@ public class LottoApplication {
         this.outputView = outputView;
     }
 
-    public void play() {
-        LottoPlayer player = lottoService.createPlayer();
-        WinningLotto winningLotto = createWinningLotto();
+    public void playManual() {
+        Money price = readPrice();
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        LottoCount manualCount = readManualCount();
 
-        Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
-        Money profit = Money.won(LottoStatus.totalPrize(statuses));
-        double profitRate = profit.rateOf(player.getPrice());
+        manualCount.validateNotExceeded(totalCount);
 
-        printResult(statuses, profitRate);
+        List<Lotto> manualLottos = readManualLottos(manualCount);
+
+        // 서비스에는 순수 도메인 값만 전달
+        LottoPlayer player = lottoService.purchase(price, manualLottos);
+
+        // 출력은 컨트롤러가 담당
+        LottoCount autoCount = totalCount.minus(manualCount);
+        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
+        outputView.printLottos(player.getLottos());
+
+        WinningLotto winningLotto = readWinningLotto();
+        Map<LottoStatus, Integer> result = winningLotto.countByStatus(player.getLottos());
+
+        long totalPrize = LottoStatus.totalPrize(result);
+        double profitRate = (double) totalPrize / player.getPrice().getAmount();
+
+        outputView.printWinningStatistics(result, profitRate);
     }
 
-    private void printResult(Map<LottoStatus, Integer> statuses, double profitRate) {
-        outputView.printWinningStatistics(statuses, profitRate);
+    public void playAuto() {
+
     }
 
-    private WinningLotto createWinningLotto() {
-        List<Integer> winningNumbers = readWinningLottoNumbers();
-        int bonusNumber = readBonusNumber();
-        return new WinningLotto(Lotto.fromIntegers(winningNumbers), bonusNumber);
+    private Money readPrice() {
+        outputView.printPriceRequest();
+        return Money.won(inputView.inputNumber());
     }
 
-    private List<Integer> readWinningLottoNumbers() {
-        outputView.printMessage("지난 주 당첨 번호를 입력해 주세요.");
-        return inputView.inputNumbers(",");
+    private LottoCount readManualCount() {
+        outputView.printManualCountRequest();
+        return LottoCount.of(inputView.inputNumber());
     }
 
-    private int readBonusNumber() {
-        outputView.printMessage("보너스 볼을 입력해 주세요.");
-        return Integer.parseInt(inputView.input());
+    private List<Lotto> readManualLottos(LottoCount manualCount) {
+        outputView.printManualLottoRequest();
+
+        List<Lotto> lottos = new ArrayList<>();
+        for (int i = 0; i < manualCount.value(); i++) {
+            lottos.add(Lotto.fromIntegers(inputView.inputNumbers(",")));
+        }
+
+        return lottos;
+    }
+
+    private WinningLotto readWinningLotto() {
+        outputView.printLastWeekWinningNumberRequest();
+        List<Integer> winningNumbers = inputView.inputNumbers(",");
+
+        outputView.printBonusNumberRequest();
+        int bonus = Integer.parseInt(inputView.input());
+
+        return WinningLotto.of(Lotto.fromIntegers(winningNumbers), bonus);
     }
 }

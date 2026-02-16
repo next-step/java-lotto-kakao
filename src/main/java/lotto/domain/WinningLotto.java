@@ -11,16 +11,21 @@ public class WinningLotto {
     private final LottoNumber bonusNumber;
 
     public WinningLotto(Lotto lotto, int bonusNumber) {
-        validate(lotto, bonusNumber);
+
         this.lotto = lotto;
         this.bonusNumber = LottoNumber.of(bonusNumber);
     }
 
-    private void validate(Lotto lotto, int bonusNumber) {
+    public static WinningLotto of(Lotto lotto, int bonus) {
+        validate(lotto, bonus);
+        return new WinningLotto(lotto, bonus);
+    }
+
+    private static void validate(Lotto lotto, int bonusNumber) {
         validateDuplicate(lotto, bonusNumber);
     }
 
-    private void validateDuplicate(Lotto lotto, int bonusNumber) {
+    private static void validateDuplicate(Lotto lotto, int bonusNumber) {
         if (lotto.getNumbers().contains(bonusNumber)) {
             throw new IllegalArgumentException(BONUS_DUPLICATE_FAIL_MSG);
         }
