@@ -4,6 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import lotto.config.LottoPolicy;
+import lotto.model.common.Money;
+import lotto.model.machine.LottoMachine;
+import lotto.model.machine.LottoMachineGeneratedResult;
+import lotto.model.machine.LottoPurchaseSession;
+import lotto.model.ticket.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

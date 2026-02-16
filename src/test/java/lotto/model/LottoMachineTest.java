@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Random;
 
 import lotto.config.LottoPolicy;
+import lotto.model.common.Money;
+import lotto.model.machine.LottoMachine;
+import lotto.model.ticket.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

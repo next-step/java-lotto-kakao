@@ -1,4 +1,10 @@
-package lotto.model;
+package lotto.model.machine;
+
+import lotto.model.common.Money;
+import lotto.model.ticket.LottoTicket;
+import lotto.model.ticket.LottoTicketGenerator;
+import lotto.model.ticket.LottoTicketGeneratorRegistry;
+import lotto.model.ticket.TicketGeneratorCommand;
 
 import java.util.List;
 

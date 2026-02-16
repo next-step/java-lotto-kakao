@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 
+import lotto.model.ticket.LottoTicket;
+import lotto.model.ticket.LottoTicketRandomGenerator;
+import lotto.model.ticket.TicketRandomGeneratorCommand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

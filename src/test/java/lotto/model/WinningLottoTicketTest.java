@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import lotto.model.result.Rank;
+import lotto.model.result.WinningLottoNumbers;
+import lotto.model.ticket.LottoNumber;
+import lotto.model.ticket.LottoTicket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

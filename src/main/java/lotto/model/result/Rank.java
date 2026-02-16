@@ -1,4 +1,4 @@
-package lotto.model;
+package lotto.model.result;
 
 public enum Rank {
 	MISS(0, false, 0),

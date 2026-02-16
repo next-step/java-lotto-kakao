@@ -1,4 +1,4 @@
-package lotto.model;
+package lotto.model.common;
 
 public record Money(int amount) {
 

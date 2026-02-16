@@ -6,6 +6,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import java.util.ArrayList;
 import java.util.List;
 
+import lotto.model.common.Money;
+import lotto.model.result.LottoResult;
+import lotto.model.result.Rank;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

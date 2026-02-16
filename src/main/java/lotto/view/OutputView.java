@@ -5,10 +5,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lotto.model.LottoNumber;
-import lotto.model.LottoTicket;
-import lotto.model.LottoResult;
-import lotto.model.Rank;
+import lotto.model.ticket.LottoNumber;
+import lotto.model.ticket.LottoTicket;
+import lotto.model.result.LottoResult;
+import lotto.model.result.Rank;
 
 public class OutputView {
 
