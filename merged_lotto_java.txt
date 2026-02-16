@@ -4,6 +4,7 @@ package lotto;
 import lotto.domain.Lotto;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
+import lotto.domain.Money;
 import lotto.domain.WinningLotto;
 import lotto.domain.service.LottoService;
 import lotto.view.input.InputView;
@@ -33,8 +34,8 @@ public class LottoApplication {
         WinningLotto winningLotto = createWinningLotto();
 
         Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
-        long profit = LottoStatus.totalPrize(statuses);
-        double profitRate = (double) profit / player.getPrice();
+        Money profit = Money.won(LottoStatus.totalPrize(statuses));
+        double profitRate = profit.rateOf(player.getPrice());
 
         printResult(statuses, profitRate);
     }
@@ -318,24 +319,27 @@ package lotto.domain;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.function.BiPredicate;
 
 public enum LottoStatus {
 
-    SIX_CORRECT(2_000_000_000L, (match, bonus) -> match == 6),
-    FIVE_CORRECT_BONUS(30_000_000L, (match, bonus) -> match == 5 && bonus),
-    FIVE_CORRECT(1_500_000L, (match, bonus) -> match == 5 && !bonus),
-    FOUR_CORRECT(50_000L, (match, bonus) -> match == 4),
-    THREE_CORRECT(5_000L, (match, bonus) -> match == 3),
-    FAIL(0L, (match, bonus) -> true)
+    SIX_CORRECT(2_000_000_000L, 6, false, false),
+    FIVE_CORRECT_BONUS(30_000_000L, 5, true, true),
+    FIVE_CORRECT(1_500_000L, 5, false, true),
+    FOUR_CORRECT(50_000L, 4, false, false),
+    THREE_CORRECT(5_000L, 3, false, false),
+    FAIL(0L, -1, false, false)
     ;
 
     private final long price;
-    private final BiPredicate<Integer, Boolean> matchPredicate;
+    private final int count;
+    private final boolean expectedBonus;
+    private final boolean bonusRelevant;
 
-    LottoStatus(long price, BiPredicate<Integer, Boolean> matchPredicate) {
+    LottoStatus(long price, int count, boolean expectedBonus, boolean bonusRelevant) {
         this.price = price;
-        this.matchPredicate = matchPredicate;
+        this.count = count;
+        this.expectedBonus = expectedBonus;
+        this.bonusRelevant = bonusRelevant;
     }
 
     public long getPrice() {
@@ -344,9 +348,9 @@ public enum LottoStatus {
 
     public static LottoStatus judgeGameStatus(int matchCount, boolean hasBonus) {
         return Arrays.stream(values())
-                    .filter(status -> status.matchPredicate.test(matchCount, hasBonus))
-                    .findFirst()
-                    .orElse(FAIL);
+                .filter(status -> status.match(matchCount, hasBonus))
+                .findFirst()
+                .orElse(FAIL);
     }
 
     public static long totalPrize(Map<LottoStatus, Integer> counts) {
@@ -357,6 +361,18 @@ public enum LottoStatus {
         return sum;
     }
 
+    public boolean match(int matchCount, boolean hasBonus) {
+        if (this.count != matchCount) {
+            return false;
+        }
+        if (!bonusRelevant) {
+            return true;
+        }
+        return this.expectedBonus == hasBonus;
+    }
+
+
+
 }
 
 ===== FILE: ./src/main/java/lotto/domain/LottoPlayer.java =====
@@ -364,34 +380,24 @@ package lotto.domain;
 
 public class LottoPlayer {
 
-    public static final int LOTTO_PRICE = 1000;
-    public static final String PRICE_TOO_LOW_FAIL_MSG = "1000원 미만의 구매 금액이 입력되었습니다.";
-
-    private int price;
+    private Money price;
     private Lottos lottos;
 
-    public LottoPlayer(int price, Lottos lottos) {
-        validatePrice(price);
+    public LottoPlayer(Money price, Lottos lottos) {
         this.price = price;
         this.lottos = lottos;
     }
 
-    public static LottoPlayer of(int price, Lottos lottos) {
+    public static LottoPlayer of(Money price, Lottos lottos) {
         return new LottoPlayer(price, lottos);
     }
 
-    private void validatePrice(int price) {
-        if (price < LOTTO_PRICE) {
-            throw new IllegalArgumentException(PRICE_TOO_LOW_FAIL_MSG);
-        }
-    }
-
-    public int getPrice() {
+    public Money getPrice() {
         return price;
     }
 
-    public int getLottoCount() {
-        return lottos.size();
+    public LottoCount getLottoCount() {
+        return LottoCount.of(lottos.size());
     }
 
     public Lottos getLottos() {
@@ -399,13 +405,129 @@ public class LottoPlayer {
     }
 }
 
+===== FILE: ./src/main/java/lotto/domain/Money.java =====
+package lotto.domain;
+
+import java.util.Objects;
+
+public class Money {
+
+    public static final long LOTTO_UNIT = 1_000;
+    public static final Money ONE_LOTTO_PRICE = Money.won(LOTTO_UNIT);
+
+    public static final String NEGATIVE_MONEY_MSG = "금액은 0 이상이어야 합니다.";
+    public static final String INVALID_MONEY_UNIT_MSG = "단위 금액은 0보다 커야 합니다.";
+
+    private final long amount;
+
+    public Money(long amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException(NEGATIVE_MONEY_MSG);
+        }
+        this.amount = amount;
+    }
+
+    public static Money won(long amount) {
+        return new Money(amount);
+    }
+
+    public long value() {
+        return amount;
+    }
+
+    // unit 단위로 로또 몇개 살 수 있는지 알려줘
+    public LottoCount toLottoCount(Money unit) {
+        if (unit.amount <= 0) {
+            throw new IllegalArgumentException(INVALID_MONEY_UNIT_MSG);
+        }
+
+        return LottoCount.of(Math.toIntExact(amount / unit.amount));
+    }
+
+    public double rateOf(Money base) {
+        return (double) this.amount / base.amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Money money = (Money) o;
+        return amount == money.amount;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(amount);
+    }
+}
+
+===== FILE: ./src/main/java/lotto/domain/LottoCount.java =====
+package lotto.domain;
+
+import java.util.Objects;
+
+public class LottoCount {
+
+    public static final String NEGATIVE_COUNT_MSG = "로또 구매 수는 0 이상이어야 합니다.";
+    public static final String NEGATIVE_MANUAL_COUNT_MSG = "수동 구매 수는 0 이상이어야 합니다.";
+    public static final String TOO_MANY_MANUAL_COUNT_MSG = "수동 구매 수가 전체 구매 수보다 클 수 없습니다.";
+
+
+    private final int value;
+
+    public LottoCount(int value) {
+        this.value = value;
+    }
+
+    public static LottoCount of(int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException(NEGATIVE_COUNT_MSG);
+        }
+        return new LottoCount(value);
+    }
+
+    public static LottoCount manual(int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException(NEGATIVE_MANUAL_COUNT_MSG);
+        }
+        return new LottoCount(value);
+    }
+
+    public int value() {
+        return value;
+    }
+
+    public void validateNotExceeded(LottoCount total) {
+        if (this.value > total.value) {
+            throw new IllegalArgumentException(TOO_MANY_MANUAL_COUNT_MSG);
+        }
+    }
+
+    public LottoCount minus(LottoCount other) {
+        int result = this.value - other.value;
+        if (result < 0) {
+            throw new IllegalArgumentException(TOO_MANY_MANUAL_COUNT_MSG);
+        }
+        return LottoCount.of(result);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        LottoCount that = (LottoCount) o;
+        return value == that.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
+}
+
 ===== FILE: ./src/main/java/lotto/domain/LottoNumber.java =====
     package lotto.domain;
 
-    import java.util.Map;
     import java.util.Objects;
-    import java.util.stream.Collectors;
-    import java.util.stream.IntStream;
 
     public class LottoNumber {
 
@@ -413,13 +535,13 @@ public class LottoPlayer {
         public static final int MAX_LOTTO_NUMBER = 45;
         public static final String RANGE_FAIL_MSG = "로또 번호의 범위는 1 ~ 45사이어야 합니다.";
 
-        private static final Map<Integer, LottoNumber> CACHE =
-                IntStream.rangeClosed(MIN_LOTTO_NUMBER, MAX_LOTTO_NUMBER)
-                        .boxed()
-                        .collect(Collectors.toUnmodifiableMap(
-                                i -> i,
-                                LottoNumber::new
-                        ));
+        private static final LottoNumber[] CACHE = new LottoNumber[MAX_LOTTO_NUMBER + 1];
+
+        static  {
+            for (int i = MIN_LOTTO_NUMBER; i <= MAX_LOTTO_NUMBER; i++) {
+                CACHE[i] = new LottoNumber(i);
+            }
+        }
 
         private final int value;
 
@@ -438,9 +560,9 @@ public class LottoPlayer {
             return value;
         }
 
-        public static LottoNumber from(int value) {
+        public static LottoNumber of(int value) {
             validate(value);
-            return CACHE.get(value);
+            return CACHE[value];
         }
 
 
@@ -480,7 +602,7 @@ public class Lotto {
         validate(values);
 
         List<LottoNumber> lottoNumbers = values.stream()
-                .map(LottoNumber::from)
+                .map(LottoNumber::of)
                 .toList();
 
         Set<Integer> set = new HashSet<>(values);
@@ -489,10 +611,6 @@ public class Lotto {
 
     public Lotto(List<Integer> values) {
         this(Lotto.fromIntegers(values));
-    }
-
-    public Lotto(int v1, int v2, int v3, int v4, int v5, int v6) {
-        this(List.of(v1, v2, v3, v4, v5, v6));
     }
 
     public Lotto(int... values) {
@@ -565,8 +683,10 @@ public class Lotto {
 package lotto.domain.service;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.Lottos;
+import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
@@ -593,10 +713,10 @@ public class AutoLottoService implements LottoService {
 
     @Override
     public LottoPlayer createPlayer() {
-        int price = readPrice();
-        int lottoCount = countFrom(price);
+        Money price = readPrice();
+        LottoCount lottoCount = price.toLottoCount(ONE_LOTTO_PRICE);
 
-        outputView.printAutoBuyResult(lottoCount);
+        outputView.printAutoBuyResult(lottoCount.value());
 
         Lottos lottos = buyLottos(lottoCount);
         outputView.printLottos(lottos);
@@ -604,26 +724,14 @@ public class AutoLottoService implements LottoService {
         return LottoPlayer.of(price, lottos);
     }
 
-    private int readPrice() {
+    private Money readPrice() {
         outputView.printPriceRequest();
-        int price = inputView.inputNumber();
-        validatePrice(price);
-        return price;
+        return Money.won(inputView.inputNumber());
     }
 
-    private void validatePrice(int price) {
-        if (price < ONE_LOTTO_PRICE) {
-            throw new IllegalArgumentException(PRICE_NOT_ENOUGH_MSG);
-        }
-    }
-
-    private int countFrom(int price) {
-        return price / LottoService.ONE_LOTTO_PRICE;
-    }
-
-    private Lottos buyLottos(int count) {
+    private Lottos buyLottos(LottoCount count) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count.value(); i++) {
             lottos.add(new Lotto(autoPickStrategy.generate()));
         }
         return Lottos.from(lottos);
@@ -634,10 +742,11 @@ public class AutoLottoService implements LottoService {
 package lotto.domain.service;
 
 import lotto.domain.LottoPlayer;
+import lotto.domain.Money;
 
 public interface LottoService {
 
-    static final int ONE_LOTTO_PRICE = 1000;
+    static final Money ONE_LOTTO_PRICE = Money.ONE_LOTTO_PRICE;
     static final String PRICE_NOT_ENOUGH_MSG = "구입금액은 1000원 이상이어야 합니다.";
 
     LottoPlayer createPlayer();
@@ -647,8 +756,10 @@ public interface LottoService {
 package lotto.domain.service;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.Lottos;
+import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
@@ -659,9 +770,6 @@ import java.util.List;
 
 public class ManualLottoService implements LottoService {
 
-
-    public static final String NEGATIVE_MANUAL_COUNT_MSG = "수동 구매 수는 0 이상이어야 합니다.";
-    public static final String TOO_MANY_MANUAL_COUNT_MSG = "수동 구매 수가 전체 구매 수보다 클 수 없습니다.";
 
     private final LottoPickStrategy autoPickStrategy;
     private final LottoPickStrategy manualPickStrategy;
@@ -682,17 +790,16 @@ public class ManualLottoService implements LottoService {
 
     @Override
     public LottoPlayer createPlayer() {
-        int price = readPrice();
-        int totalCount = countFrom(price);
-
-        int manualCount = readManualCount(totalCount);
-        int autoCount = totalCount-manualCount;
+        Money price = readPrice();
+        LottoCount totalCount = price.toLottoCount(ONE_LOTTO_PRICE);
+        LottoCount manualCount = readManualCount(totalCount);
+        LottoCount autoCount = totalCount.minus(manualCount);
 
         outputView.printManualLottoRequest();
 
         Lottos manualLottos = buyLottos(manualCount, manualPickStrategy);
         Lottos autoLottos = buyLottos(autoCount, autoPickStrategy);
-        outputView.printManualBuyResult(manualCount, totalCount);
+        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
 
         Lottos all = Lottos.merge(manualLottos, autoLottos);
         outputView.printLottos(all);
@@ -700,44 +807,21 @@ public class ManualLottoService implements LottoService {
         return LottoPlayer.of(price, all);
     }
 
-    private int readPrice() {
+    private Money readPrice() {
         outputView.printPriceRequest();
-        int price = inputView.inputNumber();
-        validatePrice(price);
-        return price;
+        return Money.won(inputView.inputNumber());
     }
 
-    private void validatePrice(int price) {
-        if (price < LottoService.ONE_LOTTO_PRICE) {
-            throw new IllegalArgumentException(LottoService.PRICE_NOT_ENOUGH_MSG);
-        }
-    }
-
-    private int countFrom(int price) {
-        return price / LottoService.ONE_LOTTO_PRICE;
-    }
-
-    private int readManualCount(int totalCount) {
+    private LottoCount readManualCount(LottoCount totalCount) {
         outputView.printManualCountRequest();
-        int manualCount = inputView.inputNumber();
-        validateManualCount(manualCount, totalCount);
-
+        LottoCount manualCount = LottoCount.manual(inputView.inputNumber());
+        manualCount.validateNotExceeded(totalCount);
         return manualCount;
     }
 
-    private void validateManualCount(int manualCount, int totalCount) {
-        if (manualCount < 0) {
-            throw new IllegalArgumentException(NEGATIVE_MANUAL_COUNT_MSG);
-        }
-
-        if (manualCount > totalCount) {
-            throw new IllegalArgumentException(TOO_MANY_MANUAL_COUNT_MSG);
-        }
-    }
-
-    private Lottos buyLottos(int count, LottoPickStrategy strategy) {
+    private Lottos buyLottos(LottoCount count, LottoPickStrategy strategy) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count.value(); i++) {
             lottos.add(createSortedLotto(strategy));
         }
         return Lottos.from(lottos);
@@ -807,7 +891,7 @@ public class WinningLotto {
     public WinningLotto(Lotto lotto, int bonusNumber) {
         validate(lotto, bonusNumber);
         this.lotto = lotto;
-        this.bonusNumber = LottoNumber.from(bonusNumber);
+        this.bonusNumber = LottoNumber.of(bonusNumber);
     }
 
     private void validate(Lotto lotto, int bonusNumber) {

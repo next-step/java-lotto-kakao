@@ -10,7 +10,6 @@ import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ManualLottoService implements LottoService {
@@ -67,17 +66,9 @@ public class ManualLottoService implements LottoService {
     private Lottos buyLottos(LottoCount count, LottoPickStrategy strategy) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count.value(); i++) {
-            lottos.add(createSortedLotto(strategy));
+            lottos.add(new Lotto(strategy.generate()));
         }
         return Lottos.from(lottos);
     }
-
-    private Lotto createSortedLotto(LottoPickStrategy strategy) {
-        List<Integer> numbers = new ArrayList<>(strategy.generate());
-        Collections.sort(numbers);
-        return Lotto.fromIntegers(numbers);
-    }
-
-
-
 }
+

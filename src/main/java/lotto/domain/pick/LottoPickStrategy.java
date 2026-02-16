@@ -1,10 +1,10 @@
 package lotto.domain.pick;
 
+import lotto.domain.LottoNumber;
+
 import java.util.List;
 
 public interface LottoPickStrategy {
 
-    public static final int LOTTO_SIZE = 6;
-
-    public List<Integer> generate();
+    public List<LottoNumber> generate();
 }

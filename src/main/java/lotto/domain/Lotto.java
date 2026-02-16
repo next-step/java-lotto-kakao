@@ -14,7 +14,6 @@ public class Lotto {
     public static final String DUPLICATE_FAIL_MSG = "중복된 숫자가 입력되었습니다.";
 
     private final List<LottoNumber> numbers;
-    private final Set<Integer> numberSet;
 
     public static Lotto fromIntegers(List<Integer> values) {
         validate(values);
@@ -23,26 +22,23 @@ public class Lotto {
                 .map(LottoNumber::of)
                 .toList();
 
-        Set<Integer> set = new HashSet<>(values);
-        return new Lotto(lottoNumbers, Set.copyOf(set));
+        return new Lotto(lottoNumbers);
     }
 
-    public Lotto(List<Integer> values) {
-        this(Lotto.fromIntegers(values));
+
+    public Lotto(List<LottoNumber> values) {
+        this.numbers = List.copyOf(values);
     }
 
     public Lotto(int... values) {
-        this(Arrays.stream(values).boxed().toList());
+        this(Arrays.stream(values)
+                .boxed()
+                .map(LottoNumber::of)
+                .toList());
     }
 
     private Lotto(Lotto other) {
         this.numbers = other.numbers;
-        this.numberSet = other.numberSet;
-    }
-
-    private Lotto(List<LottoNumber> numbers, Set<Integer> numberSet) {
-        this.numbers = List.copyOf(numbers);
-        this.numberSet = Set.copyOf(numberSet);
     }
 
     private static void validate(List<Integer> numbers) {
@@ -63,21 +59,17 @@ public class Lotto {
         }
     }
 
-
     public List<Integer> getNumbers() {
         return numbers.stream()
                 .map(LottoNumber::getValue)
                 .toList();
     }
 
-    public Set<Integer> getNumberSet() {
-        return numberSet;
-    }
-
     public int matchCount(Lotto other) {
         int count = 0;
+        Set<Integer> set = new HashSet<>(other.getNumbers());
         for (LottoNumber number : this.numbers) {
-            if (other.getNumberSet().contains(number.getValue())) {
+            if (set.contains(number.getValue())) {
                 count++;
             }
         }

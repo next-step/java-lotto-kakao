@@ -1,5 +1,6 @@
 package lotto.domain.pick;
 
+import lotto.domain.LottoNumber;
 import lotto.view.input.InputView;
 
 import java.util.List;
@@ -13,7 +14,10 @@ public class ManualLottoNumberGenerator implements LottoPickStrategy {
     }
 
     @Override
-    public List<Integer> generate() {
-        return inputView.inputNumbers(",");
+    public List<LottoNumber> generate() {
+        return inputView.inputNumbers(",").stream()
+                .map(LottoNumber::of)
+                .toList();
     }
+
 }

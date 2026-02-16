@@ -1,7 +1,8 @@
 package lotto;
 
+import lotto.domain.Lotto;
+import lotto.domain.LottoNumber;
 import lotto.domain.pick.AutoLottoNumberGenerator;
-import lotto.domain.pick.LottoPickStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,9 +14,9 @@ class AutoLottoNumberGeneratorTest {
     @Test
     void success_test() {
         AutoLottoNumberGenerator generator = new AutoLottoNumberGenerator();
-        List<Integer> result = generator.generate();
+        List<LottoNumber> result = generator.generate();
 
-        assertThat(result).hasSize(LottoPickStrategy.LOTTO_SIZE);
+        assertThat(result).hasSize(Lotto.REQUIRED_SIZE);
     }
 
 }

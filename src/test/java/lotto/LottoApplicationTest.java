@@ -1,6 +1,7 @@
 package lotto;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoNumber;
 import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
 import lotto.domain.pick.LottoPickStrategy;
@@ -148,8 +149,15 @@ public class LottoApplicationTest {
     static class FixedNumberGenerator implements LottoPickStrategy {
 
         @Override
-        public List<Integer> generate() {
-            return List.of(1, 2, 3, 4, 5, 6);
+        public List<LottoNumber> generate() {
+            return List.of(
+                    LottoNumber.of(1),
+                    LottoNumber.of(2),
+                    LottoNumber.of(3),
+                    LottoNumber.of(4),
+                    LottoNumber.of(5),
+                    LottoNumber.of(6)
+            );
         }
     }
 
