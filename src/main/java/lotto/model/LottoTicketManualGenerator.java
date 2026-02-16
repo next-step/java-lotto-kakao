@@ -2,8 +2,19 @@ package lotto.model;
 
 import java.util.List;
 
-public class LottoTicketManualGenerator extends LottoTicketGenerator {
-    public LottoTicket generate(List<Integer> manualNumbers){
-        return super.generate(manualNumbers);
+public class LottoTicketManualGenerator implements LottoTicketGenerator<TicketManualGeneratorCommand> {
+    @Override
+    public Class<TicketManualGeneratorCommand> commandType(){
+        return TicketManualGeneratorCommand.class;
+    }
+
+    private LottoTicket generateTicket(List<Integer> manualNumbers){
+        return new LottoTicket(
+                manualNumbers.stream().map(LottoNumber::of).toList()
+        );
+    }
+
+    public List<LottoTicket> generate(TicketManualGeneratorCommand command){
+        return command.numbers().stream().map(this::generateTicket).toList();
     }
 }

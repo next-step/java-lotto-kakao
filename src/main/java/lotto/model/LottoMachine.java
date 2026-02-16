@@ -3,24 +3,31 @@ package lotto.model;
 import java.util.List;
 
 public class LottoMachine {
-
 	private final Money lottoTicketPrice;
-	private final LottoTicketRandomGenerator lottoTicketRandomGenerator;
+	private final LottoTicketGeneratorRegistry registry;
 
-	public LottoMachine(Money lottoTicketPrice, LottoTicketRandomGenerator lottoTicketRandomGenerator) {
+	public LottoMachine(Money lottoTicketPrice, LottoTicketGeneratorRegistry registry) {
 		this.lottoTicketPrice = lottoTicketPrice;
-		this.lottoTicketRandomGenerator = lottoTicketRandomGenerator;
+		this.registry = registry;
+
 	}
 
-	public LottoMachineGeneratedResult generate(Money purchasePrice) {
-		int price = purchasePrice.amount();
-		if (price < lottoTicketPrice.amount()){
-			throw new IllegalArgumentException("티켓 주문 금액은 최소 " + lottoTicketPrice.amount() + "원 이상 입력해야 합니다.");
-		}
+	public int getPurchasableTicketCount(Money money){
+		return money.divideBy(lottoTicketPrice);
+	}
 
-		int ticketCount = price / lottoTicketPrice.amount();
-		Money totalPrice = new Money(lottoTicketPrice.amount() * ticketCount);
-		List<LottoTicket> lottoTickets = lottoTicketRandomGenerator.generate(ticketCount);
-		return new LottoMachineGeneratedResult(totalPrice, lottoTickets);
+	public Money getPriceOfTickets(int count){
+		return lottoTicketPrice.multiply(count);
+	}
+
+	public<C extends TicketGeneratorCommand> List<LottoTicket> generate(C command){
+		LottoTicketGenerator<TicketGeneratorCommand> generator = registry.find(command);
+		return generator.generate(command);
+	}
+
+	public void validatePurchasable(Money remainDeposit,int ticketCount){
+		if (remainDeposit.isLessThan(lottoTicketPrice.multiply(ticketCount))){
+			throw new IllegalArgumentException("티켓 생성을 위한 금액이 부족합니다.");
+		}
 	}
 }

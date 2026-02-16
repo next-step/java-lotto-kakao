@@ -8,32 +8,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class LottoTicketRandomGenerator extends LottoTicketGenerator{
-
-	private final Random random;
-
-	public LottoTicketRandomGenerator(Random random) {
-		this.random = random;
+public class LottoTicketRandomGenerator implements LottoTicketGenerator<TicketRandomGeneratorCommand>{
+	public Class<TicketRandomGeneratorCommand> commandType(){
+		return TicketRandomGeneratorCommand.class;
 	}
 
-	public LottoTicketRandomGenerator() {
-		this.random = new Random();
-	}
+	private LottoTicket generateTicket(Random random) {
+		List<Integer> allNumbers = new ArrayList<>(IntStream.rangeClosed(1, 45).boxed().toList());
 
-	public LottoTicket generate() {
-		List<Integer> allNumbers = new ArrayList<>(IntStream.rangeClosed(1, 45)
-				.boxed()
-				.toList());
-		
 		Collections.shuffle(allNumbers, random);
 		List<Integer> numbers = allNumbers.subList(0, LottoTicket.LOTTO_LENGTH);
-
-		return super.generate(numbers);
+		return new LottoTicket(numbers.stream().map(LottoNumber::of).toList());
 	}
 
-	public List<LottoTicket> generate(int count) {
-		return Stream.generate(this::generate)
-				.limit(count)
+	public List<LottoTicket> generate(TicketRandomGeneratorCommand command) {
+		return Stream.generate(()-> this.generateTicket(command.random()))
+				.limit(command.count())
 				.collect(Collectors.toList());
 	}
 }

@@ -2,10 +2,8 @@ package lotto.model;
 
 import java.util.List;
 
-public class LottoTicketGenerator {
-    LottoTicket generate(List<Integer> numbers){
-        return new LottoTicket(
-                numbers.stream().map(LottoNumber::of).toList()
-        );
-    }
+
+public interface LottoTicketGenerator<C extends TicketGeneratorCommand> {
+    Class<C> commandType();
+    List<LottoTicket> generate(C command);
 }

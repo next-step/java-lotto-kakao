@@ -26,6 +26,9 @@
 ## STPEP 2 테스트 설계
 1. LottoTicketManualGenerator
   - [x] 로또 티켓이 원하는 숫자로 생성되는지 검증
+2. LottoPurchaseSession
+  - [x] 구입한 금액보다 많은 티켓이 생성되지 않는지 검증
+  - [x] 수동, 자동 로또 결과가 잘 합쳐서 반환되는지 검증 
    
 ## 진행 방법
 * 로또 요구사항을 파악한다.

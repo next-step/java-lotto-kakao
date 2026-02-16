@@ -15,11 +15,12 @@ public class LottoTicketRandomGeneratorTest{
 		Random random = new Random(20260105);
 		Random targetRandom = new Random(20260105);
 
-		LottoTicketRandomGenerator generator = new LottoTicketRandomGenerator(random);
-		LottoTicketRandomGenerator targetGenerator = new LottoTicketRandomGenerator(targetRandom);
+		LottoTicketRandomGenerator generator = new LottoTicketRandomGenerator();
+		TicketRandomGeneratorCommand command = new TicketRandomGeneratorCommand(1,random);
+		TicketRandomGeneratorCommand targetCommand = new TicketRandomGeneratorCommand(1,targetRandom);
 
-		LottoTicket lottoTicket = generator.generate();
-		LottoTicket targetLottoTicket = targetGenerator.generate();
+		LottoTicket lottoTicket = generator.generate(command).getFirst();
+		LottoTicket targetLottoTicket = generator.generate(targetCommand).getFirst();
 
 		assertThat(lottoTicket.equals(targetLottoTicket)).isTrue();
 	}
@@ -30,11 +31,12 @@ public class LottoTicketRandomGeneratorTest{
 		Random random = new Random(20260105);
 		Random targetRandom = new Random(20260210);
 
-		LottoTicketRandomGenerator generator = new LottoTicketRandomGenerator(random);
-		LottoTicketRandomGenerator targetGenerator = new LottoTicketRandomGenerator(targetRandom);
+		LottoTicketRandomGenerator generator = new LottoTicketRandomGenerator();
+		TicketRandomGeneratorCommand command = new TicketRandomGeneratorCommand(1,random);
+		TicketRandomGeneratorCommand targetCommand = new TicketRandomGeneratorCommand(1,targetRandom);
 
-		LottoTicket lottoTicket = generator.generate();
-		LottoTicket targetLottoTicket = targetGenerator.generate();
+		LottoTicket lottoTicket = generator.generate(command).getFirst();
+		LottoTicket targetLottoTicket = generator.generate(targetCommand).getFirst();
 
 		assertThat(lottoTicket.equals(targetLottoTicket)).isFalse();
 	}
