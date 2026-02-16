@@ -19,5 +19,4 @@ public class ManualLottoNumberGenerator implements LottoPickStrategy {
                 .map(LottoNumber::of)
                 .toList();
     }
-
 }
