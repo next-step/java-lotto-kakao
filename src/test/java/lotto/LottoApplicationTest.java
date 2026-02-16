@@ -5,7 +5,6 @@ import lotto.domain.LottoNumber;
 import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
 import lotto.domain.pick.LottoPickStrategy;
-import lotto.domain.pick.ManualLottoNumberGenerator;
 import lotto.domain.service.AutoLottoService;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;

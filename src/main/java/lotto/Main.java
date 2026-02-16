@@ -1,7 +1,6 @@
 package lotto;
 
 import lotto.domain.pick.AutoLottoNumberGenerator;
-import lotto.domain.pick.ManualLottoNumberGenerator;
 import lotto.domain.service.AutoLottoService;
 import lotto.domain.service.ManualLottoService;
 import lotto.view.input.InputView;
