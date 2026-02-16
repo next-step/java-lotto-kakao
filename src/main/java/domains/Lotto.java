@@ -1,5 +1,7 @@
 package domains;
 
+import controller.WinningLotto;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +26,7 @@ public class Lotto {
 
     private static List<LottoNumber> toLottoNumberList(int[] numbers) {
         return Arrays.stream(numbers)
-                .mapToObj(LottoNumber::of)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList());
     }
 
@@ -64,13 +66,12 @@ public class Lotto {
         return numbers.hashCode();
     }
 
-    public Rank match(Lotto winningLotto, LottoNumber bonusNumber) {
-        Integer matchCount = countMatches(winningLotto);
-        Boolean matchBonus = contains(bonusNumber);
+    public Rank match(WinningLotto winningLotto) {
+        int matchCount = countMatches(winningLotto.getWinningNumbers());
+        Boolean matchBonus = contains(winningLotto.getBonusNumber());
 
         Rank rank = Rank.mainMatch(matchCount);
-        rank = Rank.bonusMatch(rank, matchBonus);
-        return rank;
+        return Rank.bonusMatch(rank, matchBonus);
     }
 
     public int countMatches(Lotto winningLotto) {

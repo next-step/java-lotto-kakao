@@ -1,5 +1,7 @@
 package domains;
 
+import controller.LottoCount;
+
 import java.util.List;
 
 public class Money {
@@ -18,6 +20,10 @@ public class Money {
 
     public int availableLottoCount() {
         return amount / LOTTO_COST;
+    }
+
+    public LottoCount toLottoCount(int manualCount) {
+        return new LottoCount(manualCount, availableLottoCount());
     }
 
     public Double calculateRate(List<Rank> rankList) {

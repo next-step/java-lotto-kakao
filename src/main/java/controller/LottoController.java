@@ -4,23 +4,39 @@ import domains.*;
 import view.InputView;
 import view.OutputView;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class LottoController {
     private static final Integer RETRY_ATTEMPT = 10;
 
-    public static void run() {
+    private final Generator generator;
+
+    public LottoController(Generator generator) {
+        this.generator = generator;
+    }
+
+    public void run() {
         try {
             Money userMoney = retry(InputView::inputMoney);
-            LottoTickets lottoTickets = new LottoTickets(userMoney);
-            OutputView.printLottos(lottoTickets.getLottos());
+
+            LottoCount lottoCount = retry(() -> InputView.inputManualCount(userMoney));
+
+            OutputView.printManualComment();
+            List<Lotto> manualLottos = new ArrayList<>();
+            for (int i = 0; i < lottoCount.getManualCount(); i++) {
+                manualLottos.add(retry(InputView::inputManualLotto));
+            }
+
+            LottoTickets lottoTickets = new LottoTickets(manualLottos, lottoCount.getAutoCount(), generator);
+            OutputView.printLottos(lottoCount.getManualCount(), lottoTickets.getLottos());
 
             Lotto winningLotto = retry(InputView::inputWinningNumbers);
-            LottoNumber bonusNumber = retry(() -> InputView.inputBonusNumber(winningLotto));
+            LottoNumber bonusNumber = retry(InputView::inputBonusNumber);
+            WinningLotto winning = retry(() -> new WinningLotto(winningLotto, bonusNumber));
 
-            RankResult result = execute(lottoTickets, winningLotto, bonusNumber, userMoney);
+            RankResult result = execute(userMoney, lottoTickets, winning);
 
             OutputView.printWinning(result.getRanks());
             OutputView.printRate(result.getRate());
@@ -30,13 +46,13 @@ public class LottoController {
         }
     }
 
-    public static RankResult execute(LottoTickets lottoTickets, Lotto winningLotto, LottoNumber bonusNumber, Money userMoney) {
-        List<Rank> ranks = lottoTickets.match(winningLotto, bonusNumber);
+    public RankResult execute(Money userMoney, LottoTickets lottoTickets, WinningLotto winningLotto) {
+        List<Rank> ranks = lottoTickets.match(winningLotto);
         Double rate = userMoney.calculateRate(ranks);
         return new RankResult(ranks, rate);
     }
 
-    private static <T> T retry(Supplier<T> supplier) {
+    private <T> T retry(Supplier<T> supplier) {
         int attempt = 0;
         while (attempt++ < RETRY_ATTEMPT) {
             try {
