@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class LottoGenerator {
+    private LottoGenerator() {
+    }
+
     private static final int MIN_NUMBER = 1;
     private static final int MAX_NUMBER = 46;
     private static final int LOTTO_SIZE = 6;
