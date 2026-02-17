@@ -36,17 +36,27 @@ public class LottoApplication {
         LottoCount manualCount = readManualCount();
 
         manualCount.validateNotExceeded(totalCount);
-
         List<Lotto> manualLottos = readManualLottos(manualCount);
-
-        // 서비스에는 순수 도메인 값만 전달
         LottoPlayer player = lottoService.purchase(price, manualLottos);
 
-        // 출력은 컨트롤러가 담당
-        LottoCount autoCount = totalCount.minus(manualCount);
         outputView.printManualBuyResult(manualCount.value(), totalCount.value());
         outputView.printLottos(player.getLottos());
 
+        finishGame(player);
+    }
+
+    public void playAuto() {
+        Money price = readPrice();
+
+        LottoPlayer player = lottoService.purchase(price, List.of());
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        outputView.printAutoBuyResult(totalCount.value());
+        outputView.printLottos(player.getLottos());
+
+        finishGame(player);
+    }
+
+    private void finishGame(LottoPlayer player) {
         WinningLotto winningLotto = readWinningLotto();
         Map<LottoStatus, Integer> result = winningLotto.countByStatus(player.getLottos());
 
@@ -54,10 +64,6 @@ public class LottoApplication {
         double profitRate = (double) totalPrize / player.getPrice().getAmount();
 
         outputView.printWinningStatistics(result, profitRate);
-    }
-
-    public void playAuto() {
-
     }
 
     private Money readPrice() {
