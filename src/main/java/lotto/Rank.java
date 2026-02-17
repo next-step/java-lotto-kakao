@@ -37,4 +37,8 @@ public enum Rank {
     public int toWinningMoney() {
         return winningMoney;
     }
+
+    public Money winningMoney(int count) {
+        return new Money((long) winningMoney * count);
+    }
 }

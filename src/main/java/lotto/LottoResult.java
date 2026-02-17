@@ -24,10 +24,10 @@ public class LottoResult {
     }
 
     public double calculateYield(Money purchaseMoney) {
-        long totalPrize = Arrays.stream(Rank.values())
-                .mapToLong(rank -> (long) rank.toWinningMoney() * toCount(rank))
-                .sum();
+        Money totalPrize = Arrays.stream(Rank.values())
+                .map(rank -> rank.winningMoney(toCount(rank)))
+                .reduce(Money.zero(), Money::sum);
 
-        return YieldCalculator.calculate(totalPrize, purchaseMoney.money());
+        return YieldCalculator.calculate(totalPrize, purchaseMoney);
     }
 }
