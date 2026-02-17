@@ -10,7 +10,7 @@ public class LottoForm {
         markedLottos.add(new Lotto(numbers));
     }
 
-    LottoBundle submit() {
-        return new LottoBundle(markedLottos);
+    List<Lotto> manualLottos() {
+        return List.copyOf(markedLottos);
     }
 }
