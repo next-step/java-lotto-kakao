@@ -66,4 +66,16 @@ public class Lotto {
     public boolean contains(LottoNumber number) {
         return lottoNumberSet.contains(number);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Lotto lotto = (Lotto) o;
+        return Objects.equals(lottoNumberSet, lotto.lottoNumberSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(lottoNumberSet);
+    }
 }
