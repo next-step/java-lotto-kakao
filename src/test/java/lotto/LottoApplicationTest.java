@@ -5,6 +5,7 @@ import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
 import lotto.domain.pick.LottoPickStrategy;
 import lotto.domain.service.AutoLottoService;
+import lotto.domain.service.ManualLottoService;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;
@@ -16,18 +17,84 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
+
 public class LottoApplicationTest {
 
     @Test
     @DisplayName("playauto: UI 문자열에 의존하지 않고 구매/당첨 수 통계를 OutputView 포트로 전달한다.")
-    void playAuto_portLeveltest() {
+    void playAuto_portLevelTest() {
         FixedPickStrategy fixedPickStrategy = new FixedPickStrategy();
 
         AutoLottoService service = new AutoLottoService(fixedPickStrategy);
-        new
+        StubInputView inputView = StubInputView.builder()
+                .inputNumbers(3000) // 구입금액
+                .inputNumbersList(List.of(1, 2, 3, 4, 5, 6))
+                .inputs("7")
+                .build();
 
+        SpyOutputView outputView = new SpyOutputView();
+        LottoApplication app = new LottoApplication(service, inputView, outputView);
 
+        //when
+        app.playAuto();
+
+        //then 텍스트가 아니라 어떤 출력포트로 전달했는지만을 확인했습니다.
+        assertThat(outputView.priceRequestCount).isEqualTo(1);
+        assertThat(outputView.autoBuyCount).isEqualTo(3);
+
+        assertThat(outputView.printedLottos).isNotNull();
+        assertThat(outputView.printedLottos.size()).isEqualTo(3);
+
+        assertThat(outputView.lastWeekWinningNumberRequestCount).isEqualTo(1);
+        assertThat(outputView.bonusNumberRequestCount).isEqualTo(1);
+
+        assertThat(outputView.statuses.getOrDefault(LottoStatus.SIX_CORRECT, 0)).isEqualTo(3);
+        assertThat(outputView.profitRate).isCloseTo(2_000_000.0, within(1e-9));
     }
+
+    @Test
+    @DisplayName("playManual: 수동 3장 + 자동 11장 구매 후 통계를 OutputView 포트로 전달한다.")
+    void playManual_portLevelTest() {
+        LottoPickStrategy fixedPickStrategy = new FixedPickStrategy();
+
+        ManualLottoService service = new ManualLottoService(fixedPickStrategy);
+        StubInputView inputView = StubInputView.builder()
+                .inputNumbers(14000) // 구입 금액 -> 14장
+                .inputNumbers(3) // 수동 구매 수
+                // 수동 로또 3장
+                .inputNumbersList(List.of(8, 21, 23, 41, 42, 43))
+                .inputNumbersList(List.of(3, 5, 11, 16, 32, 38))
+                .inputNumbersList(List.of(7, 11, 16, 35, 36, 44))
+                // 지난 주 당첨 번호 + 보너스
+                .inputNumbersList(List.of(1, 2, 3, 4, 5, 6))
+                .inputs("7")
+                .build();
+        SpyOutputView outputView = new SpyOutputView();
+
+        LottoApplication app = new LottoApplication(service, inputView, outputView);
+
+        // when
+        app.playManual();
+
+        // then
+        assertThat(outputView.priceRequestCount).isEqualTo(1);
+        assertThat(outputView.manualCountRequestCount).isEqualTo(1);
+        assertThat(outputView.manualLottoRequestCount).isEqualTo(1);
+
+        assertThat(outputView.manualBuyManualCount).isEqualTo(3);
+        assertThat(outputView.manualBuyTotalCount).isEqualTo(14);
+
+        assertThat(outputView.printedLottos).isNotNull();
+        assertThat(outputView.printedLottos.size()).isEqualTo(14);
+
+        assertThat(outputView.statuses.getOrDefault(LottoStatus.SIX_CORRECT, 0)).isEqualTo(11);
+
+        double expectedProfitRate = 22_000_000_000L / 14_000.0;
+        assertThat(outputView.profitRate).isCloseTo(expectedProfitRate, within(1e-9));
+    }
+
 
 
     /**
@@ -41,7 +108,11 @@ public class LottoApplicationTest {
         private final Queue<List<Integer>> numberLists;
         private final Queue<String> inputs;
 
-        private StubInputView(Queue<Integer> numbers, Queue<List<Integer>> numberLists, Queue<String> inputs) {
+        private StubInputView(
+                final Queue<Integer> numbers,
+                final Queue<List<Integer>> numberLists,
+                final Queue<String> inputs
+        ) {
             this.numbers = numbers;
             this.numberLists = numberLists;
             this.inputs = inputs;
@@ -63,8 +134,6 @@ public class LottoApplicationTest {
 
         @Override
         public List<Integer> inputNumbers(String delimiter) {
-            // delimiter는 UI 파싱 책임(터미널/웹)에 가깝기 때문에,
-            // 유스케이스 테스트에서는 "이미 파싱된 값"을 반환하도록 둔다.
             return numberLists.remove();
         }
 
@@ -181,6 +250,4 @@ public class LottoApplicationTest {
             return FIXED;
         }
     }
-
-
 }
