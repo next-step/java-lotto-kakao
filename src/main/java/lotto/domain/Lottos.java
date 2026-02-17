@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Lottos {
@@ -15,7 +16,7 @@ public class Lottos {
     }
 
     public Lottos merge(Lottos other) {
-        List<Lotto> current = List.copyOf(this.values);
+        List<Lotto> current = new ArrayList<>(this.values);
         List<Lotto> otherList = other.asList();
 
         current.addAll(otherList);

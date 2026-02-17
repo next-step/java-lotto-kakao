@@ -2,6 +2,7 @@
 package lotto;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
 import lotto.domain.Money;
@@ -10,6 +11,7 @@ import lotto.domain.service.LottoService;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,77 +31,117 @@ public class LottoApplication {
         this.outputView = outputView;
     }
 
-    public void play() {
-        LottoPlayer player = lottoService.createPlayer();
-        WinningLotto winningLotto = createWinningLotto();
+    public void playManual() {
+        Money price = readPrice();
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        LottoCount manualCount = readManualCount();
 
-        Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
-        Money profit = Money.won(LottoStatus.totalPrize(statuses));
-        double profitRate = profit.rateOf(player.getPrice());
+        manualCount.validateNotExceeded(totalCount);
+        List<Lotto> manualLottos = readManualLottos(manualCount);
+        LottoPlayer player = lottoService.purchase(price, manualLottos);
 
-        printResult(statuses, profitRate);
+        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
+        outputView.printLottos(player.getLottos());
+
+        finishGame(player);
     }
 
-    private void printResult(Map<LottoStatus, Integer> statuses, double profitRate) {
-        outputView.printWinningStatistics(statuses, profitRate);
+    public void playAuto() {
+        Money price = readPrice();
+
+        LottoPlayer player = lottoService.purchase(price, List.of());
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        outputView.printAutoBuyResult(totalCount.value());
+        outputView.printLottos(player.getLottos());
+
+        finishGame(player);
     }
 
-    private WinningLotto createWinningLotto() {
-        List<Integer> winningNumbers = readWinningLottoNumbers();
-        int bonusNumber = readBonusNumber();
-        return new WinningLotto(Lotto.fromIntegers(winningNumbers), bonusNumber);
+    private void finishGame(LottoPlayer player) {
+        WinningLotto winningLotto = readWinningLotto();
+        Map<LottoStatus, Integer> result = winningLotto.countByStatus(player.getLottos());
+
+        long totalPrize = LottoStatus.totalPrize(result);
+        double profitRate = (double) totalPrize / player.getPrice().getAmount();
+
+        outputView.printWinningStatistics(result, profitRate);
     }
 
-    private List<Integer> readWinningLottoNumbers() {
-        outputView.printMessage("지난 주 당첨 번호를 입력해 주세요.");
-        return inputView.inputNumbers(",");
+    private Money readPrice() {
+        outputView.printPriceRequest();
+        return Money.won(inputView.inputNumber());
     }
 
-    private int readBonusNumber() {
-        outputView.printMessage("보너스 볼을 입력해 주세요.");
-        return Integer.parseInt(inputView.input());
+    private LottoCount readManualCount() {
+        outputView.printManualCountRequest();
+        return LottoCount.of(inputView.inputNumber());
     }
+
+    private List<Lotto> readManualLottos(LottoCount manualCount) {
+        outputView.printManualLottoRequest();
+
+        List<Lotto> lottos = new ArrayList<>();
+        for (int i = 0; i < manualCount.value(); i++) {
+            lottos.add(Lotto.fromIntegers(inputView.inputNumbers(",")));
+        }
+
+        return lottos;
+    }
+
+    private WinningLotto readWinningLotto() {
+        outputView.printLastWeekWinningNumberRequest();
+        List<Integer> winningNumbers = inputView.inputNumbers(",");
+
+        outputView.printBonusNumberRequest();
+        int bonus = Integer.parseInt(inputView.input());
+
+        return WinningLotto.of(Lotto.fromIntegers(winningNumbers), bonus);
+    }
+}
+
+===== FILE: ./src/main/java/lotto/LottoConfig.java =====
+package lotto;
+
+import lotto.domain.pick.AutoLottoNumberGenerator;
+import lotto.domain.pick.LottoPickStrategy;
+import lotto.domain.service.AutoLottoService;
+import lotto.domain.service.LottoService;
+import lotto.domain.service.ManualLottoService;
+import lotto.view.input.TerminalInputView;
+import lotto.view.output.TerminalOutputView;
+
+public class LottoConfig {
+
+    public LottoApplication manualApp() {
+        TerminalInputView input = new TerminalInputView();
+        TerminalOutputView output = new TerminalOutputView();
+
+        LottoPickStrategy autoStrategy = new AutoLottoNumberGenerator();
+        LottoService service = new ManualLottoService(autoStrategy);
+
+        return new LottoApplication(service, input, output);
+    }
+
+    public LottoApplication autoApp() {
+        TerminalInputView input = new TerminalInputView();
+        TerminalOutputView output = new TerminalOutputView();
+
+        LottoPickStrategy autoStrategy = new AutoLottoNumberGenerator();
+        LottoService service = new AutoLottoService(autoStrategy);
+
+        return new LottoApplication(service, input, output);
+    }
+
 }
 
 ===== FILE: ./src/main/java/lotto/Main.java =====
 package lotto;
 
-import lotto.domain.pick.AutoLottoNumberGenerator;
-import lotto.domain.pick.ManualLottoNumberGenerator;
-import lotto.domain.service.AutoLottoService;
-import lotto.domain.service.ManualLottoService;
-import lotto.view.input.InputView;
-import lotto.view.input.TerminalInputView;
-import lotto.view.output.OutputView;
-import lotto.view.output.TerminalOutputView;
-
 public class Main {
     public static void main(String[] args) {
-        InputView input = new TerminalInputView();
-        OutputView output = new TerminalOutputView();
-
-        AutoLottoNumberGenerator autoPickStrategy = new AutoLottoNumberGenerator();
-        ManualLottoNumberGenerator manualPickStrategy = new ManualLottoNumberGenerator(input);
-
-        ManualLottoService manualLottoService = new ManualLottoService(
-                autoPickStrategy,
-                manualPickStrategy,
-                input,
-                output
-        );
-
-        AutoLottoService autoLottoService = new AutoLottoService(
-                autoPickStrategy,
-                input,
-                output
-        );
-
-        LottoApplication app = new LottoApplication(
-                autoLottoService, // 필요에 따라 manual로 갈아 끼운다.
-                input,
-                output
-        );
-        app.play();
+        LottoConfig config = new LottoConfig();
+        LottoApplication app = config.manualApp();
+        app.playManual();
     }
 }
 
@@ -176,26 +218,31 @@ import java.util.Map;
 
 public interface OutputView {
 
-    public void printMessage(String message);
+    void printMessage(String message);
 
-    public void printLottos(Lottos lottos);
+    void printLottos(Lottos lottos);
 
-    public void printWinningStatistics(
+    void printWinningStatistics(
             final Map<LottoStatus, Integer> statuses,
             double profitRate
     );
 
-    public void printManualCountRequest();
+    void printManualCountRequest();
 
-    public void printManualLottoRequest();
+    void printManualLottoRequest();
 
-    public void printAutoNumberRequest();
+    void printAutoNumberRequest();
 
-    public void printPriceRequest();
+    void printPriceRequest();
 
-    public void printAutoBuyResult(int count);
+    void printAutoBuyResult(int count);
 
-    public void printManualBuyResult(int manualCount, int totalCount);
+    void printManualBuyResult(int manualCount, int totalCount);
+
+    void printLastWeekWinningNumberRequest();
+
+    void printBonusNumberRequest();
+
 
 }
 
@@ -298,6 +345,15 @@ public class TerminalOutputView implements OutputView {
         System.out.println(sb.toString());
     }
 
+    @Override
+    public void printLastWeekWinningNumberRequest() {
+        System.out.println("지난 주 당첨 번호를 입력해 주세요.");
+    }
+
+    @Override
+    public void printBonusNumberRequest() {
+        System.out.println("보너스 볼을 입력해 주세요.");
+    }
 
     private String labelOf(LottoStatus status) {
         if (status == THREE_CORRECT) return "3개 일치";
@@ -444,8 +500,8 @@ public class Money {
         return LottoCount.of(Math.toIntExact(amount / unit.amount));
     }
 
-    public double rateOf(Money base) {
-        return (double) this.amount / base.amount;
+    public long getAmount() {
+        return this.amount;
     }
 
     @Override
@@ -680,8 +736,6 @@ import lotto.domain.LottoPlayer;
 import lotto.domain.Lottos;
 import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
-import lotto.view.input.InputView;
-import lotto.view.output.OutputView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -689,39 +743,20 @@ import java.util.List;
 public class AutoLottoService implements LottoService {
 
     private final LottoPickStrategy autoPickStrategy;
-    private final InputView inputView;
-    private final OutputView outputView;
 
-    public AutoLottoService(
-            final LottoPickStrategy autoPickStrategy,
-            final InputView inputView,
-            final OutputView outputView
-    ) {
+    public AutoLottoService(final LottoPickStrategy autoPickStrategy) {
         this.autoPickStrategy = autoPickStrategy;
-        this.inputView = inputView;
-        this.outputView = outputView;
     }
 
-
     @Override
-    public LottoPlayer createPlayer() {
-        Money price = readPrice();
-        LottoCount lottoCount = price.toLottoCount(ONE_LOTTO_PRICE);
-
-        outputView.printAutoBuyResult(lottoCount.value());
-
-        Lottos lottos = buyLottos(lottoCount);
-        outputView.printLottos(lottos);
+    public LottoPlayer purchase(Money price, List<Lotto> manualLottos) {
+        LottoCount total = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        Lottos lottos = generate(total);
 
         return LottoPlayer.of(price, lottos);
     }
 
-    private Money readPrice() {
-        outputView.printPriceRequest();
-        return Money.won(inputView.inputNumber());
-    }
-
-    private Lottos buyLottos(LottoCount count) {
+    private Lottos generate(LottoCount count) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count.value(); i++) {
             lottos.add(new Lotto(autoPickStrategy.generate()));
@@ -733,15 +768,15 @@ public class AutoLottoService implements LottoService {
 ===== FILE: ./src/main/java/lotto/domain/service/LottoService.java =====
 package lotto.domain.service;
 
+import lotto.domain.Lotto;
 import lotto.domain.LottoPlayer;
 import lotto.domain.Money;
 
+import java.util.List;
+
 public interface LottoService {
 
-    static final Money ONE_LOTTO_PRICE = Money.ONE_LOTTO_PRICE;
-    static final String PRICE_NOT_ENOUGH_MSG = "구입금액은 1000원 이상이어야 합니다.";
-
-    LottoPlayer createPlayer();
+    LottoPlayer purchase(Money price, List<Lotto> manualLottos);
 }
 
 ===== FILE: ./src/main/java/lotto/domain/service/ManualLottoService.java =====
@@ -753,77 +788,91 @@ import lotto.domain.LottoPlayer;
 import lotto.domain.Lottos;
 import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
-import lotto.view.input.InputView;
-import lotto.view.output.OutputView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManualLottoService implements LottoService {
 
-
     private final LottoPickStrategy autoPickStrategy;
-    private final LottoPickStrategy manualPickStrategy;
-    private final InputView inputView;
-    private final OutputView outputView;
 
-    public ManualLottoService(
-            final LottoPickStrategy autoPickStrategy,
-            final LottoPickStrategy manualPickStrategy,
-            final InputView inputView,
-            final OutputView outputView
-    ) {
+    public ManualLottoService(final LottoPickStrategy autoPickStrategy) {
         this.autoPickStrategy = autoPickStrategy;
-        this.manualPickStrategy = manualPickStrategy;
-        this.inputView = inputView;
-        this.outputView = outputView;
     }
 
     @Override
-    public LottoPlayer createPlayer() {
-        Money price = readPrice();
-        LottoCount totalCount = price.toLottoCount(ONE_LOTTO_PRICE);
-        LottoCount manualCount = readManualCount(totalCount);
+    public LottoPlayer purchase(Money price, List<Lotto> manualLottos) {
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        LottoCount manualCount = LottoCount.manual(manualLottos.size());
+
+        manualCount.validateNotExceeded(totalCount);
+
         LottoCount autoCount = totalCount.minus(manualCount);
 
-        outputView.printManualLottoRequest();
+        Lottos manual = Lottos.from(manualLottos);
+        Lottos auto = generate(autoCount);
 
-        Lottos manualLottos = buyLottos(manualCount, manualPickStrategy);
-        Lottos autoLottos = buyLottos(autoCount, autoPickStrategy);
-        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
+        Lottos merged = manual.merge(auto);
 
-        Lottos all = Lottos.merge(manualLottos, autoLottos);
-        outputView.printLottos(all);
-
-        return LottoPlayer.of(price, all);
+        return LottoPlayer.of(price, merged);
     }
 
-    private Money readPrice() {
-        outputView.printPriceRequest();
-        return Money.won(inputView.inputNumber());
+    private static Lottos getManual(Lottos manual) {
+        return manual;
     }
 
-    private LottoCount readManualCount(LottoCount totalCount) {
-        outputView.printManualCountRequest();
-        LottoCount manualCount = LottoCount.manual(inputView.inputNumber());
-        manualCount.validateNotExceeded(totalCount);
-        return manualCount;
-    }
-
-    private Lottos buyLottos(LottoCount count, LottoPickStrategy strategy) {
+    private Lottos generate(LottoCount count) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count.value(); i++) {
-            lottos.add(new Lotto(strategy.generate()));
+            lottos.add(new Lotto(autoPickStrategy.generate()));
         }
         return Lottos.from(lottos);
     }
+
+    //    @Override
+//    public LottoPlayer createPlayer() {
+//        Money price = readPrice();
+//        LottoCount totalCount = price.toLottoCount(ONE_LOTTO_PRICE);
+//        LottoCount manualCount = readManualCount(totalCount);
+//        LottoCount autoCount = totalCount.minus(manualCount);
+//
+//        outputView.printManualLottoRequest();
+//
+//        Lottos manualLottos = buyLottos(manualCount, manualPickStrategy);
+//        Lottos autoLottos = buyLottos(autoCount, autoPickStrategy);
+//        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
+//
+//        Lottos all = Lottos.merge(manualLottos, autoLottos);
+//        outputView.printLottos(all);
+//
+//        return LottoPlayer.of(price, all);
+//    }
+//
+//    private Money readPrice() {
+//        outputView.printPriceRequest();
+//        return Money.won(inputView.inputNumber());
+//    }
+//
+//    private LottoCount readManualCount(LottoCount totalCount) {
+//        outputView.printManualCountRequest();
+//        LottoCount manualCount = LottoCount.manual(inputView.inputNumber());
+//        manualCount.validateNotExceeded(totalCount);
+//        return manualCount;
+//    }
+//
+//    private Lottos buyLottos(LottoCount count, LottoPickStrategy strategy) {
+//        List<Lotto> lottos = new ArrayList<>();
+//        for (int i = 0; i < count.value(); i++) {
+//            lottos.add(new Lotto(strategy.generate()));
+//        }
+//        return Lottos.from(lottos);
+//    }
 }
 
 
 ===== FILE: ./src/main/java/lotto/domain/Lottos.java =====
 package lotto.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Lottos {
@@ -838,15 +887,12 @@ public class Lottos {
         return new Lottos(List.copyOf(values));
     }
 
-    public static Lottos merge(Lottos l1, Lottos l2) {
-        List<Lotto> list1 = l1.asList();
-        List<Lotto> list2 = l2.asList();
-        List<Lotto> all = new ArrayList<>();
+    public Lottos merge(Lottos other) {
+        List<Lotto> current = List.copyOf(this.values);
+        List<Lotto> otherList = other.asList();
 
-        all.addAll(list1);
-        all.addAll(list2);
-
-        return Lottos.from(all);
+        current.addAll(otherList);
+        return Lottos.from(current);
     }
 
     public int size() {
@@ -872,16 +918,21 @@ public class WinningLotto {
     private final LottoNumber bonusNumber;
 
     public WinningLotto(Lotto lotto, int bonusNumber) {
-        validate(lotto, bonusNumber);
+
         this.lotto = lotto;
         this.bonusNumber = LottoNumber.of(bonusNumber);
     }
 
-    private void validate(Lotto lotto, int bonusNumber) {
+    public static WinningLotto of(Lotto lotto, int bonus) {
+        validate(lotto, bonus);
+        return new WinningLotto(lotto, bonus);
+    }
+
+    private static void validate(Lotto lotto, int bonusNumber) {
         validateDuplicate(lotto, bonusNumber);
     }
 
-    private void validateDuplicate(Lotto lotto, int bonusNumber) {
+    private static void validateDuplicate(Lotto lotto, int bonusNumber) {
         if (lotto.getNumbers().contains(bonusNumber)) {
             throw new IllegalArgumentException(BONUS_DUPLICATE_FAIL_MSG);
         }
@@ -940,30 +991,6 @@ public class AutoLottoNumberGenerator implements LottoPickStrategy {
                 .toList();
     }
 
-}
-
-===== FILE: ./src/main/java/lotto/domain/pick/ManualLottoNumberGenerator.java =====
-package lotto.domain.pick;
-
-import lotto.domain.LottoNumber;
-import lotto.view.input.InputView;
-
-import java.util.List;
-
-public class ManualLottoNumberGenerator implements LottoPickStrategy {
-
-    private final InputView inputView;
-
-    public ManualLottoNumberGenerator(final InputView inputView) {
-        this.inputView = inputView;
-    }
-
-    @Override
-    public List<LottoNumber> generate() {
-        return inputView.inputNumbers(",").stream()
-                .map(LottoNumber::of)
-                .toList();
-    }
 }
 
 ===== FILE: ./src/main/java/lotto/domain/pick/LottoPickStrategy.java =====
