@@ -9,7 +9,7 @@ public class Lotto {
     private static final int MAX_NUMBER = 45;
     private final Set<LottoNumber> lottoNumberSet;
 
-    public Lotto(List<Integer> numbers) {
+    Lotto(List<Integer> numbers) {
         this(convertListToSet(numbers));
     }
 
