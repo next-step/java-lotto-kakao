@@ -26,10 +26,18 @@ public class WinningLottoTest {
         Assertions.assertThat(winning.judge(lotto)).isEqualTo(Rank.MISS);
     }
 
-
     @Test
     void 일등_테스트() {
         Assertions.assertThat(winning.judge(lotto)).isEqualTo(Rank.FIRST);
+    }
+
+    @Test
+    void 보너스_볼_일치_테스트() {
+        Lotto lottoWithBonus = new Lotto(IntStream.range(1, 7)
+                .map(i -> i == 6 ? 40 : i)
+                .mapToObj(LottoNumber::new)
+                .collect(Collectors.toList()));
+        Assertions.assertThat(winning.matchBonus(lottoWithBonus)).isTrue();
     }
 
     Lotto testSetLotto() {

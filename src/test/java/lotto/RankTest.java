@@ -2,6 +2,7 @@ package lotto;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -21,5 +22,12 @@ public class RankTest {
     void 일치_개수에_따른_등수_반환_테스트(int countOfMatch, boolean matchBonus, Rank expectedRank) {
         Rank actualRank = Rank.valueOf(countOfMatch, matchBonus);
         Assertions.assertThat(actualRank).isEqualTo(expectedRank);
+    }
+
+    @Test
+    void 당첨금_계산_테스트() {
+        Rank rank = Rank.FIRST;
+        Assertions.assertThat(rank.winningMoney(2).money())
+                .isEqualTo(4_000_000_000L);
     }
 }
