@@ -5,11 +5,11 @@ import java.util.Comparator;
 
 public class OutputView {
     public static void printPurchaseCount(int manualCount, int autoCount) {
-        System.out.println("수동으로 "+ manualCount + "장, 자동으로 "+ autoCount+"개를 구매했습니다.");
+        System.out.println("수동으로 " + manualCount + "장, 자동으로 " + autoCount + "개를 구매했습니다.");
     }
 
     public static void printLottoBundle(PurchasedLottoBundle bundle) {
-        bundle.forEachLottoInOrder(System.out::println);
+        bundle.forEachLottoInOrder(lotto -> System.out.println(lotto.mapToSortedNumbers()));
     }
 
     public static void printStatisticsHeader() {
