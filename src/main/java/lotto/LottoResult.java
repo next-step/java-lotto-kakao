@@ -1,4 +1,5 @@
 package lotto;
+
 import java.util.*;
 
 public class LottoResult {
@@ -24,7 +25,7 @@ public class LottoResult {
 
     public double calculateYield(Money purchaseMoney) {
         long totalPrize = Arrays.stream(Rank.values())
-                .mapToLong(rank -> (long) rank.toWinningMoney() * result.get(rank).count())
+                .mapToLong(rank -> (long) rank.toWinningMoney() * toCount(rank))
                 .sum();
 
         return YieldCalculator.calculate(totalPrize, purchaseMoney.money());
