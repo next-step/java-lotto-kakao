@@ -44,7 +44,7 @@ public class LottoTotalResult {
 
     private List<Rank> getValidRanks() {
         return Arrays.stream(Rank.values())
-                .filter(rank -> rank != Rank.MISS)
+                .filter(Rank::isValidRank)
                 .toList();
     }
 

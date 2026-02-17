@@ -5,6 +5,8 @@ import java.util.Arrays;
 public enum Rank {
 
     MISS(0, 0, 0),
+    SEVENTH(1, 7, 0),
+    SIXTH(2, 6, 0),
     FIFTH(3, 5, 5_000),
     FOURTH(4, 4, 50_000),
     THIRD(5, 3, 1_500_000),
@@ -44,5 +46,9 @@ public enum Rank {
             return countOfMatch == 5 && !matchBonus;
         }
         return this.ballCount == countOfMatch;
+    }
+
+    public boolean isValidRank() {
+        return this != MISS && this != SEVENTH && this != SIXTH;
     }
 }
