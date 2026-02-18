@@ -38,4 +38,16 @@ public enum LottoRank {
         }
         return this.matchCount != 5 || hasBonus == bonus;
     }
+
+    public Money getPrize() {
+        return prize;
+    }
+
+    public int getMatchCount() {
+        return matchCount;
+    }
+
+    public boolean isSecond() {
+        return this == SECOND;
+    }
 }
