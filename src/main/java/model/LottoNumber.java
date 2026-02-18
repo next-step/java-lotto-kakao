@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class LottoNumber {
 
     private static final int MIN_NUMBER = 1;
@@ -24,8 +26,14 @@ public class LottoNumber {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof LottoNumber)) return false;
         LottoNumber that = (LottoNumber) o;
         return lottoNumber == that.lottoNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(lottoNumber);
     }
 }
