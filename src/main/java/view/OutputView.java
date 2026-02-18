@@ -3,7 +3,6 @@ package view;
 import model.Lotto;
 import model.LottoStatistics;
 import model.Lottos;
-import model.RankView;
 
 public class OutputView {
 

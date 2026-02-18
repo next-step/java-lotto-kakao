@@ -5,7 +5,7 @@ import model.LottoNumbers;
 import model.LottoResult;
 import model.LottoStatistics;
 import model.Lottos;
-import model.RankView;
+import view.RankView;
 import view.InputView;
 import view.OutputView;
 
