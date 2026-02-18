@@ -26,7 +26,6 @@ public class TerminalInputView implements InputView {
         try {
             return Integer.parseInt(line);
         } catch (NumberFormatException e) {
-            // 요구사항: 문자가 입력되면 예외를 던진다
             throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + line, e);
         }
     }
@@ -52,10 +51,9 @@ public class TerminalInputView implements InputView {
         try {
             return Arrays.stream(line.split(DEFAULT_DELIMITER))
                     .map(String::trim)
-                    .map(this::parseIntOrThrow) // 에러 메시지 통일
+                    .map(this::parseIntOrThrow)
                     .collect(Collectors.toList());
         } catch (IllegalArgumentException e) {
-            // parseIntOrThrow에서 이미 메시지를 원하는 형태로 만들기 때문에 그대로 throw
             throw e;
         }
     }

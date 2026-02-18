@@ -40,7 +40,6 @@ public class LottoApplicationTest {
         //when
         app.playAuto();
 
-        //then 텍스트가 아니라 어떤 출력포트로 전달했는지만을 확인했습니다.
         assertThat(outputView.priceRequestCount).isEqualTo(1);
         assertThat(outputView.autoBuyCount).isEqualTo(3);
 
