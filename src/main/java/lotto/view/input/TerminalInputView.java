@@ -1,8 +1,9 @@
 package lotto.view.input;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TerminalInputView implements InputView {
 
@@ -21,8 +22,7 @@ public class TerminalInputView implements InputView {
 
     @Override
     public int inputNumber() {
-        String line = scanner.nextLine().trim();
-
+        String line = readTrimmedLine();
         try {
             return Integer.parseInt(line);
         } catch (NumberFormatException e) {
@@ -33,16 +33,30 @@ public class TerminalInputView implements InputView {
 
     @Override
     public List<Integer> inputNumbers() {
-        String line = scanner.nextLine().trim();
-        List<Integer> result = new ArrayList<>();
+        return parseNumbersOrThrow(readTrimmedLine());
+    }
+
+    private String readTrimmedLine() {
+        return scanner.nextLine().trim();
+    }
+
+    private int parseIntOrThrow(String token) {
         try {
-            String[] numbers = line.split(DEFAULT_DELIMITER);
-            for (String number: numbers) {
-                result.add(Integer.parseInt(number));
-            }
-            return result;
+            return Integer.parseInt(token);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + line, e);
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_MSG_PREFIX + token, e);
+        }
+    }
+
+    private List<Integer> parseNumbersOrThrow(String line) {
+        try {
+            return Arrays.stream(line.split(DEFAULT_DELIMITER))
+                    .map(String::trim)
+                    .map(this::parseIntOrThrow) // 에러 메시지 통일
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
+            // parseIntOrThrow에서 이미 메시지를 원하는 형태로 만들기 때문에 그대로 throw
+            throw e;
         }
     }
 }
