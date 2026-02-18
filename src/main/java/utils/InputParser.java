@@ -28,6 +28,14 @@ public class InputParser {
         }
     }
 
+    public static Integer parseManualLottoCount(String rawInput) {
+        try {
+            return parseInt(rawInput);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("수동 로또 개수는 반드시 숫자여야 합니다.");
+        }
+    }
+
     private static List<Integer> parseTokens(String rawInput) {
         return Arrays.stream(rawInput.split(","))
                 .map(InputParser::parseInt)

@@ -6,7 +6,7 @@ import java.util.List;
 public class LottoForm {
     private final List<Lotto> markedLottos = new ArrayList<>();
 
-    void mark(List<Integer> numbers) {
+    public void mark(List<Integer> numbers) {
         markedLottos.add(new Lotto(numbers));
     }
 
