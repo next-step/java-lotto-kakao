@@ -15,9 +15,9 @@ public class LottoPlayerTest {
     void successTest() {
         Money price = Money.won(3000);
         Lottos lottos = Lottos.from(List.of(
-                new Lotto(1, 2, 3, 4, 5, 6),
-                new Lotto(7, 8, 9, 10, 11, 12),
-                new Lotto(13, 14, 15, 16, 17, 18)
+                Lotto.of(1, 2, 3, 4, 5, 6),
+                Lotto.of(7, 8, 9, 10, 11, 12),
+                Lotto.of(13, 14, 15, 16, 17, 18)
         ));
 
         LottoPlayer lottoPlayer = LottoPlayer.of(price, lottos);

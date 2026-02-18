@@ -29,7 +29,7 @@ public class AutoLottoService implements LottoService {
     private Lottos generate(LottoCount count) {
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count.value(); i++) {
-            lottos.add(new Lotto(autoPickStrategy.generate()));
+            lottos.add(Lotto.fromNumbers(autoPickStrategy.generate()));
         }
         return Lottos.from(lottos);
     }

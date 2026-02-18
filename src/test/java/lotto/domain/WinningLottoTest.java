@@ -14,7 +14,7 @@ public class WinningLottoTest {
     @Test
     @DisplayName("당첨 로또는 당첨 번호와 보너스 번호를 보관한다")
     void success() {
-        Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto lotto = Lotto.of(1, 2, 3, 4, 5, 6);
         int bonusNumber = 7;
         WinningLotto winningLotto = WinningLotto.of(lotto, bonusNumber);
 
@@ -25,7 +25,7 @@ public class WinningLottoTest {
     @Test
     @DisplayName("보너스 번호가 범위를 벗어나는 경우")
     void fail_bonusNumberRange() {
-        Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto lotto = Lotto.of(1, 2, 3, 4, 5, 6);
         int bonusNumber = 46;
 
         assertThatThrownBy(() -> WinningLotto.of(lotto, bonusNumber))
@@ -36,7 +36,7 @@ public class WinningLottoTest {
     @Test
     @DisplayName("보너스 번호가 당첨 번호와 중복되는 경우")
     void fail_bonusNumberDuplicate() {
-        Lotto lotto = new Lotto(1, 2, 3, 4, 5, 6);
+        Lotto lotto = Lotto.of(1, 2, 3, 4, 5, 6);
         int bonusNumber = 1;
 
         assertThatThrownBy(() -> WinningLotto.of(lotto, bonusNumber))
@@ -47,13 +47,13 @@ public class WinningLottoTest {
     @Test
     @DisplayName("countByStatus는 플레이어 로또들의 당첨 결과를 집계한다")
     void countByStatus() {
-        WinningLotto winningLotto = WinningLotto.of(new Lotto(1, 2, 3, 4, 5, 6), 7);
+        WinningLotto winningLotto = WinningLotto.of(Lotto.of(1, 2, 3, 4, 5, 6), 7);
 
         Lottos playerLottos = Lottos.from(List.of(
-                new Lotto(1, 2, 3, 4, 5, 6), // 6개 일치
-                new Lotto(1, 2, 3, 4, 5, 7), // 5개+보너스
-                new Lotto(1, 2, 3, 4, 5, 8), // 5개
-                new Lotto(1, 2, 3, 4, 10, 11) // 4개
+                Lotto.of(1, 2, 3, 4, 5, 6), // 6개 일치
+                Lotto.of(1, 2, 3, 4, 5, 7), // 5개+보너스
+                Lotto.of(1, 2, 3, 4, 5, 8), // 5개
+                Lotto.of(1, 2, 3, 4, 10, 11) // 4개
         ));
 
         Map<LottoStatus, Integer> counts = winningLotto.countByStatus(playerLottos);

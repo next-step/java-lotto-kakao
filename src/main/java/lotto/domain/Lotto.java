@@ -22,19 +22,22 @@ public class Lotto {
                 .map(LottoNumber::of)
                 .toList();
 
-        return new Lotto(lottoNumbers);
+        return Lotto.fromNumbers(lottoNumbers);
+    }
+
+    public static Lotto fromNumbers(List<LottoNumber> values) {
+        List<Integer> ints = values.stream().map(LottoNumber::getValue).toList();
+        validate(ints);
+        return new Lotto(values);
+    }
+
+    public static Lotto of(int... values) {
+        return fromIntegers(Arrays.stream(values).boxed().toList());
     }
 
 
-    public Lotto(List<LottoNumber> values) {
+    private Lotto(List<LottoNumber> values) {
         this.numbers = List.copyOf(values);
-    }
-
-    public Lotto(int... values) {
-        this(Arrays.stream(values)
-                .boxed()
-                .map(LottoNumber::of)
-                .toList());
     }
 
     private Lotto(Lotto other) {
