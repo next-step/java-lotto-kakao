@@ -14,13 +14,13 @@ public class LottoPurchasePolicyTest {
     }
 
     @Test
-    void calculatePurchasableCountFailWhenMoneyIsNull() {
+    void FailWhenMoneyIsNull() {
         assertThrows(IllegalArgumentException.class,
                 () -> LottoPurchasePolicy.calculatePurchasableCount(null));
     }
 
     @Test
-    void calculatePurchasableCountFailWhenMoneyIsZero() {
+    void FailWhenMoneyIsZero() {
         assertThrows(IllegalArgumentException.class,
                 () -> LottoPurchasePolicy.calculatePurchasableCount(Money.won(0)));
     }

@@ -26,7 +26,7 @@ public class PurchasePlanTest {
     }
 
     @Test
-    void createFailWhenManualCountExceedsTotalCount() {
+    void FailManualCountExceeds() {
         assertThrows(IllegalArgumentException.class,
                 () -> PurchasePlan.from(
                         Money.won(2000),
@@ -39,7 +39,7 @@ public class PurchasePlanTest {
     }
 
     @Test
-    void createFailWhenMoneyIsInvalid() {
+    void FailWhenMoneyIsInvalid() {
         assertThrows(IllegalArgumentException.class,
                 () -> PurchasePlan.from(Money.won(0), List.of()));
     }
