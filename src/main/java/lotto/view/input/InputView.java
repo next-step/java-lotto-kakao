@@ -8,5 +8,5 @@ public interface InputView {
 
     public int inputNumber();
 
-    public List<Integer> inputNumbers(String delimiter);
+    public List<Integer> inputNumbers();
 }

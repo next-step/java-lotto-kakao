@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class TerminalInputView implements InputView {
 
     public static final String INVALID_NUMBER_FORMAT_MSG_PREFIX = "숫자만 입력할 수 있습니다. 현재 입력: ";
+    public static final String DEFAULT_DELIMITER = ",";
 
     private Scanner scanner;
 
@@ -31,11 +32,11 @@ public class TerminalInputView implements InputView {
     }
 
     @Override
-    public List<Integer> inputNumbers(String delimiter) {
+    public List<Integer> inputNumbers() {
         String line = scanner.nextLine().trim();
         List<Integer> result = new ArrayList<>();
         try {
-            String[] numbers = line.split(delimiter);
+            String[] numbers = line.split(DEFAULT_DELIMITER);
             for (String number: numbers) {
                 result.add(Integer.parseInt(number));
             }

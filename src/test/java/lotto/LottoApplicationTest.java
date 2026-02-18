@@ -133,7 +133,7 @@ public class LottoApplicationTest {
         }
 
         @Override
-        public List<Integer> inputNumbers(String delimiter) {
+        public List<Integer> inputNumbers() {
             return numberLists.remove();
         }
 

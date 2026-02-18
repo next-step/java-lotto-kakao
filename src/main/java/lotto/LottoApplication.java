@@ -81,7 +81,7 @@ public class LottoApplication {
 
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < manualCount.value(); i++) {
-            lottos.add(Lotto.fromIntegers(inputView.inputNumbers(",")));
+            lottos.add(Lotto.fromIntegers(inputView.inputNumbers()));
         }
 
         return lottos;
@@ -89,7 +89,7 @@ public class LottoApplication {
 
     private WinningLotto readWinningLotto() {
         outputView.printLastWeekWinningNumberRequest();
-        List<Integer> winningNumbers = inputView.inputNumbers(",");
+        List<Integer> winningNumbers = inputView.inputNumbers();
 
         outputView.printBonusNumberRequest();
         int bonus = Integer.parseInt(inputView.input());
