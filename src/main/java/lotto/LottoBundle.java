@@ -10,7 +10,7 @@ public class LottoBundle {
     private final List<Lotto> lottos;
 
     public LottoBundle(Lotto first, Lotto... rest) {
-        this(convert(first, rest));
+        this(mergeToList(first, rest));
     }
 
     public LottoBundle(List<Lotto> lottos) {
@@ -18,7 +18,7 @@ public class LottoBundle {
         this.lottos = List.copyOf(lottos);
     }
 
-    private static List<Lotto> convert(Lotto first, Lotto... rest) {
+    private static List<Lotto> mergeToList(Lotto first, Lotto... rest) {
         if (first == null || rest == null) {
             throw new IllegalArgumentException("로또 묶음에 null이 포함될 수 없습니다.");
         }
@@ -37,7 +37,7 @@ public class LottoBundle {
             throw new IllegalArgumentException("로또 생성기는 null일 수 없습니다.");
         }
 
-        long count = Lotto.calculatePurchasableCount(money);
+        long count = LottoPurchasePolicy.calculatePurchasableCount(money);
         List<Lotto> lottos = new ArrayList<>();
         for (long c = 0; c < count; c++) {
             lottos.add(lottoGenerator.generate());
