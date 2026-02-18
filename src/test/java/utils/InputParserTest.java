@@ -24,6 +24,12 @@ public class InputParserTest {
     }
 
     @Test
+    void parseSuccessManualCountFormat() {
+        assertDoesNotThrow(() -> InputParser.parseManualCount("0"));
+        assertDoesNotThrow(() -> InputParser.parseManualCount("3"));
+    }
+
+    @Test
     @DisplayName("구입금액은 반드시 숫자여야 한다.")
     void validateMoneyInputFormat() {
         assertThrows(IllegalArgumentException.class,
@@ -54,5 +60,16 @@ public class InputParserTest {
                 () -> InputParser.parseBonusNumberFormat("."));
         assertThrows(IllegalArgumentException.class,
                 () -> InputParser.parseBonusNumberFormat(""));
+    }
+
+    @Test
+    @DisplayName("수동 구매 수량은 0 이상의 숫자여야 한다.")
+    void validateManualCountInputFormat() {
+        assertThrows(IllegalArgumentException.class,
+                () -> InputParser.parseManualCount("d"));
+        assertThrows(IllegalArgumentException.class,
+                () -> InputParser.parseManualCount(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> InputParser.parseManualCount("-1"));
     }
 }

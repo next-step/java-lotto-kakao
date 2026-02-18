@@ -28,6 +28,18 @@ public class InputParser {
         }
     }
 
+    public static Integer parseManualCount(String rawInput) {
+        try {
+            int manualCount = parseInt(rawInput);
+            if (manualCount < 0) {
+                throw new IllegalArgumentException("수동 구매 수량은 0 이상이어야 합니다.");
+            }
+            return manualCount;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("수동 구매 수량은 반드시 숫자여야 합니다.");
+        }
+    }
+
     private static List<Integer> parseTokens(String rawInput) {
         List<Integer> numbers = new ArrayList<>();
         String[] tokens = rawInput.split(",");
