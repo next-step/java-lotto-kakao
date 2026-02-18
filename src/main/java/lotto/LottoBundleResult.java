@@ -34,6 +34,6 @@ public class LottoBundleResult {
         for (int count : lottoRankIntegerMap.values()) {
             totalCount += count;
         }
-        return Money.won(Math.multiplyExact((long) totalCount, Lotto.PRICE));
+        return Money.won(Math.multiplyExact( totalCount, Lotto.PRICE));
     }
 }
