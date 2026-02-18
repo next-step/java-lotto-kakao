@@ -1,6 +1,7 @@
 package view;
 
 import model.Lotto;
+import model.LottoNumber;
 import model.LottoStatistics;
 import model.Lottos;
 
@@ -13,7 +14,15 @@ public class OutputView {
     public void printLottos(Lottos lottos) {
         System.out.println(lottos.getLottos().size() + "개를 구매했습니다.");
         for (Lotto lotto : lottos.getLottos()) {
-            System.out.println(lotto);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("[");
+            for (LottoNumber number : lotto.getLotto().getLottoNumbers()) {
+                stringBuilder.append(number.getLottoNumber()).append(", ");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            stringBuilder.append("]");
+            System.out.println(stringBuilder);
         }
     }
 
