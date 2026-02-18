@@ -49,7 +49,9 @@ public class LottoCount {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         LottoCount that = (LottoCount) o;
         return value == that.value;
     }

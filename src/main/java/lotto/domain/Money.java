@@ -42,7 +42,9 @@ public class Money {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Money money = (Money) o;
         return amount == money.amount;
     }
