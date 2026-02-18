@@ -1,5 +1,8 @@
 package lotto.domain;
 
+import lotto.exception.ExceptionCode;
+import lotto.exception.LottoException;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -7,8 +10,6 @@ import java.util.List;
 public enum Rank {
 
     MISS(List.of(0, 1, 2), 0),
-    SEVENTH(List.of(1), 0),
-    SIXTH(List.of(2), 0),
     FIFTH(List.of(3), 5_000),
     FOURTH(List.of(4), 50_000),
     THIRD(List.of(5), 1_500_000),
@@ -39,7 +40,7 @@ public enum Rank {
         return Arrays.stream(values())
                 .filter(rank -> rank.matches(countOfMatch))
                 .findFirst()
-                .orElse(MISS);
+                .orElseThrow(() -> new LottoException(ExceptionCode.INVALID_LOTTO_NUMBER_COUNT));
     }
 
     private boolean matches(int countOfMatch) {
@@ -47,6 +48,6 @@ public enum Rank {
     }
 
     public boolean isValidRank() {
-        return this != MISS && this != SEVENTH && this != SIXTH;
+        return this != MISS;
     }
 }
