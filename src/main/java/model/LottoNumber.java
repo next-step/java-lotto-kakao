@@ -1,9 +1,9 @@
 package model;
 
-import static model.Constants.MIN_NUMBER;
-import static model.Constants.MAX_NUMBER;
-
 public class LottoNumber {
+
+    private static final int MIN_NUMBER = 1;
+    private static final int MAX_NUMBER = 45;
 
     private final int lottoNumber;
 

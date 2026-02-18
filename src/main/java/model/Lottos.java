@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static model.Constants.COST;
-
 public class Lottos {
+
+    public static final int COST = 1000;
 
     private final List<Lotto> lottos;
 
