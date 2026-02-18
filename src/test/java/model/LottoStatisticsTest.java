@@ -48,7 +48,7 @@ class LottoStatisticsTest {
                 new LottoNumbers(Arrays.asList(number1, number2, number3, number4, number5, number6)),
                 new LottoNumber(7)
         );
-        LottoStatistics lottoStatistics = new LottoStatistics(lottos, lottoResult);
+        lottoStatistics = new LottoStatistics(lottos, lottoResult);
     }
 
     // 로또 통계에는 당첨결과가 알맞게 기록되어야 한다.
