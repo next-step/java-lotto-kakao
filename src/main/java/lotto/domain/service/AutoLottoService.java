@@ -7,8 +7,8 @@ import lotto.domain.Lottos;
 import lotto.domain.Money;
 import lotto.domain.pick.LottoPickStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class AutoLottoService implements LottoService {
 
@@ -27,10 +27,10 @@ public class AutoLottoService implements LottoService {
     }
 
     private Lottos generate(LottoCount count) {
-        List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < count.value(); i++) {
-            lottos.add(Lotto.fromNumbers(autoPickStrategy.generate()));
-        }
+        List<Lotto> lottos = IntStream.range(0, count.value())
+                .mapToObj(i -> Lotto.fromNumbers(autoPickStrategy.generate()))
+                .toList();
+
         return Lottos.from(lottos);
     }
 }
