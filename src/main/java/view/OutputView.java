@@ -17,8 +17,9 @@ public class OutputView {
             LottoRank.FIRST
     );
 
-    public void printPurchasedLottos(LottoBundle lottoBundle) {
-        System.out.printf("%d개를 구매했습니다.%n", lottoBundle.size());
+    public void printPurchasedLottos(LottoBundle lottoBundle, int manualLottoCount) {
+        System.out.println();
+        System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.%n", manualLottoCount, lottoBundle.size() - manualLottoCount);
         for (Lotto lotto : lottoBundle.asList()) {
             printLotto(lotto);
         }
