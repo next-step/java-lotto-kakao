@@ -33,12 +33,25 @@ public class LottoBundle {
     }
 
     static LottoBundle buy(Money money, LottoGenerator lottoGenerator) {
+        PurchasePlan purchasePlan = PurchasePlan.from(money, List.of());
+        return buy(purchasePlan, lottoGenerator);
+    }
+
+    public static LottoBundle buy(PurchasePlan purchasePlan) {
+        return buy(purchasePlan, new LottoGenerator());
+    }
+
+    static LottoBundle buy(PurchasePlan purchasePlan, LottoGenerator lottoGenerator) {
+        if (purchasePlan == null) {
+            throw new IllegalArgumentException("구매 계획은 null일 수 없습니다.");
+        }
+
         if (lottoGenerator == null) {
             throw new IllegalArgumentException("로또 생성기는 null일 수 없습니다.");
         }
 
-        long count = LottoPurchasePolicy.calculatePurchasableCount(money);
-        List<Lotto> lottos = new ArrayList<>();
+        List<Lotto> lottos = new ArrayList<>(purchasePlan.getManualLottos());
+        long count = purchasePlan.getAutoCount();
         for (long c = 0; c < count; c++) {
             lottos.add(lottoGenerator.generate());
         }

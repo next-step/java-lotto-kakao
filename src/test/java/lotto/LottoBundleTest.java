@@ -81,6 +81,24 @@ public class LottoBundleTest {
     }
 
     @Test
+    void buyLottoBundleByPurchasePlanWithInjectedGenerator() {
+        Lotto manualLotto = new Lotto(8, 21, 23, 41, 42, 43);
+        PurchasePlan purchasePlan = PurchasePlan.from(Money.won(3000), List.of(manualLotto));
+        Lotto fixedLotto = new Lotto(1, 2, 3, 4, 5, 6);
+        LottoGenerator fixedGenerator = new LottoGenerator() {
+            @Override
+            public Lotto generate() {
+                return fixedLotto;
+            }
+        };
+
+        LottoBundle lottoBundle = LottoBundle.buy(purchasePlan, fixedGenerator);
+
+        assertThat(lottoBundle.size()).isEqualTo(3);
+        assertThat(lottoBundle.asList()).isEqualTo(List.of(manualLotto, fixedLotto, fixedLotto));
+    }
+
+    @Test
     void buyFailLottoBundle() {
         Money money = Money.won(900);
         assertThrows(IllegalArgumentException.class,
