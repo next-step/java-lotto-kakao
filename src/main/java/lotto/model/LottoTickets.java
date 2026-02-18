@@ -18,6 +18,10 @@ public class LottoTickets {
         lottoTickets.add(lottoTicket);
     }
 
+    public void addAll(LottoTickets other) {
+        this.lottoTickets.addAll(other.lottoTickets);
+    }
+
     public WinningInfo winningResult(WinningLotto winningLotto){
         WinningInfo winningInfo = new WinningInfo();
         lottoTickets.forEach(ticket -> winningInfo.addResult(winningLotto.checkRank(ticket)));

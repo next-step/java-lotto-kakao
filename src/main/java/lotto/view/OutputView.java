@@ -2,11 +2,12 @@ package lotto.view;
 
 import lotto.model.LottoTickets;
 import lotto.model.WinningInfo;
+import lotto.model.WinningRank;
 
 public class OutputView {
 
-    public void printPurchaseCount(int count) {
-        System.out.println(count + "개를 구매했습니다.");
+    public void printPurchaseCount(int manualCount, int autoCount) {
+        System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.", manualCount, autoCount);
     }
 
     public void printTickets(LottoTickets ticketList) {
@@ -14,7 +15,22 @@ public class OutputView {
     }
 
     public void printStatistics(WinningInfo winningInfo) {
-        System.out.println(winningInfo.getStatisticsString());
+        System.out.println("\n당첨 통계");
+        System.out.println("---------");
+        for (WinningRank rank : WinningRank.getValidRanks()) {
+            printRank(rank, winningInfo.getRankCount(rank));
+        }
+    }
+
+    private void printRank(WinningRank rank, int count) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(rank.getMatchCount()).append("개 일치");
+        if (rank.getBounceCount() != 0) {
+            sb.append(", 보너스 볼 일치");
+        }
+        sb.append(" (").append(rank.winningPrice.getValue()).append("원)- ");
+        sb.append(count).append("개");
+        System.out.println(sb);
     }
 
     public void printRateOfReturn(double rate) {

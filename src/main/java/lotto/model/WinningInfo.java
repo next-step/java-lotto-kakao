@@ -27,19 +27,8 @@ public class WinningInfo {
         return total;
     }
 
-    public String getStatisticsString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n당첨 통계\n");
-        sb.append("---------\n");
-        for (WinningRank rank : WinningRank.getValidRanks()) {
-            appendRankResult(sb, rank);
-        }
-        return sb.toString().trim();
-    }
-
-    private void appendRankResult(StringBuilder sb, WinningRank rank) {
-        int count = info.getOrDefault(rank, 0);
-        sb.append(rank.getInfoString()).append("- ").append(count).append("개\n");
+    public int getRankCount(WinningRank rank) {
+        return info.getOrDefault(rank, 0);
     }
 }
 

@@ -2,9 +2,9 @@ package lotto.model;
 
 public class LottoNumber implements Comparable<LottoNumber> {
 
-    private final int num;
     public static final int START_NUMBER=1;
     public static final int END_NUMBER=45;
+    private final int num;
 
 
     public LottoNumber(int num) {
@@ -17,8 +17,7 @@ public class LottoNumber implements Comparable<LottoNumber> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof LottoNumber)) return false;
-        LottoNumber number = (LottoNumber) obj;
+        if (!(obj instanceof LottoNumber number)) return false;
         return this.num == number.num;
     }
 

@@ -30,18 +30,18 @@ public class LottoTicket {
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
-    static void validateSize(Set<LottoNumber> lottoNumbers){
+    private static void validateSize(Set<LottoNumber> lottoNumbers){
         if (lottoNumbers.size() != TICKET_SIZE) {
             throw new RuntimeException("로또 티켓에는 " + TICKET_SIZE + "개의 번호가 필요합니다.");
         }
     }
 
-    public boolean hasDuplicateNumber(LottoNumber lottoNumber) {
+    public boolean contains(LottoNumber lottoNumber) {
         return lottoNumbers.contains(lottoNumber);
     }
 
-    public int hasDuplicateNumber(LottoTicket ticket2) {
-        return (int)lottoNumbers.stream().filter(num -> ticket2.hasDuplicateNumber(num)).count();
+    public int countMatchingNumbers(LottoTicket ticket2) {
+        return (int)lottoNumbers.stream().filter(num -> ticket2.contains(num)).count();
     }
 
     @Override

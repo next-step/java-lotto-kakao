@@ -36,16 +36,10 @@ class WinningRankTest {
     }
 
     @Test
-    @DisplayName("결과 출력")
-    void getInfoString() {
-        WinningRank rank = WinningRank.THIRD;
-        assertThat(rank.getInfoString()).isEqualTo("5개 일치 (1500000원)");
-    }
-
-    @Test
-    @DisplayName("결과 출력(보너스 공 존재)")
-    void getInfoStringWithBounce() {
-        WinningRank rank = WinningRank.SECOND;
-        assertThat(rank.getInfoString()).isEqualTo("5개 일치, 보너스 볼 일치 (30000000원)");
+    @DisplayName("유효하지 않은 당첨 개수")
+    public void invalidMatchCount() {
+        assertThatThrownBy(() -> WinningRank.getRank(10, 0))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("유효하지 않은 당첨 개수입니다: 10");
     }
 }
