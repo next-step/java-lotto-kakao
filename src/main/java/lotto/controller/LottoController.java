@@ -40,7 +40,6 @@ public class LottoController {
 		LottoPurchaseSession lottoPurchaseSession = getLottoPurchaseSession(purchasePrice);
 
 		LottoMachineGeneratedResult machineGeneratedResult = lottoPurchaseSession.getResult();
-		outputView.printPurchasedTicketCount(machineGeneratedResult.lottoTickets().size());
 		outputView.printLottoTickets(machineGeneratedResult.lottoTickets());
 
 		WinningLottoNumbers winningLottoNumbers = readWinningLottoNumbers();
@@ -56,8 +55,11 @@ public class LottoController {
 		TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(numbers);
 		lottoPurchaseSession.purchase(manualCommand);
 
-		TicketRandomGeneratorCommand randomCommand = new TicketRandomGeneratorCommand(lottoPurchaseSession.getPurchasableTicketCount());
+		int randomCount = lottoPurchaseSession.getPurchasableTicketCount();
+		TicketRandomGeneratorCommand randomCommand = new TicketRandomGeneratorCommand(randomCount);
 		lottoPurchaseSession.purchase(randomCommand);
+
+		outputView.printPurchasedTicketCount(manualCount,randomCount);
 		return lottoPurchaseSession;
 	}
 

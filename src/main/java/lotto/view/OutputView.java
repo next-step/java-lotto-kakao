@@ -12,8 +12,8 @@ import lotto.model.result.Rank;
 
 public class OutputView {
 
-	public void printPurchasedTicketCount(int count) {
-		System.out.println(count + "개를 구매했습니다.");
+	public void printPurchasedTicketCount(int manualCount, int randomCount) {
+		System.out.println("수동으로 " + manualCount + "장, 자동으로 " + randomCount +"개를 구매했습니다.");
 	}
 
 	public void printLottoTickets(List<LottoTicket> lottoTickets) {
