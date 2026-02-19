@@ -1,4 +1,7 @@
-package lotto.model;
+package lotto.model.result;
+
+import lotto.model.ticket.LottoNumber;
+import lotto.model.ticket.LottoTicket;
 
 import java.util.List;
 
@@ -9,19 +12,22 @@ public class WinningLottoNumbers {
 
 	public WinningLottoNumbers(List<LottoNumber> normalLottoNumbers, LottoNumber bonusLottoNumber) {
 		validateBonusInNormal(normalLottoNumbers, bonusLottoNumber);
+		if(normalLottoNumbers.size() != LottoTicket.LOTTO_LENGTH){
+			throw new IllegalArgumentException("당첨 번호는 " + LottoTicket.LOTTO_LENGTH +"자리이어야 합니다");
+		}
 		this.normalLottoNumbers = normalLottoNumbers;
 		this.bonusLottoNumber = bonusLottoNumber;
 	}
 
 	public Rank match(LottoTicket myLottoTicket) {
-		Integer normalCount = Math.toIntExact(normalLottoNumbers.stream().filter(myLottoTicket::isMatch).count());
-		Boolean hasBonus = myLottoTicket.isMatch(bonusLottoNumber);
+		int normalCount = Math.toIntExact(normalLottoNumbers.stream().filter(myLottoTicket::isMatch).count());
+		boolean hasBonus = myLottoTicket.isMatch(bonusLottoNumber);
 
 		return Rank.from(normalCount, hasBonus);
 	}
 
 	private void validateBonusInNormal(List<LottoNumber> normalLottoNumbers, LottoNumber bonusLottoNumber) {
-		Boolean isBonusInNormal = normalLottoNumbers.stream()
+		boolean isBonusInNormal = normalLottoNumbers.stream()
 				.anyMatch(bonusLottoNumber::equals);
 
 		if (isBonusInNormal) {
