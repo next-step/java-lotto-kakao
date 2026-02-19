@@ -27,7 +27,7 @@ class SeparatorTest {
     @DisplayName("잘못된 구분자가 있을 때")
     public void errorSep(){
         Separator sep = new Separator("1:2,3a5");
-        assertThatThrownBy(()->sep.split()).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(()->sep.split()).isInstanceOf(NumberFormatException.class);
     }
 
 }

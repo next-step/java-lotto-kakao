@@ -18,7 +18,7 @@ public class NumberObjectTest {
     @DisplayName("음수가 들어갔을 때")
     public void negativeNumber(){
         assertThatThrownBy(() -> new NumberObject("-123"))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("음수 에러 발생!");
     }
 
@@ -26,7 +26,7 @@ public class NumberObjectTest {
     @DisplayName("숫자가 아닐 때")
     public void notNumber() {
         assertThatThrownBy(() -> new NumberObject("[]="))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(NumberFormatException.class);
     }
 
     @Test

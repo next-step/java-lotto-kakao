@@ -25,7 +25,7 @@ class WalletTest {
     public void notEnoughBalance(){
         Wallet wallet = new Wallet(1000);
         assertThatThrownBy(()->wallet.change(new Money(-3000)))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessage("잔액이 부족합니다.");
     }
 
@@ -40,7 +40,7 @@ class WalletTest {
     @DisplayName("잔액체크 실패")
     public void canAffordNotEnough(){
         Wallet wallet = new Wallet(1000);
-        assertThat(wallet.canAfford(new Money(-3000))).isFalse();
+        assertThat(wallet.canAfford(new Money(3000))).isFalse();
     }
 
     @Test

@@ -10,7 +10,7 @@ public class NumberObject {
 
     public NumberObject(int number) {
         if(!validation(number)) {
-            throw new RuntimeException("음수 에러 발생!");
+            throw new IllegalArgumentException("음수 에러 발생!");
         }
         this.number = number;
     }

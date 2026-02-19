@@ -10,7 +10,7 @@ public class Wallet {
     }
 
     public Wallet(Money balance) {
-        if(balance.isDebt()) throw new RuntimeException("잔액은 항상 0원 이상이어야 합니다.");
+        if(balance.isDebt()) throw new IllegalArgumentException("잔액은 항상 0원 이상이어야 합니다.");
         this.balance = balance;
         this.receipt = new Money(0);
     }
@@ -18,7 +18,7 @@ public class Wallet {
     public void change(Money money) {
         Money newBalance = balance.sum(money);
         if(newBalance.isDebt()) {
-            throw new RuntimeException("잔액이 부족합니다.");
+            throw new IllegalStateException("잔액이 부족합니다.");
         }
         this.balance = newBalance;
         receipt = receipt.sum(money);
@@ -27,7 +27,7 @@ public class Wallet {
     public void spend(Money money) {
         Money newBalance = balance.subtract(money);
         if(newBalance.isDebt()) {
-            throw new RuntimeException("잔액이 부족합니다.");
+            throw new IllegalStateException("잔액이 부족합니다.");
         }
         this.balance = newBalance;
         receipt = receipt.sum(money);

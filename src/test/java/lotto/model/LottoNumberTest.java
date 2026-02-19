@@ -30,14 +30,14 @@ class LottoNumberTest {
     @DisplayName("경계값 - 0은 유효하지 않음")
     public void boundaryBelowMin() {
         assertThatThrownBy(() -> new LottoNumber(0))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("경계값 - 46은 유효하지 않음")
     public void boundaryAboveMax() {
         assertThatThrownBy(() -> new LottoNumber(46))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

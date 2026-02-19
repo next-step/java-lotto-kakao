@@ -8,7 +8,7 @@ public class LottoNumber implements Comparable<LottoNumber> {
 
     public LottoNumber(int num) {
         if (num < START_NUMBER || num > END_NUMBER) {
-            throw new RuntimeException("로또 번호는 "+START_NUMBER+"-"+END_NUMBER+" 사이 값이어야 합니다");
+            throw new IllegalArgumentException("로또 번호는 "+START_NUMBER+"-"+END_NUMBER+" 사이 값이어야 합니다");
         }
         this.num = num;
     }
