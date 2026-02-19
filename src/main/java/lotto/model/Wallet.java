@@ -30,12 +30,8 @@ public class Wallet {
 
     public Double returnRate(Money money) {
         try {
-            Double rateOfReturn = money.division(receipt);
-            receipt = new Money(0);
-            balance = balance.sum(money);
-            return rateOfReturn;
+            return money.division(receipt);
         } catch (ArithmeticException e) {
-            //투자금이 없으므로 금액 변동이 없음
             return 1.0;
         }
     }

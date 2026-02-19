@@ -47,10 +47,20 @@ class WalletTest {
     }
 
     @Test
-    @DisplayName("수익률 정상 반환")
-    public void rateOfReturn() {
-        Wallet wallet = new Wallet(10500);
+    @DisplayName("수익률 계산")
+    public void returnRate() {
+        Wallet wallet = new Wallet(10000);
         wallet.spend(new Money(10000));
+
         assertThat(wallet.returnRate(new Money(100000))).isEqualTo(10.0);
     }
+
+    @Test
+    @DisplayName("수익률 계산 - 투자금 없을 때")
+    public void returnRateNoInvestment() {
+        Wallet wallet = new Wallet(10000);
+
+        assertThat(wallet.returnRate(new Money(5000))).isEqualTo(1.0);
+    }
+
 }
