@@ -33,9 +33,9 @@ class LottoTicketsTest {
 
     @Test
     @DisplayName("티켓 추가")
-    public void insertTicket() {
+    public void add() {
         LottoTickets tickets = new LottoTickets();
-        tickets.insertTicket(new LottoTicket(1,2,3,4,5,6));
+        tickets.add(new LottoTicket(1,2,3,4,5,6));
 
         assertThat(tickets.size()).isEqualTo(1);
     }

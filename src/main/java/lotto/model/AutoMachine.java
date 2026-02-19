@@ -25,7 +25,7 @@ public class AutoMachine {
 
         LottoTickets lottoTickets = new LottoTickets(new ArrayList<>());
         while (wallet.canAfford(LottoTicket.PRICE)) {
-            lottoTickets.insertTicket(this.issue(wallet));
+            lottoTickets.add(this.issue(wallet));
         }
         return lottoTickets;
     }
