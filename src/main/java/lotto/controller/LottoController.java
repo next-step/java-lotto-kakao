@@ -56,7 +56,7 @@ public class LottoController {
 		LotteryChecker checker = new LotteryChecker();
 
 		for (Lotto ticket : tickets) {
-			MatchCount match = winningLotto.aggreateMatchCount(ticket);
+			MatchCount match = winningLotto.aggregateMatchCount(ticket);
 			checker.increase(match);
 		}
 
