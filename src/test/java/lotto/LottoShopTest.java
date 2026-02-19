@@ -25,7 +25,7 @@ class LottoShopTest {
 
     @Test
     void createsBundleWithPurchasableCount() {
-        LottoBundlePurchase purchase = LottoShop.purchaseBundle(MONEY_14500);
+        LottoBundlePurchase purchase = LottoShop.purchaseBundle(MONEY_14500, new LottoForm());
         assertThat(purchase.lottoBundle().size()).isEqualTo(14);
     }
 
@@ -41,38 +41,30 @@ class LottoShopTest {
 
     @Test
     void calculatePaid() {
-        LottoForm lottoForm = new LottoForm();
-        lottoForm.mark(List.of(1, 2, 3, 4, 5, 6));
-        lottoForm.mark(List.of(11, 12, 13, 14, 15, 16));
-
-        LottoBundlePurchase purchase = LottoShop.purchaseBundle(MONEY_14500, lottoForm);
+        LottoBundlePurchase purchase = LottoShop.purchaseBundle(MONEY_14500, new LottoForm());
         assertThat(purchase.paid()).isEqualTo(Money.won(14000L));
     }
 
     @Test
     void calculateChange() {
-        LottoForm lottoForm = new LottoForm();
-        lottoForm.mark(List.of(1, 2, 3, 4, 5, 6));
-        lottoForm.mark(List.of(11, 12, 13, 14, 15, 16));
-
-        LottoBundlePurchase purchase = LottoShop.purchaseBundle(MONEY_14500, lottoForm);
+        LottoBundlePurchase purchase = LottoShop.purchaseBundle(MONEY_14500, new LottoForm());
         assertThat(purchase.change()).isEqualTo(Money.won(500L));
     }
 
     @Test
     void purchaseBundleFailWhenAmountIsZero() {
         assertThrows(IllegalArgumentException.class,
-                () -> LottoShop.purchaseBundle(Money.won(0L)));
+                () -> LottoShop.purchaseBundle(Money.won(0L), new LottoForm()));
     }
 
     @Test
     void purchaseBundleFailWhenAmountIsLessThanPrice() {
         assertThrows(IllegalArgumentException.class,
-                () -> LottoShop.purchaseBundle(Money.won(999L)));
+                () -> LottoShop.purchaseBundle(Money.won(999L), new LottoForm()));
     }
 
     @Test
-    void purchaseBundleFailWhenManualAmountIsMoreThanPrice() {
+    void purchaseBundleFailWhenManualExceedsPurchasableCount() {
         LottoForm lottoForm = new LottoForm();
         lottoForm.mark(List.of(1, 2, 3, 4, 5, 6));
         lottoForm.mark(List.of(11, 12, 13, 14, 15, 16));

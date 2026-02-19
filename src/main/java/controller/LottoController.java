@@ -90,7 +90,6 @@ public class LottoController {
         }
     }
 
-
     private LottoForm readManualLottoForm(int count) {
         LottoForm lottoForm = new LottoForm();
         if (count == 0) {

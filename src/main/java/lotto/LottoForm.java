@@ -10,6 +10,10 @@ public class LottoForm {
         markedLottos.add(new Lotto(numbers));
     }
 
+    int size() {
+        return markedLottos.size();
+    }
+
     List<Lotto> manualLottos() {
         return List.copyOf(markedLottos);
     }
