@@ -22,11 +22,7 @@ public class Lottos {
 		return lottoList;
 	}
 
-	public void setLottoList(List<Lotto> lottos) {
-		this.lottoList = lottos;
-	}
-
-	public int getLottoCount() {
+	public long getLottoCount() {
 		return this.lottoList.size();
 	}
 

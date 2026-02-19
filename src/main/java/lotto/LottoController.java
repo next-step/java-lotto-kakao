@@ -35,7 +35,9 @@ public class LottoController {
 	private User getUser() {
 		try {
 			String price = view.readPrice();
-			return new User(price);
+			String manualCount = view.readManualCount();
+			Lottos manualLottos = view.readManualLottos(manualCount, parser);
+			return new User(price, manualLottos);
 		} catch (IllegalArgumentException e) {
 			view.print(e.getMessage());
 			return getUser();
