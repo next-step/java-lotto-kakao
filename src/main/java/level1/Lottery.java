@@ -1,50 +1,45 @@
 package level1;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Lottery {
 
-    protected final Set<Integer> lottery;
+    protected final List<LottoNumber> lottery;
 
     public Lottery(List<String> numbers) {
-        Set<String> numberSet = new HashSet<>(numbers);
+        validateInputSize(numbers);
 
-        this.lottery = numberSet.stream()
-                .map(this::parseNumber)
-                .collect(Collectors.toSet());
+        List<LottoNumber> lottoNumbers = numbers.stream()
+                .distinct()
+                .map(LottoNumber::valueOf)
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        if (this.lottery.size() != Constant.LOTTERY_SIZE) {
-            throw new IllegalArgumentException("숫자는 6 개여야 합니다.");
+        validateSize(lottoNumbers);
+        this.lottery = lottoNumbers;
+    }
+
+    private void validateSize(List<LottoNumber> lottoNumbers) {
+        if (lottoNumbers.size() != Constant.LOTTERY_SIZE) {
+            throw new IllegalArgumentException("중복되지 않은 숫자는 6개여야 합니다.");
         }
     }
 
-    protected int parseNumber(String stringNumber) {
-        int number;
-        try {
-            number = Integer.parseInt(stringNumber);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("숫자가 아닌 값은 허용되지 않습니다.");
+    private void validateInputSize(List<String> lottoNumbers) {
+        if (lottoNumbers.size() != Constant.LOTTERY_SIZE) {
+            throw new IllegalArgumentException("6자리의 수를 입력해야 합니다");
         }
-
-        if (number < Constant.LOTTERY_MIN_VALUE || number > Constant.LOTTERY_MAX_VALUE) {
-            throw new IllegalArgumentException("로또 번호는 1 - 45 범위 숫자만 가능합니다.");
-        }
-
-        return number;
     }
 
-    public boolean contains(int given) {
+    public boolean contains(LottoNumber given) {
         return this.lottery.contains(given);
     }
 
     public String represent() {
-        List<Integer> sortedNumbers = lottery.stream()
+        return lottery.stream()
                 .sorted()
-                .toList();
-
-        return sortedNumbers.toString();
+                .toList()
+                .toString();
     }
 }

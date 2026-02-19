@@ -20,11 +20,11 @@ public class Number {
         try {
             val = Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            throw new RuntimeException("숫자가 아닌 입력입니다.");
+            throw new IllegalArgumentException("숫자가 아닌 입력입니다.");
         }
 
         if (val < 0) {
-            throw new RuntimeException("음수는 허용되지 않습니다.");
+            throw new IllegalArgumentException("음수는 허용되지 않습니다.");
         }
 
         return val;

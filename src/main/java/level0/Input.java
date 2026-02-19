@@ -11,6 +11,8 @@ public class Input {
 
     public static final List<String> DEFAULT_DELIMINATORS = List.of(":", ",");
 
+    private static final Pattern CUSTOM_DELIMITER_PATTERN = Pattern.compile("//(.)\\\\n(.*)");
+
     private final String inputString;
 
     private final Set<String> deliminators;
@@ -28,18 +30,18 @@ public class Input {
                 DEFAULT_DELIMINATORS
         );
 
-        Matcher m = Pattern.compile("//(.)\\\\n(.*)").matcher(inputString);
-        if (m.find()) {
-            String customDelimiter = m.group(1);
+        Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(inputString);
+        if (matcher.find()) {
+            String customDelimiter = matcher.group(1);
             deliminators.add(customDelimiter);
         }
         return deliminators;
     }
 
     private Numbers parseNumbers(String inputString) {
-        Matcher m = Pattern.compile("//(.)\\\\n(.*)").matcher(inputString);
-        if (m.find()) {
-            inputString = m.group(2);
+        Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(inputString);
+        if (matcher.find()) {
+            inputString = matcher.group(2);
         }
 
         String[] inputs = inputString.split(buildSplitter());

@@ -21,13 +21,13 @@ public class RandomLotteryGenerator {
         List<Lottery> randomLotteries = new ArrayList<>(num);
 
         for (int i = 0; i < num; i++) {
-            randomLotteries.add(this.genRandomLottery());
+            randomLotteries.add(this.generateRandomLottery());
         }
 
         return new Lotteries(randomLotteries);
     }
 
-    private Lottery genRandomLottery() {
+    private Lottery generateRandomLottery() {
         Collections.shuffle(randomNumberList);
 
         List<String> randomNumbers = randomNumberList.stream()
