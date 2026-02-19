@@ -36,13 +36,13 @@ public class Money {
         return amount / LOTTO_PRICE;
     }
 
-    public Float calculateRate(List<Rank> rankList) {
-        if (amount == 0) return (float) 0;
+    public double calculateRate(List<Rank> rankList) {
+        if (amount == 0) return  0.0d;
 
         long totalWinningMoney = rankList.stream()
                 .mapToLong(Rank::getWinningMoney)
                 .sum();
 
-        return (float) totalWinningMoney / amount;
+        return (double) totalWinningMoney / amount;
     }
 }

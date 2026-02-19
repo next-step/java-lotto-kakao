@@ -23,9 +23,9 @@ public class MoneyTest {
         List<Rank> rankList = List.of(FIRST, SECOND);
 
         // (20억 + 3천만) / 14,000 = 145,000.0
-        float rate = money.calculateRate(rankList);
+        double rate = money.calculateRate(rankList);
 
-        assertEquals(145000.0f, rate);
+        assertEquals(145000.0d, rate);
     }
 
     @Test
