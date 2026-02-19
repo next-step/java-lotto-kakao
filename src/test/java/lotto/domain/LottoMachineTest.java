@@ -2,84 +2,69 @@ package lotto.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+
 import lotto.exception.LottoValidationException;
 
 class LottoMachineTest {
-	@DisplayName("로또 발급 시 금액과 수동 개수에 따라 자동 발급 개수가 결정되어야 한다")
-	@ParameterizedTest
-	@CsvSource({
-		"1000, 0, 1",
-		"1500, 0, 1",
-		"2500, 1, 1",
-		"2500, 2, 0"
-	})
-	void calculateRandomCountFromAmount_withAmountAndManualCount_returnsExpectedAutoCount(int amount, int manualCount, int expectedCount) {
-		LottoMachine machine = new LottoMachine();
+	@DisplayName("로또 머신은 등록된 생성기의 결과를 순서대로 병합해야 한다")
+	@Test
+	void issue_withGenerators_mergesResultsInOrder() {
+		LottoGenerator manualGenerator = new ManualLottoGenerator(List.of(List.of(1, 2, 3, 4, 5, 6)));
+		LottoGenerator randomGenerator = () -> List.of(Lotto.from(List.of(7, 8, 9, 10, 11, 12)));
+		LottoMachine machine = new LottoMachine(List.of(manualGenerator, randomGenerator));
 
-		int count = machine.calculateRandomCountFromAmount(amount, manualCount);
+		List<Lotto> issued = machine.issue();
 
-		assertThat(count).isEqualTo(expectedCount);
+		assertThat(issued).hasSize(2);
+		assertThat(issued.get(0).getNumbers())
+			.extracting(LottoNumber::getValue)
+			.containsExactly(1, 2, 3, 4, 5, 6);
+		assertThat(issued.get(1).getNumbers())
+			.extracting(LottoNumber::getValue)
+			.containsExactly(7, 8, 9, 10, 11, 12);
 	}
 
-	@DisplayName("자동 발급 계산 시 금액이 가격 미만이면 LottoValidationException이 발생해야 한다")
+	@DisplayName("로또 머신 생성 시 생성기 목록이 null이면 LottoValidationException이 발생해야 한다")
 	@Test
-	void calculateRandomCountFromAmount_withAmountLessThanPrice_throwsLottoValidationException() {
-		LottoMachine machine = new LottoMachine();
-
-		assertThatThrownBy(() -> machine.calculateRandomCountFromAmount(999, 0))
+	void constructor_withNullGenerators_throwsLottoValidationException() {
+		assertThatThrownBy(() -> new LottoMachine(null))
 			.isInstanceOf(LottoValidationException.class);
 	}
 
-	@DisplayName("발급된 로또 번호는 정렬되고 중복이 없으며 범위 내여야 한다")
+	@DisplayName("로또 머신 생성 시 생성기 목록에 null이 포함되면 LottoValidationException이 발생해야 한다")
 	@Test
-	void issue_withAmount_returnsSortedUniqueNumbersWithinRange() {
-		LottoMachine machine = new LottoMachine();
+	void constructor_withNullGeneratorElement_throwsLottoValidationException() {
+		List<LottoGenerator> generators = new ArrayList<>();
+		generators.add(() -> List.of(Lotto.from(List.of(1, 2, 3, 4, 5, 6))));
+		generators.add(null);
 
-		Lotto lotto = machine.issueRandom(1).getFirst();
-
-		assertThat(lotto.getNumbers())
-			.hasSize(6)
-			.doesNotHaveDuplicates()
-			.isSorted()
-			.allMatch(number -> number.getValue() >= 1 && number.getValue() <= 45);
-	}
-
-	@DisplayName("자동 발급 계산 시 수동 개수가 음수면 LottoValidationException이 발생해야 한다")
-	@Test
-	void calculateRandomCountFromAmount_withNegativeManualCount_throwsLottoValidationException() {
-		LottoMachine machine = new LottoMachine();
-
-		assertThatThrownBy(() -> machine.calculateRandomCountFromAmount(1_000, -1))
+		assertThatThrownBy(() -> new LottoMachine(generators))
 			.isInstanceOf(LottoValidationException.class);
 	}
 
-	@DisplayName("자동 발급 계산 시 수동 개수가 전체 발급 개수를 초과하면 LottoValidationException이 발생해야 한다")
+	@DisplayName("생성 결과가 null이면 LottoValidationException이 발생해야 한다")
 	@Test
-	void calculateRandomCountFromAmount_withManualCountExceedingTotal_throwsLottoValidationException() {
-		LottoMachine machine = new LottoMachine();
+	void issue_whenGeneratorReturnsNull_throwsLottoValidationException() {
+		LottoMachine machine = new LottoMachine(List.of(() -> null));
 
-		assertThatThrownBy(() -> machine.calculateRandomCountFromAmount(1_000, 2))
+		assertThatThrownBy(machine::issue)
 			.isInstanceOf(LottoValidationException.class);
 	}
 
-	@DisplayName("자동 발급 개수에 따라 발급 개수가 결정되어야 한다")
-	@ParameterizedTest
-	@CsvSource({
-		"0, 0",
-		"1, 1",
-		"2, 2"
-	})
-	void issueRandom_withCount_returnsExpectedTicketCount(int count, int expectedCount) {
-		LottoMachine machine = new LottoMachine();
+	@DisplayName("생성 결과에 null 로또가 포함되면 LottoValidationException이 발생해야 한다")
+	@Test
+	void issue_whenGeneratedLottosContainNull_throwsLottoValidationException() {
+		List<Lotto> generated = new ArrayList<>();
+		generated.add(Lotto.from(List.of(1, 2, 3, 4, 5, 6)));
+		generated.add(null);
+		LottoMachine machine = new LottoMachine(List.of(() -> generated));
 
-		List<Lotto> lottos = machine.issueRandom(count);
-
-		assertThat(lottos).hasSize(expectedCount);
+		assertThatThrownBy(machine::issue)
+			.isInstanceOf(LottoValidationException.class);
 	}
 }

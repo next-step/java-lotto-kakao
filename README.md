@@ -79,9 +79,12 @@ src/main/java
       Lotto
       LottoMachine
       LottoNumber
+      LottoPurchasePolicy
       LottoResult
       LottoStatistics
-      Lottos
+      LottoGenerator
+      ManualLottoGenerator
+      RandomLottoGenerator
       WinningNumbers
     view
       InputView
@@ -95,8 +98,9 @@ src/test/java
     domain
       LottoMachineTest
       LottoNumberTest
+      LottoPurchasePolicyTest
       LottoStatisticsTest
-      LottosTest
+      LottoGeneratorTest
       LottoResultTest
       LottoTest
       WinningNumbersTest
@@ -120,11 +124,14 @@ src/test/java
 ### lotto.domain
 
 - `Lotto`: 로또 한 장의 숫자 집합, 유효성 검증 및 자동 생성
-- `LottoMachine`: 구매 금액을 기준으로 로또 발급(가격 정책 포함)
+- `LottoMachine`: 여러 생성기를 실행해 로또 목록을 조합하는 컴포지트
 - `LottoNumber`: 로또 번호(1~45) 값 객체
+- `LottoPurchasePolicy`: 구입 금액/수동 개수 기반 랜덤 발급 개수 계산 정책
 - `LottoResult`: 당첨 등급과 상금 정의
 - `LottoStatistics`: 전체 당첨 통계 및 총 상금 계산
-- `Lottos`: 로또 여러 장 일급 컬렉션
+- `LottoGenerator`: 로또 생성 전략 인터페이스
+- `ManualLottoGenerator`: 수동 번호 기반 생성
+- `RandomLottoGenerator`: 랜덤 로또 생성
 - `WinningNumbers`: 당첨 번호 + 보너스 볼 보관 및 검증
 
 ## 프로젝트 구현 계획

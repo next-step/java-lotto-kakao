@@ -1,13 +1,16 @@
 package lotto.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lotto.domain.Lotto;
+import lotto.domain.LottoGenerator;
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoNumber;
+import lotto.domain.LottoPurchasePolicy;
 import lotto.domain.LottoStatistics;
+import lotto.domain.ManualLottoGenerator;
+import lotto.domain.RandomLottoGenerator;
 import lotto.domain.WinningNumbers;
 import lotto.exception.LottoException;
 import lotto.view.InputView;
@@ -17,27 +20,26 @@ import lotto.view.OutputView;
 public class LottoController {
 	private final InputView inputView;
 	private final OutputView outputView;
-	private final LottoMachine lottoMachine;
+	private final LottoPurchasePolicy purchasePolicy;
 
 	public static LottoController create() {
 		return new LottoController(
 			new InputView(),
 			new OutputView(),
-			new LottoMachine()
+			new LottoPurchasePolicy()
 		);
 	}
 
 	public void run() {
 		int amount = readPurchaseAmount();
 		int manualCount = readManualCount(amount);
-		int autoCount = lottoMachine.calculateRandomCountFromAmount(amount, manualCount);
-		List<Lotto> manualLottos = readManualLottos(manualCount);
-		List<Lotto> autoLottos = lottoMachine.issueRandom(autoCount);
+		int randomCount = purchasePolicy.calculateRandomCountFromAmount(amount, manualCount);
+		LottoGenerator manualGenerator = readManualGenerator(manualCount);
+		LottoGenerator randomGenerator = new RandomLottoGenerator(randomCount);
+		LottoMachine lottoMachine = new LottoMachine(List.of(manualGenerator, randomGenerator));
+		List<Lotto> lottos = lottoMachine.issue();
 
-		List<Lotto> lottos = new ArrayList<>();
-		lottos.addAll(manualLottos);
-		lottos.addAll(autoLottos);
-		outputView.printLottos(lottos, manualCount, autoCount);
+		outputView.printLottos(lottos, manualCount, randomCount);
 
 		Lotto winningLotto = readWinningLotto();
 		WinningNumbers winning = readWinningNumbers(winningLotto);
@@ -51,7 +53,7 @@ public class LottoController {
 		while (true) {
 			try {
 				int amount = inputView.readPurchaseAmount();
-				lottoMachine.calculateRandomCountFromAmount(amount, 0);
+				purchasePolicy.calculateRandomCountFromAmount(amount, 0);
 				return amount;
 			} catch (LottoException exception) {
 				outputView.printError(exception.getMessage());
@@ -63,7 +65,7 @@ public class LottoController {
 		while (true) {
 			try {
 				int manualCount = inputView.readManualCount();
-				lottoMachine.calculateRandomCountFromAmount(amount, manualCount);
+				purchasePolicy.calculateRandomCountFromAmount(amount, manualCount);
 				return manualCount;
 			} catch (LottoException exception) {
 				outputView.printError(exception.getMessage());
@@ -71,11 +73,11 @@ public class LottoController {
 		}
 	}
 
-	private List<Lotto> readManualLottos(int manualCount) {
+	private LottoGenerator readManualGenerator(int manualCount) {
 		while (true) {
 			try {
 				List<List<Integer>> manualNumbers = inputView.readManualNumbers(manualCount);
-				return lottoMachine.issueManual(manualNumbers);
+				return new ManualLottoGenerator(manualNumbers);
 			} catch (LottoException exception) {
 				outputView.printError(exception.getMessage());
 			}
