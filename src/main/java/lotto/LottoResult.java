@@ -28,6 +28,7 @@ public class LottoResult {
                 .map(rank -> rank.winningMoney(toCount(rank)))
                 .reduce(Money.zero(), Money::sum);
 
-        return YieldCalculator.calculate(totalPrize, purchaseMoney);
+        double yield = (double) totalPrize.money() / purchaseMoney.money();
+        return Math.floor(yield * 100) / 100.0;
     }
 }
