@@ -2,7 +2,8 @@ package lotto;
 
 public final class Money {
     private final long money;
-    private static final long LOTTO_UNIT = 1000;
+    private final static long LOTTO_UNIT = 1000;
+    private final static Money ZERO = new Money(0);
 
     public Money(long money) {
         validateUnit(money);
@@ -10,10 +11,13 @@ public final class Money {
     }
 
     public static Money zero() {
-        return new Money(0);
+        return ZERO;
     }
 
     public Money sum(Money other) {
+        if(this.money + other.money == 0){
+            return zero();
+        }
         return new Money(this.money + other.money);
     }
 
