@@ -1,11 +1,15 @@
 package lotto.controller;
 
 import lotto.*;
-import lotto.model.Buyer;
 import lotto.model.LotteryChecker;
 import lotto.model.Lotto;
+import lotto.model.LottoIssuer;
 import lotto.model.LottoNumber;
+import lotto.model.LottoPrice;
+import lotto.model.Lottos;
+import lotto.model.LottosGenerator;
 import lotto.model.MatchCount;
+import lotto.model.Money;
 import lotto.model.WinningLotto;
 import lotto.view.LottoView;
 
@@ -15,24 +19,35 @@ import java.util.stream.Collectors;
 public class LottoController {
 
 	private final LottoView view;
+	private final LottosGenerator lottosGenerator;
+	private final LottoPrice lottoPrice;
 
-	public LottoController(LottoView view) {
+	public LottoController(LottoView view, LottosGenerator lottosGenerator, LottoPrice lottoPrice) {
 		this.view = view;
+		this.lottosGenerator = lottosGenerator;
+		this.lottoPrice = lottoPrice;
 	}
 
 	public void run() {
 		int budget = view.readBudget();
+		Money money = new Money(budget);
 
-		Buyer buyer = Buyer.buyLotteries(budget);
-		List<Lotto> tickets = buyer.getTickets();
+		int manualCount = view.readManualCount();
+		List<String> manualInputs = view.readManualInputs(manualCount);
+
+		Lottos tickets = issueLotteries(money, manualCount, manualInputs);
 		view.printTickets(tickets);
 
 		WinningLotto winningLotto = createWinningLotto();
-
 		LotteryChecker checker = calculateResults(tickets, winningLotto);
 
 		view.printStatistics(checker.getCounts(),
 			checker.calculateReturnRate(budget));
+	}
+
+	private Lottos issueLotteries(Money money, int manualCount, List<String> manualInputs) {
+		LottoIssuer lottoIssuer = new LottoIssuer(money, manualCount, lottosGenerator, lottoPrice);
+		return lottoIssuer.issueAll(manualInputs);
 	}
 
 	private WinningLotto createWinningLotto() {
@@ -52,7 +67,7 @@ public class LottoController {
 		return new WinningLotto(winningLotto, bonus);
 	}
 
-	private LotteryChecker calculateResults(List<Lotto> tickets, WinningLotto winningLotto) {
+	private LotteryChecker calculateResults(Lottos tickets, WinningLotto winningLotto) {
 		LotteryChecker checker = new LotteryChecker();
 
 		for (Lotto ticket : tickets) {

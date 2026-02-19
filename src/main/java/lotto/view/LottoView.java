@@ -1,10 +1,12 @@
 package lotto.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import lotto.model.Lotto;
+import lotto.model.Lottos;
 import lotto.model.MatchCount;
 
 public class LottoView {
@@ -14,6 +16,20 @@ public class LottoView {
 	public int readBudget() {
 		System.out.println("구입금액을 입력해 주세요.");
 		return Integer.parseInt(scanner.nextLine());
+	}
+
+	public int readManualCount() {
+		System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+		return Integer.parseInt(scanner.nextLine());
+	}
+
+	public List<String> readManualInputs(int manualCount) {
+		System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+		List<String> inputs = new ArrayList<>();
+		for (int i = 0; i < manualCount; i++) {
+			inputs.add(scanner.nextLine());
+		}
+		return inputs;
 	}
 
 	public String readWinningNumbers() {
@@ -26,18 +42,21 @@ public class LottoView {
 		return Integer.parseInt(scanner.nextLine());
 	}
 
-	public void printTickets(List<Lotto> tickets) {
+	public void printTickets(Lottos tickets) {
 		System.out.println(tickets.size() + "개를 구매했습니다.");
 		tickets.forEach(ticket -> System.out.println(ticket.getNumbers()));
 	}
 
 	public void printStatistics(Map<MatchCount, Integer> counts, double returnRate) {
-		System.out.println("당첨 통계");
-		System.out.println("3개 일치 (5000원)- " + counts.getOrDefault(MatchCount.THREE, 0) + "개");
-		System.out.println("4개 일치 (50000원)- " + counts.getOrDefault(MatchCount.FOUR, 0) + "개");
-		System.out.println("5개 일치 (1500000원)- " + counts.getOrDefault(MatchCount.FIVE, 0) + "개");
-		System.out.println("5개 일치, 보너스 볼 일치(30000000원)- " + counts.getOrDefault(MatchCount.FIVE_BONUS, 0) + "개");
-		System.out.println("6개 일치 (2000000000원)- " + counts.getOrDefault(MatchCount.SIX, 0) + "개");
+		StatisticsFormatter formatter = new StatisticsFormatter();
+
+		for (MatchCount match : MatchCount.values()) {
+			int amount = counts.getOrDefault(match, 0);
+			String line = formatter.format(match, amount);
+			if (!line.isBlank()) {
+				System.out.println(line);
+			}
+		}
 		System.out.println("총 수익률은 " + returnRate + "입니다.");
 	}
 }

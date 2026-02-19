@@ -1,5 +1,6 @@
 package lotto.model;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,18 @@ public class Lotto {
 	public Lotto(List<LottoNumber> numbers) {
 		validate(numbers);
 		this.numbers = List.copyOf(numbers);
+	}
+
+	public Lotto(String text) {
+		this(parseText(text));
+	}
+
+	private static List<LottoNumber> parseText(String text) {
+		return Arrays.stream(text.split(","))
+			.map(String::trim)
+			.map(Integer::parseInt)
+			.map(LottoNumber::new)
+			.toList();
 	}
 
 	private void validate(List<LottoNumber> numbers) {
@@ -34,7 +47,7 @@ public class Lotto {
 		return this.numbers.contains(bonus);
 	}
 
-	public static Lotto createRandomLotto() {
+	public static Lotto random() {
 		List<LottoNumber> pool = LottoNumber.getCache();
 		Collections.shuffle(pool);
 
@@ -49,5 +62,4 @@ public class Lotto {
 	public List<LottoNumber> getNumbers() {
 		return this.numbers;
 	}
-
 }
