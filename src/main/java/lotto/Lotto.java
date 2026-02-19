@@ -20,7 +20,7 @@ public class Lotto {
 
     private static Set<LottoNumber> convertListToSet(List<Integer> numbers) {
         return numbers.stream()
-                .map(LottoNumber::new)
+                .map(LottoNumber::of)
                 .collect(Collectors.toSet());
     }
 
