@@ -1,5 +1,7 @@
 package lotto.model;
 
+import java.util.List;
+
 public class LottoStore {
 
     private final ManualSelector manualSelector;
@@ -21,8 +23,11 @@ public class LottoStore {
         }
     }
 
-    public LottoTicket buyManual(Wallet wallet, String numbers) {
-        return manualSelector.buyTicket(wallet, numbers);
+    public LottoTickets buyManual(Wallet wallet, List<String> numbersList) {
+        List<LottoTicket> list = numbersList.stream()
+                .map(nums -> manualSelector.buyTicket(wallet, nums))
+                .toList();
+        return new LottoTickets(list);
     }
 
     public LottoTickets buyAutoAllIn(Wallet wallet) {

@@ -39,7 +39,7 @@ public class Wallet {
 
     public Double returnRate(Money money) {
         try {
-            Double rateOfReturn = -1 * money.division(receipt);
+            Double rateOfReturn = money.division(receipt);
             receipt = new Money(0);
             balance = balance.sum(money);
             return rateOfReturn;

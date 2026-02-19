@@ -9,6 +9,10 @@ public class OutputView {
         System.out.println(count + "개를 구매했습니다.");
     }
 
+    public void printPurchaseCount(int manualCount, int autoCount) {
+        System.out.println("\n수동으로 " + manualCount + "장, 자동으로 " + autoCount + "개를 구매했습니다.");
+    }
+
     public void printTickets(LottoTickets tickets) {
         System.out.println(tickets);
     }

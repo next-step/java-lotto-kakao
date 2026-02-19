@@ -3,6 +3,8 @@ package lotto.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 class LottoStoreTest {
@@ -42,9 +44,10 @@ class LottoStoreTest {
         LottoStore store = new LottoStore();
         Wallet wallet = new Wallet(3000);
 
-        LottoTicket ticket = store.buyManual(wallet, "1, 2, 3, 4, 5, 6");
+        List<String> numbersList = List.of("1, 2, 3, 4, 5, 6", "7, 8, 9, 10, 11, 12");
+        LottoTickets tickets = store.buyManual(wallet, numbersList);
 
-        assertThat(ticket).isInstanceOf(LottoTicket.class);
+        assertThat(tickets.size()).isEqualTo(2);
     }
 
     @Test

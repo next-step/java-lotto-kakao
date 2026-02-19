@@ -11,10 +11,11 @@ public class LottoTickets {
     }
 
     public LottoTickets(List<LottoTicket> lottoTickets) {
-        if(lottoTickets == null) {
-            lottoTickets = new ArrayList<>();
+        if (lottoTickets == null) {
+            this.lottoTickets = new ArrayList<>();
+            return;
         }
-        this.lottoTickets = lottoTickets;
+        this.lottoTickets = new ArrayList<>(lottoTickets);
     }
 
     public void insertTicket(LottoTicket lottoTicket) {

@@ -47,7 +47,7 @@ class WalletTest {
     @DisplayName("수익률 정상 반환")
     public void rateOfReturn() {
         Wallet wallet = new Wallet(10500);
-        wallet.change(new Money(-10000));
+        wallet.change(new Money(10000));
         assertThat(wallet.returnRate(new Money(100000))).isEqualTo(10.0);
     }
 }
