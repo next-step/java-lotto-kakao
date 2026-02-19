@@ -12,14 +12,19 @@ public class User {
 	private final Map<LottoStatus, Integer> result = new HashMap<>();
 	private LottoList lottos;
 	private long award;
+	private int manualCount;
+	private int autoCount;
 
-	public User(Money money) {
+	public User(Money money, LottoList lottos) {
 		this.money = money;
+		this.lottos = lottos;
+		this.manualCount = 0;
+		this.autoCount = 0;
+	}
 
-		lottos = new LottoList();
-		for (int i = 0; i < money.getPrice() / TICKET_COST; i++) {
-			lottos.addLotto(new Lotto());
-		}
+	public void setLottoCount(int manualCount, int autoCount) {
+		this.manualCount = manualCount;
+		this.autoCount = autoCount;
 	}
 
 	public void calculateAward(AnswerLotto answerLotto) {
@@ -51,5 +56,13 @@ public class User {
 
 	public long getAward() {
 		return this.award;
+	}
+
+	public int getManualCount() {
+		return manualCount;
+	}
+
+	public int getAutoCount() {
+		return autoCount;
 	}
 }

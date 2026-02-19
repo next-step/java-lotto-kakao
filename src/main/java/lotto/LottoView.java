@@ -22,11 +22,37 @@ public class LottoView {
 	}
 
 	public String readPrice() {
-		return read("구입금액을 입력해주세요.");
+		String line = read("구입금액을 입력해주세요.");
+		print("");
+		return line;
+	}
+
+	public String readManualLottoCount() {
+		String line = read("수동으로 구매할 로또 수를 입력해 주세요.");
+		print("");
+		return line;
+	}
+
+	public List<String> readManualLottos(int count) {
+		print("수동으로 구매할 로또 번호를 입력해 주세요.");
+		List<String> manualLottos = new ArrayList<>();
+		for (int i = 0; i < count; i++) {
+			manualLottos.add(read(""));
+		}
+		print("");
+		return manualLottos;
 	}
 
 	public void printPurchasedLotto(List<Lotto> lottos) {
 		print(lottos.size() + "개를 구매했습니다.");
+		for (Lotto lotto : lottos) {
+			print(lotto.toString());
+		}
+		print("");
+	}
+
+	public void printPurchasedLotto(List<Lotto> lottos, int manualCount, int autoCount) {
+		System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.\n", manualCount, autoCount);
 		for (Lotto lotto : lottos) {
 			print(lotto.toString());
 		}
@@ -38,7 +64,9 @@ public class LottoView {
 	}
 
 	public String readPreviousBonusBall() {
-		return read("보너스 볼을 입력해 주세요.");
+		String line = read("보너스 볼을 입력해 주세요.");
+		print("");
+		return line;
 	}
 
 	public void printResult(User user) {
@@ -49,8 +77,17 @@ public class LottoView {
 		print("당첨 통계");
 		print("---------");
 		printDetailResult(user.getResult(), winStatuses);
-		System.out.printf("총 수익률은 %.2f입니다.(기준이 1이기 때문에 결과적으로 손해라는 의미임)",
-			(float)(user.getAward()) / (float)(user.getPrice()));
+
+		double profitRate = (double)(user.getAward()) / (double)(user.getPrice());
+		String message;
+		if (profitRate < 1.0) {
+			message = String.format("총 수익률은 %.2f입니다.(기준이 1이기 때문에 결과적으로 손해라는 의미임)", profitRate);
+		} else if (profitRate > 1.0) {
+			message = String.format("총 수익률은 %.2f입니다.(기준이 1이기 때문에 결과적으로 이득이라는 의미임)", profitRate);
+		} else {
+			message = String.format("총 수익률은 %.2f입니다.(기준이 1이기 때문에 결과적으로 손익분기라는 의미임)", profitRate);
+		}
+		print(message);
 	}
 
 	public void print(String message) {
