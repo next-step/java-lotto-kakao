@@ -11,7 +11,7 @@ public class LottoTest {
     @Test
     void 숫자_6개_생성_테스트() {
         var numbers = IntStream.range(1, 7)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList());
         Lotto lotto = new Lotto(numbers);
 
@@ -22,7 +22,7 @@ public class LottoTest {
     @Test
     void 중복_테스트() {
         var numbers = IntStream.range(1, 6)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList());
 
         Assertions.assertThatIllegalArgumentException()
@@ -53,7 +53,7 @@ public class LottoTest {
 
     Lotto testSetLotto(int start, int end) {
         return new Lotto(IntStream.range(start, end)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
     }
 }

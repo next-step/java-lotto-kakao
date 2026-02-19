@@ -11,14 +11,14 @@ public class LottoNumberTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3, 4})
     void 숫자_범위_테스트(int number){
-        LottoNumber lottoNumber = new LottoNumber(number);
+        LottoNumber lottoNumber = LottoNumber.from(number);
         Assertions.assertThat(lottoNumber.toNumber()).isBetween(1, 45);
     }
     @ParameterizedTest
     @ValueSource(ints = {0, 46})
     @DisplayName("정상 범위 바깥 예외처리 확인")
     void 범위_예외_테스트(int number){
-        Assertions.assertThatThrownBy(() -> new LottoNumber(number))
+        Assertions.assertThatThrownBy(() -> LottoNumber.from(number))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("번호는 1~45 사이의 숫자를 입력해 주세요.");
     }

@@ -45,7 +45,7 @@ public class PurchasedLottoBundleTest {
     void 수동과_자동_결과를_합쳐_결과() {
         WinningLotto winningLotto = new WinningLotto(
                 makeLotto(1, 2, 3, 4, 5, 6),
-                new LottoNumber(7)
+                LottoNumber.from(7)
         );
 
         PurchasedLottoBundle purchasedLottoBundle = new PurchasedLottoBundle(
@@ -67,7 +67,7 @@ public class PurchasedLottoBundleTest {
 
     private Lotto makeLotto(int... numbers) {
         return new Lotto(Arrays.stream(numbers)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
     }
 }

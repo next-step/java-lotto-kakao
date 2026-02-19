@@ -48,7 +48,7 @@ public class LottoController {
         Lotto lotto = lottoParser.parse(winningNumbers);
         int bonusNumber = InputView.readingBonusNumber();
 
-        return new WinningLotto(lotto, new LottoNumber(bonusNumber));
+        return new WinningLotto(lotto, LottoNumber.from(bonusNumber));
     }
 
     private LottoBundle makeManualLottoBundle(int count){

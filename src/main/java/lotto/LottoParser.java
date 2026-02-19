@@ -30,7 +30,7 @@ public class LottoParser {
 
     private LottoNumber toLottoNumber(String number) {
         try {
-            return new LottoNumber(Integer.parseInt(number));
+            return LottoNumber.from(Integer.parseInt(number));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(LOTTO_NON_NUMERIC_MESSAGE);
         }

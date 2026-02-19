@@ -16,13 +16,13 @@ public class WinningLottoTest {
     @BeforeEach
     void init() {
         lotto = testSetLotto();
-        winning = new WinningLotto(testSetWinning(1, 7), new LottoNumber(40));
+        winning = new WinningLotto(testSetWinning(1, 7), LottoNumber.from(40));
     }
 
     @Test
     @DisplayName("일치하는 개수 판단")
     void 일치개수_테스트() {
-        WinningLotto winning = new WinningLotto(testSetWinning(20, 26), new LottoNumber(40));
+        WinningLotto winning = new WinningLotto(testSetWinning(20, 26), LottoNumber.from(40));
         Assertions.assertThat(winning.judge(lotto)).isEqualTo(Rank.MISS);
     }
 
@@ -35,20 +35,20 @@ public class WinningLottoTest {
     void 보너스_볼_일치_테스트() {
         Lotto lottoWithBonus = new Lotto(IntStream.range(1, 7)
                 .map(i -> i == 6 ? 40 : i)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
         Assertions.assertThat(winning.matchBonus(lottoWithBonus)).isTrue();
     }
 
     Lotto testSetLotto() {
         return new Lotto(IntStream.range(1, 7)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
     }
 
     Lotto testSetWinning(int start, int end) {
         return new Lotto(IntStream.range(start, end)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
     }
 }

@@ -20,7 +20,7 @@ public class LottoBundleTest {
     void 로또_결과_생성_테스트() {
         LottoBundle lottoBundle = new LottoBundle(makeLottos());
         Lotto winningLottoNumbers = testSetLotto(1, 7);
-        WinningLotto winningLotto = new WinningLotto(winningLottoNumbers, new LottoNumber(7));
+        WinningLotto winningLotto = new WinningLotto(winningLottoNumbers, LottoNumber.from(7));
 
         List<Rank> ranks = lottoBundle.makeLottoRanks(winningLotto);
 
@@ -37,7 +37,7 @@ public class LottoBundleTest {
 
     Lotto testSetLotto(int start, int end) {
         return new Lotto(IntStream.range(start, end)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
     }
 }
