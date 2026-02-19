@@ -1,4 +1,4 @@
-package lotto;
+package lotto.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static lotto.Lotto.*;
+import static lotto.domain.Lotto.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class LottoTest {
 
@@ -17,14 +18,16 @@ public class LottoTest {
     void success() {
         lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
 
-        Assertions.assertThat(lotto.getNumbers()).hasSize(6);
-        Assertions.assertThat(lotto.getNumbers()).containsExactly(1,2,3,4,5,6);
+        assertThat(lotto.getNumbers()).hasSize(6);
+        assertThat(lotto.getNumbers())
+                .extracting(LottoNumber::getNumber)
+                .containsExactly(1, 2, 3, 4, 5, 6);
     }
 
     @Test
     @DisplayName("중복된 숫자를 입력하는 경우 예외처리 할 수 있다.")
     void fail_duplicateLotto() {
-        Assertions.assertThatThrownBy(() -> {
+        assertThatThrownBy(() -> {
             lotto = new Lotto(List.of(1,2,3,4,5,5));
         }).isInstanceOf(IllegalArgumentException.class).hasMessage(DUPLICATE_NUMBER_EXCEPTION);
     }
@@ -32,7 +35,7 @@ public class LottoTest {
     @Test
     @DisplayName("숫자가 6개가 아닌 경우 예외처리 할 수 있다.")
     void fail_lottoNumberCountIsNotSix() {
-        Assertions.assertThatThrownBy(() -> {
+        assertThatThrownBy(() -> {
             lotto = new Lotto(List.of(1,2,3,4,5,6,7));
         }).isInstanceOf(IllegalArgumentException.class).hasMessage(NOT_SIX_NUMBERS_EXCEPTION);
     }
@@ -45,6 +48,6 @@ public class LottoTest {
 
         int count = lotto.matchCount(userLotto);
 
-        Assertions.assertThat(count).isEqualTo(3);
+        assertThat(count).isEqualTo(3);
     }
 }

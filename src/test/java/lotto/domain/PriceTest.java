@@ -1,10 +1,8 @@
-package lotto;
+package lotto.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -16,6 +14,15 @@ public class PriceTest {
         Price price = new Price(1000);
 
         Assertions.assertThat(price.getPrice()).isEqualTo(1000);
+    }
+
+    @Test
+    @DisplayName("가격을 토대로 구매할 수 있는 로또의 개수를 구할 수 있다.")
+    void success_() {
+        Price price = new Price(14000);
+        int lottoCount = price.getLottoCount();
+
+        Assertions.assertThat(lottoCount).isEqualTo(14);
     }
 
     @Test

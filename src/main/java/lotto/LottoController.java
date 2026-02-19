@@ -1,24 +1,28 @@
 package lotto;
 
+import lotto.domain.*;
+import lotto.generator.*;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class LottoController {
 
-    private final Random randomNumberGenerator;
+    private final NumberGenerator numberGenerator;
+    private final CompositeLottoGenerator lottoGenerator;
     private final InputView inputView;
     private final OutputView outputView;
 
     public LottoController(
-            Random randomNumberGenerator,
+            NumberGenerator numberGenerator,
+            CompositeLottoGenerator lottoGenerator,
             InputView inputView,
             OutputView outputView
     ) {
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.numberGenerator = numberGenerator;
+        this.lottoGenerator = lottoGenerator;
         this.inputView = inputView;
         this.outputView = outputView;
     }
@@ -36,20 +40,21 @@ public class LottoController {
     private User makeUserInfo() {
         outputView.printPriceMessage();
         Price price = new Price(Integer.parseInt(inputView.inputPrice()));
-        int lottoCount = price.getPrice() / 1000;
-        outputView.printLottoCountMessage(lottoCount);
-        List<Lotto> lottos = makeUserLottoInfo(lottoCount);
-
-        return new User(price, lottoCount, lottos);
+        int totalCount = price.getLottoCount();
+        outputView.printManualLottoCount();
+        int manualCount = Integer.parseInt(inputView.inputManualLottoCount());
+        List<Lotto> userLottos = makeUserLotto(totalCount, manualCount);
+        User user = new User(price, userLottos, manualCount);
+        outputView.printLottoCountMessage(user.getManualLottoCount(), user.getAutoLottoCount());
+        return user;
     }
 
-    private List<Lotto> makeUserLottoInfo(int lottoCount) {
-        List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < lottoCount; i++) {
-            lottos.add(new Lotto(randomNumberGenerator.generate()));
-        }
-
-        return lottos;
+    private List<Lotto> makeUserLotto(int totalCount, int manualCount) {
+        outputView.printManualLottoInputMessage();
+        lottoGenerator.clear();
+        lottoGenerator.add(new ManualLottoGenerator(inputView), manualCount);
+        lottoGenerator.add(new AutoLottoGenerator(numberGenerator), totalCount - manualCount);
+        return lottoGenerator.generate(totalCount);
     }
 
     private void printUserLotto(User user) {
@@ -65,18 +70,18 @@ public class LottoController {
                 .toList();
 
         int bonusNumber = makeBonusNumber();
-        return new WinningLotto(new Lotto(winningLottoList), new LottoNumber(bonusNumber));
+        return new WinningLotto(new Lotto(winningLottoList), LottoNumber.of(bonusNumber));
     }
 
     private String[] makeWinningLottoNumbers() {
         outputView.printWinningLottoMessage();
-        String winningLottoStr = inputView.input();
+        String winningLottoStr = inputView.inputWinningLotto();
         return winningLottoStr.split(",");
     }
 
     private int makeBonusNumber() {
         outputView.printBonusNumberMessage();
-        return Integer.parseInt(inputView.input());
+        return Integer.parseInt(inputView.inputBonusNumber());
     }
 
     private void printResult(LottoResult result) {

@@ -1,5 +1,11 @@
 package lotto;
 
+import lotto.domain.LottoNumber;
+import lotto.domain.LottoResult;
+import lotto.domain.LottoStatus;
+import lotto.generator.CompositeLottoGenerator;
+import lotto.generator.LottoGenerator;
+import lotto.generator.NumberGenerator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 import org.assertj.core.api.Assertions;
@@ -9,26 +15,31 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static lotto.LottoStatus.*;
-import static lotto.LottoStatus.FIVE_CORRECT;
-import static lotto.LottoStatus.FIVE_CORRECT_BONUS;
-import static lotto.LottoStatus.SIX_CORRECT;
+import static lotto.domain.LottoStatus.*;
+import static lotto.domain.LottoStatus.FIVE_CORRECT;
+import static lotto.domain.LottoStatus.FIVE_CORRECT_BONUS;
+import static lotto.domain.LottoStatus.SIX_CORRECT;
 
 public class LottoControllerTest {
 
     @Test
     @DisplayName("통합 테스트")
     public void success() {
-        Random numberGenerator = new FixedNumberGenerator();
+        NumberGenerator fixedNumberGenerator = new FixedNumberGenerator();
+        CompositeLottoGenerator lottoGenerator = new CompositeLottoGenerator();
         MockInputView inputView = new MockInputView(List.of(
                 "3000",
+                "2",
+                "1,2,3,4,5,6",
+                "1,2,3,4,5,6",
                 "1,2,3,4,5,6",
                 "7"
         ));
         MockOutputView outputView = new MockOutputView();
 
         LottoController controller = new LottoController(
-                numberGenerator,
+                fixedNumberGenerator,
+                lottoGenerator,
                 inputView,
                 outputView
         );
@@ -38,7 +49,9 @@ public class LottoControllerTest {
         Assertions.assertThat(lottoResult).isNotNull();
         Assertions.assertThat(outputView.getOutput()).containsExactly(
                 "구입금액을 입력해 주세요.",
-                "3개를 구매했습니다.",
+                "수동으로 구매할 로또 수를 입력해 주세요.",
+                "수동으로 구매할 번호를 입력해 주세요.",
+                "수동으로 2장, 자동으로 1개를 구매했습니다.",
                 "[1, 2, 3, 4, 5, 6]",
                 "[1, 2, 3, 4, 5, 6]",
                 "[1, 2, 3, 4, 5, 6]",
@@ -55,7 +68,7 @@ public class LottoControllerTest {
         );
     }
 
-    static class FixedNumberGenerator implements Random {
+    static class FixedNumberGenerator implements NumberGenerator {
 
         @Override
         public List<Integer> generate() {
@@ -72,12 +85,27 @@ public class LottoControllerTest {
         }
 
         @Override
-        public String input() {
+        public String inputManualLottoCount() {
             return queue.poll();
         }
 
         @Override
         public String inputPrice() {
+            return queue.poll();
+        }
+
+        @Override
+        public String inputManualLotto() {
+            return queue.poll();
+        }
+
+        @Override
+        public String inputWinningLotto() {
+            return queue.poll();
+        }
+
+        @Override
+        public String inputBonusNumber() {
             return queue.poll();
         }
     }
@@ -91,9 +119,9 @@ public class LottoControllerTest {
         }
 
         @Override
-        public void printLog(List<Integer> list) {
+        public void printLog(List<LottoNumber> list) {
             String result = list.stream()
-                    .map(String::valueOf)
+                    .map(lottoNumber -> String.valueOf(lottoNumber.getNumber()))
                     .collect(Collectors.joining(", ", "[", "]"));
 
             output.add(result);
@@ -105,8 +133,8 @@ public class LottoControllerTest {
         }
 
         @Override
-        public void printLottoCountMessage(int lottoCount) {
-            output.add(lottoCount + "개를 구매했습니다.");
+        public void printLottoCountMessage(int manualLottoCount, int autoLottoCount) {
+            output.add("수동으로 " + manualLottoCount + "장, 자동으로 " + autoLottoCount + "개를 구매했습니다.");
         }
 
         @Override
@@ -133,6 +161,16 @@ public class LottoControllerTest {
         @Override
         public void printBonusNumberMessage() {
             output.add("보너스 볼을 입력해 주세요.");
+        }
+
+        @Override
+        public void printManualLottoCount() {
+            output.add("수동으로 구매할 로또 수를 입력해 주세요.");
+        }
+
+        @Override
+        public void printManualLottoInputMessage() {
+            output.add("수동으로 구매할 번호를 입력해 주세요.");
         }
 
         public List<String> getOutput() {

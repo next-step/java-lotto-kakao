@@ -5,38 +5,29 @@ import java.util.stream.Collectors;
 
 public class Parser {
 
-    private Separator separator;
-    private Number number;
+    private Parser() {
+    }
 
-    public Parser(String input) {
-        this.separator = new Separator(input);
+    public static Number parse(String input) {
+        Separator separator = new Separator(input);
         if (separator.hasCustomSeparator()) {
             input = input.substring(4);
         }
-        validate(input);
-        String parsedInput = parse(input);
-        this.number = new Number(parsedInput);
+        validate(input, separator);
+        String parsedInput = parseSeparator(input, separator);
+        validateConsecutiveSeparators(parsedInput);
+        return new Number(parsedInput);
     }
 
-    private void validate(String input) {
-        for (char s : input.toCharArray()) {
-            validateString(s);
+    private static void validate(String input, Separator separator) {
+        for (char c : input.toCharArray()) {
+            if (!Character.isDigit(c) && !separator.contains(String.valueOf(c))) {
+                throw new IllegalArgumentException("등록되지 않은 커스텀 구분자가 입력되었습니다.");
+            }
         }
     }
 
-    private void validateString(char c) {
-        if (!Character.isDigit(c) && !this.separator.contains(String.valueOf(c))) {
-            throw new IllegalArgumentException("등록되지 않은 커스텀 구분자가 입력되었습니다.");
-        }
-    }
-
-    public String parse(String input) {
-        String parsedInput = parseSeparator(input);
-        validateConsecutiveDelimiters(parsedInput);
-        return parsedInput;
-    }
-
-    private String parseSeparator(String input) {
+    private static String parseSeparator(String input, Separator separator) {
         String regex = separator.getSeparators().stream()
                 .map(Pattern::quote)
                 .collect(Collectors.joining("", "[", "]"));
@@ -44,17 +35,9 @@ public class Parser {
         return input.replaceAll(regex, " ");
     }
 
-    private void validateConsecutiveDelimiters(String input) {
+    private static void validateConsecutiveSeparators(String input) {
         if (input.contains("  ")) {
             throw new IllegalArgumentException("구분자는 연속적으로 사용할 수 없습니다.");
         }
-    }
-
-    public Separator getSeparator() {
-        return separator;
-    }
-
-    public Number getNumber() {
-        return number;
     }
 }
