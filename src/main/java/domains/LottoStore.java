@@ -3,12 +3,9 @@ package domains;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class LottoStore {
-    private static final List<LottoNumber> ALL_NUMBERS = IntStream.rangeClosed(1, 45)
-            .mapToObj(LottoNumber::new)
-            .toList();
+    private static final List<LottoNumber> ALL_NUMBERS = LottoNumber.values();
 
     public LottoTickets buy(Money money, ManualLottos manualLottos) {
         money.validatePurchasable(manualLottos.size());
