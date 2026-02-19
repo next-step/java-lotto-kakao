@@ -1,16 +1,15 @@
 package lotto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LottoController {
-
     private final LottoService lottoService;
+    private final LottoParser lottoParser;
 
     public LottoController() {
         this.lottoService = new LottoService();
+        this.lottoParser = new LottoParser();
     }
 
     public void run() {
@@ -31,7 +30,7 @@ public class LottoController {
         int manualCount = InputView.readManualCount();
         PurchasedCount purchasedCount = new PurchasedCount(manualCount, count);
         LottoBundle manualLottoBundle = makeManualLottoBundle(purchasedCount.manualCount());
-        LottoBundle autoLottoBundle = lottoService.purchase(purchasedCount.autoCount()); // 앞서 논의한 Service 활용
+        LottoBundle autoLottoBundle = lottoService.purchase(purchasedCount.autoCount());
         OutputView.printPurchaseCount(purchasedCount.manualCount(), purchasedCount.autoCount());
         return new PurchasedLottoBundle(manualLottoBundle, autoLottoBundle);
     }
@@ -46,23 +45,17 @@ public class LottoController {
 
     private WinningLotto makeWinningLotto() {
         String winningNumbers = InputView.readWinningNumbers();
-        Lotto lotto = makeLotto(winningNumbers);
+        Lotto lotto = lottoParser.parse(winningNumbers);
         int bonusNumber = InputView.readingBonusNumber();
 
         return new WinningLotto(lotto, new LottoNumber(bonusNumber));
-    }
-
-    private Lotto makeLotto(String lottoNumbers){
-        return new Lotto(Arrays.stream(LottoNumbers.split(", "))
-                .map((String number) -> new LottoNumber(Integer.parseInt(number)))
-                .collect(Collectors.toList()));
     }
 
     private LottoBundle makeManualLottoBundle(int count){
         List<String> inputList = InputView.readManualNumbers(count);
         List<Lotto> lottoList = new ArrayList<>();
         for(int times=0; times<count; times++){
-            lottoList.add(makeLotto(inputList.get(times)));
+            lottoList.add(lottoParser.parse(inputList.get(times)));
         }
         return new LottoBundle(lottoList);
     }

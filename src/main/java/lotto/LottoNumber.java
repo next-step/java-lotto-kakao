@@ -18,7 +18,7 @@ public class LottoNumber {
 
     private static void validateRangeOfNumber(int number){
         if (number < MIN_NUMBER || number > MAX_NUMBER) {
-            throw new IllegalArgumentException("숫자 범위를 벗어났습니다.");
+            throw new IllegalArgumentException("번호는 1~45 사이의 숫자를 입력해 주세요.");
         }
     }
 

@@ -20,6 +20,6 @@ public class LottoNumberTest {
     void 범위_예외_테스트(int number){
         Assertions.assertThatThrownBy(() -> new LottoNumber(number))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("숫자 범위를 벗어났습니다.");
+                .hasMessage("번호는 1~45 사이의 숫자를 입력해 주세요.");
     }
 }
