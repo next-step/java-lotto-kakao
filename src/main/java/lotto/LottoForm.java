@@ -10,7 +10,7 @@ public class LottoForm {
         markedLottos.add(new Lotto(numbers));
     }
 
-    int size() {
+    public int size() {
         return markedLottos.size();
     }
 

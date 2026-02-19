@@ -10,13 +10,9 @@ public class LottoShop {
 
     public static LottoBundlePurchase purchaseBundle(Money purchaseAmount, LottoForm lottoForm) {
         long totalCount = purchaseAmount.calculatePurchasableCount(PRICE);
-        int manualCount = lottoForm.size();
-        validatePurchaseCount(totalCount, manualCount);
+        validatePurchaseCount(totalCount, lottoForm.size());
 
-        LottosGenerator generator = new CompositeLottosGenerator(
-                new ManualLottosGenerator(lottoForm),
-                new AutoLottosGenerator(totalCount - manualCount)
-        );
+        LottosGenerator generator = LottoGeneratorFactory.create(totalCount, lottoForm);
 
         List<Lotto> lottos = generator.generate();
         Money paid = PRICE.times(lottos.size());

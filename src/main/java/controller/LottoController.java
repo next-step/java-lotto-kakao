@@ -32,8 +32,9 @@ public class LottoController {
         while (true) {
             try {
                 LottoPurchaseRequest request = readPurchaseRequest();
+                LottoForm requestedLottoForm = request.lottoForm();
                 LottoBundlePurchase purchase = LottoShop.purchaseBundle(request.purchaseAmount(), request.lottoForm());
-                outputView.printPurchasedLottos(purchase.lottoBundle(), request.manualCount());
+                outputView.printPurchasedLottos(purchase.lottoBundle(), requestedLottoForm.size());
                 return purchase;
             } catch (Exception e) {
                 outputView.printError(e.getMessage());
@@ -46,7 +47,7 @@ public class LottoController {
         long totalCount = calculatePurchasableCount(money);
         int manualCount = readValidManualCount(totalCount);
         LottoForm lottoForm = readManualLottoForm(manualCount);
-        return new LottoPurchaseRequest(money, manualCount, lottoForm);
+        return new LottoPurchaseRequest(money, lottoForm);
     }
 
     private long calculatePurchasableCount(Money money) {
@@ -130,6 +131,6 @@ public class LottoController {
         }
     }
 
-    private record LottoPurchaseRequest(Money purchaseAmount, int manualCount, LottoForm lottoForm) {
+    private record LottoPurchaseRequest(Money purchaseAmount, LottoForm lottoForm) {
     }
 }
