@@ -1,28 +1,41 @@
 package lotto.domain;
 
-import lotto.util.LottoAutoCreator;
+import lotto.exception.ExceptionCode;
+import lotto.exception.LottoException;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Lotto {
-    private final LottoBalls lottoBalls;
     private static final int PRICE = 1000;
+    private final static int LOTTO_LENGTH = 6;
 
-    public Lotto() {
-        this.lottoBalls = LottoAutoCreator.lottoAutoCreate();
+    private final Set<LottoNumber> lotto;
+
+    public Lotto(Set<LottoNumber> lotto) {
+        checkLottoLength(lotto);
+        this.lotto = lotto;
     }
 
-    public Lotto(Lotto lotto) {
-        this.lottoBalls = new LottoBalls(lotto.lottoBalls);
+    public Set<LottoNumber> getLotto() {
+        return lotto;
     }
 
-    public LottoBalls getLottoBallList() {
-        return lottoBalls;
-    }
-
-    public String getLottoNumberString() {
-        return lottoBalls.getLottoNumberString();
+    public String getLottoString() {
+        return lotto.stream()
+                .sorted()
+                .map(LottoNumber::toString)
+                .collect(Collectors.joining(", ", "[", "]"));
     }
 
     public static int getPrice() {
         return PRICE;
     }
+
+    private static void checkLottoLength(Set<LottoNumber> numSet) {
+        if (numSet.size() != LOTTO_LENGTH) {
+            throw new LottoException(ExceptionCode.INVALID_LOTTO_NUMBER_COUNT);
+        }
+    }
+
 }

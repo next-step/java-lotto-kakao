@@ -3,16 +3,16 @@ package lotto.domain;
 import java.util.Set;
 
 public class AnswerLotto {
-    private final LottoBalls lottoBalls;
+    private final Lotto lotto;
     private final LottoNumber bonusNum;
 
-    public AnswerLotto(Set<Integer> lottoNums, int bonusNum) {
+    public AnswerLotto(Set<LottoNumber> lottoNums, int bonusNum) {
 
-        this.lottoBalls = new LottoBalls(lottoNums);
+        this.lotto = new Lotto(lottoNums);
         this.bonusNum = new LottoNumber(bonusNum);
     }
 
-    public LottoResult judge(LottoBalls other) {
+    public LottoResult judge(Lotto other) {
         boolean isCorrectBonus = isBonusCorrect(other);
 
         int ballCount = countBall(other);
@@ -20,23 +20,26 @@ public class AnswerLotto {
         return new LottoResult(ballCount, isCorrectBonus);
     }
 
-    private int countBall(LottoBalls other) {
+    private int countBall(Lotto other) {
         int ballCount = 0;
 
-        for (LottoNumber lottoNumber : this.lottoBalls.getLottoBalls()) {
+        for (LottoNumber lottoNumber : this.lotto.getLotto()) {
+
             ballCount += matchBall(other, lottoNumber);
         }
         return ballCount;
     }
 
-    private int matchBall(LottoBalls other, LottoNumber lottoNumber) {
-        if (other.getLottoBalls().contains(lottoNumber)) {
+    private int matchBall(Lotto other, LottoNumber lottoNumber) {
+        if (other.getLotto().contains(lottoNumber)) {
+
             return 1;
         }
         return 0;
     }
 
-    private boolean isBonusCorrect(LottoBalls other) {
-        return other.getLottoBalls().contains(this.bonusNum);
+    private boolean isBonusCorrect(Lotto other) {
+        return other.getLotto().contains(this.bonusNum);
+
     }
 }
