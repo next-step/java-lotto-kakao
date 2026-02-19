@@ -1,28 +1,28 @@
 package lotto.model;
 
-import lotto.util.LottoNumberGenerator;
+import lotto.model.generator.LottoNumberGenerator;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 public class LottoMachine {
-	private final PurchaseAmount purchaseAmount;
+	private final LottoPurchaseInformation lottoPurchaseInformation;
 	private final Lottos lottos;
 
-	public LottoMachine(PurchaseAmount purchaseAmount, LottoNumberGenerator generator) {
-		this.purchaseAmount = purchaseAmount;
-		this.lottos = issueLottos(generator);
+	public LottoMachine(
+		LottoPurchaseInformation lottoPurchaseInformation,
+		LottoNumberGenerator generator,
+		List<Lotto> manualLottos
+	) {
+		this.lottoPurchaseInformation = lottoPurchaseInformation;
+		List<Lotto> autoLottos = issueAutoLottos(generator);
+		this.lottos = new Lottos(Stream.concat(manualLottos.stream(), autoLottos.stream()).toList());
 	}
 
-	public LottoMachine(int purchaseAmount, LottoNumberGenerator generator) {
-		this(new PurchaseAmount(purchaseAmount), generator);
-	}
-
-	private Lottos issueLottos(LottoNumberGenerator generator) {
-		List<Lotto> issuedLottos = Stream.generate(() -> new Lotto(generator.generate()))
-			.limit(purchaseAmount.getLottoCount())
+	private List<Lotto> issueAutoLottos(LottoNumberGenerator generator) {
+		return Stream.generate(() -> new Lotto(generator.generate()))
+			.limit(lottoPurchaseInformation.autoLottoCount())
 			.toList();
-		return new Lottos(issuedLottos);
 	}
 
 	public Lottos getLottos() {
@@ -30,6 +30,6 @@ public class LottoMachine {
 	}
 
 	public LottoStatistics calculateResult(WinningLotto winningLotto) {
-		return lottos.calculateStatistics(winningLotto, purchaseAmount);
+		return lottos.calculateStatistics(winningLotto, lottoPurchaseInformation);
 	}
 }

@@ -1,24 +1,23 @@
 package lotto.model;
 
-import lotto.util.LottoRules;
-
+import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 public class LottoStatistics {
 	private final Map<LottoResult, Integer> counts;
-	private final PurchaseAmount purchaseAmount;
+	private final LottoPurchaseInformation lottoPurchaseInformation;
 
-	private LottoStatistics(Map<LottoResult, Integer> counts, PurchaseAmount purchaseAmount) {
+	private LottoStatistics(Map<LottoResult, Integer> counts, LottoPurchaseInformation lottoPurchaseInformation) {
 		this.counts = counts;
-		this.purchaseAmount = purchaseAmount;
+		this.lottoPurchaseInformation = lottoPurchaseInformation;
 	}
 
-	public static LottoStatistics from(List<LottoResult> results, PurchaseAmount purchaseAmount) {
+	public static LottoStatistics from(List<LottoResult> results, LottoPurchaseInformation lottoPurchaseInformation) {
 		Map<LottoResult, Integer> counts = initializeCounts();
 		results.forEach(result -> counts.put(result, counts.get(result) + 1));
-		return new LottoStatistics(counts, purchaseAmount);
+		return new LottoStatistics(counts, lottoPurchaseInformation);
 	}
 
 	private static Map<LottoResult, Integer> initializeCounts() {
@@ -33,14 +32,14 @@ public class LottoStatistics {
 		return counts.get(lottoResult);
 	}
 
-	public int calculateTotalPrize() {
-		return counts.entrySet().stream()
-			.mapToInt(entry -> entry.getKey().getPrize() * entry.getValue())
-			.sum();
+	public BigDecimal profitRate() {
+		BigDecimal totalPrize = BigDecimal.valueOf(calculateTotalPrize());
+		return lottoPurchaseInformation.profitRate(totalPrize);
 	}
 
-	public double profitRate() {
-		int purchaseAmountValue = purchaseAmount.getLottoCount() * LottoRules.PURCHASE_UNIT;
-		return (double)calculateTotalPrize() / purchaseAmountValue;
+	public long calculateTotalPrize() {
+		return counts.entrySet().stream()
+			.mapToLong(entry -> (long)entry.getKey().getPrize() * entry.getValue())
+			.sum();
 	}
 }
