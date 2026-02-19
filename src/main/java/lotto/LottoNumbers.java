@@ -6,19 +6,16 @@ public class LottoNumbers {
 
     private List<LottoNumber> lottoNumberList;
 
-    public LottoNumbers() {
-        generateRandomNumbers();    // 랜덤 6개 숫자 생성
-        sortLottoNumberList();      // sorting
-    }
 
-    // 테스트 용 직접 로또 번호 생성을 위한 생성자
-    public LottoNumbers(List<Integer> numberList) {
-        List<LottoNumber> numbers = new ArrayList<>();
+    public LottoNumbers(List<Integer> numbers) {
+        validateSize(numbers);
+        List<LottoNumber> lottoNumbers = new ArrayList<>();
 
-        for (Integer i : numberList) {
-            numbers.add(LottoNumber.from(i));
+        for (Integer number : numbers) {
+            validateDistinctNumber(lottoNumberList, number);
+            lottoNumbers.add(LottoNumber.from(number));
         }
-        this.lottoNumberList = numbers;
+        this.lottoNumberList = lottoNumbers;
         sortLottoNumberList();
     }
 
@@ -44,5 +41,18 @@ public class LottoNumbers {
                 return Integer.compare(o1.getNumber(), o2.getNumber());
             }
         });
+    }
+    
+    public boolean contains(LottoNumber lottoNumber) {
+        return lottoNumberList.contains(lottoNumber);
+    }
+
+    public void validateDistinctNumber(List<LottoNumber> lottoNumberList, Integer number) {
+        if(lottoNumberList == null) return;
+        if(lottoNumberList.contains(LottoNumber.from(number))) throw new IllegalArgumentException("로또에 중복된 숫자가 존재합니다.");
+    }
+
+    public void validateSize(List<Integer> numbers) {
+        if(numbers.size() != 6) throw new IllegalArgumentException("6개의 숫자를 입력해야 합니다.");
     }
 }

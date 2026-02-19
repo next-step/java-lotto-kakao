@@ -10,10 +10,21 @@ public class Main {
 
         outputView.printPurchaseAmountInput();
         int purchaseAmount = inputView.inputPurchaseAmount();
-        int lottoCount = game.calculateLottoCount(purchaseAmount);
-        outputView.printPurchaseAmount(lottoCount);
+        int totalLottoCount = game.calculateTotalLottoCount(purchaseAmount);
 
-        game.purchaseLotto(lottoCount);
+        outputView.printManualLottoPurchaseAmountInput();
+        int manualLottoPurchaseAmount = inputView.inputManualLottoPurchaseAmount();
+        int manualLottoCount = game.calculateManualLottoCount(totalLottoCount, manualLottoPurchaseAmount);
+
+        outputView.printManualLottoNumberInput();
+        for (int i = 0; i < manualLottoCount; i++) {
+            game.purchaseManualLotto(inputView.inputLottoNumber());
+        }
+
+        outputView.printPurchaseAmount(manualLottoCount, totalLottoCount);
+
+        game.purchaseLotto(totalLottoCount - manualLottoCount, new RandomLottoNumberStrategy());
+
         outputView.printLottoNumbers(game.getLottoListAsList());
 
         outputView.printWinningLottoInput();
@@ -23,9 +34,10 @@ public class Main {
         String bonusInput = inputView.inputLottoNumber();
 
         game.createWinningLotto(input, bonusInput);
-        game.setAllLottoResult();
 
-        outputView.printResult(game);
-        outputView.printRateOfReturn(game);
+        GameResult gameResult = game.generateGameResult();
+
+        outputView.printResult(gameResult);
+        outputView.printRateOfReturn(gameResult);
     }
 }

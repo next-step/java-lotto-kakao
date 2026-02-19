@@ -12,4 +12,8 @@ public class InputView {
     public int inputPurchaseAmount() {
         return Integer.parseInt(scanner.nextLine());
     }
+
+    public int inputManualLottoPurchaseAmount() {
+        return Integer.parseInt(scanner.nextLine());
+    }
 }

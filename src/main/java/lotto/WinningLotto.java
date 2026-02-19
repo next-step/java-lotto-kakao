@@ -24,8 +24,16 @@ public class WinningLotto {
         return this.bonusNumber;
     }
 
+    public int getBonusNumberValue() {
+        return this.bonusNumber.getNumber();
+    }
+
     public boolean contains(LottoNumber lottoNumber) {
         return winningLottoNumbers.getLottoNumberList().contains(lottoNumber);
+    }
+
+    public boolean isContainBonusNumber(LottoNumbers lottoNumbers) {
+        return lottoNumbers.contains(bonusNumber);
     }
 
     public void validateDistinctBonusNumber(List<LottoNumber> lottoNumberList, Integer number) {

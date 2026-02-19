@@ -12,7 +12,7 @@ public class LottoNumbersTest {
     @Test
     @DisplayName("로또 번호 6개를 생성하고 오름차순 정렬한다.")
     public void generateAndSortTest() {
-        LottoNumbers lottoNumbers = new LottoNumbers();
+        LottoNumbers lottoNumbers = new LottoNumbers(List.of(45, 3, 12, 27, 8, 34));
 
         List<Integer> numbers = lottoNumbers.getLottoNumberList().stream()
                 .map(LottoNumber::getNumber)

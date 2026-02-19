@@ -5,25 +5,9 @@ import java.util.*;
 public class Lotto {
     // automatic
     private LottoNumbers lottoNumbers;
-    private LottoRank lottoRank;
 
-    public Lotto() {
-        // 유효한 랜덤 숫자 6개를 생성
-        this.lottoNumbers = new LottoNumbers();
-        lottoRank = LottoRank.PENDING;
-    }
-
-    // 테스트 용 직접 로또 번호 생성을 위한 생성자
-    public Lotto(List<Integer> numberList) {
-        this.lottoNumbers = new LottoNumbers(numberList);
-    }
-
-    public LottoRank getLottoRank() {
-        return this.lottoRank;
-    }
-
-    public long getLottoRankValue() {
-        return this.lottoRank.getValue();
+    public Lotto(List<Integer> numbers) {
+        this.lottoNumbers = new LottoNumbers(numbers);
     }
 
     // 구매한 로또 리스트 반환
@@ -34,19 +18,15 @@ public class Lotto {
                 .toList();
     }
 
-    public void evaluateRank(WinningLotto winningLotto) {
+    public LottoRank evaluateRank(WinningLotto winningLotto) {
         int matchCount = 0;
-        boolean bonusCount = isContainBonusNumber(winningLotto.getBonusNumber().getNumber());
+        boolean bonusCount = winningLotto.isContainBonusNumber(lottoNumbers);
 
         for (LottoNumber lottoNumber : lottoNumbers.getLottoNumberList()) {
             matchCount += countMatch(lottoNumber, winningLotto);
         }
 
-        this.lottoRank = calculateLottoRank(matchCount, bonusCount);
-    }
-
-    public boolean isContainBonusNumber(int bonusNumber) {
-        return lottoNumbers.getLottoNumberList().contains(LottoNumber.from(bonusNumber));
+        return calculateLottoRank(matchCount, bonusCount);
     }
 
     public int countMatch(LottoNumber lottoNumber, WinningLotto winningLotto) {
