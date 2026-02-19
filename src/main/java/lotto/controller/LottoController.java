@@ -17,6 +17,8 @@ import lotto.view.OutputView;
 
 @RequiredArgsConstructor
 public class LottoController {
+	private static final int MAX_INPUT_RETRIES = 5;
+
 	private final InputView inputView;
 	private final OutputView outputView;
 	private final LottoPurchasePolicy purchasePolicy;
@@ -49,7 +51,7 @@ public class LottoController {
 	}
 
 	private int readPurchaseAmount() {
-		while (true) {
+		for (int attempt = 1; attempt <= MAX_INPUT_RETRIES; attempt++) {
 			try {
 				int amount = inputView.readPurchaseAmount();
 				purchasePolicy.calculateRandomCountFromAmount(amount, 0);
@@ -58,10 +60,12 @@ public class LottoController {
 				outputView.printError(exception.getMessage());
 			}
 		}
+		throw new IllegalStateException(
+			String.format("입력 재시도 횟수(%d회)를 초과했습니다.", MAX_INPUT_RETRIES));
 	}
 
 	private int readManualCount(int amount) {
-		while (true) {
+		for (int attempt = 1; attempt <= MAX_INPUT_RETRIES; attempt++) {
 			try {
 				int manualCount = inputView.readManualCount();
 				purchasePolicy.calculateRandomCountFromAmount(amount, manualCount);
@@ -70,10 +74,12 @@ public class LottoController {
 				outputView.printError(exception.getMessage());
 			}
 		}
+		throw new IllegalStateException(
+			String.format("입력 재시도 횟수(%d회)를 초과했습니다.", MAX_INPUT_RETRIES));
 	}
 
 	private LottoGenerator readManualGenerator(int manualCount) {
-		while (true) {
+		for (int attempt = 1; attempt <= MAX_INPUT_RETRIES; attempt++) {
 			try {
 				List<List<Integer>> manualNumbers = inputView.readManualNumbers(manualCount);
 				return new ManualLottoGenerator(manualNumbers);
@@ -81,20 +87,24 @@ public class LottoController {
 				outputView.printError(exception.getMessage());
 			}
 		}
+		throw new IllegalStateException(
+			String.format("입력 재시도 횟수(%d회)를 초과했습니다.", MAX_INPUT_RETRIES));
 	}
 
 	private Lotto readWinningLotto() {
-		while (true) {
+		for (int attempt = 1; attempt <= MAX_INPUT_RETRIES; attempt++) {
 			try {
 				return Lotto.from(inputView.readWinningNumbers());
 			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
 		}
+		throw new IllegalStateException(
+			String.format("입력 재시도 횟수(%d회)를 초과했습니다.", MAX_INPUT_RETRIES));
 	}
 
 	private WinningNumbers readWinningNumbers(Lotto winningLotto) {
-		while (true) {
+		for (int attempt = 1; attempt <= MAX_INPUT_RETRIES; attempt++) {
 			try {
 				LottoNumber bonusNumber = LottoNumber.from(inputView.readBonusNumber());
 				return WinningNumbers.of(winningLotto, bonusNumber);
@@ -102,5 +112,7 @@ public class LottoController {
 				outputView.printError(exception.getMessage());
 			}
 		}
+		throw new IllegalStateException(
+			String.format("입력 재시도 횟수(%d회)를 초과했습니다.", MAX_INPUT_RETRIES));
 	}
 }
