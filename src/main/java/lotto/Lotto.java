@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import lotto.enums.LottoStatus;
@@ -23,13 +24,10 @@ public class Lotto {
 		List<Integer> numbers = new ArrayList<>(ALL_NUMBERS);
 		Collections.shuffle(numbers);
 
-		List<Integer> picked = numbers.subList(0, LOTTO_SIZE);
-
-		Set<Ball> temp = new HashSet<>();
-		for (int n : picked) {
-			temp.add(new Ball(n));
-		}
-		this.balls = Collections.unmodifiableSet(temp);
+		this.balls = numbers.stream()
+			.limit(LOTTO_SIZE)
+			.map(Ball::new)
+			.collect(Collectors.toUnmodifiableSet());
 	}
 
 	public Lotto(List<Ball> balls) {
