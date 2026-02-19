@@ -2,7 +2,7 @@ package lotto.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class LottoNumber implements Comparable<LottoNumber> {
 	}
 
 	private static Map<Integer, LottoNumber> createPool() {
-		Map<Integer, LottoNumber> pool = new LinkedHashMap<>();
+		Map<Integer, LottoNumber> pool = new HashMap<>();
 		for (int number = MIN_NUMBER; number <= MAX_NUMBER; number++) {
 			pool.put(number, new LottoNumber(number));
 		}
