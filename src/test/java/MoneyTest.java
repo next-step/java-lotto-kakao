@@ -42,4 +42,24 @@ public class MoneyTest {
         assertThatThrownBy(() -> money.validatePurchasable(manualCount))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    public void 수동_횟수를_제외한_자동_구매_횟수_계산한다() {
+        Money money = new Money(14000); // 총 14장 구매 가능
+        int manualCount = 4;            // 수동으로 4장 구매
+
+        int autoCount = money.calculateAutoCount(manualCount);
+
+        // 14장 - 4장 = 10장
+        assertEquals(10, autoCount);
+    }
+
+    @Test
+    public void 수동_구매_횟수가_음수면_예외_발생한다() {
+        Money money = new Money(14000);
+        int negativeManualCount = -1;
+
+        assertThatThrownBy(() -> money.calculateAutoCount(negativeManualCount))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

@@ -36,6 +36,19 @@ public class Money {
         return amount / LOTTO_PRICE;
     }
 
+    public int calculateAutoCount(int manualCount) {
+        if (manualCount < 0) {
+            throw new IllegalArgumentException("수동 구매 횟수는 음수일 수 없습니다.");
+        }
+
+        int totalCount = availableLottoCount();
+        if (manualCount > totalCount) {
+            throw new IllegalArgumentException("지불한 금액보다 수동 구매 횟수가 더 많습니다.");
+        }
+
+        return totalCount - manualCount;
+    }
+
     public double calculateRate(List<Rank> rankList) {
         if (amount == 0) return  0.0d;
 
