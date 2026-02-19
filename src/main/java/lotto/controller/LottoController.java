@@ -1,6 +1,10 @@
 package lotto.controller;
 
-import lotto.domain.*;
+import lotto.domain.AnswerLotto;
+import lotto.domain.LottoBalls;
+import lotto.domain.LottoResults;
+import lotto.domain.LottoTotalResult;
+import lotto.domain.MyLotto;
 import lotto.util.NumberAutoCreator;
 import lotto.util.NumberCreator;
 import lotto.util.NumberManualCreator;
@@ -36,13 +40,59 @@ public class LottoController {
         printResult(myLotto, answerLotto);
     }
 
-    private void printResult(MyLotto myLotto, AnswerLotto answerLotto) throws IOException {
-        LottoResults lottoResults = new LottoResults(myLotto, answerLotto);
+    private MyLotto makeMyLotto() throws IOException {
+        int totalCount = getPurchaseCount();
 
-        LottoTotalResult lottoTotalResult = new LottoTotalResult(lottoResults);
-        outputView.write(OutputMessage.LOTTO_STATISTICS);
-        outputView.write(lottoTotalResult.getTotalResultString());
-        outputView.write(OutputMessage.LOTTO_PROFIT, lottoTotalResult.getProfit());
+        int manualCount = getManualCount();
+        int autoCount = totalCount - manualCount;
+
+        outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_LOTTO_NUMBER);
+        List<LottoBalls> lottos = createManualLottos(manualCount);
+
+        lottos.addAll(createAutoLottos(autoCount));
+
+        outputView.write(OutputMessage.TOTAL_PURCHASE_COUNT, manualCount, autoCount);
+        return new MyLotto(lottos);
+    }
+
+    private int getPurchaseCount() throws IOException {
+        outputView.write(OutputMessage.INPUT_PURCHASE_AMOUNT);
+
+        return inputView.readTotalPurchaseAmount() / LottoBalls.getPrice();
+    }
+
+    private int getManualCount() throws IOException {
+        outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_AMOUNT);
+        return inputView.readManualCount();
+    }
+
+    private List<LottoBalls> createManualLottos(int manualCount) throws IOException {
+        List<String> manualInputString = inputView.readManualLottoNumbers(manualCount);
+
+        List<LottoBalls> lottoBallsList = new ArrayList<>();
+
+        for (String manualInput : manualInputString) {
+            NumberCreator manualCreator = new NumberManualCreator(manualInput);
+            lottoBallsList.add(new LottoBalls(manualCreator.numberCreate()));
+        }
+        return lottoBallsList;
+    }
+
+    private List<LottoBalls> createAutoLottos(int autoCount) {
+        NumberCreator autoCreator = new NumberAutoCreator();
+
+        List<LottoBalls> autoLottos = new ArrayList<>();
+
+        for (int i = 0; i < autoCount; i++) {
+            autoLottos.add(new LottoBalls(autoCreator.numberCreate()));
+        }
+
+        return autoLottos;
+    }
+
+    private void printMyLotto(MyLotto myLotto) throws IOException {
+        String myLottoString = myLotto.getMyLottoStringType();
+        outputView.write(OutputMessage.LOTTO_LIST, myLottoString);
     }
 
     private AnswerLotto setAnswer() throws IOException {
@@ -55,36 +105,12 @@ public class LottoController {
         return new AnswerLotto(answers, bonusNum);
     }
 
-    private void printMyLotto(MyLotto myLotto) throws IOException {
-        String myLottoString = myLotto.getMyLottoStringType();
-        outputView.write(OutputMessage.LOTTO_LIST, myLottoString);
-    }
+    private void printResult(MyLotto myLotto, AnswerLotto answerLotto) throws IOException {
+        LottoResults lottoResults = new LottoResults(myLotto, answerLotto);
 
-    private MyLotto makeMyLotto() throws IOException {
-        outputView.write(OutputMessage.INPUT_PURCHASE_AMOUNT);
-
-        int totalCount = inputView.readTotalPurchaseAmount() / LottoBalls.getPrice();
-
-        outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_AMOUNT);
-        int manualCount = inputView.readManualCount();
-        int autoCount = totalCount - manualCount;
-
-        outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_LOTTO_NUMBER);
-        List<String> manualInputString = inputView.readManualLottoNumbers(manualCount);
-
-        List<LottoBalls> lottoBallsList = new ArrayList<>();
-
-        for (String manualInput : manualInputString) {
-            NumberCreator manualCreator = new NumberManualCreator(manualInput);
-            lottoBallsList.add(new LottoBalls(manualCreator.numberCreate()));
-        }
-
-        NumberCreator autoCreator = new NumberAutoCreator();
-        for (int i = 0; i < autoCount; i++) {
-            lottoBallsList.add(new LottoBalls(autoCreator.numberCreate()));
-        }
-
-        outputView.write(OutputMessage.TOTAL_PURCHASE_COUNT, manualCount, autoCount);
-        return new MyLotto(lottoBallsList);
+        LottoTotalResult lottoTotalResult = new LottoTotalResult(lottoResults);
+        outputView.write(OutputMessage.LOTTO_STATISTICS);
+        outputView.write(lottoTotalResult.getTotalResultString());
+        outputView.write(OutputMessage.LOTTO_PROFIT, lottoTotalResult.getProfit());
     }
 }
