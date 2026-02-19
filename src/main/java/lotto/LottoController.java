@@ -13,7 +13,7 @@ public class LottoController {
 
 	public void run() {
 		User user = getUser();
-		view.printPurchasedLotto(user.getLottos());
+		view.printPurchasedLotto(user.getManualCount(), user.getLottos());
 
 		Lotto answer = getAnswerLotto();
 		user.calculateAward(answer);

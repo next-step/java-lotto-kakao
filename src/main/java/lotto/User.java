@@ -48,5 +48,13 @@ public class User {
 	public long getAward() {
 		return result.getTotalAward();
 	}
+
+	public long getManualCount() {
+		return this.manualCount;
+	}
+
+	public long getAutoCount() {
+		return this.lottos.getLottoCount() - manualCount;
+	}
 }
 

@@ -38,8 +38,8 @@ public class LottoView {
 		return read("수동으로 구매할 로또 수를 입력해 주세요.");
 	}
 
-	public void printPurchasedLotto(List<Lotto> lottos) {
-		print(lottos.size() + "개를 구매했습니다.");
+	public void printPurchasedLotto(long manualCount, List<Lotto> lottos) {
+		print("수동으로 " + manualCount + "장, 자동으로 " + (lottos.size() - manualCount) + "개를 구매했습니다.");
 		for (Lotto lotto : lottos) {
 			print(lotto.toString());
 		}
