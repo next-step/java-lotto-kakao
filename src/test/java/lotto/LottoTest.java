@@ -13,8 +13,20 @@ import lotto.enums.LottoStatus;
 
 public class LottoTest {
 	@Test
-	void makeUserLotto() {
+	void makeUserLottoAuto() {
 		Lotto lotto = new Lotto();
+
+		Set<Ball> set = new HashSet<Ball>(lotto.getBalls());
+		assertThat(set.size()).isEqualTo(6);
+		assertThat(lotto.getStatus()).isEqualTo(LottoStatus.ZERO);
+		assertThat(lotto.getBonus()).isEqualTo(new Ball());
+	}
+
+	@Test
+	void makeUserLottoManual() {
+		List<Ball> balls = new ArrayList<>(List.of(new Ball(1), new Ball(2), new Ball(3)
+			, new Ball(3), new Ball(4), new Ball(5), new Ball(6)));
+		Lotto lotto = new Lotto(balls);
 
 		Set<Ball> set = new HashSet<Ball>(lotto.getBalls());
 		assertThat(set.size()).isEqualTo(6);

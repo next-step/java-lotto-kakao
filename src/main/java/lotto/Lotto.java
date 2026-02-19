@@ -31,6 +31,17 @@ public class Lotto {
 		bonus = new Ball();
 	}
 
+	public Lotto(List<Ball> balls) {
+		Set<Ball> set = new HashSet<Ball>(balls);
+		if (set.size() != 6) {
+			throw new IllegalArgumentException("로또 번호는 1 ~ 45 사이 6개의 서로다른 수와 1개의 보너스 공으로 입력해야 합니다.");
+		}
+		Collections.sort(balls);
+		this.balls = balls;
+		this.status = LottoStatus.ZERO;
+		this.bonus = new Ball();
+	}
+
 	public Lotto(List<Ball> balls, Ball bonus) {
 		Set<Ball> set = new HashSet<Ball>(balls);
 		set.add(bonus);
