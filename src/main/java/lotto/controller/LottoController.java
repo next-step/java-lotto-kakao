@@ -5,17 +5,19 @@ import lotto.model.Buyer;
 import lotto.model.LotteryChecker;
 import lotto.model.Lotto;
 import lotto.model.LottoNumber;
+import lotto.model.LottoNumbersParser;
 import lotto.model.MatchCount;
 import lotto.model.Money;
+import lotto.model.PurchasePlan;
 import lotto.model.WinningLotto;
 import lotto.view.LottoView;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LottoController {
 
 	private final LottoView view;
+	private final LottoNumbersParser parser = new LottoNumbersParser();
 
 	public LottoController(LottoView view) {
 		this.view = view;
@@ -23,8 +25,9 @@ public class LottoController {
 
 	public void run() {
 		Money money = view.readMoney();
+		PurchasePlan plan = PurchasePlan.of(money, 0);
 
-		Buyer buyer = Buyer.buyLotteries(money);
+		Buyer buyer = Buyer.buyLotteries(plan, List.of());
 		List<Lotto> tickets = buyer.getTickets();
 		view.printTickets(tickets);
 
@@ -40,14 +43,7 @@ public class LottoController {
 
 	private WinningLotto createWinningLotto() {
 		String input = view.readWinningNumbers();
-
-		List<LottoNumber> numbers = Arrays.stream(input.split(","))
-			.map(String::trim)
-			.map(Integer::parseInt)
-			.map(LottoNumber::new)
-			.collect(Collectors.toList());
-
-		Lotto winningLotto = new Lotto(numbers);
+		Lotto winningLotto = parser.parse(input);
 
 		int bonusInput = view.readBonus();
 		LottoNumber bonus = new LottoNumber(bonusInput);
