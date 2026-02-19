@@ -7,8 +7,6 @@ import java.util.List;
 import lotto.exception.LottoValidationException;
 
 public class RandomLottoGenerator implements LottoGenerator {
-	private static final int REQUIRED_SIZE = Lotto.REQUIRED_SIZE;
-
 	private final int randomCount;
 
 	public RandomLottoGenerator(int randomCount) {
@@ -28,7 +26,7 @@ public class RandomLottoGenerator implements LottoGenerator {
 	private Lotto generateLotto() {
 		List<LottoNumber> lottoNumberPool = LottoNumber.getPool();
 		Collections.shuffle(lottoNumberPool);
-		List<Integer> values = lottoNumberPool.subList(0, REQUIRED_SIZE)
+		List<Integer> values = lottoNumberPool.subList(0, Lotto.requiredSize())
 			.stream()
 			.map(LottoNumber::getValue)
 			.toList();

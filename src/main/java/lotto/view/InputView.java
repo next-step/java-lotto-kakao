@@ -78,9 +78,9 @@ public class InputView {
 				throw new LottoInputException("쉼표로 구분된 숫자를 입력해 주세요.");
 			}
 		}
-		if (numbers.size() != Lotto.REQUIRED_SIZE) {
+		if (numbers.size() != Lotto.requiredSize()) {
 			throw new LottoInputException(
-				String.format("번호는 %d개 입력해야 합니다.", Lotto.REQUIRED_SIZE)
+				String.format("번호는 %d개 입력해야 합니다.", Lotto.requiredSize())
 			);
 		}
 		return numbers;

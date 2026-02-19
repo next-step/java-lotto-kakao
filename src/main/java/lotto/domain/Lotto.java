@@ -12,7 +12,7 @@ import lotto.exception.LottoValidationException;
 
 @Getter
 public class Lotto {
-	public static final int REQUIRED_SIZE = 6;
+	private static final int REQUIRED_SIZE = 6;
 
 	private final List<LottoNumber> numbers;
 
@@ -29,6 +29,10 @@ public class Lotto {
 			.map(LottoNumber::from)
 			.toList();
 		return new Lotto(numbers);
+	}
+
+	public static int requiredSize() {
+		return REQUIRED_SIZE;
 	}
 
 	private static void validate(Collection<LottoNumber> numbers) {
