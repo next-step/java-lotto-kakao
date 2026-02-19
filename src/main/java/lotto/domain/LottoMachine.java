@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import lotto.exception.LottoValidationException;
+
 public class LottoMachine {
 	private static final int LOTTO_PRICE = 1_000;
 	private static final int REQUIRED_SIZE = 6;
@@ -26,7 +28,7 @@ public class LottoMachine {
 		validateCount(manualCount);
 		int totalCount = amount / LOTTO_PRICE;
 		if (manualCount > totalCount) {
-			throw new IllegalArgumentException("Manual ticket count must not exceed total tickets.");
+			throw new LottoValidationException("수동 구매 수는 전체 구매 수를 초과할 수 없습니다.");
 		}
 		return totalCount - manualCount;
 	}
@@ -51,23 +53,23 @@ public class LottoMachine {
 
 	private void validateAmount(int amount) {
 		if (amount < LOTTO_PRICE) {
-			throw new IllegalArgumentException(String.format("Amount must be at least %s", LOTTO_PRICE));
+			throw new LottoValidationException(String.format("구입 금액은 %s원 이상이어야 합니다.", LOTTO_PRICE));
 		}
 	}
 
 	private void validateCount(int count) {
 		if (count < 0) {
-			throw new IllegalArgumentException("Ticket count must not be negative.");
+			throw new LottoValidationException("구매 수는 0 이상이어야 합니다.");
 		}
 	}
 
 	private void validateManualNumbers(List<List<Integer>> manualNumbers) {
 		if (manualNumbers == null) {
-			throw new IllegalArgumentException("Manual numbers must not be null.");
+			throw new LottoValidationException("수동 번호는 null일 수 없습니다.");
 		}
 		boolean hasNull = manualNumbers.stream().anyMatch(Objects::isNull);
 		if (hasNull) {
-			throw new IllegalArgumentException("Manual numbers must not contain null.");
+			throw new LottoValidationException("수동 번호에 null이 포함될 수 없습니다.");
 		}
 	}
 }

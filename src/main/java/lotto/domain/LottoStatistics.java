@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
+import lotto.exception.LottoValidationException;
 
 @Getter
 public class LottoStatistics {
@@ -46,7 +47,7 @@ public class LottoStatistics {
 
 	public double getProfitRate(int purchaseAmount) {
 		if (purchaseAmount == 0) {
-			throw new IllegalArgumentException("Purchase amount must not be zero.");
+			throw new LottoValidationException("구입 금액은 0원일 수 없습니다.");
 		}
 		return totalPrize / (double)purchaseAmount;
 	}

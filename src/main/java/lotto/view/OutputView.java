@@ -9,7 +9,7 @@ import lotto.domain.LottoStatistics;
 
 public class OutputView {
 	public void printLottos(List<Lotto> lottos, int manualCount, int autoCount) {
-		System.out.println(String.format("수동으로 %d장, 자동으로 %d개를 구매했습니다.", manualCount, autoCount));
+		System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.%n", manualCount, autoCount);
 		for (Lotto lotto : lottos) {
 			System.out.println(lotto.getNumbers());
 		}
@@ -27,6 +27,10 @@ public class OutputView {
 
 	public void printProfitRate(double profitRate) {
 		System.out.println("총 수익률은 " + formatRate(profitRate) + "입니다.");
+	}
+
+	public void printError(String message) {
+		System.out.println("[ERROR] " + message);
 	}
 
 	private String formatResultLine(LottoResult result, int count) {
