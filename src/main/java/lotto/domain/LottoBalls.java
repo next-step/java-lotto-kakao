@@ -19,7 +19,7 @@ public class LottoBalls {
         checkLottoLength(lottoNumbers);
 
         this.lotto = lottoNumbers.stream()
-                .map(LottoNumber::new)
+                .map(LottoNumber::valueOf)
                 .collect(Collectors.toCollection(HashSet::new));
     }
 

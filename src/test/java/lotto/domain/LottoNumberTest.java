@@ -13,7 +13,7 @@ public class LottoNumberTest {
     @Test
     @DisplayName("로또 번호 범위 검증 - 실패 (0인 경우)")
     void lottoNumRangeUnder() {
-        assertThatThrownBy(() -> new LottoNumber(0))
+        assertThatThrownBy(() -> LottoNumber.valueOf(0))
                 .isInstanceOf(LottoException.class)
                 .hasMessage(LottoErrorCode.INVALID_NUMBER_RANGE.getMessage());
     }
@@ -21,7 +21,7 @@ public class LottoNumberTest {
     @Test
     @DisplayName("로또 번호 범위 검증 - 실패 (46인 경우)")
     void lottoNumRangeOver() {
-        assertThatThrownBy(() -> new LottoNumber(46))
+        assertThatThrownBy(() -> LottoNumber.valueOf(46))
                 .isInstanceOf(LottoException.class)
                 .hasMessage(LottoErrorCode.INVALID_NUMBER_RANGE.getMessage());
     }
@@ -30,10 +30,10 @@ public class LottoNumberTest {
     @DisplayName("로또 번호 범위 검증 - 성공")
     void lottoNumRangeSuccess() {
 
-        assertThatCode(() -> new LottoNumber(1))
+        assertThatCode(() -> LottoNumber.valueOf(1))
                 .doesNotThrowAnyException();
 
-        assertThatCode(() -> new LottoNumber(45))
+        assertThatCode(() -> LottoNumber.valueOf(45))
                 .doesNotThrowAnyException();
     }
 }

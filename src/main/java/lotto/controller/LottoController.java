@@ -6,7 +6,6 @@ import lotto.domain.LottoResults;
 import lotto.domain.LottoTotalResult;
 import lotto.domain.MyLotto;
 import lotto.domain.PurchaseCount;
-import lotto.exception.InputErrorCode;
 import lotto.util.NumberAutoCreator;
 import lotto.util.NumberCreator;
 import lotto.util.NumberManualCreator;
