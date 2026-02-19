@@ -22,6 +22,6 @@ public class AutoLottoGenerator {
 
 	public Lotto issueLotto() {
 		Collections.shuffle(numbers);
-		return new Lotto(new ArrayList<>(numbers.subList(0, LOTTO_NUMBER_COUNT)));
+		return new Lotto(numbers.subList(0, LOTTO_NUMBER_COUNT).toArray(new Integer[0]));
 	}
 }

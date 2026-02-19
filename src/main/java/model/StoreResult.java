@@ -58,7 +58,7 @@ public class StoreResult {
 
 	private LottoNumber toWinningLottoNumber(Integer value) {
 		try {
-			return new LottoNumber(value);
+			return LottoNumber.of(value);
 		} catch (RuntimeException e) {
 			throw new RuntimeException("당첨 번호는 1 ~ 45 사이의 양수로 이루어져야 합니다.");
 		}
@@ -67,7 +67,7 @@ public class StoreResult {
 	private LottoNumber toBonusLottoNumber(String input) {
 		Integer parsedInt = Integer.parseInt(input);
 		try {
-			return new LottoNumber(parsedInt);
+			return LottoNumber.of(parsedInt);
 		} catch (RuntimeException e) {
 			throw new RuntimeException("보너스 번호는 1 ~ 45 사이의 양수로 이루어져야 합니다.");
 		}

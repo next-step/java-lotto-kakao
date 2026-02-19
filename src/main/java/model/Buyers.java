@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Map;
+import java.util.List;
 
 public class Buyers {
     private Lottos lottos;
@@ -19,6 +20,14 @@ public class Buyers {
     public Lottos buyLotto(Integer money) {
         Money purchaseMoney = new Money(money);
         Lottos returnedLottos = vendor.sell(purchaseMoney);
+        setLottos(returnedLottos);
+        addSpentMoney(purchaseMoney);
+        return lottos;
+    }
+
+    public Lottos buyLotto(Integer money, Integer manualLottoCount, List<String> manualLottoInputs) {
+        Money purchaseMoney = new Money(money);
+        Lottos returnedLottos = vendor.sell(purchaseMoney, manualLottoCount, manualLottoInputs);
         setLottos(returnedLottos);
         addSpentMoney(purchaseMoney);
         return lottos;

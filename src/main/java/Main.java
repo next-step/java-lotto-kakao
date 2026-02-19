@@ -4,6 +4,8 @@ import model.StoreResult;
 import view.InputView;
 import view.OutputView;
 
+import java.util.List;
+
 public class Main {
 	public static void main(String[] args) {
 		InputView inputView = new InputView();
@@ -12,7 +14,14 @@ public class Main {
 		try {
 			Integer money = inputView.readPurchaseMoney();
 			if(money == null) return;
-			Lottos lottos = buyer.buyLotto(money);
+
+			Integer manualLottoCount = inputView.readManualLottoCount();
+			if(manualLottoCount == null) return;
+
+			List<String> manualLottoInputs = inputView.readManualLottoNumbers(manualLottoCount);
+
+			Lottos lottos = buyer.buyLotto(money, manualLottoCount, manualLottoInputs);
+			outputView.printPurchaseSummary(manualLottoCount, lottos.getQuantity() - manualLottoCount);
 			outputView.printLottoTickets(lottos);
 
 			String winningNumbers = inputView.readWinningNumbers();

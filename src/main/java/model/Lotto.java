@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,13 +9,33 @@ public class Lotto {
     private static final int LOTTO_NUMBER_COUNT = 6;
     private final List<LottoNumber> numbers;
 
-    public Lotto(List<Integer> numbers){
-        if(numbers.size() != LOTTO_NUMBER_COUNT) throw new RuntimeException("로또 번호 개수가 6개가 아닙니다.");
-        List<LottoNumber> lottoNumbers = numbers.stream()
-                .map(LottoNumber::new)
+    public Lotto(List<LottoNumber> numbers){
+        validateCount(numbers.size());
+        validateDuplicate(numbers);
+        this.numbers = numbers;
+    }
+
+    public Lotto(LottoNumber... numbers) {
+        this(Arrays.asList(numbers));
+    }
+
+    public Lotto(Integer... numbers) {
+        this(toLottoNumbers(numbers));
+    }
+
+    private static List<LottoNumber> toLottoNumbers(Integer... numbers) {
+        validateCount(numbers.length);
+        return Arrays.stream(numbers)
+                .map(LottoNumber::of)
                 .collect(Collectors.toList());
-        if(!lottoNumbers.stream().allMatch(new HashSet<LottoNumber>()::add)) throw new RuntimeException("로또 번호는 중복될 수 없습니다");
-        this.numbers = lottoNumbers;
+    }
+
+    private static void validateCount(int numbersCount) {
+        if(numbersCount != LOTTO_NUMBER_COUNT) throw new RuntimeException("로또 번호 개수가 6개가 아닙니다.");
+    }
+
+    private static void validateDuplicate(List<LottoNumber> numbers) {
+        if(!numbers.stream().allMatch(new HashSet<LottoNumber>()::add)) throw new RuntimeException("로또 번호는 중복될 수 없습니다");
     }
 
     public Integer size(){
