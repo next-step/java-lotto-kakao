@@ -11,8 +11,8 @@ public class LottoNumberTest {
 	@Test
 	@DisplayName("LottoNumber 일치 테스트")
 	void compareSameLottoNumber() {
-		LottoNumber number = LottoNumber.of(1);
-		LottoNumber sameNumber = LottoNumber.of(1);
+		LottoNumber number = LottoNumber.getLottoNumberCandidates().getFirst();
+		LottoNumber sameNumber = LottoNumber.getLottoNumberCandidates().getFirst();
 
 		boolean isSame = number.equals(sameNumber);
 		assertThat(isSame).isTrue();
@@ -21,22 +21,25 @@ public class LottoNumberTest {
 	@Test
 	@DisplayName("LottoNumber 불일치 테스트")
 	void compareDifferentLottoNumber() {
-		LottoNumber number = LottoNumber.of(1);
-		LottoNumber differentNumber = LottoNumber.of(2);
+		LottoNumber number = LottoNumber.getLottoNumberCandidates().getFirst();
+		LottoNumber differentNumber = LottoNumber.getLottoNumberCandidates().get(1);
 
 		boolean isSame = number.equals(differentNumber);
 		assertThat(isSame).isFalse();
 	}
 
 	@Test
-	@DisplayName("LottoNumber 범위 검증 테스트(1~45)")
+	@DisplayName("LottoNumber 잘못된 번호 검증 테스트")
 	void validateNumberRange() {
+		int minimum = LottoNumber.getLottoNumberCandidates().getFirst().getNumber();
+		int maximum = LottoNumber.getLottoNumberCandidates().getLast().getNumber();
+
 		assertThatIllegalArgumentException().isThrownBy(() -> {
-			LottoNumber lowNumber = LottoNumber.of(0);
+			LottoNumber lowNumber = LottoNumber.of(minimum - 1);
 		});
 
 		assertThatIllegalArgumentException().isThrownBy(() -> {
-			LottoNumber highNumber = LottoNumber.of(46);
+			LottoNumber highNumber = LottoNumber.of(maximum + 1);
 		});
 	}
 }

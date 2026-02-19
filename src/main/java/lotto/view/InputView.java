@@ -1,5 +1,6 @@
 package lotto.view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -17,17 +18,37 @@ public class InputView {
 
 	public Money readPurchasePrice() {
 		System.out.println("구입금액을 입력해 주세요.");
-		int purchasePrice = praseInt(scanner.nextLine());
+		long purchasePrice = praseLong(scanner.nextLine());
 		return new Money(purchasePrice);
 	}
 
-	public List<Integer> readWinningNormalNumbers() {
+	public int readManualLottoTicketNumber() {
+		System.out.println();
+		System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+		int manualLottoTicketNumber = praseInt(scanner.nextLine());
+		if (manualLottoTicketNumber < 0) {
+			throw new IllegalArgumentException("음이 아닌 정수를 입력해주세요.");
+		}
+		return manualLottoTicketNumber;
+	}
+
+	public List<List<LottoNumber>> readManualLottoNumbersList(int manualLottoTicketNumber) {
+		if (manualLottoTicketNumber == 0) {
+			return List.of();
+		}
+		System.out.println();
+		System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+		List<List<LottoNumber>> manualLottoNumbersList = new ArrayList<>();
+		for (int i = 0; i < manualLottoTicketNumber; i++) {
+			manualLottoNumbersList.add(splitLottoNumbersByDelimiter(scanner.nextLine(), ","));
+		}
+		return manualLottoNumbersList;
+	}
+
+	public List<LottoNumber> readWinningNormalNumbers() {
+		System.out.println();
 		System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-		String[] numbers = splitNumbersByDelimiter(scanner.nextLine(), ",");
-		return Arrays.stream(numbers)
-				.map(String::trim)
-				.map(this::praseInt)
-				.toList();
+		return splitLottoNumbersByDelimiter(scanner.nextLine(), ",");
 	}
 
 	public LottoNumber readBonusNumber() {
@@ -36,12 +57,29 @@ public class InputView {
 		return LottoNumber.of(bonusNumber);
 	}
 
+	private long praseLong(String input) {
+		try {
+			return Long.parseLong(input);
+		} catch (RuntimeException runtimeException) {
+			throw new IllegalArgumentException("정확한 숫자를 입력해주세요.", runtimeException);
+		}
+	}
+
 	private int praseInt(String input) {
 		try {
 			return Integer.parseInt(input);
 		} catch (RuntimeException runtimeException) {
 			throw new IllegalArgumentException("정확한 숫자를 입력해주세요.", runtimeException);
 		}
+	}
+
+	private List<LottoNumber> splitLottoNumbersByDelimiter(String input, String delimiter) {
+		String[] numbers = splitNumbersByDelimiter(input, delimiter);
+		return Arrays.stream(numbers)
+				.map(String::trim)
+				.map(this::praseInt)
+				.map(LottoNumber::of)
+				.toList();
 	}
 
 	private String[] splitNumbersByDelimiter(String input, String delimiter) {
