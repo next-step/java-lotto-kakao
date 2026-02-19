@@ -17,10 +17,7 @@ public class PurchasedLottoBundle {
         List<Rank> manualRankList = manualBundle.makeLottoRanks(winningLotto);
         List<Rank> autoRankList = autoBundle.makeLottoRanks(winningLotto);
 
-        List<Rank> ranks = new ArrayList<>(manualRankList);
-        ranks.addAll(autoRankList);
-
-        return new LottoResult(ranks);
+      return new LottoResult(manualRankList, autoRankList);
     }
 
     public void forEachLottoInOrder(Consumer<Lotto> action) {
