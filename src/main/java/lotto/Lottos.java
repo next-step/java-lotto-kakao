@@ -6,6 +6,10 @@ import java.util.List;
 public class Lottos {
 	private List<Lotto> lottoList;
 
+	public Lottos() {
+		this.lottoList = new ArrayList<>();
+	}
+
 	public Lottos(long count) {
 		List<Lotto> tempLottos = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
@@ -20,5 +24,19 @@ public class Lottos {
 
 	public void setLottoList(List<Lotto> lottos) {
 		this.lottoList = lottos;
+	}
+
+	public int getLottoCount() {
+		return this.lottoList.size();
+	}
+
+	public void add(Lotto lotto) {
+		this.lottoList.add(lotto);
+	}
+
+	public void addRandomLotto(long lottoCount) {
+		for (int i = 0; i < lottoCount; i++) {
+			this.lottoList.add(new Lotto());
+		}
 	}
 }
