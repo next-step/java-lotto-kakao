@@ -19,7 +19,7 @@ public class WinningInfo {
     }
 
 
-    public Money getTotalPrice() {
+    public Money totalPrice() {
         Money total = new Money(0);
         for (Map.Entry<WinningRank, Integer> entry : info.entrySet()) {
             WinningRank k = entry.getKey();
@@ -29,11 +29,11 @@ public class WinningInfo {
         return total;
     }
 
-    public String getStatisticsString() {
+    public String statisticsString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n당첨 통계\n");
         sb.append("---------\n");
-        for (WinningRank rank : WinningRank.getValidRanks()) {
+        for (WinningRank rank : WinningRank.validRanks()) {
             appendRankResult(sb, rank);
         }
         return sb.toString().trim();
@@ -41,7 +41,7 @@ public class WinningInfo {
 
     private void appendRankResult(StringBuilder sb, WinningRank rank) {
         int count = info.getOrDefault(rank, 0);
-        sb.append(rank.getInfoString()).append("- ").append(count).append("개\n");
+        sb.append(rank.infoString()).append("- ").append(count).append("개\n");
     }
 
 }

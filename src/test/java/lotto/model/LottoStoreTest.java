@@ -11,12 +11,12 @@ class LottoStoreTest {
 
     @Test
     @DisplayName("최대 구매 가능 개수 계산")
-    public void getMaxPurchasable() {
+    public void maxPurchasable() {
         LottoStore store = new LottoStore();
 
-        assertThat(store.getMaxPurchasable(new Money(14000))).isEqualTo(14);
-        assertThat(store.getMaxPurchasable(new Money(14500))).isEqualTo(14);
-        assertThat(store.getMaxPurchasable(new Money(1000))).isEqualTo(1);
+        assertThat(store.maxPurchasable(new Money(14000))).isEqualTo(14);
+        assertThat(store.maxPurchasable(new Money(14500))).isEqualTo(14);
+        assertThat(store.maxPurchasable(new Money(1000))).isEqualTo(1);
     }
 
     @Test

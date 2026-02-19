@@ -66,7 +66,7 @@ class LottoTicketsTest {
         WinningInfo info = tickets.result(winningLotto);
 
         Money expectedTotal = WinningRank.FIRST.winningPrice.sum(WinningRank.SECOND.winningPrice);
-        assertThat(info.getTotalPrice()).isEqualTo(expectedTotal);
+        assertThat(info.totalPrice()).isEqualTo(expectedTotal);
     }
 
 

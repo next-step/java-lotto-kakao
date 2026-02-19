@@ -20,29 +20,29 @@ class WinningRankTest {
             "3, 0, FIFTH",
             "2, 0, NONE"
     })
-    public void getRank(int matchCount, int bonusCount, WinningRank expected) {
-        WinningRank rank = WinningRank.getRank(matchCount, bonusCount);
+    public void rank(int matchCount, int bonusCount, WinningRank expected) {
+        WinningRank rank = WinningRank.rank(matchCount, bonusCount);
         assertThat(rank).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("결과 출력")
-    void getInfoString() {
+    void infoString() {
         WinningRank rank = WinningRank.THIRD;
-        assertThat(rank.getInfoString()).isEqualTo("5개 일치 (1500000원)");
+        assertThat(rank.infoString()).isEqualTo("5개 일치 (1500000원)");
     }
 
     @Test
     @DisplayName("결과 출력(보너스 공 존재)")
-    void getInfoStringWithBounce() {
+    void infoStringWithBounce() {
         WinningRank rank = WinningRank.SECOND;
-        assertThat(rank.getInfoString()).isEqualTo("5개 일치, 보너스 볼 일치 (30000000원)");
+        assertThat(rank.infoString()).isEqualTo("5개 일치, 보너스 볼 일치 (30000000원)");
     }
 
     @Test
     @DisplayName("유효 등수 목록")
-    void getValidRanks() {
-        assertThat(WinningRank.getValidRanks())
+    void validRanks() {
+        assertThat(WinningRank.validRanks())
                 .doesNotContain(WinningRank.NONE)
                 .startsWith(WinningRank.FIFTH)
                 .endsWith(WinningRank.FIRST);

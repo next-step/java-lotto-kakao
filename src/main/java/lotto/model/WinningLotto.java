@@ -20,7 +20,7 @@ public class WinningLotto {
     public WinningRank rank(LottoTicket lottoTicket) {
         int matchCount = winningTicket.matchCount(lottoTicket);
         int bonusCount = lottoTicket.contains(bonusNumber) ? 1 : 0;
-        return WinningRank.getRank(matchCount, bonusCount);
+        return WinningRank.rank(matchCount, bonusCount);
     }
 
 }

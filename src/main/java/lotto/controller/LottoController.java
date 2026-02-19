@@ -37,7 +37,7 @@ public class LottoController {
         WinningInfo winningInfo = manualTickets.result(winningLotto);
         outputView.printStatistics(winningInfo);
 
-        Money totalPrize = winningInfo.getTotalPrice();
+        Money totalPrize = winningInfo.totalPrice();
         double rateOfReturn = wallet.returnRate(totalPrize);
         outputView.printRateOfReturn(rateOfReturn);
     }

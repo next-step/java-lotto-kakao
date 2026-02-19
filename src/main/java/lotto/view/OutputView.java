@@ -18,7 +18,7 @@ public class OutputView {
     }
 
     public void printStatistics(WinningInfo winningInfo) {
-        System.out.println(winningInfo.getStatisticsString());
+        System.out.println(winningInfo.statisticsString());
     }
 
     public void printRateOfReturn(double rate) {

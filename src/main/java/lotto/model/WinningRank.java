@@ -32,14 +32,14 @@ public enum WinningRank {
                 && bonusCount >= this.bonusCount;
     }
 
-    public static WinningRank getRank(int matchCount, int bonusCount) {
+    public static WinningRank rank(int matchCount, int bonusCount) {
         return Arrays.stream(values())
                 .filter(rank -> rank.isSatisfied(matchCount, bonusCount))
                 .min(Comparator.comparingInt(r -> r.rank))
                 .orElse(NONE);
     }
 
-    public String getInfoString(){
+    public String infoString(){
         StringBuilder sb =  new StringBuilder(matchCount+"개 일치");
         if(bonusCount !=0){
             sb.append(", 보너스 볼 일치");
@@ -48,7 +48,7 @@ public enum WinningRank {
         return sb.toString();
     }
 
-    public static List<WinningRank> getValidRanks() {
+    public static List<WinningRank> validRanks() {
         return Arrays.stream(values())
                 .filter(rank -> rank.matchCount > 0)
                 .sorted(Comparator.comparingInt(r -> -r.rank))

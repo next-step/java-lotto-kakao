@@ -12,12 +12,12 @@ public class LottoStore {
         this.autoMachine = new AutoMachine();
     }
 
-    public int getMaxPurchasable(Money money) {
+    public int maxPurchasable(Money money) {
         return money.division(LottoTicket.PRICE).intValue();
     }
 
     public void validateManualCount(Money money, int manualCount) {
-        int maxPurchasable = getMaxPurchasable(money);
+        int maxPurchasable = maxPurchasable(money);
         if (manualCount > maxPurchasable) {
             throw new IllegalArgumentException("구매 금액으로 " + maxPurchasable + "장까지만 구매 가능합니다.");
         }

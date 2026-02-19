@@ -12,7 +12,7 @@ class WinningInfoTest {
     public void CreateWinningInfo() {
         WinningInfo winningInfo = new WinningInfo();
         winningInfo.addResult(WinningRank.THIRD);
-        assertThat(winningInfo.getTotalPrice()).isEqualTo(new Money(1_500_000));
+        assertThat(winningInfo.totalPrice()).isEqualTo(new Money(1_500_000));
     }
 
     @Test
@@ -23,16 +23,16 @@ class WinningInfoTest {
         winningInfo.addResult(WinningRank.FIRST);
         winningInfo.addResult(WinningRank.NONE);
 
-        assertThat(winningInfo.getTotalPrice()).isEqualTo(new Money(2_001_500_000));
+        assertThat(winningInfo.totalPrice()).isEqualTo(new Money(2_001_500_000));
     }
 
     @Test
     @DisplayName("통계 문자열 생성")
-    public void getStatisticsString() {
+    public void statisticsString() {
         WinningInfo winningInfo = new WinningInfo();
         winningInfo.addResult(WinningRank.SECOND);
 
-        String stats = winningInfo.getStatisticsString();
+        String stats = winningInfo.statisticsString();
 
         assertThat(stats).contains("당첨 통계");
         assertThat(stats).contains("5개 일치, 보너스 볼 일치");
