@@ -19,7 +19,7 @@ public class Lotto {
 	private Lotto(List<LottoNumber> numbers) {
 		validate(numbers);
 		List<LottoNumber> copied = new ArrayList<>(numbers);
-		sort(copied);
+		Collections.sort(copied);
 		this.numbers = Collections.unmodifiableList(copied);
 	}
 
@@ -74,7 +74,4 @@ public class Lotto {
 		}
 	}
 
-	private static void sort(List<LottoNumber> numbers) {
-		Collections.sort(numbers);
-	}
 }
