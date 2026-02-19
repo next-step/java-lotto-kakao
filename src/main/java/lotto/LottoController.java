@@ -37,7 +37,8 @@ public class LottoController {
 	private User getUser() {
 		try {
 			String price = view.readPrice();
-			return new User(price);
+			Money money = new Money(price);
+			return new User(money);
 		} catch (IllegalArgumentException e) {
 			view.print(e.getMessage());
 			return getUser();
