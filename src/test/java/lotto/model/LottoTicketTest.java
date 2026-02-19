@@ -3,6 +3,10 @@ package lotto.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import static org.assertj.core.api.Assertions.*;
 
 class LottoTicketTest {
@@ -11,6 +15,33 @@ class LottoTicketTest {
     @DisplayName("정상적인 로또 생성")
     public void createTicket(){
         assertThatCode(()->new LottoTicket(1,2,3,4,5,6)).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("리스트로 로또 생성")
+    public void createTicketWithList(){
+        assertThatCode(() -> new LottoTicket(List.of(
+                new LottoNumber(1),
+                new LottoNumber(2),
+                new LottoNumber(3),
+                new LottoNumber(4),
+                new LottoNumber(5),
+                new LottoNumber(6)
+        ))).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("셋으로 로또 생성")
+    public void createTicketWithSet(){
+        Set<LottoNumber> numbers = new TreeSet<>(List.of(
+                new LottoNumber(1),
+                new LottoNumber(2),
+                new LottoNumber(3),
+                new LottoNumber(4),
+                new LottoNumber(5),
+                new LottoNumber(6)
+        ));
+        assertThatCode(() -> new LottoTicket(numbers)).doesNotThrowAnyException();
     }
 
     @Test

@@ -26,4 +26,16 @@ class WinningInfoTest {
         assertThat(winningInfo.getTotalPrice()).isEqualTo(WinningRank.THIRD.winningPrice.sum(WinningRank.FIRST.winningPrice));
     }
 
+    @Test
+    @DisplayName("통계 문자열 생성")
+    public void getStatisticsString() {
+        WinningInfo winningInfo = new WinningInfo();
+        winningInfo.addResult(WinningRank.SECOND);
+
+        String stats = winningInfo.getStatisticsString();
+
+        assertThat(stats).contains("당첨 통계");
+        assertThat(stats).contains("5개 일치, 보너스 볼 일치");
+    }
+
 }

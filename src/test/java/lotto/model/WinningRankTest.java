@@ -38,4 +38,13 @@ class WinningRankTest {
         WinningRank rank = WinningRank.SECOND;
         assertThat(rank.getInfoString()).isEqualTo("5개 일치, 보너스 볼 일치 (30000000원)");
     }
+
+    @Test
+    @DisplayName("유효 등수 목록")
+    void getValidRanks() {
+        assertThat(WinningRank.getValidRanks())
+                .doesNotContain(WinningRank.NONE)
+                .startsWith(WinningRank.FIFTH)
+                .endsWith(WinningRank.FIRST);
+    }
 }

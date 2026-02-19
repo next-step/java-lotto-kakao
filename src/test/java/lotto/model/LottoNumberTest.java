@@ -56,4 +56,15 @@ class LottoNumberTest {
         assertThat(number1).isNotEqualTo(number2);
     }
 
+    @Test
+    @DisplayName("번호 비교")
+    public void compareToNumber() {
+        LottoNumber number1 = new LottoNumber(5);
+        LottoNumber number2 = new LottoNumber(7);
+
+        assertThat(number1.compareTo(number2)).isLessThan(0);
+        assertThat(number2.compareTo(number1)).isGreaterThan(0);
+        assertThat(number1.compareTo(new LottoNumber(5))).isEqualTo(0);
+    }
+
 }

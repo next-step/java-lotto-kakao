@@ -15,15 +15,6 @@ public class Wallet {
         this.receipt = new Money(0);
     }
 
-    public void change(Money money) {
-        Money newBalance = balance.sum(money);
-        if(newBalance.isDebt()) {
-            throw new IllegalStateException("잔액이 부족합니다.");
-        }
-        this.balance = newBalance;
-        receipt = receipt.sum(money);
-    }
-
     public void spend(Money money) {
         Money newBalance = balance.subtract(money);
         if(newBalance.isDebt()) {
