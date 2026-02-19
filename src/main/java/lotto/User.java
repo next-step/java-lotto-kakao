@@ -8,13 +8,6 @@ public class User {
 	private final long manualCount;
 	private Lottos lottos;
 
-	public User(String price) {
-		this.money = new Money(Long.parseLong(price));
-		this.manualCount = 0;
-		lottos = new Lottos(this.money.getTicketCount());
-		result = new LottoResult();
-	}
-
 	public User(String price, Lottos maualLottos) {
 		this.money = new Money(Long.parseLong(price));
 		this.manualCount = maualLottos.getLottoCount();
