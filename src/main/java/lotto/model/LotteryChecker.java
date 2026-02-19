@@ -34,10 +34,10 @@ public class LotteryChecker {
 		return this.counts;
 	}
 
-	public double calculateReturnRate(int totalPurchaseCost) {
+	public double calculateReturnRate(Money money) {
 		int totalPrize = calculateTotalPrize();
-		double rate = (double) totalPrize / totalPurchaseCost;
-		return Math.round(rate * DIGIT) / (double)DIGIT;
+		double rate = (double) totalPrize / money.amount();
+		return Math.round(rate * DIGIT) / (double) DIGIT;
 	}
 
 }

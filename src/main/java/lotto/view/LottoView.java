@@ -7,14 +7,15 @@ import java.util.Scanner;
 
 import lotto.model.Lotto;
 import lotto.model.MatchCount;
+import lotto.model.Money;
 
 public class LottoView {
 
 	private final Scanner scanner = new Scanner(System.in);
 
-	public int readBudget() {
+	public Money readMoney() {
 		System.out.println("구입금액을 입력해 주세요.");
-		return Integer.parseInt(scanner.nextLine());
+		return new Money(Integer.parseInt(scanner.nextLine()));
 	}
 
 	public String readWinningNumbers() {
