@@ -32,6 +32,10 @@ public class OutputView {
     }
 
     public static void printYield(double yield) {
-        System.out.printf("총 수익률은 %.2f입니다.\n", yield);
+        String message = String.format("총 수익률은 %.2f입니다.", yield);
+        if (yield < 1) {
+            message += "(기준이 1이기 때문에 결과적으로 손해라는 의미임)";
+        }
+        System.out.println(message);
     }
 }
