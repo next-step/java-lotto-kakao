@@ -12,6 +12,9 @@ public class WinningLottoNumbers {
 
 	public WinningLottoNumbers(List<LottoNumber> normalLottoNumbers, LottoNumber bonusLottoNumber) {
 		validateBonusInNormal(normalLottoNumbers, bonusLottoNumber);
+		if(normalLottoNumbers.size() != LottoTicket.LOTTO_LENGTH){
+			throw new IllegalArgumentException("당첨 번호는 " + LottoTicket.LOTTO_LENGTH +"자리이어야 합니다");
+		}
 		this.normalLottoNumbers = normalLottoNumbers;
 		this.bonusLottoNumber = bonusLottoNumber;
 	}
