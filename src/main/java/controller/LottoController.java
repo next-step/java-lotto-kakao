@@ -11,48 +11,64 @@ import java.util.stream.Collectors;
 public class LottoController {
     public static void run() {
         Money userMoney = retry(() -> new Money(InputView.inputMoney()));
-        ManualLottos manualLottos = new ManualLottos();
-        LottoStore store = new LottoStore();
 
-        int manualCount = retry(() -> {
-           int count = InputView.inputManualCount();
-           userMoney.validatePurchasable(count);
+        int manualCount = askManualCount(userMoney);
+        int autoCount = userMoney.calculateAutoCount(manualCount);
 
-           return count;
+        ManualLottoGenerator manualGenerator = inputAllManualNumbers(manualCount);
+        LottoTickets tickets = new LottoStore().buy(manualGenerator, new AutoLottoGenerator(autoCount));
+
+        OutputView.printLottos(manualCount, autoCount, tickets.lottos());
+        processResult(tickets, userMoney);
+    }
+
+    private static int askManualCount(Money money) {
+        return retry(() -> {
+            int count = InputView.inputManualCount();
+            money.calculateAutoCount(count); // 검증 포함
+            return count;
         });
+    }
+
+    private static ManualLottoGenerator inputAllManualNumbers(int count) {
+        ManualLottoGenerator generator = new ManualLottoGenerator();
+        if (count <= 0) return generator;
 
         OutputView.printManualLottoInputHeader();
-
-        for(int i = 0; i < manualCount; i++) {
-            retry(() -> {
-                List<Integer> lotto = InputView.inputManualNumbers();
-
-                manualLottos.add(lotto);
-                return null;
-            });
+        for (int i = 0; i < count; i++) {
+            fillValidManualNumber(generator);
         }
-        LottoTickets tickets = store.buy(userMoney, manualLottos);
-        int autoCount = tickets.lottos().size() - manualCount;
-        OutputView.printLottos(manualCount, autoCount, tickets.lottos());
+        return generator;
+    }
 
-        Lotto winningLottoNumbers = retry(() -> {
-            List<Integer> rawNumbers = InputView.inputWinningNumbers();
-            List<LottoNumber> lottoNumbers = rawNumbers.stream()
+    private static void fillValidManualNumber(ManualLottoGenerator generator) {
+        retry(() -> {
+            generator.addManualNumbers(InputView.inputManualNumbers());
+            return generator;
+        });
+    }
+
+    private static void processResult(LottoTickets tickets, Money money) {
+        WinningLotto winningLotto = askWinningLotto();
+        List<Rank> ranks = tickets.match(winningLotto);
+
+        OutputView.printWinning(ranks);
+        OutputView.printRateOfReturn(money.calculateRate(ranks));
+    }
+
+    private static WinningLotto askWinningLotto() {
+        Lotto winningNumbers = retry(() -> {
+            List<Integer> numbers = InputView.inputWinningNumbers();
+            List<LottoNumber> lottoNumbers = numbers.stream()
                     .map(LottoNumber::new)
                     .collect(Collectors.toList());
             return new Lotto(lottoNumbers);
         });
 
-        WinningLotto winningLotto = retry(() -> {
-            LottoNumber bonusNumber = new LottoNumber(InputView.inputBonusNumber());
-            return new WinningLotto(winningLottoNumbers, bonusNumber);
+        return retry(() -> {
+            LottoNumber bonus = new LottoNumber(InputView.inputBonusNumber());
+            return new WinningLotto(winningNumbers, bonus);
         });
-
-
-        List<Rank> ranks = tickets.match(winningLotto);
-
-        OutputView.printWinning(ranks);
-        OutputView.printRateOfReturn(userMoney.calculateRate(ranks));
     }
 
     private static <T> T retry(Supplier<T> supplier) {
