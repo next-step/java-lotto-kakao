@@ -28,7 +28,7 @@ public class LottoMachine {
 	}
 
 	public<C extends TicketGeneratorCommand> List<LottoTicket> generate(C command){
-		LottoTicketGenerator<TicketGeneratorCommand> generator = registry.find(command);
+		LottoTicketGenerator<C> generator = registry.find(command);
 		return generator.generate(command);
 	}
 
