@@ -5,6 +5,7 @@ import lotto.domain.LottoBalls;
 import lotto.domain.LottoResults;
 import lotto.domain.LottoTotalResult;
 import lotto.domain.MyLotto;
+import lotto.exception.InputErrorCode;
 import lotto.util.NumberAutoCreator;
 import lotto.util.NumberCreator;
 import lotto.util.NumberManualCreator;
@@ -46,6 +47,8 @@ public class LottoController {
         int manualCount = getManualCount();
         int autoCount = totalCount - manualCount;
 
+        validateManualCount(totalCount, manualCount);
+
         outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_LOTTO_NUMBER);
         List<LottoBalls> lottos = createManualLottos(manualCount);
 
@@ -64,6 +67,15 @@ public class LottoController {
     private int getManualCount() throws IOException {
         outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_AMOUNT);
         return inputView.readManualCount();
+    }
+
+    private void validateManualCount(int totalCount, int manualCount) {
+        if (manualCount > totalCount) {
+            throw new IllegalArgumentException(InputErrorCode.EXCEED_MANUAL_COUNT.getMessage());
+        }
+        if (manualCount < 0) {
+            throw new IllegalArgumentException(InputErrorCode.NEGATIVE_MANUAL_COUNT.getMessage());
+        }
     }
 
     private List<LottoBalls> createManualLottos(int manualCount) throws IOException {
