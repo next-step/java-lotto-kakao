@@ -1,8 +1,6 @@
 package lotto;
 
-import lotto.config.LottoPolicy;
 import lotto.controller.LottoController;
-import lotto.model.common.Money;
 import lotto.model.machine.LottoMachine;
 import lotto.model.ticket.LottoTicketGeneratorRegistry;
 import lotto.model.ticket.LottoTicketManualGenerator;
@@ -21,7 +19,7 @@ public class LottoApplication {
 					lottoTicketRandomGenerator
 				)
 		);
-		LottoMachine lottoMachine = new LottoMachine(new Money(LottoPolicy.LOTTO_TICKET_PRICE), lottoTicketGeneratorRegistry);
+		LottoMachine lottoMachine = new LottoMachine(lottoTicketGeneratorRegistry);
 		LottoController lottoController = new LottoController(lottoMachine);
 
 		lottoController.run();

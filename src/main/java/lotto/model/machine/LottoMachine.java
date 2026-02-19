@@ -9,12 +9,13 @@ import lotto.model.ticket.TicketGeneratorCommand;
 import java.util.List;
 
 public class LottoMachine {
+	public static final Money LOTTO_TICKET_PRICE = new Money(1_000);
 	private final Money lottoTicketPrice;
 	private final LottoTicketGeneratorRegistry registry;
 
-	public LottoMachine(Money lottoTicketPrice, LottoTicketGeneratorRegistry registry) {
-		this.lottoTicketPrice = lottoTicketPrice;
+	public LottoMachine(LottoTicketGeneratorRegistry registry){
 		this.registry = registry;
+		this.lottoTicketPrice = LOTTO_TICKET_PRICE;
 
 	}
 

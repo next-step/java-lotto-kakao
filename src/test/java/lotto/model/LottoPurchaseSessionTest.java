@@ -3,7 +3,6 @@ package lotto.model;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-import lotto.config.LottoPolicy;
 import lotto.model.common.Money;
 import lotto.model.machine.LottoMachine;
 import lotto.model.machine.LottoMachineGeneratedResult;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class LottoPurchaseSessionTest {
     private LottoMachine lottoMachine;
-    private final Money lottoTicketPrice = new Money(LottoPolicy.LOTTO_TICKET_PRICE);
+    private final Money lottoTicketPrice = LottoMachine.LOTTO_TICKET_PRICE;
 
     @BeforeEach
     void setUp(){
@@ -27,7 +26,7 @@ public class LottoPurchaseSessionTest {
                 randomGenerator,
                 manualGenerator
         ));
-        lottoMachine = new LottoMachine(lottoTicketPrice, registry);
+        lottoMachine = new LottoMachine(registry);
     }
 
     @Test
@@ -38,16 +37,14 @@ public class LottoPurchaseSessionTest {
         LottoPurchaseSession lottoPurchaseSession = new LottoPurchaseSession(lottoMachine,depositMoney);
 
         TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(List.of(List.of(1,2,3,4,5,6)));
-        assertThatIllegalArgumentException().isThrownBy(()->{
-            lottoPurchaseSession.purchase(manualCommand);
-        });
+        assertThatIllegalArgumentException().isThrownBy(()-> lottoPurchaseSession.purchase(manualCommand));
     }
 
     @Test
     @DisplayName("구입 금액에 따라 수동, 자동 로또가 제대로 반환되는지 테스트")
     void validateLottoTicketsByDepositMoney(){
         Money depositMoney = new Money(4_000);
-        int lottoTicketCount = depositMoney.divideBy(new Money(LottoPolicy.LOTTO_TICKET_PRICE));
+        int lottoTicketCount = depositMoney.divideBy(LottoMachine.LOTTO_TICKET_PRICE);
 
         LottoPurchaseSession lottoPurchaseSession = new LottoPurchaseSession(lottoMachine,depositMoney);
 

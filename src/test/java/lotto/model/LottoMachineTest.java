@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import java.util.List;
 import java.util.Random;
 
-import lotto.config.LottoPolicy;
 import lotto.model.common.Money;
 import lotto.model.machine.LottoMachine;
 import lotto.model.ticket.*;
@@ -17,7 +16,7 @@ import org.junit.jupiter.api.Test;
 public class LottoMachineTest {
 
 	private LottoMachine lottoMachine;
-	private final Money ticketPrice = new Money(LottoPolicy.LOTTO_TICKET_PRICE);
+	private final Money ticketPrice = LottoMachine.LOTTO_TICKET_PRICE;
 	@BeforeEach
 	void setup(){
 		LottoTicketGeneratorRegistry registry = new LottoTicketGeneratorRegistry(
@@ -27,7 +26,7 @@ public class LottoMachineTest {
 				)
 		);
 
-		lottoMachine = new LottoMachine(ticketPrice,registry);
+		lottoMachine = new LottoMachine(registry);
 	}
 
 	@Test
@@ -44,8 +43,7 @@ public class LottoMachineTest {
 	void validateMinimumPurchasePrice() {
 		Money purchasePrice = ticketPrice.minus(new Money(1));
 
-		assertThatIllegalArgumentException().isThrownBy(() -> {
-			lottoMachine.validatePurchasable(purchasePrice,1);
-		});
+		assertThatIllegalArgumentException().isThrownBy(() -> lottoMachine.validatePurchasable(purchasePrice, 1)
+		);
 	}
 }
