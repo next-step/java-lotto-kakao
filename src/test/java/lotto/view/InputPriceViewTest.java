@@ -1,0 +1,70 @@
+package lotto.view;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class InputPriceViewTest {
+    private InputStream originalIn;
+
+    @BeforeEach
+    void setUp() {
+        originalIn = System.in;
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.setIn(originalIn);
+    }
+
+    @Test
+    @DisplayName("구입금액은 숫자만 허용되며 유효 값이 입력될 때까지 재시도")
+    void test_input_price_retries_on_invalid_input() {
+        setInput("abc\n1000\n");
+
+        InputPriceView inputView = new InputPriceView();
+        int price = inputView.inputPrice();
+
+        assertEquals(1000, price);
+    }
+
+    @Test
+    @DisplayName("구입금액은 1000원 이상이어야 한다")
+    void test_input_price_minimum() {
+        setInput("999\n1000\n");
+
+        InputPriceView inputView = new InputPriceView();
+        int price = inputView.inputPrice();
+
+        assertEquals(1000, price);
+    }
+
+    @Test
+    @DisplayName("구입금액이 1000원보다 작으면 재입력해야 한다")
+    void test_input_price_retries_when_less_than_1000() {
+        setInput("0\n999\n1000\n");
+
+        InputPriceView inputView = new InputPriceView();
+        int price = inputView.inputPrice();
+
+        assertEquals(1000, price);
+    }
+
+    @Test
+    @DisplayName("입력 스캐너가 null이면 예외가 발생한다")
+    void test_constructor_null_scanner() {
+        assertThrows(IllegalArgumentException.class, () -> new InputPriceView(null));
+    }
+
+    private void setInput(String data) {
+        System.setIn(new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)));
+    }
+}
