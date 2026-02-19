@@ -52,7 +52,7 @@ public class LottoController {
         return new WinningLotto(lotto, new LottoNumber(bonusNumber));
     }
 
-    private Lotto makeLotto(String LottoNumbers){
+    private Lotto makeLotto(String lottoNumbers){
         return new Lotto(Arrays.stream(LottoNumbers.split(", "))
                 .map((String number) -> new LottoNumber(Integer.parseInt(number)))
                 .collect(Collectors.toList()));
