@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lotto.domain.Lotto;
-import lotto.exception.LottoInputException;
 
 public class InputView {
 	private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -59,7 +58,7 @@ public class InputView {
 		try {
 			return Integer.parseInt(trimmed);
 		} catch (NumberFormatException exception) {
-			throw new LottoInputException("숫자를 입력해 주세요.");
+			throw new IllegalArgumentException("숫자를 입력해 주세요. 입력값: " + trimmed, exception);
 		}
 	}
 
@@ -70,16 +69,16 @@ public class InputView {
 		for (String token : tokens) {
 			String value = token.trim();
 			if (value.isEmpty()) {
-				throw new LottoInputException("쉼표로 구분된 숫자를 입력해 주세요.");
+				throw new IllegalArgumentException("쉼표로 구분된 숫자를 입력해 주세요.");
 			}
 			try {
 				numbers.add(Integer.parseInt(value));
 			} catch (NumberFormatException exception) {
-				throw new LottoInputException("쉼표로 구분된 숫자를 입력해 주세요.");
+				throw new IllegalArgumentException("쉼표로 구분된 숫자를 입력해 주세요. 잘못된 값: " + value, exception);
 			}
 		}
 		if (numbers.size() != Lotto.requiredSize()) {
-			throw new LottoInputException(
+			throw new IllegalArgumentException(
 				String.format("번호는 %d개 입력해야 합니다.", Lotto.requiredSize())
 			);
 		}
@@ -88,11 +87,11 @@ public class InputView {
 
 	private String validateAndTrim(String input) {
 		if (input == null) {
-			throw new LottoInputException("입력이 없습니다.");
+			throw new IllegalStateException("입력이 종료되었습니다.");
 		}
 		String trimmed = input.trim();
 		if (trimmed.isEmpty()) {
-			throw new LottoInputException("공백만 입력할 수 없습니다.");
+			throw new IllegalArgumentException("공백만 입력할 수 없습니다.");
 		}
 		return trimmed;
 	}

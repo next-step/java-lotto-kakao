@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import lotto.exception.LottoValidationException;
-
 public class RandomLottoGenerator implements LottoGenerator {
 	private final int randomCount;
 
@@ -35,7 +33,7 @@ public class RandomLottoGenerator implements LottoGenerator {
 
 	private void validateCount(int count) {
 		if (count < 0) {
-			throw new LottoValidationException("구매 수는 0 이상이어야 합니다.");
+			throw new IllegalArgumentException("구매 수는 0 이상이어야 합니다.");
 		}
 	}
 }

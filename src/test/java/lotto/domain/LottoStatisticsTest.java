@@ -2,6 +2,7 @@ package lotto.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -72,6 +73,58 @@ class LottoStatisticsTest {
 		LottoStatistics statistics = LottoStatistics.of(lottos, winningNumbers);
 
 		assertThat(statistics.getProfitRate(10_000)).isEqualTo(203_005.5);
+	}
+
+	@DisplayName("집계할 로또 목록이 null이면 IllegalArgumentException이 발생해야 한다")
+	@Test
+	void of_withNullLottos_throwsIllegalArgumentException() {
+		WinningNumbers winningNumbers = WinningNumbers.of(
+			Lotto.from(List.of(1, 2, 3, 4, 5, 6)),
+			LottoNumber.from(7)
+		);
+
+		assertThatThrownBy(() -> LottoStatistics.of(null, winningNumbers))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@DisplayName("당첨 번호가 null이면 IllegalArgumentException이 발생해야 한다")
+	@Test
+	void of_withNullWinningNumbers_throwsIllegalArgumentException() {
+		List<Lotto> lottos = List.of(Lotto.from(List.of(1, 2, 3, 4, 5, 6)));
+
+		assertThatThrownBy(() -> LottoStatistics.of(lottos, null))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@DisplayName("집계할 로또 목록에 null이 포함되면 IllegalArgumentException이 발생해야 한다")
+	@Test
+	void of_withNullLottoElement_throwsIllegalArgumentException() {
+		WinningNumbers winningNumbers = WinningNumbers.of(
+			Lotto.from(List.of(1, 2, 3, 4, 5, 6)),
+			LottoNumber.from(7)
+		);
+		List<Lotto> lottos = new ArrayList<>();
+		lottos.add(Lotto.from(List.of(1, 2, 3, 4, 5, 6)));
+		lottos.add(null);
+
+		assertThatThrownBy(() -> LottoStatistics.of(lottos, winningNumbers))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@DisplayName("구입 금액이 0 이하이면 IllegalArgumentException이 발생해야 한다")
+	@Test
+	void getProfitRate_withNonPositivePurchaseAmount_throwsIllegalArgumentException() {
+		WinningNumbers winningNumbers = WinningNumbers.of(
+			Lotto.from(List.of(1, 2, 3, 4, 5, 6)),
+			LottoNumber.from(7)
+		);
+		List<Lotto> lottos = List.of(Lotto.from(List.of(1, 2, 3, 4, 5, 6)));
+		LottoStatistics statistics = LottoStatistics.of(lottos, winningNumbers);
+
+		assertThatThrownBy(() -> statistics.getProfitRate(0))
+			.isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> statistics.getProfitRate(-1_000))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 }

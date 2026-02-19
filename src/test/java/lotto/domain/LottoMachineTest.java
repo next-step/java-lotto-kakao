@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import lotto.exception.LottoValidationException;
-
 class LottoMachineTest {
 	@DisplayName("로또 머신은 등록된 생성기의 결과를 순서대로 병합해야 한다")
 	@Test
@@ -29,42 +27,42 @@ class LottoMachineTest {
 			.containsExactly(7, 8, 9, 10, 11, 12);
 	}
 
-	@DisplayName("로또 머신 생성 시 생성기 목록이 null이면 LottoValidationException이 발생해야 한다")
+	@DisplayName("로또 머신 생성 시 생성기 목록이 null이면 IllegalArgumentException이 발생해야 한다")
 	@Test
-	void constructor_withNullGenerators_throwsLottoValidationException() {
+	void constructor_withNullGenerators_throwsIllegalArgumentException() {
 		assertThatThrownBy(() -> new LottoMachine(null))
-			.isInstanceOf(LottoValidationException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
-	@DisplayName("로또 머신 생성 시 생성기 목록에 null이 포함되면 LottoValidationException이 발생해야 한다")
+	@DisplayName("로또 머신 생성 시 생성기 목록에 null이 포함되면 IllegalArgumentException이 발생해야 한다")
 	@Test
-	void constructor_withNullGeneratorElement_throwsLottoValidationException() {
+	void constructor_withNullGeneratorElement_throwsIllegalArgumentException() {
 		List<LottoGenerator> generators = new ArrayList<>();
 		generators.add(() -> List.of(Lotto.from(List.of(1, 2, 3, 4, 5, 6))));
 		generators.add(null);
 
 		assertThatThrownBy(() -> new LottoMachine(generators))
-			.isInstanceOf(LottoValidationException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
-	@DisplayName("생성 결과가 null이면 LottoValidationException이 발생해야 한다")
+	@DisplayName("생성 결과가 null이면 IllegalStateException이 발생해야 한다")
 	@Test
-	void issue_whenGeneratorReturnsNull_throwsLottoValidationException() {
+	void issue_whenGeneratorReturnsNull_throwsIllegalStateException() {
 		LottoMachine machine = new LottoMachine(List.of(() -> null));
 
 		assertThatThrownBy(machine::issue)
-			.isInstanceOf(LottoValidationException.class);
+			.isInstanceOf(IllegalStateException.class);
 	}
 
-	@DisplayName("생성 결과에 null 로또가 포함되면 LottoValidationException이 발생해야 한다")
+	@DisplayName("생성 결과에 null 로또가 포함되면 IllegalStateException이 발생해야 한다")
 	@Test
-	void issue_whenGeneratedLottosContainNull_throwsLottoValidationException() {
+	void issue_whenGeneratedLottosContainNull_throwsIllegalStateException() {
 		List<Lotto> generated = new ArrayList<>();
 		generated.add(Lotto.from(List.of(1, 2, 3, 4, 5, 6)));
 		generated.add(null);
 		LottoMachine machine = new LottoMachine(List.of(() -> generated));
 
 		assertThatThrownBy(machine::issue)
-			.isInstanceOf(LottoValidationException.class);
+			.isInstanceOf(IllegalStateException.class);
 	}
 }

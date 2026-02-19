@@ -3,8 +3,6 @@ package lotto.domain;
 import java.util.List;
 import java.util.Objects;
 
-import lotto.exception.LottoValidationException;
-
 public class ManualLottoGenerator implements LottoGenerator {
 	private final List<Lotto> lottos;
 
@@ -22,11 +20,11 @@ public class ManualLottoGenerator implements LottoGenerator {
 
 	private void validateManualNumbers(List<List<Integer>> manualNumbers) {
 		if (manualNumbers == null) {
-			throw new LottoValidationException("수동 번호는 null일 수 없습니다.");
+			throw new IllegalArgumentException("수동 번호는 null일 수 없습니다.");
 		}
 		boolean hasNull = manualNumbers.stream().anyMatch(Objects::isNull);
 		if (hasNull) {
-			throw new LottoValidationException("수동 번호에 null이 포함될 수 없습니다.");
+			throw new IllegalArgumentException("수동 번호에 null이 포함될 수 없습니다.");
 		}
 	}
 }

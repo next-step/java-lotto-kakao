@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.Getter;
-import lotto.exception.LottoValidationException;
 
 @Getter
 public class WinningNumbers {
@@ -22,6 +21,9 @@ public class WinningNumbers {
 	}
 
 	public Optional<LottoResult> match(Lotto lotto) {
+		if (lotto == null) {
+			throw new IllegalArgumentException("비교할 로또는 null일 수 없습니다.");
+		}
 		int matchCount = countMatches(lotto.getNumbers(), this.lotto.getNumbers());
 		boolean bonusMatched = lotto.getNumbers().contains(bonusNumber);
 		return LottoResult.of(matchCount, bonusMatched);
@@ -35,19 +37,19 @@ public class WinningNumbers {
 
 	private static void validateNotNull(Lotto numbers) {
 		if (numbers == null) {
-			throw new LottoValidationException("당첨 번호는 null일 수 없습니다.");
+			throw new IllegalArgumentException("당첨 번호는 null일 수 없습니다.");
 		}
 	}
 
 	private static void validateNotNull(LottoNumber bonusNumber) {
 		if (bonusNumber == null) {
-			throw new LottoValidationException("보너스 번호는 null일 수 없습니다.");
+			throw new IllegalArgumentException("보너스 번호는 null일 수 없습니다.");
 		}
 	}
 
 	private static void validateBonusDistinct(Lotto numbers, LottoNumber bonusNumber) {
 		if (numbers.getNumbers().contains(bonusNumber)) {
-			throw new LottoValidationException("보너스 번호는 당첨 번호와 같을 수 없습니다.");
+			throw new IllegalArgumentException("보너스 번호는 당첨 번호와 같을 수 없습니다.");
 		}
 	}
 

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lotto.exception.LottoValidationException;
 
 @Getter
 @EqualsAndHashCode
@@ -36,7 +35,7 @@ public class LottoNumber implements Comparable<LottoNumber> {
 	private static void validate(int value) {
 		boolean inRange = value >= MIN_NUMBER && value <= MAX_NUMBER;
 		if (!inRange) {
-			throw new LottoValidationException(
+			throw new IllegalArgumentException(
 				String.format("로또 번호는 %d부터 %d 사이여야 합니다.", MIN_NUMBER, MAX_NUMBER));
 		}
 	}

@@ -7,8 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import lotto.exception.LottoValidationException;
-
 class LottoGeneratorTest {
 	@DisplayName("수동 로또 생성기는 입력된 번호로 로또를 생성해야 한다")
 	@Test
@@ -47,17 +45,17 @@ class LottoGeneratorTest {
 			.allMatch(number -> number.getValue() >= 1 && number.getValue() <= 45);
 	}
 
-	@DisplayName("수동 로또 생성기 생성 시 입력이 null이면 LottoValidationException이 발생해야 한다")
+	@DisplayName("수동 로또 생성기 생성 시 입력이 null이면 IllegalArgumentException이 발생해야 한다")
 	@Test
-	void manualLottoGenerator_constructor_withNull_throwsLottoValidationException() {
+	void manualLottoGenerator_constructor_withNull_throwsIllegalArgumentException() {
 		assertThatThrownBy(() -> new ManualLottoGenerator(null))
-			.isInstanceOf(LottoValidationException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
-	@DisplayName("랜덤 로또 생성기 생성 시 개수가 음수면 LottoValidationException이 발생해야 한다")
+	@DisplayName("랜덤 로또 생성기 생성 시 개수가 음수면 IllegalArgumentException이 발생해야 한다")
 	@Test
-	void randomLottoGenerator_constructor_withNegativeCount_throwsLottoValidationException() {
+	void randomLottoGenerator_constructor_withNegativeCount_throwsIllegalArgumentException() {
 		assertThatThrownBy(() -> new RandomLottoGenerator(-1))
-			.isInstanceOf(LottoValidationException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 }

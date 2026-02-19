@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import lotto.exception.LottoValidationException;
-
 public class LottoMachine {
 	private final List<LottoGenerator> generators;
 
@@ -26,21 +24,21 @@ public class LottoMachine {
 
 	private void validateGenerators(List<LottoGenerator> generators) {
 		if (generators == null) {
-			throw new LottoValidationException("생성기 목록은 null일 수 없습니다.");
+			throw new IllegalArgumentException("생성기 목록은 null일 수 없습니다.");
 		}
 		boolean hasNull = generators.stream().anyMatch(Objects::isNull);
 		if (hasNull) {
-			throw new LottoValidationException("생성기 목록에 null이 포함될 수 없습니다.");
+			throw new IllegalArgumentException("생성기 목록에 null이 포함될 수 없습니다.");
 		}
 	}
 
 	private void validateGeneratedLottos(List<Lotto> lottos) {
 		if (lottos == null) {
-			throw new LottoValidationException("생성 결과는 null일 수 없습니다.");
+			throw new IllegalStateException("생성 결과는 null일 수 없습니다.");
 		}
 		boolean hasNull = lottos.stream().anyMatch(Objects::isNull);
 		if (hasNull) {
-			throw new LottoValidationException("생성 결과에 null 로또가 포함될 수 없습니다.");
+			throw new IllegalStateException("생성 결과에 null 로또가 포함될 수 없습니다.");
 		}
 	}
 }

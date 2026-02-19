@@ -12,7 +12,6 @@ import lotto.domain.LottoStatistics;
 import lotto.domain.ManualLottoGenerator;
 import lotto.domain.RandomLottoGenerator;
 import lotto.domain.WinningNumbers;
-import lotto.exception.LottoException;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -55,7 +54,7 @@ public class LottoController {
 				int amount = inputView.readPurchaseAmount();
 				purchasePolicy.calculateRandomCountFromAmount(amount, 0);
 				return amount;
-			} catch (LottoException exception) {
+			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
 		}
@@ -67,7 +66,7 @@ public class LottoController {
 				int manualCount = inputView.readManualCount();
 				purchasePolicy.calculateRandomCountFromAmount(amount, manualCount);
 				return manualCount;
-			} catch (LottoException exception) {
+			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
 		}
@@ -78,7 +77,7 @@ public class LottoController {
 			try {
 				List<List<Integer>> manualNumbers = inputView.readManualNumbers(manualCount);
 				return new ManualLottoGenerator(manualNumbers);
-			} catch (LottoException exception) {
+			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
 		}
@@ -88,7 +87,7 @@ public class LottoController {
 		while (true) {
 			try {
 				return Lotto.from(inputView.readWinningNumbers());
-			} catch (LottoException exception) {
+			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
 		}
@@ -99,7 +98,7 @@ public class LottoController {
 			try {
 				LottoNumber bonusNumber = LottoNumber.from(inputView.readBonusNumber());
 				return WinningNumbers.of(winningLotto, bonusNumber);
-			} catch (LottoException exception) {
+			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
 		}
