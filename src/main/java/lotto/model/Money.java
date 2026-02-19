@@ -21,4 +21,8 @@ public class Money {
     public int amount() {
         return amount;
     }
+
+    public int purchasableLottoCount() {
+        return amount / UNIT;
+    }
 }
