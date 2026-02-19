@@ -9,8 +9,8 @@ class WalletTest {
 
     @Test
     @DisplayName("지갑 선언")
-    public void createWallet(){
-        assertThatCode(()-> new Wallet(new Money(10000))).doesNotThrowAnyException();
+    public void createWallet() {
+        assertThatCode(() -> new Wallet(new Money(10000))).doesNotThrowAnyException();
     }
 
     @Test
@@ -34,14 +34,14 @@ class WalletTest {
 
     @Test
     @DisplayName("잔액체크 성공")
-    public void canAfford(){
+    public void canAfford() {
         Wallet wallet = new Wallet(10000);
         assertThat(wallet.canAfford(new Money(3000))).isTrue();
     }
 
     @Test
     @DisplayName("잔액체크 실패")
-    public void canAffordNotEnough(){
+    public void canAffordNotEnough() {
         Wallet wallet = new Wallet(1000);
         assertThat(wallet.canAfford(new Money(3000))).isFalse();
     }

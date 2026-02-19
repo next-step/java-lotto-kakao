@@ -16,12 +16,12 @@ class LottoTicketsTest {
     @DisplayName("제대로 생성돼는지")
     public void createLottoTickets() {
         assertThatCode(() -> new LottoTickets(List.of(
-                new LottoTicket(1,2,3,4,5,6),
-                new LottoTicket(1,2,3,4,5,6),
-                new LottoTicket(1,2,3,4,5,6),
-                new LottoTicket(1,2,3,4,5,6),
-                new LottoTicket(1,2,3,4,5,6),
-                new LottoTicket(1,2,3,4,5,6)
+                new LottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoTicket(1, 2, 3, 4, 5, 6)
         ))).doesNotThrowAnyException();
     }
 
@@ -35,7 +35,7 @@ class LottoTicketsTest {
     @DisplayName("티켓 추가")
     public void add() {
         LottoTickets tickets = new LottoTickets();
-        tickets.add(new LottoTicket(1,2,3,4,5,6));
+        tickets.add(new LottoTicket(1, 2, 3, 4, 5, 6));
 
         assertThat(tickets.size()).isEqualTo(1);
     }
@@ -43,8 +43,8 @@ class LottoTicketsTest {
     @Test
     @DisplayName("티켓 합치기")
     public void mergeTickets() {
-        LottoTickets tickets1 = new LottoTickets(List.of(new LottoTicket(1,2,3,4,5,6)));
-        LottoTickets tickets2 = new LottoTickets(List.of(new LottoTicket(7,8,9,10,11,12)));
+        LottoTickets tickets1 = new LottoTickets(List.of(new LottoTicket(1, 2, 3, 4, 5, 6)));
+        LottoTickets tickets2 = new LottoTickets(List.of(new LottoTicket(7, 8, 9, 10, 11, 12)));
 
         tickets1.merge(tickets2);
 
@@ -55,11 +55,11 @@ class LottoTicketsTest {
     @DisplayName("당첨 결과 집계")
     public void result() {
         LottoTickets tickets = new LottoTickets(List.of(
-                new LottoTicket(1,2,3,4,5,6),
-                new LottoTicket(1,2,3,4,5,7)
+                new LottoTicket(1, 2, 3, 4, 5, 6),
+                new LottoTicket(1, 2, 3, 4, 5, 7)
         ));
         WinningLotto winningLotto = new WinningLotto(
-                new LottoTicket(1,2,3,4,5,6),
+                new LottoTicket(1, 2, 3, 4, 5, 6),
                 LottoNumber.of(7)
         );
 

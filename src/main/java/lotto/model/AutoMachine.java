@@ -10,7 +10,7 @@ public class AutoMachine {
 
     public AutoMachine() {
         numberList = new ArrayList<>();
-        for(int i=LottoNumber.START_NUMBER; i<=LottoNumber.END_NUMBER; i++){
+        for (int i = LottoNumber.START_NUMBER; i <= LottoNumber.END_NUMBER; i++) {
             numberList.add(LottoNumber.of(i));
         }
     }
@@ -18,7 +18,7 @@ public class AutoMachine {
     public LottoTicket issue(Wallet wallet) {
         wallet.spend(LottoTicket.PRICE);
         Collections.shuffle(numberList);
-        return new LottoTicket(numberList.subList(0,LottoTicket.TICKET_SIZE));
+        return new LottoTicket(numberList.subList(0, LottoTicket.TICKET_SIZE));
     }
 
     public LottoTickets allIn(Wallet wallet) {

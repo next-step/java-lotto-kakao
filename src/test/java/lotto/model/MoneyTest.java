@@ -10,13 +10,13 @@ class MoneyTest {
 
     @Test
     @DisplayName("올바른 금액일 떄")
-    public void validateMoney(){
+    public void validateMoney() {
         assertThatCode(() -> new Money(1000)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("합연산")
-    public void sum(){
+    public void sum() {
         Money money1 = new Money(1000);
         Money money2 = new Money(2000);
         assertThat(money1.sum(money2)).isEqualTo(new Money(3000));

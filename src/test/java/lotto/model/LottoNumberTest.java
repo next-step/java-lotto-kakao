@@ -10,7 +10,7 @@ class LottoNumberTest {
 
     @Test
     @DisplayName("올바른 번호(1-45)일 때")
-    public void validateNumber(){
+    public void validateNumber() {
         assertThatCode(() -> LottoNumber.of(5)).doesNotThrowAnyException();
     }
 
@@ -42,7 +42,7 @@ class LottoNumberTest {
 
     @Test
     @DisplayName("로또 번호 일치 여부 검사 - 일치할때")
-    public void isEqual(){
+    public void isEqual() {
         LottoNumber number1 = LottoNumber.of(1);
         LottoNumber number2 = LottoNumber.of(1);
         assertThat(number1).isEqualTo(number2);
@@ -50,7 +50,7 @@ class LottoNumberTest {
 
     @Test
     @DisplayName("로또 번호 일치 여부 검사 - 일치하지 않을때")
-    public void isNotEqual(){
+    public void isNotEqual() {
         LottoNumber number1 = LottoNumber.of(1);
         LottoNumber number2 = LottoNumber.of(2);
         assertThat(number1).isNotEqualTo(number2);

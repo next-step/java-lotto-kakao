@@ -6,7 +6,7 @@ import java.util.List;
 public class LottoTickets {
     private final List<LottoTicket> lottoTickets;
 
-    public LottoTickets(){
+    public LottoTickets() {
         this(new ArrayList<>());
     }
 
@@ -26,7 +26,7 @@ public class LottoTickets {
         lottoTickets.addAll(other.lottoTickets);
     }
 
-    public WinningInfo result(WinningLotto winningLotto){
+    public WinningInfo result(WinningLotto winningLotto) {
         WinningInfo winningInfo = new WinningInfo();
         lottoTickets.forEach(ticket -> winningInfo.addResult(winningLotto.rank(ticket)));
         return winningInfo;

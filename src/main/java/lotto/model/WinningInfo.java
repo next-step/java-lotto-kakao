@@ -15,7 +15,7 @@ public class WinningInfo {
     }
 
     public void addResult(WinningRank rank) {
-        info.put(rank, info.getOrDefault(rank,0) + 1);
+        info.put(rank, info.getOrDefault(rank, 0) + 1);
     }
 
 

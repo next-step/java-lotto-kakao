@@ -15,7 +15,7 @@ public class ManualSelector {
         return new LottoTicket(numbers);
     }
 
-    public LottoTicket buyTicket(Wallet wallet, String numbers){
+    public LottoTicket buyTicket(Wallet wallet, String numbers) {
         wallet.spend(LottoTicket.PRICE);
         List<LottoNumber> list = Arrays.stream(numbers.split(","))
                 .map(String::trim)

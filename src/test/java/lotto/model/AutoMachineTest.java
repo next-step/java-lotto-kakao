@@ -3,13 +3,13 @@ package lotto.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AutoMachineTest {
 
     @Test
     @DisplayName("티켓 하나 발급")
-    public void issueTicket(){
+    public void issueTicket() {
         Wallet wallet = new Wallet(3000);
         AutoMachine autoMachine = new AutoMachine();
 
@@ -20,7 +20,7 @@ class AutoMachineTest {
 
     @Test
     @DisplayName("티켓 복수 발급")
-    public void allInTicket(){
+    public void allInTicket() {
         Wallet wallet = new Wallet(14500);
         AutoMachine autoMachine = new AutoMachine();
         assertThat(autoMachine.allIn(wallet))

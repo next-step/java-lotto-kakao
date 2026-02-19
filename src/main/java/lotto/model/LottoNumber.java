@@ -5,10 +5,9 @@ import java.util.Map;
 
 public class LottoNumber implements Comparable<LottoNumber> {
 
-    private static final Map<Integer, LottoNumber> pool = new HashMap<>();
     public static final int START_NUMBER = 1;
     public static final int END_NUMBER = 45;
-    private final int num;
+    private static final Map<Integer, LottoNumber> pool = new HashMap<>();
 
     static {
         for (int i = START_NUMBER; i <= END_NUMBER; i++) {
@@ -16,13 +15,15 @@ public class LottoNumber implements Comparable<LottoNumber> {
         }
     }
 
+    private final int num;
+
     private LottoNumber(int num) {
         this.num = num;
-    };
+    }
 
     public static LottoNumber of(int num) {
         if (num < START_NUMBER || num > END_NUMBER) {
-            throw new IllegalArgumentException("로또 번호는 "+START_NUMBER+"-"+END_NUMBER+" 사이 값이어야 합니다");
+            throw new IllegalArgumentException("로또 번호는 " + START_NUMBER + "-" + END_NUMBER + " 사이 값이어야 합니다");
         }
         return pool.get(num);
     }

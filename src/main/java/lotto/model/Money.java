@@ -21,14 +21,14 @@ public class Money {
     }
 
     public Double division(Money m2) {
-        if(m2.value == 0){
+        if (m2.value == 0) {
             throw new ArithmeticException("0으로 나눌 수 없습니다.");
         }
-        return  (double) this.value / m2.value;
+        return (double) this.value / m2.value;
     }
 
-    public Money multiple(int count){
-        return new Money(value*count);
+    public Money multiple(int count) {
+        return new Money(value * count);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Money {
 
     @Override
     public String toString() {
-        return value+"원";
+        return value + "원";
     }
 
 }

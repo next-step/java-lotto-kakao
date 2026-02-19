@@ -7,13 +7,12 @@ import java.util.stream.Collectors;
 
 public enum WinningRank {
 
-    NONE(0,1000,0,0),
-    FIFTH(5000,5,3,0),
-    FOURTH(50000,4,4, 0),
-    THIRD(1_500_000,3,5, 0),
-    SECOND(30_000_000,2,5,1),
-    FIRST(2_000_000_000, 1, 6,0)
-    ;
+    NONE(0, 1000, 0, 0),
+    FIFTH(5000, 5, 3, 0),
+    FOURTH(50000, 4, 4, 0),
+    THIRD(1_500_000, 3, 5, 0),
+    SECOND(30_000_000, 2, 5, 1),
+    FIRST(2_000_000_000, 1, 6, 0);
 
     public final Money winningPrice;
     public final int rank;
@@ -27,11 +26,6 @@ public enum WinningRank {
         this.bonusCount = bonusCount;
     }
 
-    private boolean isSatisfied(int matchCount, int bonusCount) {
-        return matchCount >= this.matchCount
-                && bonusCount >= this.bonusCount;
-    }
-
     public static WinningRank rank(int matchCount, int bonusCount) {
         return Arrays.stream(values())
                 .filter(rank -> rank.isSatisfied(matchCount, bonusCount))
@@ -39,20 +33,25 @@ public enum WinningRank {
                 .orElse(NONE);
     }
 
-    public String infoString(){
-        StringBuilder sb =  new StringBuilder(matchCount+"개 일치");
-        if(bonusCount !=0){
-            sb.append(", 보너스 볼 일치");
-        }
-        sb.append(" ("+winningPrice.toString()+")");
-        return sb.toString();
-    }
-
     public static List<WinningRank> validRanks() {
         return Arrays.stream(values())
                 .filter(rank -> rank.matchCount > 0)
                 .sorted(Comparator.comparingInt(r -> -r.rank))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isSatisfied(int matchCount, int bonusCount) {
+        return matchCount >= this.matchCount
+                && bonusCount >= this.bonusCount;
+    }
+
+    public String infoString() {
+        StringBuilder sb = new StringBuilder(matchCount + "개 일치");
+        if (bonusCount != 0) {
+            sb.append(", 보너스 볼 일치");
+        }
+        sb.append(" (" + winningPrice.toString() + ")");
+        return sb.toString();
     }
 
 }
