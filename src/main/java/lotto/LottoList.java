@@ -10,6 +10,10 @@ public class LottoList {
 		lottos = new ArrayList<>();
 	}
 
+	public LottoList(List<Lotto> lottos) {
+		this.lottos = lottos;
+	}
+
 	public void addLotto(Lotto lotto) {
 		lottos.add(lotto);
 	}
