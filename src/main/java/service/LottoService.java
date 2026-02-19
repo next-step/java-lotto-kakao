@@ -16,8 +16,12 @@ public class LottoService {
         this.lottoIssuer = new LottoIssuer(lottoFactory);
     }
 
-    public LottoGroup issueLottoGroup(int purchaseAmount) {
+    public LottoGroup issueAutoLottoGroup(int purchaseAmount) {
         return lottoIssuer.issueAuto(purchaseAmount);
+    }
+
+    public LottoGroup issueMixedLottoGroup(int totalPurchaseAmount, List<List<Integer>> manualNumbers) {
+        return lottoIssuer.issueMixed(totalPurchaseAmount, manualNumbers);
     }
 
     public LottoResult calculateResult(LottoGroup lottoGroup, WinningLotto winningLotto) {

@@ -7,6 +7,7 @@ import domain.winning.WinningStatus;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class LottoGroup {
 
@@ -30,6 +31,11 @@ public class LottoGroup {
 
     public int getSize() {
         return lottoList.size();
+    }
+
+    public LottoGroup concat(LottoGroup other) {
+        List<Lotto> merged = Stream.concat(lottoList.stream(), other.lottoList.stream()).toList();
+        return new LottoGroup(merged);
     }
 
     public List<Lotto> getLottoList() {

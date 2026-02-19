@@ -3,10 +3,7 @@ package domain.winning;
 import domain.lotto.Lotto;
 import domain.lotto.LottoNumber;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class WinningLotto {
 

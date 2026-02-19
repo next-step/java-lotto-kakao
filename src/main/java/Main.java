@@ -8,6 +8,6 @@ public class Main {
                 new InputView(),
                 new OutputView()
         );
-        lottoController.run();
+        lottoController.run_step2();
     }
 }
