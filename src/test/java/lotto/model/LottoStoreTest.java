@@ -49,22 +49,22 @@ class LottoStoreTest {
 
     @Test
     @DisplayName("자동 구매 - 잔액만큼 구매")
-    public void buyAuto() {
+    public void buyAutoAllIn() {
         LottoStore store = new LottoStore();
         Wallet wallet = new Wallet(5000);
 
-        LottoTickets tickets = store.buyAuto(wallet);
+        LottoTickets tickets = store.buyAutoAllIn(wallet);
 
         assertThat(tickets.size()).isEqualTo(5);
     }
 
     @Test
     @DisplayName("자동 구매 - 잔액 부족시 빈 티켓")
-    public void buyAutoNotEnough() {
+    public void buyAutoAllInNotEnough() {
         LottoStore store = new LottoStore();
         Wallet wallet = new Wallet(500);
 
-        LottoTickets tickets = store.buyAuto(wallet);
+        LottoTickets tickets = store.buyAutoAllIn(wallet);
 
         assertThat(tickets.size()).isEqualTo(0);
     }

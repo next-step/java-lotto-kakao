@@ -25,11 +25,7 @@ public class LottoStore {
         return manualSelector.buyTicket(wallet, numbers);
     }
 
-    public LottoTickets buyAuto(Wallet wallet) {
-        LottoTickets tickets = new LottoTickets();
-        while (wallet.canAfford(LottoTicket.PRICE)) {
-            tickets.insertTicket(autoMachine.issue(wallet));
-        }
-        return tickets;
+    public LottoTickets buyAutoAllIn(Wallet wallet) {
+        return autoMachine.allIn(wallet);
     }
 }
