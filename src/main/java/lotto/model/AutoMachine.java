@@ -11,7 +11,7 @@ public class AutoMachine {
     public AutoMachine() {
         numberList = new ArrayList<>();
         for(int i=LottoNumber.START_NUMBER; i<=LottoNumber.END_NUMBER; i++){
-            numberList.add(new LottoNumber(i));
+            numberList.add(LottoNumber.of(i));
         }
     }
 

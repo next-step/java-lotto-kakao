@@ -60,7 +60,7 @@ class LottoTicketsTest {
         ));
         WinningLotto winningLotto = new WinningLotto(
                 new LottoTicket(1,2,3,4,5,6),
-                new LottoNumber(7)
+                LottoNumber.of(7)
         );
 
         WinningInfo info = tickets.result(winningLotto);

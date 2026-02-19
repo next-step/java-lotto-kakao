@@ -29,7 +29,7 @@ public class LottoTicket {
         }
 
         return Arrays.stream(numbers)
-                .map(LottoNumber::new)
+                .map(LottoNumber::of)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 

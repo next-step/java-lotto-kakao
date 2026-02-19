@@ -33,7 +33,7 @@ public class InputView {
     public LottoNumber inputBonusNumber() {
         System.out.println("보너스 볼을 입력해 주세요.");
         int number = Integer.parseInt(scanner.nextLine().trim());
-        return new LottoNumber(number);
+        return LottoNumber.of(number);
     }
 
     public int inputManualCount() {
@@ -54,7 +54,7 @@ public class InputView {
         return Arrays.stream(input.split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
-                .map(LottoNumber::new)
+                .map(LottoNumber::of)
                 .collect(Collectors.toList());
     }
 

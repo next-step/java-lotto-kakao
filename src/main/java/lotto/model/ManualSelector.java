@@ -20,7 +20,7 @@ public class ManualSelector {
         List<LottoNumber> list = Arrays.stream(numbers.split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
-                .map(LottoNumber::new)
+                .map(LottoNumber::of)
                 .toList();
         return new LottoTicket(list);
     }

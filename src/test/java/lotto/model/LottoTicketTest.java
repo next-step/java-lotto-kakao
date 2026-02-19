@@ -21,12 +21,12 @@ class LottoTicketTest {
     @DisplayName("리스트로 로또 생성")
     public void createTicketWithList(){
         assertThatCode(() -> new LottoTicket(List.of(
-                new LottoNumber(1),
-                new LottoNumber(2),
-                new LottoNumber(3),
-                new LottoNumber(4),
-                new LottoNumber(5),
-                new LottoNumber(6)
+                LottoNumber.of(1),
+                LottoNumber.of(2),
+                LottoNumber.of(3),
+                LottoNumber.of(4),
+                LottoNumber.of(5),
+                LottoNumber.of(6)
         ))).doesNotThrowAnyException();
     }
 
@@ -34,12 +34,12 @@ class LottoTicketTest {
     @DisplayName("셋으로 로또 생성")
     public void createTicketWithSet(){
         Set<LottoNumber> numbers = new TreeSet<>(List.of(
-                new LottoNumber(1),
-                new LottoNumber(2),
-                new LottoNumber(3),
-                new LottoNumber(4),
-                new LottoNumber(5),
-                new LottoNumber(6)
+                LottoNumber.of(1),
+                LottoNumber.of(2),
+                LottoNumber.of(3),
+                LottoNumber.of(4),
+                LottoNumber.of(5),
+                LottoNumber.of(6)
         ));
         assertThatCode(() -> new LottoTicket(numbers)).doesNotThrowAnyException();
     }
@@ -64,14 +64,14 @@ class LottoTicketTest {
     @DisplayName("티켓에 번호가 포함되어 있을 때")
     public void containsNumber() {
         LottoTicket ticket = new LottoTicket(1, 2, 3, 4, 5, 6);
-        assertThat(ticket.contains(new LottoNumber(3))).isTrue();
+        assertThat(ticket.contains(LottoNumber.of(3))).isTrue();
     }
 
     @Test
     @DisplayName("티켓에 번호가 포함되어 있지 않을 때")
     public void notContainsNumber() {
         LottoTicket ticket = new LottoTicket(1, 2, 3, 4, 5, 6);
-        assertThat(ticket.contains(new LottoNumber(7))).isFalse();
+        assertThat(ticket.contains(LottoNumber.of(7))).isFalse();
     }
 
     @Test
