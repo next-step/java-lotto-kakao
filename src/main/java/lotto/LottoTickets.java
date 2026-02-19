@@ -8,6 +8,10 @@ public class LottoTickets {
 	private final ArrayList<LottoTicket> lottoTickets;
 
 	public LottoTickets(List<LottoTicket> lottoTickets) {
+		if (lottoTickets == null) {
+			this.lottoTickets = new ArrayList<>();
+			return;
+		}
 		this.lottoTickets = new ArrayList<>(lottoTickets);
 	}
 
@@ -27,5 +31,18 @@ public class LottoTickets {
 			lottoStatistics.add(lottoAnswer.judge(lottoTicket));
 		}
 		return lottoStatistics;
+	}
+
+	public void merge(LottoTickets other){
+		if (other == null)
+			return;
+
+		for (LottoTicket lottoTicket : other.lottoTickets) {
+			lottoTickets.add(copyTicket(lottoTicket));
+		}
+	}
+
+	private LottoTicket copyTicket(LottoTicket lottoTicket) {
+		return new LottoTicket(lottoTicket.getNumbers());
 	}
 }

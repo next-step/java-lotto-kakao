@@ -58,7 +58,7 @@ public class LottoNumbersTest {
 	private ArrayList<LottoNumber> numbers(int... values) {
 		ArrayList<LottoNumber> lottoNumbers = new ArrayList<>();
 		for (int value : Arrays.stream(values).boxed().toList()) {
-			lottoNumbers.add(new LottoNumber(value));
+			lottoNumbers.add(LottoNumber.from(value));
 		}
 		return lottoNumbers;
 	}

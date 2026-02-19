@@ -16,7 +16,7 @@ public class LottoNumberTest {
 		List<LottoNumber> lottoNumbers = new ArrayList<>();
 
 		for (int i = 1; i <= 45; i++) {
-			lottoNumbers.add(new LottoNumber(i));
+			lottoNumbers.add(LottoNumber.from(i));
 		}
 
 		Assertions.assertThat(lottoNumbers)
@@ -29,12 +29,18 @@ public class LottoNumberTest {
 	@DisplayName("1 ~ 45까지가 아닌 번호는 생성할 수 없다")
 	public void cannot_create_invalid_lotto_number() {
 		// 1. 범위보다 작은 값 (0) 테스트
-		assertThatThrownBy(() -> new LottoNumber(0))
+		assertThatThrownBy(() -> LottoNumber.from(0))
 			.isInstanceOf(IllegalArgumentException.class);
 
 		// 2. 범위보다 큰 값 (46) 테스트
-		assertThatThrownBy(() -> new LottoNumber(46))
+		assertThatThrownBy(() -> LottoNumber.from(46))
 			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	@DisplayName("같은 숫자 요청은 동일한 LottoNumber 인스턴스를 재사용한다")
+	void cache_lotto_number_instance() {
+		assertThat(LottoNumber.from(7)).isSameAs(LottoNumber.from(7));
 	}
 
 	private List<Integer> generateExpectedNumbers() {

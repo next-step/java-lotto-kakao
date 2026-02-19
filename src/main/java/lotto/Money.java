@@ -9,8 +9,8 @@ public class Money {
 		this.value = value;
 	}
 
-	public int toPurchaseCount() {
-		return value / LOTTO_PRICE;
+	public Count toPurchaseCount() {
+		return new Count(value / LOTTO_PRICE);
 	}
 
 	public int getValue() {
@@ -37,8 +37,7 @@ public class Money {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Money)) return false;
-		Money money = (Money) o;
+		if (!(o instanceof Money money)) return false;
 		return value == money.value;
 	}
 

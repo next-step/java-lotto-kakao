@@ -10,7 +10,7 @@ public class MoneyTest {
 	@DisplayName("구매 가능한 티켓 수량을 반환한다 (1,000의 배수)")
 	public void getTicketCount_when_amount_is_multiple_of_1000(){
 		Money money = new Money(22000);
-		assertThat(money.toPurchaseCount()).isEqualTo(22);
+		assertThat(money.toPurchaseCount()).isEqualTo(new Count(22));
 	}
 
 	@Test

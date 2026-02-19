@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class OutputView {
-	public void printPurchaseResult(LottoTickets lottoTickets) {
-		System.out.printf("%d개를 구매했습니다.%n", lottoTickets.size());
+	public void printPurchaseResult(LottoTickets lottoTickets, LottoPurchase purchase) {
+		System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.%n", purchase.manualLottoCount().value(), purchase.autoLottoCount().value());
 		lottoTickets.forEach(this::printLottoNumbers);
 		System.out.println();
 	}

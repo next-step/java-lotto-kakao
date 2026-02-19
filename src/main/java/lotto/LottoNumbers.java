@@ -69,7 +69,7 @@ public class LottoNumbers {
 	private static List<LottoNumber> convertToLottoNumbers(List<Integer> numberCandidates) {
 		List<LottoNumber> lottoNumbers = new ArrayList<>();
 		for (Integer number : numberCandidates.subList(0, LOTTO_NUMBER_COUNT)) {
-			lottoNumbers.add(new LottoNumber(number));
+			lottoNumbers.add(LottoNumber.from(number));
 		}
 		return lottoNumbers;
 	}
