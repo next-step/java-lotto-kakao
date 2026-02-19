@@ -17,32 +17,15 @@ public class WinningLotto {
 		}
 	}
 
-	public int checkNumbers(Lotto tickets) {
-		return winningNumbers.countMatch(tickets);
+	public int checkNumbers(Lotto ticket) {
+		return winningNumbers.countMatch(ticket);
 	}
 
-	public boolean isContainBonus(Lotto tickets) {
-		return tickets.isContainBonusBall(bonus);
+	public boolean hasBonus(Lotto ticket) {
+		return ticket.hasBonusBall(bonus);
 	}
 
-	public MatchCount aggreateMatchCount(Lotto tickets) {
-		int count = checkNumbers(tickets);
-		boolean isContainBonus = isContainBonus(tickets);
-		if (count == MatchCount.SIX.getCount()) {
-			return MatchCount.SIX;
-		}
-		if (count == MatchCount.FIVE_BONUS.getCount() && isContainBonus == MatchCount.FIVE_BONUS.hasBonus()) {
-			return MatchCount.FIVE_BONUS;
-		}
-		if (count == MatchCount.FIVE.getCount()) {
-			return MatchCount.FIVE;
-		}
-		if (count == MatchCount.FOUR.getCount()) {
-			return MatchCount.FOUR;
-		}
-		if (count == MatchCount.THREE.getCount()) {
-			return MatchCount.THREE;
-		}
-		return MatchCount.NOTHING;
+	public MatchCount aggregateMatchCount(Lotto ticket) {
+		return MatchCount.from(checkNumbers(ticket), hasBonus(ticket));
 	}
 }

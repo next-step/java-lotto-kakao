@@ -30,7 +30,7 @@ public class Lotto {
 			.count();
 	}
 
-	public boolean isContainBonusBall(LottoNumber bonus) {
+	public boolean hasBonusBall(LottoNumber bonus) {
 		return this.numbers.contains(bonus);
 	}
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import lotto.model.LotteryChecker;
 import lotto.model.MatchCount;
+import lotto.model.Money;
 
 public class LotteryCheckerTest {
 
@@ -50,8 +51,8 @@ public class LotteryCheckerTest {
 		lotteryChecker.increase(MatchCount.THREE);
 		lotteryChecker.increase(MatchCount.FOUR);
 		lotteryChecker.increase(MatchCount.FIVE);
-		int totalPurchaseCost = 14000;
-		double returnRate = lotteryChecker.calculateReturnRate(totalPurchaseCost);
+		Money money = new Money(14_000);
+		double returnRate = lotteryChecker.calculateReturnRate(money);
 		assertThat(returnRate).isEqualTo(111.07);
 	}
 

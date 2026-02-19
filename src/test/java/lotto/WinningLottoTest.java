@@ -58,8 +58,8 @@ public class WinningLottoTest {
 			new LottoNumber(7)
 		);
 		Lotto ticket = new Lotto(ticketNumber);
-		boolean isContainBonus = winningLotto.isContainBonus(ticket);
-		assertThat(isContainBonus).isEqualTo(true);
+		boolean hasBonus = winningLotto.hasBonus(ticket);
+		assertThat(hasBonus).isEqualTo(true);
 	}
 
 	@Test

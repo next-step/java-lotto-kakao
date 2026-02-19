@@ -6,21 +6,27 @@ import java.util.List;
 public class Buyer {
 
 	private final List<Lotto> tickets;
-	private final static int LOTTO_PRICE = 1_000;
 
 	Buyer(List<Lotto> tickets) {
 		this.tickets = List.copyOf(tickets);
 	}
 
-	public static Buyer buyLotteries(int budget) {
-		List<Lotto> tickets = new ArrayList<>();
-		int amount = budget / LOTTO_PRICE;
-		if (amount == 0) {
-			throw new IllegalArgumentException("한 개의 로또도 살 수 없는 돈입니다.");
+	public static Buyer buyLotteries(PurchasePlan plan, List<Lotto> manualTickets) {
+
+		if (manualTickets == null) {
+			throw new IllegalArgumentException("수동 구매 목록은 null일 수 없습니다.");
 		}
-		while (amount-- > 0) {
+
+		if (manualTickets.size() != plan.manualCount()) {
+			throw new IllegalArgumentException("수동 구매가 올바르게 완료되지 않았습니다.");
+
+		}
+
+		List<Lotto> tickets = new ArrayList<>(manualTickets);
+		for (int i = 0; i < plan.autoCount(); i++) {
 			tickets.add(Lotto.createRandomLotto());
 		}
+
 		return new Buyer(tickets);
 	}
 
