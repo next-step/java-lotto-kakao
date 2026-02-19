@@ -43,14 +43,6 @@ public class LottoView {
 		return manualLottos;
 	}
 
-	public void printPurchasedLotto(List<Lotto> lottos) {
-		print(lottos.size() + "개를 구매했습니다.");
-		for (Lotto lotto : lottos) {
-			print(lotto.toString());
-		}
-		print("");
-	}
-
 	public void printPurchasedLotto(List<Lotto> lottos, int manualCount, int autoCount) {
 		System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.\n", manualCount, autoCount);
 		for (Lotto lotto : lottos) {
