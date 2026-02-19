@@ -19,17 +19,13 @@ public class InputView {
     }
 
     public static List<Integer> inputManualNumbers() {
-
         return parseNumbers(scanner.nextLine());
     }
 
     public static List<Integer> inputWinningNumbers() {
         System.out.println("\n지난 주 당첨 번호를 입력해 주세요.");
         String input = scanner.nextLine();
-        return Arrays.stream(input.split(","))
-                .map(String::trim)
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+        return parseNumbers(input);
     }
 
     public static int inputBonusNumber() {
