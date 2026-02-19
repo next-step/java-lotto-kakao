@@ -14,8 +14,8 @@ public enum WinningRank {
     SECOND(30_000_000, 2, 5, 1),
     FIRST(2_000_000_000, 1, 6, 0);
 
-    public final Money winningPrice;
-    public final int rank;
+    private final Money winningPrice;
+    private final int rank;
     private final int matchCount;
     private final int bonusCount;
 
@@ -52,6 +52,14 @@ public enum WinningRank {
         }
         sb.append(" (" + winningPrice.toString() + ")");
         return sb.toString();
+    }
+
+    public Money getWinningPrice() {
+        return winningPrice;
+    }
+
+    public int getRank() {
+        return rank;
     }
 
 }

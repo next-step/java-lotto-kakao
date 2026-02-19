@@ -24,7 +24,7 @@ public class WinningInfo {
         for (Map.Entry<WinningRank, Integer> entry : info.entrySet()) {
             WinningRank k = entry.getKey();
             Integer v = entry.getValue();
-            total = total.sum(k.winningPrice.multiple(v));
+            total = total.sum(k.getWinningPrice().multiple(v));
         }
         return total;
     }
