@@ -36,7 +36,16 @@ public class LottoPurchaseSessionTest {
 
         LottoPurchaseSession lottoPurchaseSession = new LottoPurchaseSession(lottoMachine,depositMoney);
 
-        TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(List.of(List.of(1,2,3,4,5,6)));
+        TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(
+                List.of(List.of(
+                        LottoNumber.of(1),
+                        LottoNumber.of(2),
+                        LottoNumber.of(3),
+                        LottoNumber.of(4),
+                        LottoNumber.of(5),
+                        LottoNumber.of(6)
+                ))
+        );
         assertThatIllegalArgumentException().isThrownBy(()-> lottoPurchaseSession.purchase(manualCommand));
     }
 
@@ -49,7 +58,16 @@ public class LottoPurchaseSessionTest {
         LottoPurchaseSession lottoPurchaseSession = new LottoPurchaseSession(lottoMachine,depositMoney);
 
         // 수동 1장, 자동 3장
-        TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(List.of(List.of(1,2,3,4,5,6)));
+        TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(
+                List.of(List.of(
+                        LottoNumber.of(1),
+                        LottoNumber.of(2),
+                        LottoNumber.of(3),
+                        LottoNumber.of(4),
+                        LottoNumber.of(5),
+                        LottoNumber.of(6)
+                ))
+        );
         lottoPurchaseSession.purchase(manualCommand);
 
         int purchasableTicketCount = lottoPurchaseSession.getPurchasableTicketCount();

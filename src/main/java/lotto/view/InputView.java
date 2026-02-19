@@ -29,7 +29,7 @@ public class InputView {
 		return ticketCount;
 	}
 
-	public List<List<Integer>> readManualLottoNumbers(int count){
+	public List<List<LottoNumber>> readManualLottoNumbers(int count){
 		if(count <=0) return List.of();
 
 		System.out.println("수동으로 구매할 번호를 입력해 주세요.");
@@ -69,10 +69,11 @@ public class InputView {
 		}
 	}
 
-	private List<Integer> parseNumbers(String input) {
+	private List<LottoNumber> parseNumbers(String input) {
 		return Arrays.stream(splitNumbersByDelimiter(input, ","))
 				.map(String::trim)
 				.map(this::praseInt)
+				.map(LottoNumber::of)
 				.toList();
 	}
 

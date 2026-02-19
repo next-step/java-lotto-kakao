@@ -8,10 +8,8 @@ public class LottoTicketManualGenerator implements LottoTicketGenerator<TicketMa
         return TicketManualGeneratorCommand.class;
     }
 
-    private LottoTicket generateTicket(List<Integer> manualNumbers){
-        return new LottoTicket(
-                manualNumbers.stream().map(LottoNumber::of).toList()
-        );
+    private LottoTicket generateTicket(List<LottoNumber> manualNumbers){
+        return new LottoTicket(manualNumbers);
     }
 
     public List<LottoTicket> generate(TicketManualGeneratorCommand command){

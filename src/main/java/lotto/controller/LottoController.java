@@ -52,7 +52,7 @@ public class LottoController {
 		LottoPurchaseSession lottoPurchaseSession = new LottoPurchaseSession(lottoMachine, purchasePrice);
 		int manualCount = inputView.readManualPurchaseTicketCount();
 
-		List<List<Integer>> numbers = inputView.readManualLottoNumbers(manualCount);
+		List<List<LottoNumber>> numbers = inputView.readManualLottoNumbers(manualCount);
 		TicketManualGeneratorCommand manualCommand = new TicketManualGeneratorCommand(numbers);
 		lottoPurchaseSession.purchase(manualCommand);
 
