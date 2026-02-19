@@ -51,4 +51,8 @@ public class LottoBundle {
     public List<Lotto> asList() {
         return List.copyOf(lottos);
     }
+
+    boolean contains(Lotto lotto) {
+        return lottos.contains(lotto);
+    }
 }

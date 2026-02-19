@@ -1,11 +1,8 @@
 package controller;
 
-import lotto.LottoBundle;
-import lotto.LottoBundleResult;
-import lotto.LottoShop;
-import lotto.WinLotto;
+import lotto.*;
 import money.Money;
-import purchase.Purchase;
+import purchase.LottoBundlePurchase;
 import utils.InputParser;
 import view.InputView;
 import view.OutputView;
@@ -22,9 +19,8 @@ public class LottoController {
     }
 
     public void run() {
-        Purchase<LottoBundle> lottoBundlePurchase = purchaseLottoBundle();
-        LottoBundle lottoBundle = lottoBundlePurchase.item();
-        outputView.printPurchasedLottos(lottoBundle);
+        LottoBundlePurchase lottoBundlePurchase = purchaseLottoBundle();
+        LottoBundle lottoBundle = lottoBundlePurchase.lottoBundle();
         WinLotto win = readWinLotto();
         LottoBundleResult lottoBundleResult = lottoBundle.evaluate(win);
         outputView.printStatistic(lottoBundleResult);
@@ -32,12 +28,87 @@ public class LottoController {
         outputView.printProfitRate(profitRate);
     }
 
-    private Purchase<LottoBundle> purchaseLottoBundle() {
+    private LottoBundlePurchase purchaseLottoBundle() {
+        while (true) {
+            try {
+                LottoPurchaseRequest request = readPurchaseRequest();
+                LottoForm requestedLottoForm = request.lottoForm();
+                LottoBundlePurchase purchase = LottoShop.purchaseBundle(request.purchaseAmount(), request.lottoForm());
+                outputView.printPurchasedLottos(purchase.lottoBundle(), requestedLottoForm.size());
+                return purchase;
+            } catch (Exception e) {
+                outputView.printError(e.getMessage());
+            }
+        }
+    }
+
+    private LottoPurchaseRequest readPurchaseRequest() {
+        Money money = readValidPurchaseMoney();
+        long totalCount = calculatePurchasableCount(money);
+        int manualCount = readValidManualCount(totalCount);
+        LottoForm lottoForm = readManualLottoForm(manualCount);
+        return new LottoPurchaseRequest(money, lottoForm);
+    }
+
+    private long calculatePurchasableCount(Money money) {
+        long totalCount = money.calculatePurchasableCount(LottoShop.PRICE);
+        if (totalCount < 1) {
+            throw new IllegalArgumentException("구입금액이 부족합니다.");
+        }
+        return totalCount;
+    }
+
+    private int readValidManualCount(long totalCount) {
+        while (true) {
+            try {
+                return readManualCountOnce(totalCount);
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e.getMessage());
+            }
+        }
+    }
+
+    private int readManualCountOnce(long totalCount) {
+        String raw = inputView.readManualLottoCount();
+        int manualCount = InputParser.parseManualLottoCount(raw);
+        if (manualCount < 0) {
+            throw new IllegalArgumentException("수동 로또 개수는 0 또는 양수여야 합니다.");
+        }
+        if (manualCount > totalCount) {
+            throw new IllegalArgumentException("수동 로또 개수가 구매 가능한 개수를 초과했습니다.");
+        }
+        return manualCount;
+    }
+
+    private Money readValidPurchaseMoney() {
         while (true) {
             try {
                 String raw = inputView.readPurchaseMoney();
-                Money money = Money.won(InputParser.parseMoney(raw));
-                return LottoShop.purchaseBundle(money);
+                return Money.won(InputParser.parseMoney(raw));
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e.getMessage());
+            }
+        }
+    }
+
+    private LottoForm readManualLottoForm(int count) {
+        LottoForm lottoForm = new LottoForm();
+        if (count == 0) {
+            return lottoForm;
+        }
+        inputView.printManualLottoGuide();
+        for (int i = 0; i < count; i++) {
+            markManualLottoOnce(lottoForm);
+        }
+        return lottoForm;
+    }
+
+    private void markManualLottoOnce(LottoForm lottoForm) {
+        while (true) {
+            try {
+                String raw = inputView.readManualLottoNumbers();
+                lottoForm.mark(InputParser.parseLottoFormat(raw));
+                return;
             } catch (Exception e) {
                 outputView.printError(e.getMessage());
             }
@@ -58,5 +129,8 @@ public class LottoController {
                 outputView.printError(e.getMessage());
             }
         }
+    }
+
+    private record LottoPurchaseRequest(Money purchaseAmount, LottoForm lottoForm) {
     }
 }

@@ -1,6 +1,7 @@
 package lotto;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Lotto {
     private static final int LENGTH = 6;
@@ -8,7 +9,7 @@ public class Lotto {
     private static final int MAX_NUMBER = 45;
     private final Set<LottoNumber> lottoNumberSet;
 
-    public Lotto(List<Integer> numbers) {
+    Lotto(List<Integer> numbers) {
         this(convertListToSet(numbers));
     }
 
@@ -18,11 +19,9 @@ public class Lotto {
     }
 
     private static Set<LottoNumber> convertListToSet(List<Integer> numbers) {
-        Set<LottoNumber> result = new HashSet<>();
-        for (Integer number : numbers) {
-            result.add(new LottoNumber(number));
-        }
-        return result;
+        return numbers.stream()
+                .map(LottoNumber::of)
+                .collect(Collectors.toSet());
     }
 
     public static Lotto random() {
@@ -66,5 +65,17 @@ public class Lotto {
 
     public boolean contains(LottoNumber number) {
         return lottoNumberSet.contains(number);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Lotto lotto = (Lotto) o;
+        return Objects.equals(lottoNumberSet, lotto.lottoNumberSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(lottoNumberSet);
     }
 }

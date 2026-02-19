@@ -32,14 +32,12 @@ public class LottoTest {
     @DisplayName("랜덤 로또는 중복없이 6개의 유효한 숫자가 있어야 한다.")
     void createRandomLotto() {
         for (int i = 0; i < 10; i++) {
-            Lotto lotto = Lotto.random();
-            List<LottoNumber> numbers = lotto.numbers();
-
-            System.out.println(numbers);
+            List<LottoNumber> numbers = Lotto.random().numbers();
 
             assertThat(numbers).hasSize(6);
             assertThat(numbers)
                     .allSatisfy(n -> assertThat(n.value()).isBetween(1, 45));
+            assertThat(numbers).doesNotHaveDuplicates();
         }
     }
 

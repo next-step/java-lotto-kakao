@@ -2,6 +2,7 @@ package lotto;
 
 import money.Money;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,13 +15,7 @@ public enum LottoRank {
     LOSE(0, false, false, Money.won(0));
 
 
-    private static final Map<String, LottoRank> RANK_MAP = new HashMap<>();
-
-    static {
-        for (LottoRank rank : values()) {
-            setRankMap(rank);
-        }
-    }
+    private static final Map<String, LottoRank> RANK_MAP = createRankMap();
 
     private final int matchCount;
     private final boolean bonusDependent;
@@ -34,23 +29,35 @@ public enum LottoRank {
         this.prize = prize;
     }
 
-    private static void setRankMap(LottoRank rank) {
-        if (rank == LOSE) {
+    private static Map<String, LottoRank> createRankMap() {
+        Map<String, LottoRank> rankMap = new HashMap<>();
+        for (LottoRank rank : values()) {
+            setRankMap(rankMap, rank);
+        }
+        return Collections.unmodifiableMap(rankMap);
+    }
+
+    private static void setRankMap(Map<String, LottoRank> rankMap, LottoRank rank) {
+        if (rank.isLose()) {
             return;
         }
 
         if (rank.bonusDependent) {
-            RANK_MAP.put(rank.matchCount + ":" + rank.hasBonus, rank);
+            rankMap.put(rankKey(rank.matchCount, rank.hasBonus), rank);
             return;
         }
 
-        RANK_MAP.put(rank.matchCount + ":true", rank);
-        RANK_MAP.put(rank.matchCount + ":false", rank);
+        rankMap.put(rankKey(rank.matchCount, true), rank);
+        rankMap.put(rankKey(rank.matchCount, false), rank);
     }
 
-    public static LottoRank searchRank(int count, boolean bonus) {
-        String key = count + ":" + bonus;
+    public static LottoRank searchRank(int matchCount, boolean hasBonus) {
+        String key = rankKey(matchCount, hasBonus);
         return RANK_MAP.getOrDefault(key, LottoRank.LOSE);
+    }
+
+    private static String rankKey(int matchCount, boolean hasBonus) {
+        return matchCount + ":" + hasBonus;
     }
 
     public Money calculatePrize(int quantity) {
@@ -61,11 +68,15 @@ public enum LottoRank {
         return matchCount;
     }
 
-    public Money getPrize() {
-        return prize;
+    public long getPrizeAmount() {
+        return prize.amount();
     }
 
     public boolean isSecond() {
         return this == LottoRank.SECOND;
+    }
+
+    public boolean isLose() {
+        return this == LottoRank.LOSE;
     }
 }

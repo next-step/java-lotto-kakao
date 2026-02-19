@@ -8,7 +8,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class LottoBundleResultBuilderTest {
     @Test
     void createSuccess() {
-        Money totalFee = Money.won(LottoShop.PRICE);
+        Money totalFee = LottoShop.PRICE;
 
         LottoBundleResultBuilder lottoBundleResultBuilder = new LottoBundleResultBuilder();
         lottoBundleResultBuilder.count(LottoRank.FIRST);

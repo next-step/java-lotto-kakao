@@ -21,7 +21,7 @@ public final class Money {
     private void validate(long value) {
         if (value < 0L) {
             throw new IllegalArgumentException(
-                    String.format("돈은 0 또는 양수여야 합니다.: %d", value)
+                    String.format("돈은 0 또는 양수여야 합니다. 입력값: %d", value)
             );
         }
     }
@@ -54,8 +54,11 @@ public final class Money {
         return Money.won(Math.subtractExact(this.value, other.value));
     }
 
-    public long calculatePurchasableCount(long price) {
-        return value / price;
+    public long calculatePurchasableCount(Money price) {
+        if (price.value <= 0L) {
+            throw new IllegalArgumentException("가격은 0보다 커야 합니다.");
+        }
+        return value / price.value;
     }
 
     @Override

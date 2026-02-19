@@ -1,0 +1,20 @@
+package lotto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LottoForm {
+    private final List<Lotto> markedLottos = new ArrayList<>();
+
+    public void mark(List<Integer> numbers) {
+        markedLottos.add(new Lotto(numbers));
+    }
+
+    public int size() {
+        return markedLottos.size();
+    }
+
+    List<Lotto> manualLottos() {
+        return List.copyOf(markedLottos);
+    }
+}

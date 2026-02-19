@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InputParser {
@@ -28,14 +28,18 @@ public class InputParser {
         }
     }
 
-    private static List<Integer> parseTokens(String rawInput) {
-        List<Integer> numbers = new ArrayList<>();
-        String[] tokens = rawInput.split(",");
-
-        for (String token : tokens) {
-            numbers.add(parseInt(token));
+    public static Integer parseManualLottoCount(String rawInput) {
+        try {
+            return parseInt(rawInput);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("수동 로또 개수는 반드시 숫자여야 합니다.");
         }
-        return numbers;
+    }
+
+    private static List<Integer> parseTokens(String rawInput) {
+        return Arrays.stream(rawInput.split(","))
+                .map(InputParser::parseInt)
+                .toList();
     }
 
     private static int parseInt(String token) {

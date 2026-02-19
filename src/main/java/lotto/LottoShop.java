@@ -1,25 +1,31 @@
 package lotto;
 
 import money.Money;
-import purchase.Purchase;
+import purchase.LottoBundlePurchase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LottoShop {
-    public static final long PRICE = 1000L;
+    public static final Money PRICE = Money.won(1000L);
 
-    public static Purchase<LottoBundle> purchaseBundle(Money purchaseAmount) {
-        long count = purchaseAmount.calculatePurchasableCount(PRICE);
-        if (count < 1) {
+    public static LottoBundlePurchase purchaseBundle(Money purchaseAmount, LottoForm lottoForm) {
+        long totalCount = purchaseAmount.calculatePurchasableCount(PRICE);
+        validatePurchaseCount(totalCount, lottoForm.size());
+
+        LottosGenerator generator = LottoGeneratorFactory.create(totalCount, lottoForm);
+
+        List<Lotto> lottos = generator.generate();
+        Money paid = PRICE.times(lottos.size());
+        Money change = purchaseAmount.minus(paid);
+        return new LottoBundlePurchase(new LottoBundle(lottos), paid, change);
+    }
+
+    private static void validatePurchaseCount(long totalCount, int manualCount) {
+        if (totalCount < 1) {
             throw new IllegalArgumentException("구입금액이 부족합니다.");
         }
-        Money paid = Money.won(PRICE).times(count);
-        Money change = purchaseAmount.minus(paid);
-        List<Lotto> lottos = new ArrayList<>();
-        for (long c = 0; c < count; c++) {
-            lottos.add(Lotto.random());
+        if (manualCount > totalCount) {
+            throw new IllegalArgumentException("수동 로또 개수가 구매 가능한 개수를 초과했습니다.");
         }
-        return new Purchase<>(new LottoBundle(lottos), paid, change);
     }
 }

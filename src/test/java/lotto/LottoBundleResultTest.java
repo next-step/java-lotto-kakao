@@ -1,6 +1,5 @@
 package lotto;
 
-import money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +36,7 @@ public class LottoBundleResultTest {
                 LottoRank.LOSE, 5
         ));
 
-        double rate = result.calculateProfitRate(Money.won(LottoShop.PRICE * 8));
+        double rate = result.calculateProfitRate(LottoShop.PRICE.times(8));
         assertThat(13.125).isEqualTo(rate);
     }
 }

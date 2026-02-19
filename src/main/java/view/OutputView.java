@@ -1,9 +1,12 @@
 package view;
 
-import lotto.*;
+import lotto.Lotto;
+import lotto.LottoBundle;
+import lotto.LottoBundleResult;
+import lotto.LottoRank;
 
 import java.util.List;
-import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class OutputView {
     private static final List<LottoRank> PRINT_ORDER = List.of(
@@ -14,21 +17,19 @@ public class OutputView {
             LottoRank.FIRST
     );
 
-    public void printPurchasedLottos(LottoBundle lottoBundle) {
-        System.out.printf("%d개를 구매했습니다.%n", lottoBundle.size());
+    public void printPurchasedLottos(LottoBundle lottoBundle, int manualLottoCount) {
+        System.out.println();
+        System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.%n", manualLottoCount, lottoBundle.size() - manualLottoCount);
         for (Lotto lotto : lottoBundle.asList()) {
             printLotto(lotto);
         }
     }
 
     private void printLotto(Lotto lotto) {
-        StringJoiner joiner = new StringJoiner(", ", "[", "]");
-
-        for (LottoNumber number : lotto.numbers()) {
-            joiner.add("" + number.value());
-        }
-
-        System.out.println(joiner);
+        String output = lotto.numbers().stream()
+                .map(number -> String.valueOf(number.value()))
+                .collect(Collectors.joining(", ", "[", "]"));
+        System.out.println(output);
     }
 
     public void printStatistic(LottoBundleResult lottoBundleResult) {
@@ -44,7 +45,7 @@ public class OutputView {
     private void printRankLine(LottoRank rank, int count) {
         String label = labelOf(rank);
 
-        System.out.printf("%s (%s원) - %d개%n", label, rank.getPrize().amount(), count);
+        System.out.printf("%s (%d원) - %d개%n", label, rank.getPrizeAmount(), count);
     }
 
     private String labelOf(LottoRank rank) {
