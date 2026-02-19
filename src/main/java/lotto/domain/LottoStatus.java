@@ -44,7 +44,7 @@ public enum LottoStatus {
         return sum;
     }
 
-    public boolean match(int matchCount, boolean hasBonus) {
+    private boolean match(int matchCount, boolean hasBonus) {
         if (this.count != matchCount) {
             return false;
         }
@@ -53,7 +53,4 @@ public enum LottoStatus {
         }
         return this.expectedBonus == hasBonus;
     }
-
-
-
 }

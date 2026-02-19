@@ -1,90 +1,99 @@
 package lotto;
 
 import lotto.domain.Lotto;
-import lotto.domain.LottoPickStrategy;
+import lotto.domain.LottoCount;
 import lotto.domain.LottoPlayer;
 import lotto.domain.LottoStatus;
-import lotto.domain.Lottos;
+import lotto.domain.Money;
 import lotto.domain.WinningLotto;
+import lotto.domain.service.LottoService;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class LottoApplication {
 
-    private final LottoPickStrategy randomNumberGenerator;
+    private final LottoService lottoService;
     private final InputView inputView;
     private final OutputView outputView;
 
     public LottoApplication(
-            LottoPickStrategy randomNumberGenerator,
-            InputView inputView,
-            OutputView outputView
+            final LottoService lottoService,
+            final InputView inputView,
+            final OutputView outputView
     ) {
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.lottoService = lottoService;
         this.inputView = inputView;
         this.outputView = outputView;
     }
 
-    public void play() {
-        LottoPlayer player = createPlayer();
-        WinningLotto winningLotto = createWinningLotto();
+    public void playManual() {
+        Money price = readPrice();
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        LottoCount manualCount = readManualCount();
 
-        Map<LottoStatus, Integer> statuses = winningLotto.countByStatus(player.getLottos());
-        long profit = LottoStatus.totalPrize(statuses);
-        double profitRate = (double) profit / player.getPrice();
+        manualCount.validateNotExceeded(totalCount);
+        List<Lotto> manualLottos = readManualLottos(manualCount);
+        LottoPlayer player = lottoService.purchase(price, manualLottos);
 
-        printResult(statuses, profitRate);
+        outputView.printManualBuyResult(manualCount.value(), totalCount.value());
+        outputView.printLottos(player.getLottos());
+
+        finishGame(player);
     }
 
-    private void printResult(Map<LottoStatus, Integer> statuses, double profitRate) {
-        outputView.printWinningStatistics(statuses, profitRate);
+    public void playAuto() {
+        Money price = readPrice();
+
+        LottoPlayer player = lottoService.purchase(price, List.of());
+        LottoCount totalCount = price.toLottoCount(Money.ONE_LOTTO_PRICE);
+        outputView.printAutoBuyResult(totalCount.value());
+        outputView.printLottos(player.getLottos());
+
+        finishGame(player);
     }
 
-    private WinningLotto createWinningLotto() {
-        String[] winningLottoArray = makeWinningLottoNumbers();
+    private void finishGame(LottoPlayer player) {
+        WinningLotto winningLotto = readWinningLotto();
+        Map<LottoStatus, Integer> result = winningLotto.countByStatus(player.getLottos());
 
-        List<Integer> winningLottoList = Arrays.stream(winningLottoArray)
-                .map(Integer::parseInt)
-                .toList();
+        long totalPrize = LottoStatus.totalPrize(result);
+        double profitRate = (double) totalPrize / player.getPrice().getAmount();
 
-        int bonusNumber = readBonusNumber();
-        return new WinningLotto(new Lotto(winningLottoList), bonusNumber);
+        outputView.printWinningStatistics(result, profitRate);
     }
 
-    private int readBonusNumber() {
-        outputView.printMessage("보너스 볼을 입력해 주세요.");
-        return Integer.parseInt(inputView.input());
+    private Money readPrice() {
+        outputView.printPriceRequest();
+        return Money.won(inputView.inputNumber());
     }
 
-    private String[] makeWinningLottoNumbers() {
-        outputView.printMessage("지난 주 당첨 번호를 입력해 주세요.");
-        String winningLottoStr = inputView.input();
-        return winningLottoStr.split(",");
+    private LottoCount readManualCount() {
+        outputView.printManualCountRequest();
+        return LottoCount.of(inputView.inputNumber());
     }
 
-    private LottoPlayer createPlayer() {
-        outputView.printMessage("구입금액을 입력해 주세요.");
-        int price = inputView.inputNumber();
-        int lottoCount = price / 1000;
-        outputView.printMessage(lottoCount + "개를 구매했습니다.");
+    private List<Lotto> readManualLottos(LottoCount manualCount) {
+        outputView.printManualLottoRequest();
 
-        List<Lotto> lottos = buyLottos(lottoCount);
-        outputView.printLottos(lottos);
-
-        return new LottoPlayer(price, new Lottos(lottos));
-    }
-
-    private List<Lotto> buyLottos(int count) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            lottos.add(new Lotto(randomNumberGenerator.generate()));
+        for (int i = 0; i < manualCount.value(); i++) {
+            lottos.add(Lotto.fromIntegers(inputView.inputNumbers()));
         }
+
         return lottos;
     }
 
+    private WinningLotto readWinningLotto() {
+        outputView.printLastWeekWinningNumberRequest();
+        List<Integer> winningNumbers = inputView.inputNumbers();
+
+        outputView.printBonusNumberRequest();
+        int bonus = Integer.parseInt(inputView.input());
+
+        return WinningLotto.of(Lotto.fromIntegers(winningNumbers), bonus);
+    }
 }

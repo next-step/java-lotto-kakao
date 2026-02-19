@@ -3,40 +3,36 @@ package lotto.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class LottoPlayerTest {
 
     @Test
-    @DisplayName("정상 입력 케이스")
+    @DisplayName("플레이어는 구매금액과 로또 묶음을 가진다")
     void successTest() {
-        int price = 3000;
-        int lottoCount = 3;
-        List<Lotto> lottos = new ArrayList<>(List.of(
-                new Lotto(1, 2, 3, 4, 5, 6),
-                new Lotto(1, 2, 3, 4, 5, 6),
-                new Lotto(1, 2, 3, 4, 5, 6)
+        Money price = Money.won(3000);
+        Lottos lottos = Lottos.from(List.of(
+                Lotto.of(1, 2, 3, 4, 5, 6),
+                Lotto.of(7, 8, 9, 10, 11, 12),
+                Lotto.of(13, 14, 15, 16, 17, 18)
         ));
 
-        LottoPlayer lottoPlayer = new LottoPlayer(price, new Lottos(lottos));
+        LottoPlayer lottoPlayer = LottoPlayer.of(price, lottos);
 
-        assertThat(lottoPlayer.getPrice()).isEqualTo(3000);
-        assertThat(lottoPlayer.getLottoCount()).isEqualTo(3);
+        assertThat(lottoPlayer.getPrice().value()).isEqualTo(3000);
+        assertThat(lottoPlayer.getLottoCount().value()).isEqualTo(3);
+        assertThat(lottoPlayer.getLottos().asList()).hasSize(3);
     }
 
     @Test
-    @DisplayName("1000원 미만의 입력을 받은 경우")
+    @DisplayName("Money는 음수 금액을 허용하지 않는다")
     void fail_priceRange() {
-        assertThatThrownBy(() -> {
-            int price = 900;
-            int lottoCount = 0;
-            LottoPlayer lottoPlayer = new LottoPlayer(price, new Lottos(Collections.emptyList()));
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(LottoPlayer.PRICE_TOO_LOW_FAIL_MSG);
+        assertThatThrownBy(() -> Money.won(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Money.NEGATIVE_MONEY_MSG);
     }
 
 }

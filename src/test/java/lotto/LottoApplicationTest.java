@@ -1,146 +1,252 @@
 package lotto;
 
-import lotto.domain.Lotto;
-import lotto.domain.LottoPickStrategy;
-import lotto.domain.LottoPlayer;
+import lotto.domain.LottoNumber;
 import lotto.domain.LottoStatus;
 import lotto.domain.Lottos;
+import lotto.domain.pick.LottoPickStrategy;
+import lotto.domain.service.AutoLottoService;
+import lotto.domain.service.ManualLottoService;
 import lotto.view.input.InputView;
 import lotto.view.output.OutputView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import static lotto.domain.LottoStatus.FIVE_CORRECT;
-import static lotto.domain.LottoStatus.FIVE_CORRECT_BONUS;
-import static lotto.domain.LottoStatus.FOUR_CORRECT;
-import static lotto.domain.LottoStatus.SIX_CORRECT;
-import static lotto.domain.LottoStatus.THREE_CORRECT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 public class LottoApplicationTest {
 
     @Test
-    @DisplayName("통합 테스트")
-    public void success_1() {
-        Lotto lotto1 = new Lotto(1, 2, 3, 4, 5, 6);
-        Lotto lotto2 = new Lotto(7, 8, 9, 10, 11, 12);
-        Lotto lotto3 = new Lotto(13, 14, 15, 16, 17, 18);
-        List<Lotto> lottos = List.of(lotto1, lotto2, lotto3);
+    @DisplayName("playauto: UI 문자열에 의존하지 않고 구매/당첨 수 통계를 OutputView 포트로 전달한다.")
+    void playAuto_portLevelTest() {
+        FixedPickStrategy fixedPickStrategy = new FixedPickStrategy();
 
-        Lotto winningLottoNumber = new Lotto(1, 2, 3, 4, 5, 6);
+        AutoLottoService service = new AutoLottoService(fixedPickStrategy);
+        StubInputView inputView = StubInputView.builder()
+                .inputNumbers(3000) // 구입금액
+                .inputNumbersList(List.of(1, 2, 3, 4, 5, 6))
+                .inputs("7")
+                .build();
 
-        LottoPlayer lottoPlayer = new LottoPlayer(3000, new Lottos(lottos));
-        LottoPickStrategy numberGenerator = new FixedNumberGenerator();
-        MockInputView inputView = new MockInputView(List.of(
-                "3000",
-                "1,2,3,4,5,6",
-                "7"
-        ));
-        MockOutputView outputView = new MockOutputView();
+        SpyOutputView outputView = new SpyOutputView();
+        LottoApplication app = new LottoApplication(service, inputView, outputView);
 
-        LottoApplication application = new LottoApplication(
-                numberGenerator,
-                inputView,
-                outputView
-        );
+        //when
+        app.playAuto();
 
-        application.play();
+        assertThat(outputView.priceRequestCount).isEqualTo(1);
+        assertThat(outputView.autoBuyCount).isEqualTo(3);
 
-        assertThat(outputView.getOutput()).containsExactly(
-                "구입금액을 입력해 주세요.",
-                "3개를 구매했습니다.",
-                "[1, 2, 3, 4, 5, 6]",
-                "[1, 2, 3, 4, 5, 6]",
-                "[1, 2, 3, 4, 5, 6]",
-                "지난 주 당첨 번호를 입력해 주세요.",
-                "보너스 볼을 입력해 주세요.",
-                "당첨 통계",
-                "---------",
-                "3개 일치 (5000원) - 0개",
-                "4개 일치 (50000원) - 0개",
-                "5개 일치 (1500000원) - 0개",
-                "5개 일치, 보너스 볼 일치 (30000000원) - 0개",
-                "6개 일치 (2000000000원) - 3개",
-                "총 수익률은 2000000.00입니다."
-        );
+        assertThat(outputView.printedLottos).isNotNull();
+        assertThat(outputView.printedLottos.size()).isEqualTo(3);
+
+        assertThat(outputView.lastWeekWinningNumberRequestCount).isEqualTo(1);
+        assertThat(outputView.bonusNumberRequestCount).isEqualTo(1);
+
+        assertThat(outputView.statuses.getOrDefault(LottoStatus.SIX_CORRECT, 0)).isEqualTo(3);
+        assertThat(outputView.profitRate).isCloseTo(2_000_000.0, within(1e-9));
     }
 
-    static class FixedNumberGenerator implements LottoPickStrategy {
+    @Test
+    @DisplayName("playManual: 수동 3장 + 자동 11장 구매 후 통계를 OutputView 포트로 전달한다.")
+    void playManual_portLevelTest() {
+        LottoPickStrategy fixedPickStrategy = new FixedPickStrategy();
 
-        @Override
-        public List<Integer> generate() {
-            return List.of(1, 2, 3, 4, 5, 6);
+        ManualLottoService service = new ManualLottoService(fixedPickStrategy);
+        StubInputView inputView = StubInputView.builder()
+                .inputNumbers(14000) // 구입 금액 -> 14장
+                .inputNumbers(3) // 수동 구매 수
+                // 수동 로또 3장
+                .inputNumbersList(List.of(8, 21, 23, 41, 42, 43))
+                .inputNumbersList(List.of(3, 5, 11, 16, 32, 38))
+                .inputNumbersList(List.of(7, 11, 16, 35, 36, 44))
+                // 지난 주 당첨 번호 + 보너스
+                .inputNumbersList(List.of(1, 2, 3, 4, 5, 6))
+                .inputs("7")
+                .build();
+        SpyOutputView outputView = new SpyOutputView();
+
+        LottoApplication app = new LottoApplication(service, inputView, outputView);
+
+        // when
+        app.playManual();
+
+        // then
+        assertThat(outputView.priceRequestCount).isEqualTo(1);
+        assertThat(outputView.manualCountRequestCount).isEqualTo(1);
+        assertThat(outputView.manualLottoRequestCount).isEqualTo(1);
+
+        assertThat(outputView.manualBuyManualCount).isEqualTo(3);
+        assertThat(outputView.manualBuyTotalCount).isEqualTo(14);
+
+        assertThat(outputView.printedLottos).isNotNull();
+        assertThat(outputView.printedLottos.size()).isEqualTo(14);
+
+        assertThat(outputView.statuses.getOrDefault(LottoStatus.SIX_CORRECT, 0)).isEqualTo(11);
+
+        double expectedProfitRate = 22_000_000_000L / 14_000.0;
+        assertThat(outputView.profitRate).isCloseTo(expectedProfitRate, within(1e-9));
+    }
+
+
+
+    /**
+     * 테스트를 UI(콘솔/웹)에 덜 묶기 위한 Stub/Spy.
+     * - StubInputView: 문자열 파싱을 전혀 하지 않고, "타입이 있는 값"을 그대로 반환한다.
+     * - SpyOutputView: 출력 문자열이 아니라, OutputView 메서드 호출과 전달된 데이터를 기록한다.
+     */
+    static class StubInputView implements InputView {
+
+        private final Queue<Integer> numbers;
+        private final Queue<List<Integer>> numberLists;
+        private final Queue<String> inputs;
+
+        private StubInputView(
+                final Queue<Integer> numbers,
+                final Queue<List<Integer>> numberLists,
+                final Queue<String> inputs
+        ) {
+            this.numbers = numbers;
+            this.numberLists = numberLists;
+            this.inputs = inputs;
         }
-    }
 
-    static class MockInputView implements InputView {
-
-        private Queue<String> queue;
-
-        public MockInputView(List<String> inputs) {
-            this.queue = new LinkedList<>(inputs);
+        public static Builder builder() {
+            return new Builder();
         }
 
         @Override
         public String input() {
-            return queue.poll();
+            return inputs.remove();
         }
 
         @Override
         public int inputNumber() {
-            return Integer.parseInt(queue.poll());
+            return numbers.remove();
+        }
+
+        @Override
+        public List<Integer> inputNumbers() {
+            return numberLists.remove();
+        }
+
+        static class Builder {
+            private final Queue<Integer> numbers = new ArrayDeque<>();
+            private final Queue<List<Integer>> numberLists = new ArrayDeque<>();
+            private final Queue<String> inputs = new ArrayDeque<>();
+
+            Builder inputNumbers(int value) {
+                numbers.add(value);
+                return this;
+            }
+
+            Builder inputNumbersList(List<Integer> values) {
+                numberLists.add(List.copyOf(values));
+                return this;
+            }
+
+            Builder inputs(String value) {
+                inputs.add(value);
+                return this;
+            }
+
+            StubInputView build() {
+                return new StubInputView(numbers, numberLists, inputs);
+            }
         }
     }
 
-    static class MockOutputView implements OutputView {
+    static class SpyOutputView implements OutputView {
 
-        public List<String> output;
+        int priceRequestCount;
+        int manualCountRequestCount;
+        int manualLottoRequestCount;
+        int autoNumberRequestCount;
+        int lastWeekWinningNumberRequestCount;
+        int bonusNumberRequestCount;
 
-        public MockOutputView() {
-            this.output = new ArrayList<>();
-        }
+        Integer autoBuyCount;
+        Integer manualBuyManualCount;
+        Integer manualBuyTotalCount;
+
+        Lottos printedLottos;
+
+        Map<LottoStatus, Integer> statuses = new EnumMap<>(LottoStatus.class);
+        Double profitRate;
 
         @Override
         public void printMessage(String message) {
-            output.add(message);
+            // 애플리케이션 유스케이스 테스트에서는 문자열에 의존하지 않는다.
         }
 
         @Override
-        public void printLottos(List<Lotto> lottos) {
-            for (Lotto lotto : lottos) {
-                output.add(lotto.toString());
-            }
+        public void printLottos(Lottos lottos) {
+            this.printedLottos = lottos;
         }
 
-        public void printWinningStatistics(
-                final Map<LottoStatus, Integer> statuses,
-                double profitRate
-        ) {
-            printMessage("당첨 통계");
-            printMessage("---------");
-
-            printStatusLine(THREE_CORRECT, "3개 일치", statuses);
-            printStatusLine(FOUR_CORRECT,  "4개 일치", statuses);
-            printStatusLine(FIVE_CORRECT,  "5개 일치", statuses);
-            printStatusLine(FIVE_CORRECT_BONUS, "5개 일치, 보너스 볼 일치", statuses);
-            printStatusLine(SIX_CORRECT,   "6개 일치", statuses);
-
-            printMessage("총 수익률은 " + String.format("%.2f입니다.", profitRate));
+        @Override
+        public void printWinningStatistics(Map<LottoStatus, Integer> statuses, double profitRate) {
+            this.statuses = new EnumMap<>(LottoStatus.class);
+            this.statuses.putAll(statuses); // 방어적 복사
+            this.profitRate = profitRate;
         }
 
-        private void printStatusLine(LottoStatus status, String label, Map<LottoStatus, Integer> statuses) {
-            int count = statuses.getOrDefault(status, 0);
-            printMessage(label + " (" + status.getPrice() + "원) - " + count + "개");
+        @Override
+        public void printManualCountRequest() {
+            manualCountRequestCount++;
         }
 
-        public List<String> getOutput() {
-            return output;
+        @Override
+        public void printManualLottoRequest() {
+            manualLottoRequestCount++;
+        }
+
+        @Override
+        public void printAutoNumberRequest() {
+            autoNumberRequestCount++;
+        }
+
+        @Override
+        public void printPriceRequest() {
+            priceRequestCount++;
+        }
+
+        @Override
+        public void printAutoBuyResult(int count) {
+            this.autoBuyCount = count;
+        }
+
+        @Override
+        public void printManualBuyResult(int manualCount, int totalCount) {
+            this.manualBuyManualCount = manualCount;
+            this.manualBuyTotalCount = totalCount;
+        }
+
+        @Override
+        public void printLastWeekWinningNumberRequest() {
+            lastWeekWinningNumberRequestCount++;
+        }
+
+        @Override
+        public void printBonusNumberRequest() {
+            bonusNumberRequestCount++;
+        }
+    }
+
+    static class FixedPickStrategy implements LottoPickStrategy {
+
+        private static final List<LottoNumber> FIXED =
+                List.of(1, 2, 3, 4, 5, 6).stream().map(LottoNumber::of).toList();
+
+        @Override
+        public List<LottoNumber> generate() {
+            return FIXED;
         }
     }
 }

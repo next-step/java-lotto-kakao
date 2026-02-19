@@ -41,7 +41,9 @@
 
         @Override
         public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             LottoNumber that = (LottoNumber) o;
             return value == that.value;
         }
