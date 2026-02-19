@@ -115,7 +115,7 @@ public class MainController {
                 List<Integer> numbers = inputView.getLottoNumbers();
                 List<LottoNumber> lottoNumbers = new ArrayList<>();
                 for (Integer number : numbers) {
-                    lottoNumbers.add(new LottoNumber(number));
+                    lottoNumbers.add(LottoNumber.of(number));
                 }
                 return new LottoNumbers(lottoNumbers);
             } catch (IllegalArgumentException e) {
@@ -128,7 +128,7 @@ public class MainController {
         while (true) {
             try {
                 int number = inputView.getNumber();
-                return new LottoNumber(number);
+                return LottoNumber.of(number);
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e);
             }

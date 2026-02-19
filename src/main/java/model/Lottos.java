@@ -50,7 +50,7 @@ public class Lottos {
         Collections.shuffle(numbers);
         List<LottoNumber> lottoNumbers = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            lottoNumbers.add(new LottoNumber(numbers.get(i)));
+            lottoNumbers.add(LottoNumber.of(numbers.get(i)));
         }
         return new Lotto(new LottoNumbers(lottoNumbers));
     }
