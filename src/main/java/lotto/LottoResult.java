@@ -27,6 +27,9 @@ public class LottoResult {
         Money totalPrize = Arrays.stream(Rank.values())
                 .map(rank -> rank.winningMoney(toCount(rank)))
                 .reduce(Money.zero(), Money::sum);
+        if (purchaseMoney.money() == 0) {
+            return 0;
+        }
 
         double yield = (double) totalPrize.money() / purchaseMoney.money();
         return Math.floor(yield * 100) / 100.0;

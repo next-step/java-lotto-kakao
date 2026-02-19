@@ -42,4 +42,26 @@ public class LottoResultTest {
 
         Assertions.assertThat(yield).isEqualTo(0.35);
     }
+
+    @Test
+    void 수익률_100퍼센트_초과_테스트() {
+        List<Rank> ranks = Arrays.asList(Rank.THIRD); // 1,500,000원
+        LottoResult lottoResult = new LottoResult(ranks);
+        Money purchaseMoney = new Money(1000);
+
+        double yield = lottoResult.calculateYield(purchaseMoney);
+
+        Assertions.assertThat(yield).isEqualTo(1500.0);
+    }
+
+    @Test
+    void 구입금액이_0이면_수익률_0_테스트() {
+        List<Rank> ranks = Arrays.asList(Rank.FIFTH);
+        LottoResult lottoResult = new LottoResult(ranks);
+        Money purchaseMoney = new Money(0);
+
+        double yield = lottoResult.calculateYield(purchaseMoney);
+
+        Assertions.assertThat(yield).isEqualTo(0.0);
+    }
 }
