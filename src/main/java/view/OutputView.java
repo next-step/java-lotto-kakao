@@ -5,6 +5,7 @@ import lotto.LottoBundle;
 import lotto.LottoBundleResult;
 import lotto.LottoNumber;
 import lotto.LottoRank;
+import lotto.PurchasePlan;
 import money.Money;
 
 import java.util.List;
@@ -19,8 +20,10 @@ public class OutputView {
             LottoRank.FIRST
     );
 
-    public void printPurchasedLottos(LottoBundle lottoBundle) {
-        System.out.printf("%d개를 구매했습니다.%n", lottoBundle.size());
+    public void printPurchasedLottos(PurchasePlan purchasePlan, LottoBundle lottoBundle) {
+        System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.%n",
+                purchasePlan.getManualCount(),
+                purchasePlan.getAutoCount());
         for (Lotto lotto : lottoBundle.asList()) {
             System.out.println(formatLotto(lotto));
         }

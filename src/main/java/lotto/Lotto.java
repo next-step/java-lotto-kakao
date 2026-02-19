@@ -1,11 +1,17 @@
 package lotto;
 
-import java.util.*;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Lotto {
     public static final long PRICE = 1000L;
     private static final int LENGTH = 6;
     private final Set<LottoNumber> lottoNumberSet;
+    private final List<LottoNumber> sortedNumbers;
 
     public Lotto(List<Integer> numbers) {
         this(convert(numbers));
@@ -17,13 +23,14 @@ public class Lotto {
 
     public Lotto(Set<LottoNumber> lottoNumberSet) {
         validate(lottoNumberSet);
-        this.lottoNumberSet = lottoNumberSet;
+        this.lottoNumberSet = Set.copyOf(lottoNumberSet);
+        this.sortedNumbers = sortNumbers(this.lottoNumberSet);
     }
 
     private static Set<LottoNumber> convert(List<Integer> numbers) {
         Set<LottoNumber> result = new HashSet<>();
         for (Integer number : numbers) {
-            result.add(new LottoNumber(number));
+            result.add(LottoNumber.from(number));
         }
         return result;
     }
@@ -52,12 +59,16 @@ public class Lotto {
     }
 
     public List<LottoNumber> numbers() {
-        List<LottoNumber> list = new ArrayList<>(lottoNumberSet);
-        Collections.sort(list);
-        return list;
+        return sortedNumbers;
     }
 
     public boolean contains(LottoNumber number) {
         return lottoNumberSet.contains(number);
+    }
+
+    private static List<LottoNumber> sortNumbers(Set<LottoNumber> lottoNumberSet) {
+        List<LottoNumber> list = new ArrayList<>(lottoNumberSet);
+        Collections.sort(list);
+        return List.copyOf(list);
     }
 }

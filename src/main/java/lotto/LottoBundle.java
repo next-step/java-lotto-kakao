@@ -5,6 +5,7 @@ import money.Money;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class LottoBundle {
     private final List<Lotto> lottos;
@@ -32,36 +33,43 @@ public class LottoBundle {
         return buy(money, new LottoGenerator());
     }
 
-    private static LottoBundle buy(Money money, LottoGenerator lottoGenerator) {
-        if (lottoGenerator == null) {
-            throw new IllegalArgumentException("로또 생성기는 null일 수 없습니다.");
-        }
-
-        long count = calculatePurchasableCount(money);
-        List<Lotto> lottos = new ArrayList<>();
-        for (long c = 0; c < count; c++) {
-            lottos.add(lottoGenerator.generate());
-        }
-        return new LottoBundle(lottos);
+    static LottoBundle buy(Money money, LottoGenerator lottoGenerator) {
+        PurchasePlan purchasePlan = PurchasePlan.from(money, 0);
+        return buy(purchasePlan, List.of(), lottoGenerator);
     }
 
-    private static long calculatePurchasableCount(Money money) {
-        if (money == null) {
-            throw new IllegalArgumentException("구매금액은 null일 수 없습니다.");
+    static LottoBundle buy(PurchasePlan purchasePlan, List<Lotto> manualLottos, LottoGenerator lottoGenerator) {
+        if (purchasePlan == null) {
+            throw new IllegalArgumentException("구매 계획은 null일 수 없습니다.");
         }
-
-        long count = money.calculatePurchasableCount(Lotto.PRICE);
-        if (count <= 0L) {
-            throw new IllegalArgumentException(
-                    String.format("구매금액은 로또 가격 이상이어야 합니다. 로또 가격 : %d", Lotto.PRICE)
-            );
+        if (manualLottos == null) {
+            throw new IllegalArgumentException("수동 로또 목록은 null일 수 없습니다.");
         }
-        return count;
+        if (purchasePlan.getManualCount() != manualLottos.size()) {
+            throw new IllegalArgumentException("수동 구매 수량과 수동 로또 목록의 크기가 일치하지 않습니다.");
+        }
+        LottosGenerator lottosGenerator = new CompositeLottosGenerator(List.of(
+                new ManualLottosGenerator(manualLottos),
+                new AutoLottosGenerator(purchasePlan.getAutoCount(), lottoGenerator)
+        ));
+        return lottosGenerator.generate();
     }
 
     private void validate(List<Lotto> lottos) {
-        if (lottos == null || lottos.contains(null)) {
+        if (lottos == null) {
             throw new IllegalArgumentException("로또 묶음에 null이 포함될 수 없습니다.");
+        }
+        validateElements(lottos);
+    }
+
+    private void validateElements(List<Lotto> lottos) {
+        final String message = "로또 묶음에 null이 포함될 수 없습니다.";
+        try {
+            for (Lotto lotto : lottos) {
+                Objects.requireNonNull(lotto, message);
+            }
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException(message);
         }
     }
 

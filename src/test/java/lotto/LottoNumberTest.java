@@ -3,6 +3,7 @@ package lotto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LottoNumberTest {
@@ -23,5 +24,13 @@ public class LottoNumberTest {
     void createFailAboveRange() {
         assertThrows(IllegalArgumentException.class,
                 () -> new LottoNumber(46));
+    }
+
+    @Test
+    void createFromCache() {
+        LottoNumber first = LottoNumber.from(7);
+        LottoNumber second = LottoNumber.from(7);
+
+        assertSame(first, second);
     }
 }
