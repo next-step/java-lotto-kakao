@@ -1,11 +1,16 @@
 package lotto.controller;
 
 import lotto.domain.*;
+import lotto.util.NumberAutoCreator;
+import lotto.util.NumberCreator;
+import lotto.util.NumberManualCreator;
 import lotto.view.InputView;
 import lotto.view.OutputMessage;
 import lotto.view.OutputView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class LottoController {
@@ -65,8 +70,21 @@ public class LottoController {
         int autoCount = totalCount - manualCount;
 
         outputView.write(OutputMessage.INPUT_MANUAL_PURCHASE_LOTTO_NUMBER);
-        MyLotto myLotto = new MyLotto(autoCount, manualCount);
+        List<String> manualInputString = inputView.readManualLottoNumbers(manualCount);
+
+        List<LottoBalls> lottoBallsList = new ArrayList<>();
+
+        for (String manualInput : manualInputString) {
+            NumberCreator manualCreator = new NumberManualCreator(manualInput);
+            lottoBallsList.add(new LottoBalls(manualCreator.numberCreate()));
+        }
+
+        NumberCreator autoCreator = new NumberAutoCreator();
+        for (int i = 0; i < autoCount; i++) {
+            lottoBallsList.add(new LottoBalls(autoCreator.numberCreate()));
+        }
+
         outputView.write(OutputMessage.TOTAL_PURCHASE_COUNT, manualCount, autoCount);
-        return myLotto;
+        return new MyLotto(lottoBallsList);
     }
 }

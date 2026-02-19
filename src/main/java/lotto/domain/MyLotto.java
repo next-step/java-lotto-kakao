@@ -8,17 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyLotto {
-    private final List<LottoBalls> myLottoList = new ArrayList<>();
+    private final List<LottoBalls> myLottoList;
 
-    public MyLotto(int autoSize, int manualSize) {
-        NumberCreator numberCreator = new NumberManualCreator();
-        for (int i = 0; i < manualSize; i++) {
-            myLottoList.add(new LottoBalls(numberCreator.numberCreate()));
-        }
-        numberCreator = new NumberAutoCreator();
-        for (int i = 0; i < autoSize; i++) {
-            myLottoList.add(new LottoBalls(numberCreator.numberCreate()));
-        }
+    public MyLotto(List<LottoBalls> myLottoList) {
+        this.myLottoList = new ArrayList<>(myLottoList);
     }
 
     public int getSize() {
