@@ -30,7 +30,7 @@ public class LottoController {
         int manualCount = InputView.readManualCount();
         PurchasedCount purchasedCount = new PurchasedCount(manualCount, count);
         LottoBundle manualLottoBundle = makeManualLottoBundle(purchasedCount.manualCount());
-        LottoBundle autoLottoBundle = lottoService.purchase(purchasedCount.autoCount());
+        LottoBundle autoLottoBundle = lottoService.purchaseAutoLottoBundle(purchasedCount.autoCount());
         OutputView.printPurchaseCount(purchasedCount.manualCount(), purchasedCount.autoCount());
         return new PurchasedLottoBundle(manualLottoBundle, autoLottoBundle);
     }
@@ -57,6 +57,6 @@ public class LottoController {
         for(int times=0; times<count; times++){
             lottoList.add(lottoParser.parse(inputList.get(times)));
         }
-        return new LottoBundle(lottoList);
+        return lottoService.purchaseManualLottoBundle(lottoList);
     }
 }
