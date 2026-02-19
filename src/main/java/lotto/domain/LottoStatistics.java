@@ -1,7 +1,6 @@
 package lotto.domain;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -9,21 +8,22 @@ import lombok.Getter;
 @Getter
 public class LottoStatistics {
 	private final Map<LottoResult, Integer> counts;
-	private final long totalPrize;
+	private final double profitRate;
 
-	private LottoStatistics(Map<LottoResult, Integer> counts, long totalPrize) {
+	private LottoStatistics(Map<LottoResult, Integer> counts, double profitRate) {
 		this.counts = counts;
-		this.totalPrize = totalPrize;
+		this.profitRate = profitRate;
 	}
 
-	public static LottoStatistics of(List<Lotto> lottos, WinningNumbers winningNumbers) {
+	public static LottoStatistics of(LottoPurchase purchase, WinningNumbers winningNumbers) {
 		Map<LottoResult, Integer> counts = initializeCounts();
-		for (Lotto lotto : lottos) {
+		for (Lotto lotto : purchase.getLottos()) {
 			winningNumbers.match(lotto)
 				.ifPresent(result -> counts.put(result, counts.get(result) + 1));
 		}
 		long totalPrize = calculateTotalPrize(counts);
-		return new LottoStatistics(counts, totalPrize);
+		double profitRate = totalPrize / (double)purchase.getAmount();
+		return new LottoStatistics(counts, profitRate);
 	}
 
 	private static Map<LottoResult, Integer> initializeCounts() {
@@ -42,12 +42,5 @@ public class LottoStatistics {
 			total += prize * count;
 		}
 		return total;
-	}
-
-	public double getProfitRate(int purchaseAmount) {
-		if (purchaseAmount == 0) {
-			throw new IllegalArgumentException("Purchase amount must not be zero.");
-		}
-		return totalPrize / (double)purchaseAmount;
 	}
 }

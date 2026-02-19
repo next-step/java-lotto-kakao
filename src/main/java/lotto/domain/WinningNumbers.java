@@ -34,19 +34,19 @@ public class WinningNumbers {
 
 	private static void validateNotNull(Lotto numbers) {
 		if (numbers == null) {
-			throw new IllegalArgumentException("Winning numbers cannot be null.");
+			throw new IllegalArgumentException("당첨 번호는 null일 수 없습니다.");
 		}
 	}
 
 	private static void validateNotNull(LottoNumber bonusNumber) {
 		if (bonusNumber == null) {
-			throw new IllegalArgumentException("Bonus number cannot be null.");
+			throw new IllegalArgumentException("보너스 번호는 null일 수 없습니다.");
 		}
 	}
 
 	private static void validateBonusDistinct(Lotto numbers, LottoNumber bonusNumber) {
 		if (numbers.getNumbers().contains(bonusNumber)) {
-			throw new IllegalArgumentException("Bonus number must not match winning numbers.");
+			throw new IllegalArgumentException("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
 		}
 	}
 

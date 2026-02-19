@@ -4,29 +4,33 @@ import java.util.List;
 import java.util.Map;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoPurchase;
 import lotto.domain.LottoResult;
 import lotto.domain.LottoStatistics;
 
 public class OutputView {
-	public void printLottos(List<Lotto> lottos) {
-		System.out.println(lottos.size() + "개를 구매했습니다.");
+	public void printLottos(LottoPurchase purchase) {
+		List<Lotto> lottos = purchase.getLottos();
+		System.out.printf(
+			"수동으로 %d장, 자동으로 %d개를 구매했습니다.%n",
+			purchase.getManualCount(),
+			purchase.getAutoCount()
+		);
 		for (Lotto lotto : lottos) {
 			System.out.println(lotto.getNumbers());
 		}
 		System.out.println();
 	}
 
-	public void printStatistics(LottoStatistics statistics) {
+	public void printResult(LottoStatistics statistics) {
 		System.out.println("당첨 통계");
 		System.out.println("---------");
 		Map<LottoResult, Integer> counts = statistics.getCounts();
 		for (LottoResult result : LottoResult.values()) {
 			System.out.println(formatResultLine(result, counts.get(result)));
 		}
-	}
 
-	public void printProfitRate(double profitRate) {
-		System.out.println("총 수익률은 " + formatRate(profitRate) + "입니다.");
+		System.out.println("총 수익률은 " + formatRate(statistics.getProfitRate()) + "입니다.");
 	}
 
 	private String formatResultLine(LottoResult result, int count) {

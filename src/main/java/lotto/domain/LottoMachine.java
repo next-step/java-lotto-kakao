@@ -1,17 +1,17 @@
 package lotto.domain;
 
+import static lotto.domain.LottoPolicy.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class LottoMachine {
-	private static final int LOTTO_PRICE = 1_000;
-	private static final int REQUIRED_SIZE = 6;
-
-	public List<Lotto> issue(int amount) {
-		validateAmount(amount);
-		int count = amount / LOTTO_PRICE;
-		return generate(count);
+	public LottoPurchase issue(int amount, int manualCount, List<Lotto> manualLottos) {
+		int autoCount = amount / LOTTO_PRICE - manualCount;
+		List<Lotto> lottos = new ArrayList<>(manualLottos);
+		lottos.addAll(generate(autoCount));
+		return LottoPurchase.of(lottos, manualCount, autoCount, amount);
 	}
 
 	private List<Lotto> generate(int count) {
@@ -25,16 +25,10 @@ public class LottoMachine {
 	private Lotto generateLotto() {
 		List<LottoNumber> lottoNumberPool = LottoNumber.getPool();
 		Collections.shuffle(lottoNumberPool);
-		List<Integer> values = lottoNumberPool.subList(0, REQUIRED_SIZE)
+		List<Integer> values = lottoNumberPool.subList(0, REQUIRED_LOTTO_SIZE)
 			.stream()
 			.map(LottoNumber::getValue)
 			.toList();
 		return Lotto.from(values);
-	}
-
-	private void validateAmount(int amount) {
-		if (amount < LOTTO_PRICE) {
-			throw new IllegalArgumentException(String.format("Amount must be at least %s", LOTTO_PRICE));
-		}
 	}
 }
