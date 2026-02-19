@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import lotto.exception.ExceptionCode;
+import lotto.exception.LottoErrorCode;
 import lotto.exception.LottoException;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public enum Rank {
         return Arrays.stream(values())
                 .filter(rank -> rank.matches(countOfMatch))
                 .findFirst()
-                .orElseThrow(() -> new LottoException(ExceptionCode.INVALID_LOTTO_NUMBER_COUNT));
+                .orElseThrow(() -> new LottoException(LottoErrorCode.INVALID_LOTTO_NUMBER_COUNT));
     }
 
     private boolean matches(int countOfMatch) {

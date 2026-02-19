@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import lotto.exception.ExceptionCode;
+import lotto.exception.LottoErrorCode;
 import lotto.exception.LottoException;
 
 import java.util.*;
@@ -25,7 +25,7 @@ public class LottoBalls {
 
     private static void checkLottoLength(Set<Integer> numSet) {
         if (numSet.size() != LENGTH) {
-            throw new LottoException(ExceptionCode.INVALID_LOTTO_NUMBER_COUNT);
+            throw new LottoException(LottoErrorCode.INVALID_LOTTO_NUMBER_COUNT);
         }
     }
 

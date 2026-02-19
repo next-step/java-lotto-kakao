@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import lotto.exception.ExceptionCode;
+import lotto.exception.LottoErrorCode;
 import lotto.exception.LottoException;
 
 public class LottoNumber implements Comparable<LottoNumber> {
@@ -11,7 +11,7 @@ public class LottoNumber implements Comparable<LottoNumber> {
 
     public LottoNumber(int number) {
         if (number < LOTTO_MIN_NUM || number > LOTTO_MAX_NUM) {
-            throw new LottoException(ExceptionCode.INVALID_NUMBER_RANGE);
+            throw new LottoException(LottoErrorCode.INVALID_NUMBER_RANGE);
         }
         this.number = number;
     }

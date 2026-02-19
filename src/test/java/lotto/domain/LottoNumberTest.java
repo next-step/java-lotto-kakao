@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import lotto.exception.ExceptionCode;
+import lotto.exception.LottoErrorCode;
 import lotto.exception.LottoException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ public class LottoNumberTest {
     void lottoNumRangeUnder() {
         assertThatThrownBy(() -> new LottoNumber(0))
                 .isInstanceOf(LottoException.class)
-                .hasMessage(ExceptionCode.INVALID_NUMBER_RANGE.getMsg());
+                .hasMessage(LottoErrorCode.INVALID_NUMBER_RANGE.getMessage());
     }
 
     @Test
@@ -23,7 +23,7 @@ public class LottoNumberTest {
     void lottoNumRangeOver() {
         assertThatThrownBy(() -> new LottoNumber(46))
                 .isInstanceOf(LottoException.class)
-                .hasMessage(ExceptionCode.INVALID_NUMBER_RANGE.getMsg());
+                .hasMessage(LottoErrorCode.INVALID_NUMBER_RANGE.getMessage());
     }
 
     @Test
