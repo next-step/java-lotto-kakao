@@ -17,6 +17,9 @@ public class LottoPurchaseSession {
 
     public LottoPurchaseSession(LottoMachine lottoMachine, Money depositMoney) {
         this.lottoMachine = lottoMachine;
+        if(lottoMachine.getPurchasableTicketCount(depositMoney) == 0){
+            throw new IllegalArgumentException("티켓을 구매하기 위한 돈이 부족합니다.");
+        }
         this.deposit = depositMoney;
         this.totalPurchasedPrice = new Money(0);
         this.lottoTickets = new ArrayList<>();
