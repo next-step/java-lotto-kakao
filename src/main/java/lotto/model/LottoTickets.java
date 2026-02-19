@@ -21,6 +21,10 @@ public class LottoTickets {
         lottoTickets.add(lottoTicket);
     }
 
+    public void merge(LottoTickets other) {
+        lottoTickets.addAll(other.lottoTickets);
+    }
+
     public WinningInfo result(WinningLotto winningLotto){
         WinningInfo winningInfo = new WinningInfo();
         lottoTickets.forEach(ticket -> winningInfo.addResult(winningLotto.rank(ticket)));

@@ -26,7 +26,7 @@ class WalletTest {
         Wallet wallet = new Wallet(1000);
         assertThatThrownBy(()->wallet.change(new Money(-3000)))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessage("잔액은 항상 0원 이상이어야 합니다.");
+                .hasMessage("잔액이 부족합니다.");
     }
 
     @Test

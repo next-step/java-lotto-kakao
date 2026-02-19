@@ -18,15 +18,23 @@ public class Wallet {
     public void change(Money money) {
         Money newBalance = balance.sum(money);
         if(newBalance.isDebt()) {
-            throw new RuntimeException("잔액은 항상 0원 이상이어야 합니다.");
+            throw new RuntimeException("잔액이 부족합니다.");
+        }
+        this.balance = newBalance;
+        receipt = receipt.sum(money);
+    }
+
+    public void spend(Money money) {
+        Money newBalance = balance.subtract(money);
+        if(newBalance.isDebt()) {
+            throw new RuntimeException("잔액이 부족합니다.");
         }
         this.balance = newBalance;
         receipt = receipt.sum(money);
     }
 
     public boolean canAfford(Money money){
-        Money newBalance = balance.sum(money);
-        return !newBalance.isDebt();
+        return !balance.subtract(money).isDebt();
     }
 
     public Double returnRate(Money money) {

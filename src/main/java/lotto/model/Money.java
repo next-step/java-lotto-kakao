@@ -16,6 +16,10 @@ public class Money {
         return new Money(this.value + m2.value);
     }
 
+    public Money subtract(Money m2) {
+        return new Money(this.value - m2.value);
+    }
+
     public Double division(Money m2) {
         if(m2.value == 0){
             throw new ArithmeticException("0으로 나눌 수 없습니다.");

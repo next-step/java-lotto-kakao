@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 public class LottoTicket {
 
     public static final int TICKET_SIZE = 6;
+    public static final Money PRICE = new Money(1000);
+
     private final Set<LottoNumber> lottoNumbers;
 
     public LottoTicket(Integer... numbers) {
