@@ -12,10 +12,10 @@ public final class PurchasedCount {
 
     private void validation(int manual, int total){
         if(manual > total){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("수동 구매 수는 전체 구매 수를 초과할 수 없습니다.");
         }
         if(manual < 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("수동 구매 수는 0 이상이어야 합니다.");
         }
     }
 
