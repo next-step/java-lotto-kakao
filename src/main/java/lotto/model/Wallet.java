@@ -35,6 +35,7 @@ public class Wallet {
             balance = balance.sum(money);
             return rateOfReturn;
         }catch (ArithmeticException e){
+            //투자금이 없으므로 금액 변동이 없음
             return 1.0;
         }
     }
