@@ -12,7 +12,7 @@ class WinningInfoTest {
     public void CreateWinningInfo() {
         WinningInfo winningInfo = new WinningInfo();
         winningInfo.addResult(WinningRank.THIRD);
-        assertThat(winningInfo.getTotalPrice()).isEqualTo(WinningRank.THIRD.winningPrice);
+        assertThat(winningInfo.getTotalPrice()).isEqualTo(new Money(1_500_000));
     }
 
     @Test
@@ -23,7 +23,7 @@ class WinningInfoTest {
         winningInfo.addResult(WinningRank.FIRST);
         winningInfo.addResult(WinningRank.NONE);
 
-        assertThat(winningInfo.getTotalPrice()).isEqualTo(WinningRank.THIRD.winningPrice.sum(WinningRank.FIRST.winningPrice));
+        assertThat(winningInfo.getTotalPrice()).isEqualTo(new Money(2_001_500_000));
     }
 
     @Test
