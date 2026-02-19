@@ -63,8 +63,8 @@ public class LottoView {
 	}
 
 	private void addLotto(Parser parser, Lottos manualLottoList) {
-		String temp = scanner.nextLine();
-		List<Ball> manualLottoBalls = parser.parse(temp);
+		String manualLottoNumbers = scanner.nextLine();
+		List<Ball> manualLottoBalls = parser.parse(manualLottoNumbers);
 		Lotto maualLotto = new Lotto(manualLottoBalls);
 		manualLottoList.add(maualLotto);
 	}
