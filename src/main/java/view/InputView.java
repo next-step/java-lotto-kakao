@@ -16,15 +16,15 @@ public class InputView {
         }
     }
 
-    public List<Integer> getMainNumbers() {
-        List<Integer> mainNumbers = new ArrayList<>();
+    public List<Integer> getLottoNumbers() {
+        List<Integer> lottoNumbers = new ArrayList<>();
         try {
             String[] inputs = SCANNER.nextLine().split(",");
             for (String input : inputs) {
                 int number = Integer.parseInt(input.trim());
-                mainNumbers.add(number);
+                lottoNumbers.add(number);
             }
-            return mainNumbers;
+            return lottoNumbers;
         } catch (Exception e) {
             throw new IllegalArgumentException("숫자와 ','만 입력해주세요.");
         }

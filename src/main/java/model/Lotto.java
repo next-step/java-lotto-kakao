@@ -14,6 +14,10 @@ public class Lotto {
         this.numberMask = numberMask;
     }
 
+    public LottoNumbers getLotto() {
+        return lotto;
+    }
+
     public long getNumberMask() {
         return numberMask;
     }
@@ -25,18 +29,5 @@ public class Lotto {
         }
         boolean bonus = (numberMask & (1L << lottoResult.getBonusNumber().getLottoNumber())) != 0;
         return Rank.make(matchCount, bonus);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[");
-        for (LottoNumber number : lotto.getLottoNumbers()) {
-            stringBuilder.append(number.getLottoNumber()).append(", ");
-        }
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-        stringBuilder.append("]");
-        return stringBuilder.toString();
     }
 }
