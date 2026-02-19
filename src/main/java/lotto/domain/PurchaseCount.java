@@ -14,6 +14,9 @@ public class PurchaseCount {
     }
 
     private void validate(int totalCount, int manualCount) {
+        if (totalCount < 0) {
+            throw new LottoException(LottoErrorCode.NEGATIVE_TOTAL_COUNT);
+        }
         if (manualCount < 0) {
             throw new LottoException(LottoErrorCode.NEGATIVE_MANUAL_COUNT);
         }
