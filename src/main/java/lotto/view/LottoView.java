@@ -1,5 +1,6 @@
 package lotto.view;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -33,12 +34,13 @@ public class LottoView {
 
 	public void printStatistics(Map<MatchCount, Integer> counts, double returnRate) {
 		System.out.println("당첨 통계");
-		System.out.println("3개 일치 (5000원)- " + counts.getOrDefault(MatchCount.THREE, 0) + "개");
-		System.out.println("4개 일치 (50000원)- " + counts.getOrDefault(MatchCount.FOUR, 0) + "개");
-		System.out.println("5개 일치 (1500000원)- " + counts.getOrDefault(MatchCount.FIVE, 0) + "개");
-		System.out.println("5개 일치, 보너스 볼 일치(30000000원)- " + counts.getOrDefault(MatchCount.FIVE_BONUS, 0) + "개");
-		System.out.println("6개 일치 (2000000000원)- " + counts.getOrDefault(MatchCount.SIX, 0) + "개");
+		Arrays.stream(MatchCount.values())
+			.filter(MatchCount::isWinningRank)
+			.forEach(
+				match -> System.out.println(
+					match.statisticLine(counts.getOrDefault(match, 0))
+				)
+			);
 		System.out.println("총 수익률은 " + returnRate + "입니다.");
 	}
 }
-

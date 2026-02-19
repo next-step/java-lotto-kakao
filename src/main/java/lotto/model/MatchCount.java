@@ -38,6 +38,21 @@ public enum MatchCount {
 		return LOOKUP.getOrDefault(new Key(count, normalizedBonus), NOTHING);
 	}
 
+	public String statisticLine(int winnerCount) {
+		return conditionText() + "(" + price + "원) - " + winnerCount + "개";
+	}
+
+	private String conditionText() {
+		if (isBonusRequired()) {
+			return requiredMatchCount() + "개 일치, 보너스 볼 일치";
+		}
+		return requiredMatchCount() + "개 일치";
+	}
+
+	public boolean isWinningRank() {
+		return price > 0;
+	}
+
 	public int requiredMatchCount() {
 		return requiresCount;
 	}
