@@ -20,12 +20,26 @@ public class LottoView {
 		}
 	}
 
+	private static int getManualCount(String count) {
+		int manualCount;
+		try {
+			manualCount = Integer.parseInt(count);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("숫자 값을 입력해야 합니다.");
+		}
+		return manualCount;
+	}
+
 	public String readPrice() {
 		return read("구입금액을 입력해주세요.");
 	}
 
-	public void printPurchasedLotto(List<Lotto> lottos) {
-		print(lottos.size() + "개를 구매했습니다.");
+	public String readManualCount() {
+		return read("수동으로 구매할 로또 수를 입력해 주세요.");
+	}
+
+	public void printPurchasedLotto(long manualCount, List<Lotto> lottos) {
+		print("수동으로 " + manualCount + "장, 자동으로 " + (lottos.size() - manualCount) + "개를 구매했습니다.");
 		for (Lotto lotto : lottos) {
 			print(lotto.toString());
 		}
@@ -34,6 +48,25 @@ public class LottoView {
 
 	public String readPreviousLotto() {
 		return read("지난 주 당첨 번호를 입력해 주세요.");
+	}
+
+	public Lottos readManualLottos(String count, Parser parser) {
+		int manualCount = getManualCount(count);
+		if (manualCount != 0) {
+			print("수동으로 구매할 번호를 입력해 주세요.");
+		}
+		Lottos manualLottoList = new Lottos();
+		for (int i = 0; i < manualCount; i++) {
+			addLotto(parser, manualLottoList);
+		}
+		return manualLottoList;
+	}
+
+	private void addLotto(Parser parser, Lottos manualLottoList) {
+		String manualLottoNumbers = scanner.nextLine();
+		List<Ball> manualLottoBalls = parser.parse(manualLottoNumbers);
+		Lotto maualLotto = new Lotto(manualLottoBalls);
+		manualLottoList.add(maualLotto);
 	}
 
 	public String readPreviousBonusBall() {
