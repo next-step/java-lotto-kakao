@@ -17,7 +17,7 @@ public class PurchasedLottoBundle {
         List<Rank> manualRankList = manualBundle.makeLottoRanks(winningLotto);
         List<Rank> autoRankList = autoBundle.makeLottoRanks(winningLotto);
 
-      return new LottoResult(manualRankList, autoRankList);
+        return LottoResult.fromMany(manualRankList, autoRankList);
     }
 
     public void forEachLottoInOrder(Consumer<Lotto> action) {

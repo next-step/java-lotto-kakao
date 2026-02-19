@@ -5,8 +5,21 @@ import java.util.*;
 public class LottoResult {
     private final Map<Rank, Counter> result;
 
-    public LottoResult(List<Rank> ranks) {
+    private LottoResult(List<Rank> ranks) {
         this.result = summarize(ranks);
+    }
+
+    public static LottoResult from(List<Rank> ranks) {
+        return new LottoResult(ranks);
+    }
+
+    @SafeVarargs
+    public static LottoResult fromMany(List<Rank>... rankLists) {
+        List<Rank> merged = new ArrayList<>();
+        for (List<Rank> list : rankLists) {
+            merged.addAll(list);
+        }
+        return new LottoResult(merged);
     }
 
     private Map<Rank, Counter> summarize(List<Rank> ranks) {
