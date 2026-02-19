@@ -6,18 +6,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AutoLottoGenerator {
+import Interface.LottoGenerator;
+
+public class AutoLottoGenerator implements LottoGenerator {
 	private final List<Integer> numbers;
 
 	public AutoLottoGenerator(){
-		numbers = IntStream.rangeClosed(1, 45)
+		numbers = IntStream.rangeClosed(LottoNumber.MIN_NUMBER, LottoNumber.MAX_NUMBER)
 			.boxed()
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
 
-
+	@Override
 	public Lotto issueLotto() {
 		Collections.shuffle(numbers);
-		return new Lotto(new ArrayList<>(numbers.subList(0, 6)));
+		return new Lotto(new ArrayList<>(numbers.subList(0, LottoNumber.LOTTO_SIZE)));
 	}
 }

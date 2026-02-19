@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import model.LottoNumber;
 import model.StoreResult;
 
 public class TestStoreResult {
@@ -27,14 +28,14 @@ public class TestStoreResult {
 	}
 
 	@Test
-	void 당첨번호_입력은_6개여야_한다(){
+	void 당첨번호_입력은_정해진_개수와_일치해야_한다(){
 		try{
 			StoreResult storeResult = new StoreResult();
 			storeResult.setNumber("12, 13, 15, 17, 18, 29, 27");
 			fail();
 		}
 		catch(RuntimeException e){
-			assertThat(e.getMessage()).isEqualTo("당첨 번호는 6개의 숫자로 이루어져야 합니다");
+			assertThat(e.getMessage()).isEqualTo("당첨 번호는 "+LottoNumber.LOTTO_SIZE+"개의 숫자로 이루어져야 합니다");
 		}
 	}
 
@@ -51,25 +52,25 @@ public class TestStoreResult {
 	}
 
 	@Test
-	void 당첨번호는_1부터_45사이의_자연수여야_한다(){
+	void 당첨번호는_정해진_범위의_수여야_한다(){
 		try{
 			StoreResult storeResult = new StoreResult();
 			storeResult.setNumber("12, 13, 15, 17, 18, 50");
 			fail();
 		}
 		catch(RuntimeException e){
-			assertThat(e.getMessage()).isEqualTo("당첨 번호는 1 ~ 45 사이의 양수로 이루어져야 합니다.");
+			assertThat(e.getMessage()).isEqualTo("당첨 번호는 "+LottoNumber.MIN_NUMBER +"~"+LottoNumber.MAX_NUMBER+" 사이의 수로 이루어져야 합니다.");
 		}
 	}
 
 	@Test
-	void 보너스_번호는_1부터_45사이의_자연수여야_한다() {
+	void 보너스_번호는_정해진_범위의_수여야_한다() {
 		try {
 			StoreResult storeResult = new StoreResult();
 			storeResult.setBonus("0");
 			fail();
 		} catch (RuntimeException e) {
-			assertThat(e.getMessage()).isEqualTo("보너스 번호는 1 ~ 45 사이의 양수로 이루어져야 합니다.");
+			assertThat(e.getMessage()).isEqualTo("보너스 번호는 "+LottoNumber.MIN_NUMBER +"~"+LottoNumber.MAX_NUMBER+" 사이의 수로 이루어져야 합니다.");
 		}
 	}
 
@@ -92,7 +93,7 @@ public class TestStoreResult {
 			storeResult.setBonus("ㅁ");
 			fail();
 		} catch (RuntimeException e) {
-			assertThat(e.getMessage()).isEqualTo("보너스 번호는 1 ~ 45 사이의 양수로 이루어져야 합니다.");
+			assertThat(e.getMessage()).isEqualTo("보너스 번호는 "+LottoNumber.MIN_NUMBER +"~"+LottoNumber.MAX_NUMBER+" 사이의 수로 이루어져야 합니다.");
 		}
 	}
 }
