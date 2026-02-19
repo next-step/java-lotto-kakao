@@ -21,8 +21,11 @@ public class MoneyTest {
         int value = 14000;
         Money money = new Money(value);
         List<Rank> rankList = List.of(FIRST, SECOND);
-        int sum = FIRST.getWinningMoney() + SECOND.getWinningMoney();
-        assertEquals((float) sum / value, money.calculateRate(rankList));
+
+        // (20억 + 3천만) / 14,000 = 145,000.0
+        float rate = money.calculateRate(rankList);
+
+        assertEquals(145000.0f, rate);
     }
 
     @Test
