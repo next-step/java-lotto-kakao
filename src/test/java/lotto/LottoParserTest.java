@@ -8,6 +8,7 @@ public class LottoParserTest {
             "로또 번호 6개는 쉼표(,)로 구분해 입력해 주세요. 예: 1, 2, 3, 4, 5, 6";
     private static final String LOTTO_NON_NUMERIC_MESSAGE =
             "로또 번호는  1~45 사이의 숫자만 입력해 주세요.";
+    private static final String LOTTO_SIZE_MESSAGE = "로또번호가 6개가 아닙니다.";
 
     @Test
     void 쉼표_구분_번호를_파싱() {
@@ -33,5 +34,14 @@ public class LottoParserTest {
         Assertions.assertThatIllegalArgumentException()
                 .isThrownBy(() -> lottoParser.parse("1,2,,4,5,6"))
                 .withMessage(LOTTO_DELIMITER_MESSAGE);
+    }
+
+    @Test
+    void 번호_개수_오류는_로또가_검증() {
+        LottoParser lottoParser = new LottoParser();
+
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> lottoParser.parse("1,2,3,4,5"))
+                .withMessage(LOTTO_SIZE_MESSAGE);
     }
 }

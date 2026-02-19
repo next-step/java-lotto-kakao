@@ -8,10 +8,9 @@ public class LottoParser {
             "로또 번호 6개는 쉼표(,)로 구분해 입력해 주세요. 예: 1, 2, 3, 4, 5, 6";
     private static final String LOTTO_NON_NUMERIC_MESSAGE =
             "로또 번호는  1~45 사이의 숫자만 입력해 주세요.";
-    private static final int LOTTO_NUMBER_COUNT = 6;
 
     public Lotto parse(String lottoNumbers) {
-        String[] tokens = lottoNumbers.split(",");
+        String[] tokens = lottoNumbers.split(",", -1);
         validateDelimiter(tokens);
 
         return new Lotto(Arrays.stream(tokens)
@@ -24,7 +23,7 @@ public class LottoParser {
         boolean hasBlankToken = Arrays.stream(tokens)
                 .map(String::trim)
                 .anyMatch(String::isEmpty);
-        if (tokens.length != LOTTO_NUMBER_COUNT || hasBlankToken) {
+        if (hasBlankToken) {
             throw new IllegalArgumentException(LOTTO_DELIMITER_MESSAGE);
         }
     }
