@@ -25,11 +25,12 @@ public class LottoController {
 
 	public void run() {
 		Money money = view.readMoney();
-		PurchasePlan plan = PurchasePlan.of(money, 0);
-
-		Buyer buyer = Buyer.buyLotteries(plan, List.of());
+		int manualCount = view.readManualPurchaseCount();
+		PurchasePlan plan = PurchasePlan.of(money, manualCount);
+		List<Lotto> manualTickets = readManualTickets(plan.manualCount());
+		Buyer buyer = Buyer.buyLotteries(plan, manualTickets);
 		List<Lotto> tickets = buyer.getTickets();
-		view.printTickets(tickets);
+		view.printTickets(plan.manualCount(), plan.autoCount(), tickets);
 
 		WinningLotto winningLotto = createWinningLotto();
 
@@ -49,6 +50,13 @@ public class LottoController {
 		LottoNumber bonus = new LottoNumber(bonusInput);
 
 		return new WinningLotto(winningLotto, bonus);
+	}
+
+	private List<Lotto> readManualTickets(int manualCount) {
+		List<String> manualInputs = view.readManualLottoNumbers(manualCount);
+		return manualInputs.stream()
+			.map(parser::parse)
+			.toList();
 	}
 
 	private LotteryChecker calculateResults(List<Lotto> tickets, WinningLotto winningLotto) {

@@ -1,6 +1,7 @@
 package lotto.view;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -23,6 +24,23 @@ public class LottoView {
 		return scanner.nextLine();
 	}
 
+	public int readManualPurchaseCount() {
+		System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+		return Integer.parseInt(scanner.nextLine());
+	}
+
+	public List<String> readManualLottoNumbers(int manualCount) {
+		if (manualCount == 0) {
+			return List.of();
+		}
+		System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+		List<String> inputs = new ArrayList<>();
+		for (int i = 0; i < manualCount; i++) {
+			inputs.add(scanner.nextLine());
+		}
+		return inputs;
+	}
+
 	public int readBonus() {
 		System.out.println("보너스 볼을 입력해 주세요.");
 		return Integer.parseInt(scanner.nextLine());
@@ -30,6 +48,11 @@ public class LottoView {
 
 	public void printTickets(List<Lotto> tickets) {
 		System.out.println(tickets.size() + "개를 구매했습니다.");
+		tickets.forEach(ticket -> System.out.println(ticket.getNumbers()));
+	}
+
+	public void printTickets(int manualCount, int autoCount, List<Lotto> tickets) {
+		System.out.println("수동으로 " + manualCount + "장, 자동으로 " + autoCount + "개를 구매했습니다.");
 		tickets.forEach(ticket -> System.out.println(ticket.getNumbers()));
 	}
 
