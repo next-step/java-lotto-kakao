@@ -3,12 +3,12 @@ package lotto.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import lotto.domain.Lotto;
 import lotto.exception.LottoInputException;
-import lotto.exception.LottoSystemException;
 
 public class InputView {
 	private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -50,7 +50,7 @@ public class InputView {
 		try {
 			return reader.readLine();
 		} catch (IOException exception) {
-			throw new LottoSystemException("입력을 읽는 중 오류가 발생했습니다.", exception);
+			throw new UncheckedIOException("입력을 읽는 중 오류가 발생했습니다.", exception);
 		}
 	}
 
