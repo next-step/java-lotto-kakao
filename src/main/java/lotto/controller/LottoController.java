@@ -4,13 +4,12 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lotto.domain.Lotto;
+import lotto.domain.LottoGeneratorFactory;
 import lotto.domain.LottoGenerator;
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoNumber;
 import lotto.domain.LottoPurchasePolicy;
 import lotto.domain.LottoStatistics;
-import lotto.domain.ManualLottoGenerator;
-import lotto.domain.RandomLottoGenerator;
 import lotto.domain.WinningNumbers;
 import lotto.view.InputView;
 import lotto.view.OutputView;
@@ -22,21 +21,14 @@ public class LottoController {
 	private final InputView inputView;
 	private final OutputView outputView;
 	private final LottoPurchasePolicy purchasePolicy;
-
-	public static LottoController create() {
-		return new LottoController(
-			new InputView(),
-			new OutputView(),
-			new LottoPurchasePolicy()
-		);
-	}
+	private final LottoGeneratorFactory generatorFactory;
 
 	public void run() {
 		int amount = readPurchaseAmount();
 		int manualCount = readManualCount(amount);
 		int randomCount = purchasePolicy.calculateRandomCountFromAmount(amount, manualCount);
 		LottoGenerator manualGenerator = readManualGenerator(manualCount);
-		LottoGenerator randomGenerator = new RandomLottoGenerator(randomCount);
+		LottoGenerator randomGenerator = generatorFactory.createRandom(randomCount);
 		LottoMachine lottoMachine = new LottoMachine(List.of(manualGenerator, randomGenerator));
 		List<Lotto> lottos = lottoMachine.issue();
 
@@ -82,7 +74,7 @@ public class LottoController {
 		for (int attempt = 1; attempt <= MAX_INPUT_RETRIES; attempt++) {
 			try {
 				List<List<Integer>> manualNumbers = inputView.readManualNumbers(manualCount);
-				return new ManualLottoGenerator(manualNumbers);
+				return generatorFactory.createManual(manualNumbers);
 			} catch (IllegalArgumentException exception) {
 				outputView.printError(exception.getMessage());
 			}
