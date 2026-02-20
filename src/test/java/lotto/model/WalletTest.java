@@ -9,45 +9,58 @@ class WalletTest {
 
     @Test
     @DisplayName("지갑 선언")
-    public void createWallet(){
-        assertThatCode(()-> new Wallet(new Money(10000))).doesNotThrowAnyException();
+    public void createWallet() {
+        assertThatCode(() -> new Wallet(new Money(10000))).doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("금액 소비")
-    public void useBalance(){
-        Wallet wallet = new Wallet(10000);
-        assertThatCode(()->wallet.change(new Money(-3000))).doesNotThrowAnyException();
+    @DisplayName("금액 지출")
+    public void spendBalance() {
+        Wallet wallet = new Wallet(5000);
+        wallet.spend(new Money(3000));
+
+        assertThat(wallet.canAfford(new Money(2000))).isTrue();
+        assertThat(wallet.canAfford(new Money(3000))).isFalse();
     }
 
     @Test
-    @DisplayName("잔액부족")
-    public void notEnoughBalance(){
+    @DisplayName("지출 시 잔액 부족")
+    public void spendNotEnough() {
         Wallet wallet = new Wallet(1000);
-        assertThatThrownBy(()->wallet.change(new Money(-3000)))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("잔액은 항상 0원 이상이어야 합니다.");
+        assertThatThrownBy(() -> wallet.spend(new Money(3000)))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("잔액이 부족합니다.");
     }
 
     @Test
     @DisplayName("잔액체크 성공")
-    public void canAfford(){
+    public void canAfford() {
         Wallet wallet = new Wallet(10000);
-        assertThat(wallet.canAfford(new Money(-3000))).isTrue();
+        assertThat(wallet.canAfford(new Money(3000))).isTrue();
     }
 
     @Test
     @DisplayName("잔액체크 실패")
-    public void canAffordNotEnough(){
+    public void canAffordNotEnough() {
         Wallet wallet = new Wallet(1000);
-        assertThat(wallet.canAfford(new Money(-3000))).isFalse();
+        assertThat(wallet.canAfford(new Money(3000))).isFalse();
     }
 
     @Test
-    @DisplayName("수익률 정상 반환")
-    public void rateOfReturn() {
-        Wallet wallet = new Wallet(10500);
-        wallet.change(new Money(-10000));
+    @DisplayName("수익률 계산")
+    public void returnRate() {
+        Wallet wallet = new Wallet(10000);
+        wallet.spend(new Money(10000));
+
         assertThat(wallet.returnRate(new Money(100000))).isEqualTo(10.0);
     }
+
+    @Test
+    @DisplayName("수익률 계산 - 투자금 없을 때")
+    public void returnRateNoInvestment() {
+        Wallet wallet = new Wallet(10000);
+
+        assertThat(wallet.returnRate(new Money(5000))).isEqualTo(1.0);
+    }
+
 }

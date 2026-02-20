@@ -1,16 +1,31 @@
 package lotto.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LottoNumber implements Comparable<LottoNumber> {
 
     public static final int START_NUMBER = 1;
     public static final int END_NUMBER = 45;
+    private static final Map<Integer, LottoNumber> pool = new HashMap<>();
+
+    static {
+        for (int i = START_NUMBER; i <= END_NUMBER; i++) {
+            pool.put(i, new LottoNumber(i));
+        }
+    }
+
     private final int num;
 
-    public LottoNumber(int num) {
-        if (num < START_NUMBER || num > END_NUMBER) {
-            throw new RuntimeException("로또 번호는 "+START_NUMBER+"-"+END_NUMBER+" 사이 값이어야 합니다");
-        }
+    private LottoNumber(int num) {
         this.num = num;
+    }
+
+    public static LottoNumber of(int num) {
+        if (num < START_NUMBER || num > END_NUMBER) {
+            throw new IllegalArgumentException("로또 번호는 " + START_NUMBER + "-" + END_NUMBER + " 사이 값이어야 합니다");
+        }
+        return pool.get(num);
     }
 
     @Override

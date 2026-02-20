@@ -1,11 +1,16 @@
 package lotto.model;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class LottoTicket {
 
     public static final int TICKET_SIZE = 6;
+    public static final Money PRICE = new Money(1000);
+
     private final Set<LottoNumber> lottoNumbers;
 
     public LottoTicket(Integer... numbers) {
@@ -16,7 +21,7 @@ public class LottoTicket {
         this(new TreeSet<>(lottoNumbers));
     }
 
-    public LottoTicket(Set<LottoNumber> lottoNumbers){
+    public LottoTicket(Set<LottoNumber> lottoNumbers) {
         validateSize(lottoNumbers);
         this.lottoNumbers = lottoNumbers;
     }
@@ -27,11 +32,11 @@ public class LottoTicket {
         }
 
         return Arrays.stream(numbers)
-                .map(LottoNumber::new)
+                .map(LottoNumber::of)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
-    private static void validateSize(Set<LottoNumber> lottoNumbers){
+    private static void validateSize(Set<LottoNumber> lottoNumbers) {
         if (lottoNumbers.size() != TICKET_SIZE) {
             throw new IllegalArgumentException("로또 티켓에는 " + TICKET_SIZE + "개의 번호가 필요합니다.");
         }
@@ -42,7 +47,7 @@ public class LottoTicket {
     }
 
     public int matchCount(LottoTicket other) {
-        return (int)lottoNumbers.stream().filter(other::contains).count();
+        return (int) lottoNumbers.stream().filter(other::contains).count();
     }
 
     @Override

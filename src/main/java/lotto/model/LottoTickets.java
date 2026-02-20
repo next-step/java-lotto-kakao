@@ -6,22 +6,27 @@ import java.util.List;
 public class LottoTickets {
     private final List<LottoTicket> lottoTickets;
 
-    public LottoTickets(){
+    public LottoTickets() {
         this(new ArrayList<>());
     }
 
     public LottoTickets(List<LottoTicket> lottoTickets) {
-        if(lottoTickets == null) {
-            lottoTickets = new ArrayList<>();
+        if (lottoTickets == null) {
+            this.lottoTickets = new ArrayList<>();
+            return;
         }
-        this.lottoTickets = lottoTickets;
+        this.lottoTickets = new ArrayList<>(lottoTickets);
     }
 
-    public void insertTicket(LottoTicket lottoTicket) {
+    public void add(LottoTicket lottoTicket) {
         lottoTickets.add(lottoTicket);
     }
 
-    public WinningInfo result(WinningLotto winningLotto){
+    public void merge(LottoTickets other) {
+        lottoTickets.addAll(other.lottoTickets);
+    }
+
+    public WinningInfo result(WinningLotto winningLotto) {
         WinningInfo winningInfo = new WinningInfo();
         lottoTickets.forEach(ticket -> winningInfo.addResult(winningLotto.rank(ticket)));
         return winningInfo;

@@ -3,28 +3,59 @@ package lotto.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import static org.assertj.core.api.Assertions.*;
 
 class LottoTicketTest {
 
     @Test
     @DisplayName("정상적인 로또 생성")
-    public void createTicket(){
-        assertThatCode(()->new LottoTicket(1,2,3,4,5,6)).doesNotThrowAnyException();
+    public void createTicket() {
+        assertThatCode(() -> new LottoTicket(1, 2, 3, 4, 5, 6)).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("리스트로 로또 생성")
+    public void createTicketWithList() {
+        assertThatCode(() -> new LottoTicket(List.of(
+                LottoNumber.of(1),
+                LottoNumber.of(2),
+                LottoNumber.of(3),
+                LottoNumber.of(4),
+                LottoNumber.of(5),
+                LottoNumber.of(6)
+        ))).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("셋으로 로또 생성")
+    public void createTicketWithSet() {
+        Set<LottoNumber> numbers = new TreeSet<>(List.of(
+                LottoNumber.of(1),
+                LottoNumber.of(2),
+                LottoNumber.of(3),
+                LottoNumber.of(4),
+                LottoNumber.of(5),
+                LottoNumber.of(6)
+        ));
+        assertThatCode(() -> new LottoTicket(numbers)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("로또 번호 개수가 부족할 때")
-    public void notEnoughNumber(){
-        assertThatThrownBy(() -> new LottoTicket(1,2,3,4,5))
+    public void notEnoughNumber() {
+        assertThatThrownBy(() -> new LottoTicket(1, 2, 3, 4, 5))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("로또 티켓에는 6개의 번호가 필요합니다.");
     }
 
     @Test
     @DisplayName("로또 번호에 중복이 있을 때")
-    public void duplicateNumber(){
-        assertThatThrownBy(() -> new LottoTicket(1,2,3,4,3,6))
+    public void duplicateNumber() {
+        assertThatThrownBy(() -> new LottoTicket(1, 2, 3, 4, 3, 6))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("로또 티켓에는 6개의 번호가 필요합니다.");
     }
@@ -33,14 +64,14 @@ class LottoTicketTest {
     @DisplayName("티켓에 번호가 포함되어 있을 때")
     public void containsNumber() {
         LottoTicket ticket = new LottoTicket(1, 2, 3, 4, 5, 6);
-        assertThat(ticket.contains(new LottoNumber(3))).isTrue();
+        assertThat(ticket.contains(LottoNumber.of(3))).isTrue();
     }
 
     @Test
     @DisplayName("티켓에 번호가 포함되어 있지 않을 때")
     public void notContainsNumber() {
         LottoTicket ticket = new LottoTicket(1, 2, 3, 4, 5, 6);
-        assertThat(ticket.contains(new LottoNumber(7))).isFalse();
+        assertThat(ticket.contains(LottoNumber.of(7))).isFalse();
     }
 
     @Test

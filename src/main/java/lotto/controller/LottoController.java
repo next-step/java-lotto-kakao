@@ -8,31 +8,38 @@ public class LottoController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final LottoStore lottoStore;
 
     public LottoController() {
         this.inputView = new InputView();
         this.outputView = new OutputView();
+        this.lottoStore = new LottoStore();
     }
 
     public void run() {
         Money purchaseAmount = inputView.inputMoney();
         Wallet wallet = new Wallet(purchaseAmount);
 
-        AutoMachine autoMachine = new AutoMachine();
-        LottoTickets tickets = autoMachine.allIn(wallet);
+        int manualCount = inputView.inputManualCount();
+        lottoStore.validateManualCount(purchaseAmount, manualCount);
 
-        outputView.printPurchaseCount(tickets.size());
-        outputView.printTickets(tickets);
+        LottoTickets manualTickets = lottoStore.buyManual(wallet, inputView.inputManualNumbers(manualCount));
+        LottoTickets autoTickets = lottoStore.buyAutoAllIn(wallet);
+        manualTickets.merge(autoTickets);
+
+        outputView.printPurchaseCount(manualCount, autoTickets.size());
+        outputView.printTickets(manualTickets);
 
         LottoTicket winningNumbers = inputView.inputWinningNumbers();
         LottoNumber bonusNumber = inputView.inputBonusNumber();
         WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
 
-        WinningInfo winningInfo = tickets.result(winningLotto);
+        WinningInfo winningInfo = manualTickets.result(winningLotto);
         outputView.printStatistics(winningInfo);
 
-        Money totalPrize = winningInfo.getTotalPrice();
+        Money totalPrize = winningInfo.totalPrice();
         double rateOfReturn = wallet.returnRate(totalPrize);
+        wallet.settle(totalPrize);
         outputView.printRateOfReturn(rateOfReturn);
     }
 

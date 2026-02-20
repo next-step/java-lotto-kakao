@@ -33,14 +33,28 @@ public class InputView {
     public LottoNumber inputBonusNumber() {
         System.out.println("보너스 볼을 입력해 주세요.");
         int number = Integer.parseInt(scanner.nextLine().trim());
-        return new LottoNumber(number);
+        return LottoNumber.of(number);
+    }
+
+    public int inputManualCount() {
+        System.out.println("\n수동으로 구매할 로또 수를 입력해 주세요.");
+        return Integer.parseInt(scanner.nextLine().trim());
+    }
+
+    public List<String> inputManualNumbers(int count) {
+        System.out.println("\n수동으로 구매할 번호를 입력해 주세요.");
+        List<String> numbersList = new java.util.ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            numbersList.add(scanner.nextLine().trim());
+        }
+        return numbersList;
     }
 
     private List<LottoNumber> parseNumbers(String input) {
         return Arrays.stream(input.split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
-                .map(LottoNumber::new)
+                .map(LottoNumber::of)
                 .collect(Collectors.toList());
     }
 
