@@ -36,4 +36,12 @@ public class Parser {
 		return new Ball(parseInt(input.trim()));
 	}
 
+	public List<List<Ball>> parseManualLottos(List<String> inputs) {
+		List<List<Ball>> result = new ArrayList<>();
+		for (String input : inputs) {
+			result.add(parse(input));
+		}
+		return result;
+	}
+
 }

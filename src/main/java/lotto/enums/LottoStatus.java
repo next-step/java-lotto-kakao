@@ -25,8 +25,9 @@ public enum LottoStatus {
 	}
 
 	public static LottoStatus of(int count, boolean hasBonus) {
-		if (count == 5 && hasBonus)
+		if (count == 5 && hasBonus) {
 			return SIX_BONUS;
+		}
 		return BY_COUNT.getOrDefault(count, MISS);
 	}
 

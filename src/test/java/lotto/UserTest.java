@@ -12,22 +12,19 @@ import lotto.enums.LottoStatus;
 public class UserTest {
 
 	@Test
-	void 유저_구입금액은_1000으로_나눠떨어져야_한다() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new User("1001"));
-	}
-
-	@Test
 	void 유저_구입금액은_1000으로_나눈_몫만큼의_개수로_로또를_구입해야_한다() {
-		String price = "10000";
-		User user = new User(price);
+		Money money = new Money("5000");
+		LottoList lottos = new AutoLottoGenerator(5).generate();
+		User user = new User(money, lottos);
 
-		assertThat(user.getLottos().size()).isEqualTo(Long.parseLong(price) / 1000L);
+		assertThat(user.getLottos().size()).isEqualTo(money.getPrice() / 1000L);
 	}
 
 	@Test
 	void 유저가_얻은_상금을_계산한다() {
-		String price = "2000";
-		User user = new User(price);
+		Money money = new Money("2000");
+		LottoList lottoList = new LottoList();
+		User user = new User(money, lottoList);
 
 		List<Lotto> lottos = new ArrayList<>();
 		lottos.add(new Lotto(List.of(
