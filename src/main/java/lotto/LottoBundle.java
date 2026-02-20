@@ -14,10 +14,10 @@ public class LottoBundle implements Iterable<Lotto>  {
         return lottos.size();
     }
 
-    public LottoResult getLottoResult(WinningLotto winningLotto){
-        return new LottoResult(lottos.stream()
+    public List<Rank> makeLottoRanks(WinningLotto winningLotto){
+        return lottos.stream()
                 .map(winningLotto::judge)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     @Override

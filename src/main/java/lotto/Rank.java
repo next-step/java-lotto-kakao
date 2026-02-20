@@ -30,11 +30,15 @@ public enum Rank {
                 .orElse(MISS);
     }
 
-    public int getCountOfMatch() {
+    public int toCountOfMatch() {
         return countOfMatch;
     }
 
-    public int getWinningMoney() {
+    public int toWinningMoney() {
         return winningMoney;
+    }
+
+    public Money winningMoney(int count) {
+        return new Money((long) winningMoney * count);
     }
 }

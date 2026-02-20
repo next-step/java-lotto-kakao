@@ -1,52 +1,62 @@
 package lotto;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LottoController {
-
     private final LottoService lottoService;
+    private final LottoParser lottoParser;
 
     public LottoController() {
         this.lottoService = new LottoService();
+        this.lottoParser = new LottoParser();
     }
 
     public void run() {
         try {
             Money money = new Money(InputView.readPurchaseAmount());
-            LottoBundle lottos = buyLottos(money);
+            PurchasedLottoBundle purchasedLottoBundle = buyLottos(money);
+            OutputView.printLottoBundle(purchasedLottoBundle);
             WinningLotto winningLotto = makeWinningLotto();
-            processResult(lottos, winningLotto, money);
+            processResult(purchasedLottoBundle, winningLotto, money);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             run(); // 예외 발생 시 재시도 로직
         }
     }
 
-    private LottoBundle buyLottos(Money money) {
+    private PurchasedLottoBundle buyLottos(Money money) {
         int count = money.calculateLottoCount();
-        OutputView.printPurchaseCount(count);
-        LottoBundle bundle = lottoService.purchase(count); // 앞서 논의한 Service 활용
-        OutputView.printLottoBundle(bundle);
-        return bundle;
+        int manualCount = InputView.readManualCount();
+        PurchasedCount purchasedCount = new PurchasedCount(manualCount, count);
+        LottoBundle manualLottoBundle = makeManualLottoBundle(purchasedCount.manualCount());
+        LottoBundle autoLottoBundle = lottoService.purchaseAutoLottoBundle(purchasedCount.autoCount());
+        OutputView.printPurchaseCount(purchasedCount.manualCount(), purchasedCount.autoCount());
+        return new PurchasedLottoBundle(manualLottoBundle, autoLottoBundle);
     }
 
-    private void processResult(LottoBundle lottos, WinningLotto winningLotto, Money money) {
-        LottoResult lottoResult = lottos.getLottoResult(winningLotto);
+    private void processResult(PurchasedLottoBundle lottos, WinningLotto winningLotto, Money money) {
+        LottoResult lottoResult = lottos.makeLottoResult(winningLotto);
 
         OutputView.printStatisticsHeader();
         OutputView.printResult(lottoResult);
         OutputView.printYield(lottoResult.calculateYield(money));
-
     }
 
     private WinningLotto makeWinningLotto() {
         String winningNumbers = InputView.readWinningNumbers();
-        Lotto lotto = new Lotto(Arrays.stream(winningNumbers.split(", "))
-                .map((String number) -> new LottoNumber(Integer.parseInt(number)))
-                .collect(Collectors.toList()));
+        Lotto lotto = lottoParser.parse(winningNumbers);
         int bonusNumber = InputView.readingBonusNumber();
 
-        return new WinningLotto(lotto, new LottoNumber(bonusNumber));
+        return new WinningLotto(lotto, LottoNumber.from(bonusNumber));
+    }
+
+    private LottoBundle makeManualLottoBundle(int count){
+        List<String> inputList = InputView.readManualNumbers(count);
+        List<Lotto> lottoList = new ArrayList<>();
+        for(int times=0; times<count; times++){
+            lottoList.add(lottoParser.parse(inputList.get(times)));
+        }
+        return lottoService.purchaseManualLottoBundle(lottoList);
     }
 }

@@ -16,17 +16,28 @@ public class LottoBundleTest {
                 .isEqualTo(3);
     }
 
-    List<Lotto> makeLottos(){
+    @Test
+    void 로또_결과_생성_테스트() {
+        LottoBundle lottoBundle = new LottoBundle(makeLottos());
+        Lotto winningLottoNumbers = testSetLotto(1, 7);
+        WinningLotto winningLotto = new WinningLotto(winningLottoNumbers, LottoNumber.from(7));
+
+        List<Rank> ranks = lottoBundle.makeLottoRanks(winningLotto);
+
+        Assertions.assertThat(ranks).containsExactly(Rank.FIRST, Rank.MISS, Rank.MISS);
+    }
+
+    List<Lotto> makeLottos() {
         List<Lotto> lottos = new ArrayList<>();
-        lottos.add(testSetLotto(1,7));
-        lottos.add(testSetLotto(8,14));
-        lottos.add(testSetLotto(15,21));
+        lottos.add(testSetLotto(1, 7));
+        lottos.add(testSetLotto(8, 14));
+        lottos.add(testSetLotto(15, 21));
         return lottos;
     }
 
-    Lotto testSetLotto(int start, int end){
+    Lotto testSetLotto(int start, int end) {
         return new Lotto(IntStream.range(start, end)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList()));
     }
 }

@@ -1,13 +1,13 @@
 package lotto;
 
-public class WinningCount {
+public class Counter {
     private int count;
 
-    public WinningCount(int count) {
+    public Counter(int count) {
         this.count = count;
     }
 
-    public int getCount() {
+    public int count() {
         return count;
     }
 
