@@ -1,8 +1,6 @@
 package lotto.domain;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -17,15 +15,14 @@ public class Lotto {
 
 	private Lotto(List<LottoNumber> numbers) {
 		validate(numbers);
-		List<LottoNumber> copied = new ArrayList<>(numbers);
-		Collections.sort(copied);
-		this.numbers = Collections.unmodifiableList(copied);
+		this.numbers = List.copyOf(numbers);
 	}
 
 	public static Lotto from(List<Integer> values) {
 		validateValues(values);
 		List<LottoNumber> numbers = values.stream()
 			.map(LottoNumber::from)
+			.sorted()
 			.toList();
 		return new Lotto(numbers);
 	}
