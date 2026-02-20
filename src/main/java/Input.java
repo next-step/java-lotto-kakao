@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -33,11 +34,48 @@ public class Input {
         }
     }
 
+    public Integer inputManualCount(Integer originalLottoCount) {
+        while (true) {
+            System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+
+            String input = scanner.nextLine();
+
+            try {
+                int value = Integer.parseInt(input);
+                // 음수 잡아내기
+                if (value < 0) throw new NumberFormatException();
+                if (value > originalLottoCount) throw new NumberFormatException();
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("잘 못된 로또 개수 입니다.");
+            }
+        }
+    }
+
     // 당첨 번호 + 보너스 번호 입력
     public WinningLotto inputWinningNumbers() {
         WinningLotto winningLotto = getWinningLotto();
 
         return getBonusNumber(winningLotto);
+    }
+
+    public Lottos inputManualLottoNumbers(Integer manualLottoCount) {
+        System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+        List<Lotto> lottos = new ArrayList<>();
+        for (int i = 0; i < manualLottoCount; i++) {
+
+            while (true){
+                try {
+                    List<Integer> lottoNumbers = getLottoNumber(null);
+                    lottos.add(new Lotto(lottoNumbers));
+                    break;
+                } catch (Exception e) {
+                    System.out.println("올바른 로또 번호를 입력해주세요.");
+                }
+            }
+        }
+
+        return new Lottos(lottos);
     }
 
     private WinningLotto getBonusNumber(WinningLotto winningLotto) {
@@ -60,10 +98,9 @@ public class Input {
     private WinningLotto getWinningLotto() {
         WinningLotto winningLotto;
 
-        System.out.println("지난 주 당첨 번호를 입력해 주세요.");
         while (true) {
             try {
-                List<Integer> numbers = parseNumbers(scanner.nextLine());
+                List<Integer> numbers = getLottoNumber("지난 주 당첨 번호를 입력해 주세요.");
                 winningLotto = new WinningLotto(numbers);
                 break;
             } catch (IllegalArgumentException e) {
@@ -71,6 +108,20 @@ public class Input {
             }
         }
         return winningLotto;
+    }
+
+    private List<Integer> getLottoNumber(String message) {
+        if (message != null) {
+            System.out.println(message);
+        }
+
+        while (true) {
+            try {
+                return parseNumbers(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     /**

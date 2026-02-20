@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 // 동일 회차 기준 구매한 로또 번호들
@@ -31,5 +32,11 @@ public class Lottos {
 
     public List<Lotto> getLottos() {
         return lottos;
+    }
+
+    public Lottos merge(Lottos other) {
+        List<Lotto> merged = new ArrayList<>(this.lottos);
+        merged.addAll(other.getLottos());
+        return new Lottos(merged);
     }
 }

@@ -13,6 +13,7 @@ public class Lotto {
         validateSize(nums);
 
         this.lottoNumbers = nums.stream()
+                .sorted()
                 .map(LottoNumber::new)
                 .collect(Collectors.toList());
 
