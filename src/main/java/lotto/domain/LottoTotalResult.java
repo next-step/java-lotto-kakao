@@ -13,7 +13,7 @@ public class LottoTotalResult {
     private final int totalProfit;
 
     public LottoTotalResult(LottoResults lottoResults) {
-        this.totalPrice = lottoResults.getLottoResultsSize() * Lotto.getPrice();
+        this.totalPrice = lottoResults.getLottoResultsSize() * LottoBalls.getPrice();
         int profitSum = 0;
         initRankCounts();
 
@@ -44,7 +44,7 @@ public class LottoTotalResult {
 
     private List<Rank> getValidRanks() {
         return Arrays.stream(Rank.values())
-                .filter(rank -> rank != Rank.MISS)
+                .filter(Rank::isValidRank)
                 .toList();
     }
 

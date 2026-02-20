@@ -9,7 +9,7 @@ public class AnswerLotto {
     public AnswerLotto(Set<Integer> lottoNums, int bonusNum) {
 
         this.lottoBalls = new LottoBalls(lottoNums);
-        this.bonusNum = new LottoNumber(bonusNum);
+        this.bonusNum = LottoNumber.valueOf(bonusNum);
     }
 
     public LottoResult judge(LottoBalls other) {

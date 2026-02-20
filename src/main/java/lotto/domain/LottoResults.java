@@ -7,8 +7,7 @@ public class LottoResults {
 
     public LottoResults(MyLotto myLotto, AnswerLotto answerLotto) {
         for (int i = 0; i < myLotto.getSize(); i++) {
-            LottoBalls lottoBalls = myLotto.getMyLotto(i).getLottoBallList();
-            lottoResults.add(answerLotto.judge(lottoBalls));
+            lottoResults.add(answerLotto.judge(myLotto.getMyLotto(i)));
         }
     }
 

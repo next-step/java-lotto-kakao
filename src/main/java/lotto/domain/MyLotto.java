@@ -1,28 +1,30 @@
 package lotto.domain;
 
+import lotto.util.NumberAutoCreator;
+import lotto.util.NumberCreator;
+import lotto.util.NumberManualCreator;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyLotto {
-    private final List<Lotto> myLottoList = new ArrayList<>();
+    private final List<LottoBalls> myLottoList;
 
-    public MyLotto(int size) {
-        for (int i = 0; i < size; i++) {
-            myLottoList.add(new Lotto());
-        }
+    public MyLotto(List<LottoBalls> myLottoList) {
+        this.myLottoList = new ArrayList<>(myLottoList);
     }
 
     public int getSize() {
         return this.myLottoList.size();
     }
 
-    public Lotto getMyLotto(int index) {
-        return new Lotto(this.myLottoList.get(index));
+    public LottoBalls getMyLotto(int index) {
+        return new LottoBalls(this.myLottoList.get(index));
     }
 
     public String getMyLottoStringType() {
         StringBuilder sb = new StringBuilder();
-        for (Lotto lotto : myLottoList) {
+        for (LottoBalls lotto : myLottoList) {
             sb.append(lotto.getLottoNumberString());
             sb.append("\n");
         }
