@@ -8,6 +8,8 @@
 - 예: 2500원 입력 시 2장 구매
 - 발급된 로또는 6개의 숫자로 구성되며 숫자 범위는 1~45이다.
 - 로또 숫자는 중복될 수 없고, 출력 시 오름차순으로 정렬한다.
+- 수동으로 구매할 로또 수를 입력받고, 해당 수만큼 번호를 직접 입력한다.
+- 수동 구매 수를 제외한 나머지 로또는 자동으로 발급한다.
 - 지난 주 당첨 번호 6개와 보너스 볼 1개를 입력받는다.
 - 당첨 번호는 1~45 범위의 중복 없는 6개 숫자여야 한다.
 - 보너스 볼은 1~45 범위의 숫자이며 당첨 번호와 중복될 수 없다.
@@ -25,7 +27,16 @@
 ```text
 구입금액을 입력해 주세요.
 14000
-14개를 구매했습니다.
+
+수동으로 구매할 로또 수를 입력해 주세요.
+3
+
+수동으로 구매할 번호를 입력해 주세요.
+8, 21, 23, 41, 42, 43
+3, 5, 11, 16, 32, 38
+7, 11, 16, 35, 36, 44
+
+수동으로 3장, 자동으로 11개를 구매했습니다.
 [8, 21, 23, 41, 42, 43]
 [3, 5, 11, 16, 32, 38]
 [7, 11, 16, 35, 36, 44]
@@ -68,9 +79,12 @@ src/main/java
       Lotto
       LottoMachine
       LottoNumber
+      LottoPurchasePolicy
       LottoResult
       LottoStatistics
-      Lottos
+      LottoGenerator
+      ManualLottoGenerator
+      RandomLottoGenerator
       WinningNumbers
     view
       InputView
@@ -84,8 +98,9 @@ src/test/java
     domain
       LottoMachineTest
       LottoNumberTest
+      LottoPurchasePolicyTest
       LottoStatisticsTest
-      LottosTest
+      LottoGeneratorTest
       LottoResultTest
       LottoTest
       WinningNumbersTest
@@ -109,11 +124,14 @@ src/test/java
 ### lotto.domain
 
 - `Lotto`: 로또 한 장의 숫자 집합, 유효성 검증 및 자동 생성
-- `LottoMachine`: 구매 금액을 기준으로 로또 발급(가격 정책 포함)
+- `LottoMachine`: 여러 생성기를 실행해 로또 목록을 조합하는 컴포지트
 - `LottoNumber`: 로또 번호(1~45) 값 객체
+- `LottoPurchasePolicy`: 구입 금액/수동 개수 기반 랜덤 발급 개수 계산 정책
 - `LottoResult`: 당첨 등급과 상금 정의
 - `LottoStatistics`: 전체 당첨 통계 및 총 상금 계산
-- `Lottos`: 로또 여러 장 일급 컬렉션
+- `LottoGenerator`: 로또 생성 전략 인터페이스
+- `ManualLottoGenerator`: 수동 번호 기반 생성
+- `RandomLottoGenerator`: 랜덤 로또 생성
 - `WinningNumbers`: 당첨 번호 + 보너스 볼 보관 및 검증
 
 ## 프로젝트 구현 계획

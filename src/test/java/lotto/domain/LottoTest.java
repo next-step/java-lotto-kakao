@@ -23,8 +23,8 @@ class LottoTest {
 	void from_withDuplicateNumbers_throwsIllegalArgumentException() {
 		List<Integer> numbers = List.of(1, 2, 3, 4, 5, 5);
 
-		assertThatIllegalArgumentException()
-			.isThrownBy(() -> Lotto.from(numbers));
+		assertThatThrownBy(() -> Lotto.from(numbers))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@DisplayName("로또 번호 개수가 6개가 아니면 IllegalArgumentException이 발생해야 한다")
@@ -32,8 +32,8 @@ class LottoTest {
 	void from_withInvalidSize_throwsIllegalArgumentException() {
 		List<Integer> numbers = List.of(1, 2, 3, 4, 5);
 
-		assertThatIllegalArgumentException()
-			.isThrownBy(() -> Lotto.from(numbers));
+		assertThatThrownBy(() -> Lotto.from(numbers))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 }

@@ -1,40 +1,44 @@
 package lotto.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class LottoMachine {
-	private static final int LOTTO_PRICE = 1_000;
-	private static final int REQUIRED_SIZE = 6;
+	private final List<LottoGenerator> generators;
 
-	public List<Lotto> issue(int amount) {
-		validateAmount(amount);
-		int count = amount / LOTTO_PRICE;
-		return generate(count);
+	public LottoMachine(List<LottoGenerator> generators) {
+		validateGenerators(generators);
+		this.generators = List.copyOf(generators);
 	}
 
-	private List<Lotto> generate(int count) {
+	public List<Lotto> issue() {
 		List<Lotto> lottos = new ArrayList<>();
-		for (int i = 0; i < count; i++) {
-			lottos.add(generateLotto());
+		for (LottoGenerator generator : generators) {
+			List<Lotto> generated = generator.generate();
+			validateGeneratedLottos(generated);
+			lottos.addAll(generated);
 		}
-		return lottos;
+		return List.copyOf(lottos);
 	}
 
-	private Lotto generateLotto() {
-		List<LottoNumber> lottoNumberPool = LottoNumber.getPool();
-		Collections.shuffle(lottoNumberPool);
-		List<Integer> values = lottoNumberPool.subList(0, REQUIRED_SIZE)
-			.stream()
-			.map(LottoNumber::getValue)
-			.toList();
-		return Lotto.from(values);
+	private void validateGenerators(List<LottoGenerator> generators) {
+		if (generators == null) {
+			throw new IllegalArgumentException("생성기 목록은 null일 수 없습니다.");
+		}
+		boolean hasNull = generators.stream().anyMatch(Objects::isNull);
+		if (hasNull) {
+			throw new IllegalArgumentException("생성기 목록에 null이 포함될 수 없습니다.");
+		}
 	}
 
-	private void validateAmount(int amount) {
-		if (amount < LOTTO_PRICE) {
-			throw new IllegalArgumentException(String.format("Amount must be at least %s", LOTTO_PRICE));
+	private void validateGeneratedLottos(List<Lotto> lottos) {
+		if (lottos == null) {
+			throw new IllegalStateException("생성 결과는 null일 수 없습니다.");
+		}
+		boolean hasNull = lottos.stream().anyMatch(Objects::isNull);
+		if (hasNull) {
+			throw new IllegalStateException("생성 결과에 null 로또가 포함될 수 없습니다.");
 		}
 	}
 }

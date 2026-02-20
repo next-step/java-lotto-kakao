@@ -3,9 +3,11 @@ package lotto.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import lotto.domain.Lotto;
 
 public class InputView {
 	private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -13,6 +15,24 @@ public class InputView {
 	public int readPurchaseAmount() {
 		System.out.println("구입금액을 입력해 주세요.");
 		return parseInt(readLine());
+	}
+
+	public int readManualCount() {
+		System.out.println("수동으로 구매할 로또 수를 입력해 주세요.");
+		return parseInt(readLine());
+	}
+
+	public List<List<Integer>> readManualNumbers(int manualCount) {
+		if (manualCount <= 0) {
+			return List.of();
+		}
+
+		System.out.println("수동으로 구매할 번호를 입력해 주세요.");
+		List<List<Integer>> manualNumbers = new ArrayList<>();
+		for (int i = 0; i < manualCount; i++) {
+			manualNumbers.add(parseNumbers(readLine()));
+		}
+		return manualNumbers;
 	}
 
 	public List<Integer> readWinningNumbers() {
@@ -29,19 +49,50 @@ public class InputView {
 		try {
 			return reader.readLine();
 		} catch (IOException exception) {
-			throw new IllegalStateException("Failed to read input.");
+			throw new UncheckedIOException("입력을 읽는 중 오류가 발생했습니다.", exception);
 		}
 	}
 
 	private int parseInt(String input) {
-		return Integer.parseInt(input.trim());
+		String trimmed = validateAndTrim(input);
+		try {
+			return Integer.parseInt(trimmed);
+		} catch (NumberFormatException exception) {
+			throw new IllegalArgumentException("숫자를 입력해 주세요. 입력값: " + trimmed, exception);
+		}
 	}
 
 	private List<Integer> parseNumbers(String input) {
-		return Arrays.stream(input.split(","))
-			.map(String::trim)
-			.filter(value -> !value.isEmpty())
-			.map(Integer::parseInt)
-			.collect(Collectors.toList());
+		String trimmed = validateAndTrim(input);
+		String[] tokens = trimmed.split(",");
+		List<Integer> numbers = new ArrayList<>();
+		for (String token : tokens) {
+			String value = token.trim();
+			if (value.isEmpty()) {
+				throw new IllegalArgumentException("쉼표로 구분된 숫자를 입력해 주세요.");
+			}
+			try {
+				numbers.add(Integer.parseInt(value));
+			} catch (NumberFormatException exception) {
+				throw new IllegalArgumentException("쉼표로 구분된 숫자를 입력해 주세요. 잘못된 값: " + value, exception);
+			}
+		}
+		if (numbers.size() != Lotto.requiredSize()) {
+			throw new IllegalArgumentException(
+				String.format("번호는 %d개 입력해야 합니다.", Lotto.requiredSize())
+			);
+		}
+		return numbers;
+	}
+
+	private String validateAndTrim(String input) {
+		if (input == null) {
+			throw new IllegalStateException("입력이 종료되었습니다.");
+		}
+		String trimmed = input.trim();
+		if (trimmed.isEmpty()) {
+			throw new IllegalArgumentException("공백만 입력할 수 없습니다.");
+		}
+		return trimmed;
 	}
 }

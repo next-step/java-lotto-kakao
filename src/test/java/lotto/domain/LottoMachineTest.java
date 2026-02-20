@@ -2,49 +2,67 @@ package lotto.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 class LottoMachineTest {
-	@DisplayName("로또 발급 시 금액에 따라 발급 개수가 결정되어야 한다")
-	@ParameterizedTest
-	@CsvSource({
-		"1000, 1",
-		"1500, 1",
-		"2500, 2"
-	})
-	void issue_withAmount_returnsExpectedTicketCount(int amount, int expectedCount) {
-		LottoMachine machine = new LottoMachine();
+	@DisplayName("로또 머신은 등록된 생성기의 결과를 순서대로 병합해야 한다")
+	@Test
+	void issue_withGenerators_mergesResultsInOrder() {
+		LottoGenerator manualGenerator = new ManualLottoGenerator(List.of(List.of(1, 2, 3, 4, 5, 6)));
+		LottoGenerator randomGenerator = () -> List.of(Lotto.from(List.of(7, 8, 9, 10, 11, 12)));
+		LottoMachine machine = new LottoMachine(List.of(manualGenerator, randomGenerator));
 
-		List<Lotto> lottos = machine.issue(amount);
+		List<Lotto> issued = machine.issue();
 
-		assertThat(lottos).hasSize(expectedCount);
+		assertThat(issued).hasSize(2);
+		assertThat(issued.get(0).getNumbers())
+			.extracting(LottoNumber::getValue)
+			.containsExactly(1, 2, 3, 4, 5, 6);
+		assertThat(issued.get(1).getNumbers())
+			.extracting(LottoNumber::getValue)
+			.containsExactly(7, 8, 9, 10, 11, 12);
 	}
 
-	@DisplayName("발급 금액이 가격 미만이면 IllegalArgumentException이 발생해야 한다")
+	@DisplayName("로또 머신 생성 시 생성기 목록이 null이면 IllegalArgumentException이 발생해야 한다")
 	@Test
-	void issue_withAmountLessThanPrice_throwsIllegalArgumentException() {
-		LottoMachine machine = new LottoMachine();
-
-		assertThatIllegalArgumentException()
-			.isThrownBy(() -> machine.issue(999));
+	void constructor_withNullGenerators_throwsIllegalArgumentException() {
+		assertThatThrownBy(() -> new LottoMachine(null))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
-	@DisplayName("발급된 로또 번호는 정렬되고 중복이 없으며 범위 내여야 한다")
+	@DisplayName("로또 머신 생성 시 생성기 목록에 null이 포함되면 IllegalArgumentException이 발생해야 한다")
 	@Test
-	void issue_withAmount_returnsSortedUniqueNumbersWithinRange() {
-		LottoMachine machine = new LottoMachine();
+	void constructor_withNullGeneratorElement_throwsIllegalArgumentException() {
+		List<LottoGenerator> generators = new ArrayList<>();
+		generators.add(() -> List.of(Lotto.from(List.of(1, 2, 3, 4, 5, 6))));
+		generators.add(null);
 
-		Lotto lotto = machine.issue(1_000).getFirst();
+		assertThatThrownBy(() -> new LottoMachine(generators))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
 
-		assertThat(lotto.getNumbers())
-			.hasSize(6)
-			.doesNotHaveDuplicates()
-			.isSorted()
-			.allMatch(number -> number.getValue() >= 1 && number.getValue() <= 45);
+	@DisplayName("생성 결과가 null이면 IllegalStateException이 발생해야 한다")
+	@Test
+	void issue_whenGeneratorReturnsNull_throwsIllegalStateException() {
+		LottoMachine machine = new LottoMachine(List.of(() -> null));
+
+		assertThatThrownBy(machine::issue)
+			.isInstanceOf(IllegalStateException.class);
+	}
+
+	@DisplayName("생성 결과에 null 로또가 포함되면 IllegalStateException이 발생해야 한다")
+	@Test
+	void issue_whenGeneratedLottosContainNull_throwsIllegalStateException() {
+		List<Lotto> generated = new ArrayList<>();
+		generated.add(Lotto.from(List.of(1, 2, 3, 4, 5, 6)));
+		generated.add(null);
+		LottoMachine machine = new LottoMachine(List.of(() -> generated));
+
+		assertThatThrownBy(machine::issue)
+			.isInstanceOf(IllegalStateException.class);
 	}
 }

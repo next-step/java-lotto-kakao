@@ -3,6 +3,7 @@ package lotto.domain;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import lombok.Getter;
 
@@ -17,6 +18,7 @@ public class LottoStatistics {
 	}
 
 	public static LottoStatistics of(List<Lotto> lottos, WinningNumbers winningNumbers) {
+		validateInput(lottos, winningNumbers);
 		Map<LottoResult, Integer> counts = initializeCounts();
 		for (Lotto lotto : lottos) {
 			winningNumbers.match(lotto)
@@ -24,6 +26,19 @@ public class LottoStatistics {
 		}
 		long totalPrize = calculateTotalPrize(counts);
 		return new LottoStatistics(counts, totalPrize);
+	}
+
+	private static void validateInput(List<Lotto> lottos, WinningNumbers winningNumbers) {
+		if (lottos == null) {
+			throw new IllegalArgumentException("로또 목록은 null일 수 없습니다.");
+		}
+		if (winningNumbers == null) {
+			throw new IllegalArgumentException("당첨 번호는 null일 수 없습니다.");
+		}
+		boolean hasNullLotto = lottos.stream().anyMatch(Objects::isNull);
+		if (hasNullLotto) {
+			throw new IllegalArgumentException("로또 목록에 null이 포함될 수 없습니다.");
+		}
 	}
 
 	private static Map<LottoResult, Integer> initializeCounts() {
@@ -45,8 +60,8 @@ public class LottoStatistics {
 	}
 
 	public double getProfitRate(int purchaseAmount) {
-		if (purchaseAmount == 0) {
-			throw new IllegalArgumentException("Purchase amount must not be zero.");
+		if (purchaseAmount <= 0) {
+			throw new IllegalArgumentException("구입 금액은 0보다 커야 합니다.");
 		}
 		return totalPrize / (double)purchaseAmount;
 	}

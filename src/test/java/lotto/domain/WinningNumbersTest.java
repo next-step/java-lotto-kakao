@@ -24,15 +24,15 @@ class WinningNumbersTest {
 	void of_withDuplicateBonusNumber_throwsIllegalArgumentException() {
 		Lotto numbers = Lotto.from(List.of(1, 2, 3, 4, 5, 6));
 
-		assertThatIllegalArgumentException()
-			.isThrownBy(() -> WinningNumbers.of(numbers, LottoNumber.from(6)));
+		assertThatThrownBy(() -> WinningNumbers.of(numbers, LottoNumber.from(6)))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@DisplayName("당첨 번호가 null이면 IllegalArgumentException이 발생해야 한다")
 	@Test
 	void of_withNullNumbers_throwsIllegalArgumentException() {
-		assertThatIllegalArgumentException()
-			.isThrownBy(() -> WinningNumbers.of(null, LottoNumber.from(7)));
+		assertThatThrownBy(() -> WinningNumbers.of(null, LottoNumber.from(7)))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@DisplayName("보너스 번호가 null이면 IllegalArgumentException이 발생해야 한다")
@@ -40,7 +40,19 @@ class WinningNumbersTest {
 	void of_withNullBonusNumber_throwsIllegalArgumentException() {
 		Lotto numbers = Lotto.from(List.of(1, 2, 3, 4, 5, 6));
 
-		assertThatIllegalArgumentException()
-			.isThrownBy(() -> WinningNumbers.of(numbers, null));
+		assertThatThrownBy(() -> WinningNumbers.of(numbers, null))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@DisplayName("비교할 로또가 null이면 IllegalArgumentException이 발생해야 한다")
+	@Test
+	void match_withNullLotto_throwsIllegalArgumentException() {
+		WinningNumbers winningNumbers = WinningNumbers.of(
+			Lotto.from(List.of(1, 2, 3, 4, 5, 6)),
+			LottoNumber.from(7)
+		);
+
+		assertThatThrownBy(() -> winningNumbers.match(null))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 }
