@@ -20,7 +20,7 @@ public class StatisticsServiceTest {
     @Test
     void 통계를_계산할_수_있다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of(
@@ -36,7 +36,7 @@ public class StatisticsServiceTest {
     @Test
     void 당첨되지_않은_경우_수익률은_0이다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of(
@@ -51,7 +51,7 @@ public class StatisticsServiceTest {
     @Test
     void 빈_게임_리스트의_경우_수익률은_0이다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of());
@@ -64,7 +64,7 @@ public class StatisticsServiceTest {
     @Test
     void 다양한_당첨_등급의_통계를_계산할_수_있다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of(
@@ -89,7 +89,7 @@ public class StatisticsServiceTest {
     @Test
     void 수익률을_정확히_계산한다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         // 1등 1개 (2,000,000,000원) - 구매 금액 1,000원
@@ -106,7 +106,7 @@ public class StatisticsServiceTest {
     @Test
     void 여러_게임의_수익률을_계산한다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         // 5등 2개 (각 5,000원) - 구매 금액 2,000원
@@ -124,7 +124,7 @@ public class StatisticsServiceTest {
     @Test
     void 당첨_등급별_개수가_정확히_계산된다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of(

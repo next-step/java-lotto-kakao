@@ -11,7 +11,7 @@ public class StatisticsTest {
     @Test
     void 통계를_생성할_수_있다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         LottoGames lottoGames = new LottoGames(List.of(
                 new LottoNumbers(List.of(1, 2, 3, 4, 5, 6))
@@ -27,7 +27,7 @@ public class StatisticsTest {
     @Test
     void 같은_값으로_생성된_Statistics는_같다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         LottoGames lottoGames = new LottoGames(List.of(
                 new LottoNumbers(List.of(1, 2, 3, 4, 5, 6))
@@ -43,7 +43,7 @@ public class StatisticsTest {
     @Test
     void 다른_수익률로_생성된_Statistics는_다르다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         LottoGames lottoGames = new LottoGames(List.of(
                 new LottoNumbers(List.of(1, 2, 3, 4, 5, 6))
@@ -59,7 +59,7 @@ public class StatisticsTest {
     @Test
     void 수익률이_0인_통계를_생성할_수_있다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         LottoGames lottoGames = new LottoGames(List.of(
                 new LottoNumbers(List.of(10, 11, 12, 13, 14, 15))

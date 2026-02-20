@@ -14,7 +14,7 @@ public class WinningPrizesTest {
     @BeforeEach
     void setUp() {
         LottoNumbers lottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber lottoNumber = new LottoNumber(7);
+        LottoNumber lottoNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(lottoNumbers, lottoNumber);
         LottoGames lottoGames = new LottoGames(List.of(
                 new LottoNumbers(List.of(1, 2, 3, 4, 5, 6)),
@@ -34,7 +34,7 @@ public class WinningPrizesTest {
     @Test
     void 다양한_당첨_등급을_계산할_수_있다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of(
@@ -59,7 +59,7 @@ public class WinningPrizesTest {
     @Test
     void 당첨되지_않은_게임이_있을_때_NONE_등급을_계산할_수_있다() {
         LottoNumbers winningLottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
-        LottoNumber bonusNumber = new LottoNumber(7);
+        LottoNumber bonusNumber = LottoNumber.of(7);
         WinningNumbers winningNumbers = new WinningNumbers(winningLottoNumbers, bonusNumber);
         
         LottoGames lottoGames = new LottoGames(List.of(

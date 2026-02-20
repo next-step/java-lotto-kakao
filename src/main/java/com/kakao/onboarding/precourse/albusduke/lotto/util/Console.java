@@ -9,6 +9,7 @@ import com.kakao.onboarding.precourse.albusduke.lotto.domain.LottoNumber;
 import com.kakao.onboarding.precourse.albusduke.lotto.domain.LottoNumbers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -16,8 +17,12 @@ import java.util.StringJoiner;
 
 public class Console implements Input, Output {
     private static final String NUMBER_FORMAT_ERROR_MSG = "숫자 형식이어야 합니다.";
-    
+    private static final String DELIMITER = ",";
+    private static final String INTEGER_LIST_FORMAT_ERROR_MSG = "숫자 리스트 형식이어야 합니다. (ex: 1, 2, 3, 4, 5, 6)";
+
     private static final String PURCHASE_COUNT_FORMAT = "%d개를 구매했습니다.\n";
+    private static final String MANUAL_AUTO_PURCHASE_FORMAT = "수동으로 %d장, 자동으로 %d개를 구매했습니다.\n";
+    private static final String MANUAL_LOTTO_NUMBERS_PROMPT = "수동으로 구매할 번호를 입력해 주세요.";
     private static final String STATISTICS_PREFIX = "당첨 통계\n-------------";
     private static final String MATCHING_FORMAT = "%d개 일치";
     private static final String REWARD_FORMAT = "(%d원)";
@@ -44,8 +49,31 @@ public class Console implements Input, Output {
     }
 
     @Override
+    public List<Integer> readIntegerList() {
+        String next = readNext();
+        try {
+            return Arrays.stream(next.split(DELIMITER))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .toList();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(INTEGER_LIST_FORMAT_ERROR_MSG);
+        }
+    }
+
+    @Override
     public void outputPurchaseGameAmount(PurchaseGameAmount purchasedGameAmount) {
         System.out.printf(PURCHASE_COUNT_FORMAT, purchasedGameAmount.count());
+    }
+
+    @Override
+    public void outputManualLottoNumbersPrompt() {
+        System.out.println(MANUAL_LOTTO_NUMBERS_PROMPT);
+    }
+
+    @Override
+    public void outputPurchaseCount(int manualCount, int autoCount) {
+        System.out.printf(MANUAL_AUTO_PURCHASE_FORMAT, manualCount, autoCount);
     }
 
     @Override

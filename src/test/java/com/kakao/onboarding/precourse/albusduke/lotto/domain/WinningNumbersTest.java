@@ -13,20 +13,20 @@ public class WinningNumbersTest {
 
     @BeforeEach
     void setUp() {
-        winningNumbers = new WinningNumbers(new LottoNumbers(List.of(1, 2, 3, 4, 5, 6)), new LottoNumber(7));
+        winningNumbers = new WinningNumbers(new LottoNumbers(List.of(1, 2, 3, 4, 5, 6)), LottoNumber.of(7));
     }
 
     @Test
     void LottoNumber_와_보너스번호로_생성할_수_있다() {
         assertThatCode(() ->
-                new WinningNumbers(new LottoNumbers(List.of(1, 2, 3, 4, 5 ,6)), new LottoNumber(7))
+                new WinningNumbers(new LottoNumbers(List.of(1, 2, 3, 4, 5 ,6)), LottoNumber.of(7))
         ).doesNotThrowAnyException();
     }
 
     @Test
     void LottoNumbers_와_보너스_숫자가_겹칠_수_없다() {
         assertThatThrownBy(() ->
-                new WinningNumbers(new LottoNumbers(List.of(1, 2, 3, 4, 5 ,6)), new LottoNumber(1))
+                new WinningNumbers(new LottoNumbers(List.of(1, 2, 3, 4, 5 ,6)), LottoNumber.of(1))
         ).isInstanceOf(IllegalArgumentException.class);
     }
 

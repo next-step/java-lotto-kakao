@@ -1,5 +1,9 @@
 package com.kakao.onboarding.precourse.albusduke.lotto.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import com.kakao.onboarding.precourse.albusduke.lotto.domain.*;
 import com.kakao.onboarding.precourse.albusduke.lotto.service.LottoService;
 import com.kakao.onboarding.precourse.albusduke.lotto.service.StatisticsService;
@@ -22,32 +26,58 @@ public class LottoController {
     }
 
     public void runLottoGame() {
-        PurchaseGameAmount purchaseGameAmount = calculatePurchaseGameAmount();
-        LottoGames lottoGames = purchaseLottoGame(purchaseGameAmount);
+        TicketQuantity ticketQuantity = calculateTicketQuantity();
+        LottoGames lottoGames = purchaseLottoGames(ticketQuantity);
+        outputConsoleView.outputPurchaseCount(ticketQuantity.getManualQuantity(), ticketQuantity.getRandomQuantity());
+        outputConsoleView.outputLottoNumbers(lottoGames);
         WinningNumbers winningNumbers = createWinningNumbers();
         calculateStatistics(winningNumbers, lottoGames);
     }
 
-    public PurchaseGameAmount calculatePurchaseGameAmount() {
+    public TicketQuantity calculateTicketQuantity() {
         try {
             PurchaseAmount purchaseAmount = inputConsoleView.inputPurchaseAmount();
-            PurchaseGameAmount purchaseGameAmount = lottoService.purchaseLottoGames(purchaseAmount);
-            outputConsoleView.outputPurchaseGameAmount(purchaseGameAmount);
-            return purchaseGameAmount;
+            Money money = lottoService.createMoneyBy(purchaseAmount);
+            ManualTicketQuantity manualTicketQuantity = inputConsoleView.inputManualTicketQuantity();
+            TicketQuantity ticketQuantity = lottoService.calculateTicketQuantity(money, manualTicketQuantity);
+            return ticketQuantity;
         } catch (IllegalArgumentException e) {
             outputConsoleView.outputError(e);
-            return calculatePurchaseGameAmount();
+            return calculateTicketQuantity();
         }
     }
 
-    public LottoGames purchaseLottoGame(PurchaseGameAmount purchaseAmount) {
+    private LottoGames purchaseLottoGames(TicketQuantity ticketQuantity) {
+        List<LottoNumbers> manualLottoNumbers = purchaseManualLottoGames(ticketQuantity);
+        List<LottoNumbers> randomLottoNumbers = purchaseRandomLottoGames(ticketQuantity);
+        List<LottoNumbers> allLottoNumbers = new ArrayList<>(manualLottoNumbers);
+        allLottoNumbers.addAll(randomLottoNumbers);
+        return new LottoGames(allLottoNumbers);
+    }
+
+    private List<LottoNumbers> purchaseRandomLottoGames(TicketQuantity ticketQuantity) {
+        return lottoService.purchaseRandomLottoGames(ticketQuantity);
+    }
+
+    private List<LottoNumbers> purchaseManualLottoGames(TicketQuantity ticketQuantity) {
         try {
-            LottoGames lottoGames = lottoService.purchaseLottoGame(purchaseAmount);
-            outputConsoleView.outputLottoNumbers(lottoGames);
-            return lottoGames;
+            outputConsoleView.OutputManualLottoNumbersPrompt();
+            return IntStream.range(0, ticketQuantity.getManualQuantity())
+                .mapToObj(i -> purchaseManualLottoGame(ticketQuantity))
+                .toList();
         } catch (IllegalArgumentException e) {
             outputConsoleView.outputError(e);
-            return purchaseLottoGame(purchaseAmount);
+            return purchaseManualLottoGames(ticketQuantity);
+        }
+    }
+
+    public LottoNumbers purchaseManualLottoGame(TicketQuantity ticketQuantity) {
+        try {
+            ManualTicketNumbers manualTicketNumbers = inputConsoleView.inputManualTicketNumbers();
+            return lottoService.purchaseManualLottoGame(manualTicketNumbers);
+        } catch (IllegalArgumentException e) {
+            outputConsoleView.outputError(e);
+            return purchaseManualLottoGame(ticketQuantity);
         }
     }
 

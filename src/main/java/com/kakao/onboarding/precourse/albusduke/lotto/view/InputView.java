@@ -13,9 +13,12 @@ public class InputView {
 
     private static final String PURCHASE_AMOUNT_REQUEST = "구입금액을 입력해 주세요.";
     private static final String ILLEGAL_PURCHASE_AMOUNT_ERR_MSG = "구매금액은 " + MIN_PURCHASE_AMOUNT + " 초과, " + MAX_PURCHASE_AMOUNT + " 미만이어야 합니다";
+    private static final String MANUAL_PURCHASE_GAME_AMOUNT_REQUEST = "수동으로 구매할 로또 수를 입력해 주세요.";
     private static final String WINNING_NUMBERS_REQUEST = "지난 주 당첨 번호를 입력해 주세요.";
     private static final String BONUS_NUMBER_REQUEST = "보너스 볼을 입력해 주세요.";
     private static final String ILLEGAL_WINNING_NUMBERS_ERR_MSG = "입력 형식은 숫자여야 합니다. (ex: 1, 2, 3, 4, 5, 6)";
+    private static final String ILLEGAL_MANUAL_QUANTITY_ERR_MSG = "수동 구매 개수는 0 이상이어야 합니다.";
+    private static final String ILLEGAL_BONUS_NUMBER_ERR_MSG = "보너스 볼은 숫자여야 합니다.";
     private static final String DELIMITER = ",";
 
     private final Input input;
@@ -33,6 +36,20 @@ public class InputView {
         return new PurchaseAmount(purchaseAmount);
     }
 
+    public ManualTicketQuantity inputManualTicketQuantity() {
+        System.out.println(MANUAL_PURCHASE_GAME_AMOUNT_REQUEST);
+        int manualTicketQuantity = input.readInt();
+        if (manualTicketQuantity < 0) {
+            throw new IllegalArgumentException(ILLEGAL_MANUAL_QUANTITY_ERR_MSG);
+        }
+        return new ManualTicketQuantity(manualTicketQuantity);
+    }
+
+    public ManualTicketNumbers inputManualTicketNumbers() {
+        List<Integer> manualPurchaseGames = input.readIntegerList();
+        return new ManualTicketNumbers(manualPurchaseGames);
+    }
+
     public WinningNumbers inputWinningNumbers() {
         System.out.println(WINNING_NUMBERS_REQUEST);
 
@@ -46,8 +63,13 @@ public class InputView {
             throw new IllegalArgumentException(ILLEGAL_WINNING_NUMBERS_ERR_MSG);
         }
         System.out.println(BONUS_NUMBER_REQUEST);
-        int bonusNumber = Integer.parseInt(input.readNext().trim());
+        int bonusNumber;
+        try {
+            bonusNumber = Integer.parseInt(input.readNext().trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ILLEGAL_BONUS_NUMBER_ERR_MSG);
+        }
 
-        return new WinningNumbers(new LottoNumbers(winningNumbers), new LottoNumber(bonusNumber));
+        return new WinningNumbers(new LottoNumbers(winningNumbers), LottoNumber.of(bonusNumber));
     }
 }

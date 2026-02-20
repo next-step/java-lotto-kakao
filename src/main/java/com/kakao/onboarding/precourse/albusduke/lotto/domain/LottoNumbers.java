@@ -23,7 +23,7 @@ public class LottoNumbers {
         lottoNumbers = new ArrayList<>();
 
         for (int number : numbers) {
-            lottoNumbers.add(new LottoNumber(number));
+            lottoNumbers.add(LottoNumber.of(number));
         }
 
     }

@@ -57,10 +57,10 @@ public class LottoNumbersTest {
     void 특정_번호를_포함하는지_확인할_수_있다() {
         LottoNumbers lottoNumbers = new LottoNumbers(List.of(1, 2, 3, 4, 5, 6));
 
-        assertThat(lottoNumbers.hasNumber(new LottoNumber(1))).isTrue();
-        assertThat(lottoNumbers.hasNumber(new LottoNumber(6))).isTrue();
-        assertThat(lottoNumbers.hasNumber(new LottoNumber(7))).isFalse();
-        assertThat(lottoNumbers.hasNumber(new LottoNumber(45))).isFalse();
+        assertThat(lottoNumbers.hasNumber(LottoNumber.of(1))).isTrue();
+        assertThat(lottoNumbers.hasNumber(LottoNumber.of(6))).isTrue();
+        assertThat(lottoNumbers.hasNumber(LottoNumber.of(7))).isFalse();
+        assertThat(lottoNumbers.hasNumber(LottoNumber.of(45))).isFalse();
     }
 
     @Test

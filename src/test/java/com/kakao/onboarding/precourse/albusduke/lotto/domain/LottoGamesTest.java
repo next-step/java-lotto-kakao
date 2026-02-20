@@ -16,16 +16,16 @@ public class LottoGamesTest {
         );
         LottoGames lottoGames = new LottoGames(games);
 
-        assertThat(lottoGames.games()).hasSize(2);
-        assertThat(lottoGames.games().get(0)).isEqualTo(new LottoNumbers(List.of(1, 2, 3, 4, 5, 6)));
-        assertThat(lottoGames.games().get(1)).isEqualTo(new LottoNumbers(List.of(7, 8, 9, 10, 11, 12)));
+        assertThat(lottoGames.getGames()).hasSize(2);
+        assertThat(lottoGames.getGames().get(0)).isEqualTo(new LottoNumbers(List.of(1, 2, 3, 4, 5, 6)));
+        assertThat(lottoGames.getGames().get(1)).isEqualTo(new LottoNumbers(List.of(7, 8, 9, 10, 11, 12)));
     }
 
     @Test
     void 빈_게임_리스트로_생성할_수_있다() {
         LottoGames lottoGames = new LottoGames(List.of());
 
-        assertThat(lottoGames.games()).isEmpty();
+        assertThat(lottoGames.getGames()).isEmpty();
     }
 
     @Test
@@ -39,7 +39,7 @@ public class LottoGamesTest {
         );
         LottoGames lottoGames = new LottoGames(games);
 
-        assertThat(lottoGames.games()).hasSize(5);
+        assertThat(lottoGames.getGames()).hasSize(5);
     }
 
     @Test
