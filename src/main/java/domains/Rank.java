@@ -19,7 +19,7 @@ public enum Rank {
     }
 
     public static Rank valueOf(int countOfMatch, boolean matchBonus) {
-        if (countOfMatch < 3) {
+        if (countOfMatch < FIFTH.getCountOfMatch()) {
             return MISS;
         }
 

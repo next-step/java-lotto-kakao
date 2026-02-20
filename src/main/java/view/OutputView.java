@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public class OutputView {
 
-    public static void printLottos(List<Lotto> lottos) {
-        System.out.println(lottos.size()+"개를 구매했습니다.");
+    public static void printLottos(int manualCount, int autoCount, List<Lotto> lottos) {
+        System.out.println("수동으로 " + manualCount + "장, 자동으로 " + autoCount + "장을 구매했습니다.");
         lottos.forEach(System.out::println);
     }
 
@@ -21,6 +21,10 @@ public class OutputView {
 
         List.of(Rank.FIFTH, Rank.FOURTH, Rank.THIRD, Rank.SECOND, Rank.FIRST)
                 .forEach(rank -> printEachRank(rank, counts));
+    }
+
+    public static void printManualLottoInputHeader() {
+        System.out.println("수동 구매할 로또 번호를 입력해주세요.---------\n");
     }
 
     private static Map<Rank, Long> countRanks(List<Rank> ranks) {

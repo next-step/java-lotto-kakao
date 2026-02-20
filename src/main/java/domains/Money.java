@@ -3,7 +3,7 @@ package domains;
 import java.util.List;
 
 public class Money {
-    private int amount;
+    private final int amount;
     private final static int LOTTO_PRICE = 1000;
 
     public Money(int amount) {
@@ -22,17 +22,40 @@ public class Money {
         }
     }
 
+    public void validatePurchasable(int count) {
+        if(count < 0) {
+            throw new IllegalArgumentException("구매 횟수는 양수여야 합니다.");
+        }
+
+        if (amount < count * LOTTO_PRICE) {
+            throw new IllegalArgumentException("지불할 금액보다 구매 횟수가 더 많습니다.");
+        }
+    }
+
     public Integer availableLottoCount() {
         return amount / LOTTO_PRICE;
     }
 
-    public Float calculateRate(List<Rank> rankList) {
-        if (amount == 0) return (float) 0;
+    public int calculateAutoCount(int manualCount) {
+        if (manualCount < 0) {
+            throw new IllegalArgumentException("수동 구매 횟수는 음수일 수 없습니다.");
+        }
+
+        int totalCount = availableLottoCount();
+        if (manualCount > totalCount) {
+            throw new IllegalArgumentException("지불한 금액보다 수동 구매 횟수가 더 많습니다.");
+        }
+
+        return totalCount - manualCount;
+    }
+
+    public double calculateRate(List<Rank> rankList) {
+        if (amount == 0) return  0.0d;
 
         long totalWinningMoney = rankList.stream()
                 .mapToLong(Rank::getWinningMoney)
                 .sum();
 
-        return (float) totalWinningMoney / amount;
+        return (double) totalWinningMoney / amount;
     }
 }

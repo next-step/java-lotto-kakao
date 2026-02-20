@@ -3,21 +3,20 @@ import domains.LottoNumber;
 import domains.Rank;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LottoTest {
     @Test
     public void 로또_번호의_개수가_6개가_아니면_예외가_발생한다() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Lotto(1, 2, 3, 4, 5);
-        });
+        assertThatThrownBy(() -> new Lotto(1, 2, 3, 4, 5))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void 로또_번호에_중복된_숫자가_있으면_예외가_발생한다() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Lotto(1, 2, 2, 4, 5, 6);
-        });
+        assertThatThrownBy(() -> new Lotto(1, 2, 2, 4, 5, 6))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
