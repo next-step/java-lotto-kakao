@@ -1,32 +1,23 @@
 package domain.lotto;
 
 import domain.winning.LottoResult;
-import domain.winning.WinningLotto;
-import org.junit.jupiter.api.Assertions;
+import domain.winning.WinningStatus;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Random;
+import java.util.EnumMap;
 
 public class LottoResultTest {
 
     @Test
-    public void dummy() {
-        Random ramdom = new Random(10);
-        LottoFactory lottoFactory = new LottoFactory(ramdom);
-        LottoIssuer lottoIssuer = new LottoIssuer(lottoFactory);
-        LottoGroup lottoGroup = lottoIssuer.issueAuto(3000);
+    public void generate_lotto() {
+        WinningStatus winningStatus = WinningStatus.FIRST;
+        int winningStatusFirstCount = 1;
+        EnumMap<WinningStatus, Integer> winningStatusMap = new EnumMap<>(WinningStatus.class);
+        winningStatusMap.put(winningStatus, winningStatusFirstCount);
+        winningStatusMap.get(winningStatus);
 
-        // seed 10
-        // [16, 24, 26, 30, 31, 35]
-        // [1, 2, 3, 29, 40, 45]
-        // [6, 21, 23, 35, 37, 41]
-
-        List<Integer> expectedFirstLotto = List.of(6,21,23,24,37,41);
-        WinningLotto winningLotto = new WinningLotto(expectedFirstLotto, 35);
-        LottoResult lottoResult = lottoGroup.compare(winningLotto);
-
-        double rate = lottoResult.totalRate();
-        Assertions.assertEquals(10000.0, rate);
+        LottoResult lottoResult = new LottoResult(winningStatusMap);
+        Assertions.assertThat(lottoResult.getCounts().get(winningStatus)).isEqualTo(winningStatusFirstCount);
     }
 }

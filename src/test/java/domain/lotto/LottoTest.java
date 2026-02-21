@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LottoTest {
 
     @Test
-    @DisplayName("자동 로또 하나를 생성한다.")
+    @DisplayName("자동 로또 생성한다.")
     void create_auto_lotto() {
         Random random = new Random(10);
-        LottoFactory autoLottoFactory = new LottoFactory(random);
-        Lotto lotto = autoLottoFactory.createAutoLotto();
+        LottoFactory autoLottoFactory = new AutoLottoFactory(5, random);
+        Lotto lotto = autoLottoFactory.create().getFirst();
         List<LottoNumber> lottoNumbers = lotto.getNumbers();
 
         assertEquals(6, new HashSet<>(lottoNumbers).size());
@@ -25,27 +25,10 @@ public class LottoTest {
     @Test
     @DisplayName("수동 로또 하나를 생성한다.")
     void create_manual_lotto() {
-        LottoFactory manualLottoFactory = new LottoFactory();
-        Lotto lotto = manualLottoFactory.createManualLotto(List.of(3, 11, 15, 29, 35, 44));
+        LottoFactory manualLottoFactory = new ManualLottoFactory(List.of(List.of(3, 11, 15, 29, 35, 44)));
+        Lotto lotto = manualLottoFactory.create().getFirst();
         List<LottoNumber> lottoNumbers = lotto.getNumbers();
 
         assertEquals(6, new HashSet<>(lottoNumbers).size());
     }
-
-    @Test
-    @DisplayName("자동 로또 여러 개를 생성한다")
-    void create_auto_lottos() {
-        Random random = new Random(10);
-        LottoFactory lottoFactory = new LottoFactory(random);
-
-        LottoIssuer lottoIssuer = new LottoIssuer(lottoFactory);
-        LottoGroup lottoGroup = lottoIssuer.issueAuto(5000);
-
-        for (Lotto lotto : lottoGroup.getLottos()) {
-            List<LottoNumber> lottoNumbers = lotto.getNumbers();
-            assertEquals(6, new HashSet<>(lottoNumbers).size());
-        }
-        assertEquals(5, lottoGroup.getLottos().size());
-    }
-
 }

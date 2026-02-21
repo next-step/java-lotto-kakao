@@ -1,20 +1,20 @@
 package service;
 
-import domain.lotto.LottoFactory;
-import domain.lotto.LottoGroup;
-import domain.lotto.LottoIssuer;
-import domain.winning.LottoResult;
-import domain.winning.WinningLotto;
+import domain.lotto.*;
 
 import java.util.List;
 
 public class LottoService {
 
-    public LottoService() {
+    public LottoGroup issue(Purchase purchase) {
+        return new LottoGroup(issueManualLottos(purchase), issueAutoLottos(purchase));
     }
 
-    public LottoGroup issueLottos(int purchaseAmount) {
-        LottoIssuer lottoIssuer = new LottoIssuer(new LottoFactory());
-        return lottoIssuer.issueAuto(purchaseAmount);
+    private List<Lotto> issueManualLottos(Purchase purchase) {
+        return new ManualLottoFactory(purchase.getManualLottosNumbers()).create();
+    }
+
+    private List<Lotto> issueAutoLottos(Purchase purchase) {
+        return new AutoLottoFactory(purchase.getAutoLottoCount()).create();
     }
 }

@@ -11,25 +11,25 @@ import java.util.Map;
 
 public class OutputView {
 
-    public OutputView() {
-    }
-
     public void printError(String message) {
         System.out.println("[ERROR] " + message);
     }
 
     public void printLottoCount(LottoGroup lottoGroup) {
-        System.out.println(lottoGroup.getSize() + "개를 구매했습니다.");
-
-        for (Lotto lotto : lottoGroup.getLottos()) {
-            List<LottoNumber> lottoNumbers = lotto.getNumbers();
-            System.out.println(lottoNumbers);
-        }
+        System.out.printf("수동으로 %d장, 자동으로 %d개를 구매했습니다.%n%n", lottoGroup.getManualLottosSize(), lottoGroup.getAutoLottosSize());
+        printLottos(lottoGroup.getManualLottos());
+        printLottos(lottoGroup.getAutoLottos());
         System.out.println();
     }
 
+    private void printLottos(List<Lotto> lottos) {
+        for (Lotto lotto : lottos) {
+            List<LottoNumber> lottoNumbers = lotto.getNumbers();
+            System.out.println(lottoNumbers);
+        }
+    }
+
     public void printStatistics(LottoResult lottoResult) {
-        System.out.println();
         System.out.println("당첨 통계");
         System.out.println("---------");
         printWinningCount(lottoResult);

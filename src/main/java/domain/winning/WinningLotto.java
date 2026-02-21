@@ -14,7 +14,7 @@ public class WinningLotto {
     private final LottoNumber bonusLottoNumber;
 
     public WinningLotto(List<Integer> input, int bonusNumber) {
-        this.bonusLottoNumber = new LottoNumber(bonusNumber);
+        this.bonusLottoNumber = LottoNumber.of(bonusNumber);
         this.winningLotto = new Lotto(input);
         validateNumber();
     }

@@ -1,6 +1,7 @@
 package controller;
 
 import domain.lotto.LottoGroup;
+import domain.lotto.Purchase;
 import domain.winning.LottoResult;
 import domain.winning.WinningLotto;
 import service.LottoService;
@@ -32,12 +33,18 @@ public class LottoController {
 
     private LottoGroup generateLottoGroup() {
         try {
-            int purchaseAmount = inputView.enterPurchaseAmount();
-            return lottoService.issueLottos(purchaseAmount);
-        } catch (Exception e) {
+            return lottoService.issue(purchase());
+        } catch (IllegalArgumentException e) {
             outputView.printError(e.getMessage());
             return generateLottoGroup();
         }
+    }
+
+    private Purchase purchase() {
+        int purchasePrice = inputView.enterPurchasePrice();
+        int manualLottoCount = inputView.enterManualLottoCount();
+        List<List<Integer>> manualLottosNumbers = inputView.enterManualLottosNumbers(manualLottoCount);
+        return new Purchase(purchasePrice, manualLottosNumbers);
     }
 
     private WinningLotto requestWinningNumbers() {

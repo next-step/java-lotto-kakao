@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class LottoIssuerTest {
+class LottoFactoryTest {
 
     @Test
     void generate_manual_lotto() {
