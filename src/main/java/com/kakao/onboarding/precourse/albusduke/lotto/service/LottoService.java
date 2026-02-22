@@ -1,46 +1,55 @@
 package com.kakao.onboarding.precourse.albusduke.lotto.service;
 
-import com.kakao.onboarding.precourse.albusduke.lotto.domain.PurchaseAmount;
-import com.kakao.onboarding.precourse.albusduke.lotto.domain.PurchaseGameAmount;
 import com.kakao.onboarding.precourse.albusduke.lotto.domain.LottoGames;
 import com.kakao.onboarding.precourse.albusduke.lotto.domain.LottoNumbers;
 import com.kakao.onboarding.precourse.albusduke.lotto.domain.LottoNumbersGenerator;
-
+import com.kakao.onboarding.precourse.albusduke.lotto.domain.ManualGameCount;
+import com.kakao.onboarding.precourse.albusduke.lotto.domain.PurchaseAmount;
+import com.kakao.onboarding.precourse.albusduke.lotto.domain.PurchaseGameAmount;
+import com.kakao.onboarding.precourse.albusduke.lotto.domain.WinningNumbers;
+import com.kakao.onboarding.precourse.albusduke.lotto.view.LottoGamesRequest;
+import com.kakao.onboarding.precourse.albusduke.lotto.view.ManualGameCountRequest;
+import com.kakao.onboarding.precourse.albusduke.lotto.view.PurchaseAmountRequest;
+import com.kakao.onboarding.precourse.albusduke.lotto.view.WinningNumbersRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LottoService {
 
-    private static final int LOTTO_COST = 1_000;
-    private static final String PURCHASE_MOUNT_NOT_DIVIDED_BY_LOTTO_COST = "로또 구매 단위는 " +  LOTTO_COST + "원 단위여야 합니다.";
-
     private final LottoNumbersGenerator lottoNumbersGenerator;
 
     public LottoService(LottoNumbersGenerator lottoNumbersGenerator) {
-        this.lottoNumbersGenerator =  lottoNumbersGenerator;
+        this.lottoNumbersGenerator = lottoNumbersGenerator;
     }
 
-    public PurchaseGameAmount purchaseLottoGames(PurchaseAmount purchaseAmount) {
-        validateDivisibleByLottoCost(purchaseAmount);
-
-        return calculatePurchaseGameAmount(purchaseAmount);
+    public PurchaseAmount prepareAmount(PurchaseAmountRequest purchaseAmountRequest) {
+        return purchaseAmountRequest.toPurchaseAmount();
     }
 
-    private static void validateDivisibleByLottoCost(PurchaseAmount purchaseAmount) {
-        if (purchaseAmount.purchaseAmount() % LOTTO_COST != 0) {
-            throw new IllegalArgumentException(PURCHASE_MOUNT_NOT_DIVIDED_BY_LOTTO_COST);
-        }
+    public PurchaseGameAmount purchaseLottoGames(ManualGameCountRequest manualGameCountRequest,
+        PurchaseAmount purchaseAmount) {
+        ManualGameCount manualGameCount = manualGameCountRequest.toManualGameCount();
+        return PurchaseGameAmount.of(purchaseAmount, manualGameCount);
     }
 
-    private PurchaseGameAmount calculatePurchaseGameAmount(PurchaseAmount purchaseAmount) {
-        return new PurchaseGameAmount(purchaseAmount.purchaseAmount() / LOTTO_COST);
-    }
-
-    public LottoGames purchaseLottoGame(PurchaseGameAmount purchaseGameAmount) {
+    public LottoGames purchaseAutoGames(PurchaseGameAmount purchaseGameAmount) {
         List<LottoNumbers> lottoNumbers = new ArrayList<>();
-        for (int i = 0; i < purchaseGameAmount.count(); ++i) {
+        for (int i = 0; i < purchaseGameAmount.autoCount(); ++i) {
             lottoNumbers.add(lottoNumbersGenerator.generate());
         }
         return new LottoGames(lottoNumbers);
     }
+
+    public LottoGames purchaseManualGames(LottoGamesRequest manualGamesRequest) {
+        return manualGamesRequest.toLottoGames();
+    }
+
+    public LottoGames sumGames(LottoGames manualGames, LottoGames autoGames) {
+        return manualGames.add(autoGames);
+    }
+
+    public WinningNumbers createWinningNumbers(WinningNumbersRequest winningNumbersRequest) {
+        return winningNumbersRequest.toWinningNumbers();
+    }
+
 }
